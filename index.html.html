@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>버섯 잡기 게임 (Fungus Catcher)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #1a1a2e; /* 어두운 밤하늘 */
+            font-family: 'Jua', sans-serif; /* 한글에 어울리는 둥근 폰트 */
+            touch-action: none; /* 모바일에서 스크롤 방지 */
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            display: block;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to bottom, #2b1055, #7597de); /* Night to dawn gradient */
+        }
+
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Let clicks pass through to canvas */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .hud-text {
+            font-family: 'Jua', sans-serif;
+            color: white;
+            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        #top-hud {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px; /* Match canvas max width */
+            margin: 0 auto;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            pointer-events: auto; /* Catch clicks on overlay */
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .title {
+            font-family: 'Jua', sans-serif;
+            color: #4ade80; 
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 4px 4px 0px #166534; 
+            line-height: 1.2;
+        }
+
+        .game-btn {
+            font-family: 'Jua', sans-serif;
+            background: #facc15; 
+            color: #422006; 
+            border: 4px solid #a16207; 
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.1s, background 0.2s;
+            box-shadow: 0 6px 0 #a16207;
+        }
+
+        .game-btn:hover {
+            background: #fef08a; /* yellow-200 */
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 #a16207;
+        }
+
+        .game-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #a16207;
+        }
+
+        .instructions {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            max-width: 80%;
+        }
+
+        .key {
+            display: inline-block;
+            background: #333;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #555;
+            font-family: monospace;
+            margin: 0 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- The Game Canvas -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- UI Layer (Score and Lives) -->
+        <div id="ui-layer">
+            <div id="top-hud">
+                <div class="hud-text">점수: <span id="scoreVal">0</span></div>
+                <div class="hud-text">생명: <span id="livesVal">3</span></div>
+            </div>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="startScreen" class="overlay">
+            <h1 class="title text-5xl md:text-7xl">버섯 잡기<br>대작전</h1>
+            <div class="instructions">
+                <p class="mb-2">좋은 버섯을 잡아 점수를 얻으세요! <span class="text-green-400 font-bold">(초록색)</span></p>
+                <p class="mb-4">독버섯은 피해야 합니다! <span class="text-red-500 font-bold">(빨간색)</span></p>
+                <p class="text-base text-gray-300">
+                    조작 방법:<br>
+                    PC: <span class="key">←</span> <span class="key">→</span> 방향키 또는 <span class="key">A</span> / <span class="key">D</span><br>
+                    모바일: 화면 좌/우 터치 또는 드래그
+                </p>
+            </div>
+            <button id="startBtn" class="game-btn">게임 시작</button>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="overlay hidden">
+            <h1 class="title text-5xl md:text-6xl" style="color: #ef4444; text-shadow: 4px 4px 0px #7f1d1d;">게임 오버</h1>
+            <div class="instructions">
+                <p class="text-3xl mb-2 font-['Jua']">최종 점수</p>
+                <p id="finalScore" class="text-5xl text-yellow-400 font-bold font-['Jua'] mb-8">0</p>
+            </div>
+            <button id="restartBtn" class="game-btn">다시 하기</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('scoreVal');
+        const livesElement = document.getElementById('livesVal');
+        const startScreen = document.getElementById('startScreen');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const finalScoreElement = document.getElementById('finalScore');
+        
+        // Game State
+        let gameState = 'START'; // START, PLAYING, GAMEOVER
+        let score = 0;
+        let lives = 3;
+        let frameCount = 0;
+        let animationId;
+        
+        // Physics & Timing
+        let baseFallSpeed = 3;
+        let spawnRate = 90; // Spawn every X frames initially
+        let difficultyMultiplier = 1;
+
+        // Entities
+        let player;
+        let mushrooms = [];
+        let particles = [];
+        
+        // Background Image
+        const bgImage = new Image();
+        bgImage.src = 'watermarked_img_13968826479469951172.jpg';
+        let bgLoaded = false;
+        bgImage.onload = () => {
+            bgLoaded = true;
+        };
+        
+        // Input - Add state to track if we should clear text
+        let keys = { ArrowLeft: false, ArrowRight: false, a: false, d: false };
+        let touchX = null;
+
+        // Constants
+        const MAX_WIDTH = 800; // Limit canvas width on large screens
+        
+        function resizeCanvas() {
+            // Keep a nice aspect ratio or fill window, up to max width
+            let w = window.innerWidth;
+            let h = window.innerHeight;
+            
+            if (w > MAX_WIDTH) {
+                w = MAX_WIDTH;
+            }
+            
+            canvas.width = w;
+            canvas.height = h;
+
+            // Adjust top hud width
+            document.getElementById('top-hud').style.width = `${w}px`;
+            
+            // Re-position player if it exists and goes off screen
+            if (player) {
+                player.y = canvas.height - player.height - 20;
+                if (player.x > canvas.width - player.width) {
+                    player.x = canvas.width - player.width;
+                }
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Player {
+            constructor() {
+                this.width = 80;
+                this.height = 60;
+                this.x = canvas.width / 2 - this.width / 2;
+                this.y = canvas.height - this.height - 20;
+                this.speed = 8;
+                this.color = '#8B4513'; // SaddleBrown
+            }
+
+            draw() {
+                // Draw a woven basket shape
+                ctx.save();
+                
+                // Basket body
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x + this.width, this.y);
+                ctx.lineTo(this.x + this.width - 10, this.y + this.height);
+                ctx.lineTo(this.x + 10, this.y + this.height);
+                ctx.closePath();
+                ctx.fill();
+                
+                // Basket rim
+                ctx.fillStyle = '#A0522D'; // Sienna
+                ctx.fillRect(this.x - 5, this.y - 5, this.width + 10, 10);
+                
+                // Weave lines (simple decoration)
+                ctx.strokeStyle = '#6B3E11';
+                ctx.lineWidth = 2;
+                for(let i = 1; i < 4; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x + 5 + (i*2), this.y + (i * 15));
+                    ctx.lineTo(this.x + this.width - 5 - (i*2), this.y + (i * 15));
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            }
+
+            update() {
+                // Keyboard Movement
+                if ((keys.ArrowLeft || keys.a) && this.x > 0) {
+                    this.x -= this.speed;
+                }
+                if ((keys.ArrowRight || keys.d) && this.x < canvas.width - this.width) {
+                    this.x += this.speed;
+                }
+
+                // Touch/Mouse Movement (follow pointer smoothly)
+                if (touchX !== null) {
+                    let targetX = touchX - this.width / 2;
+                    // Smooth lerp
+                    this.x += (targetX - this.x) * 0.15;
+                    
+                    // Clamp
+                    if(this.x < 0) this.x = 0;
+                    if(this.x > canvas.width - this.width) this.x = canvas.width - this.width;
+                }
+            }
+        }
+
+        class Mushroom {
+            constructor() {
+                this.radius = 20;
+                this.x = Math.random() * (canvas.width - this.radius * 2) + this.radius;
+                this.y = -this.radius * 2;
+                
+                // 70% chance good, 30% chance bad
+                this.isGood = Math.random() > 0.3;
+                
+                // Add some random horizontal drift
+                this.dx = (Math.random() - 0.5) * 1.5; 
+                
+                // Apply difficulty multiplier to speed
+                this.dy = (baseFallSpeed + Math.random() * 2) * difficultyMultiplier;
+                
+                this.markedForDeletion = false;
+                
+                // Wobble effect properties
+                this.wobblePhase = Math.random() * Math.PI * 2;
+                this.wobbleSpeed = 0.05;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                
+                // Add a slight wobble rotation
+                let angle = Math.sin(this.wobblePhase) * 0.15;
+                ctx.rotate(angle);
+
+                // Draw Stem
+                ctx.fillStyle = '#F5F5DC'; // Beige
+                ctx.fillRect(-this.radius/4, 0, this.radius/2, this.radius);
+
+                // Draw Cap
+                ctx.beginPath();
+                ctx.arc(0, 0, this.radius, Math.PI, 0); // Semi-circle
+                
+                if (this.isGood) {
+                    ctx.fillStyle = '#4ade80'; // Green cap
+                    ctx.fill();
+                    
+                    // Cute spots for good mushroom
+                    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+                    ctx.beginPath(); ctx.arc(-8, -10, 4, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(8, -6, 3, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(0, -14, 5, 0, Math.PI*2); ctx.fill();
+                } else {
+                    ctx.fillStyle = '#ef4444'; // Red/Poisonous cap
+                    ctx.fill();
+                    
+                    // Danger spots
+                    ctx.fillStyle = '#fef08a'; // Yellow warning spots
+                    ctx.beginPath(); ctx.arc(-10, -8, 3, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(10, -8, 3, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(0, -15, 4, 0, Math.PI*2); ctx.fill();
+                    
+                    // Draw a little skull face (very abstract)
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(-12, -10, 2, 2);
+                    ctx.fillRect(-8, -10, 2, 2);
+                }
+
+                ctx.restore();
+            }
+
+            update() {
+                this.y += this.dy;
+                this.x += this.dx;
+                this.wobblePhase += this.wobbleSpeed;
+
+                // Bounce off side walls gently
+                if (this.x < this.radius || this.x > canvas.width - this.radius) {
+                    this.dx *= -1;
+                }
+
+                // Check collision with player
+                // Using a simple rectangle collision since mushroom is roughly rectangular bounding box
+                let mushLeft = this.x - this.radius;
+                let mushRight = this.x + this.radius;
+                let mushTop = this.y - this.radius;
+                let mushBottom = this.y + this.radius;
+                
+                // Make player hitbox slightly smaller and lower than visual drawing to make it feel fairer
+                let playerHitTop = player.y + 10; 
+                let playerHitLeft = player.x + 5;
+                let playerHitRight = player.x + player.width - 5;
+                let playerHitBottom = player.y + player.height;
+
+                if (mushRight > playerHitLeft && 
+                    mushLeft < playerHitRight && 
+                    mushBottom > playerHitTop && 
+                    mushTop < playerHitBottom) {
+                        
+                    this.markedForDeletion = true;
+                    handleCatch(this);
+                }
+
+                // Remove if off screen bottom
+                if (this.y > canvas.height + this.radius * 2) {
+                    this.markedForDeletion = true;
+                    // Penalty for missing a GOOD mushroom
+                    if (this.isGood) {
+                         loseLife();
+                         createFloatingText("놓쳤다!", this.x, canvas.height - 20, "#ef4444");
+                    }
+                }
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.size = Math.random() * 5 + 2;
+                this.speedX = (Math.random() - 0.5) * 8;
+                this.speedY = (Math.random() - 0.5) * 8 - 2; // Bias upwards
+                this.life = 1.0; // Alpha
+                this.decay = Math.random() * 0.05 + 0.02;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY += 0.2; // Gravity
+                this.life -= this.decay;
+            }
+            
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.life > 0 ? this.life : 0;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        let floatingTexts = [];
+        class FloatingText {
+            constructor(text, x, y, color) {
+                this.text = text;
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.life = 1.0;
+                this.speedY = -1.5;
+            }
+            update() {
+                this.y += this.speedY;
+                this.life -= 0.02;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.life > 0 ? this.life : 0;
+                ctx.fillStyle = this.color;
+                ctx.font = 'bold 24px Jua'; // Changed to match Korean font
+                ctx.textAlign = 'center';
+                // Stroke for visibility
+                ctx.strokeStyle = 'black';
+                ctx.lineWidth = 3;
+                ctx.strokeText(this.text, this.x, this.y);
+                ctx.fillText(this.text, this.x, this.y);
+                ctx.restore();
+            }
+        }
+
+        function createExplosion(x, y, color) {
+            for (let i = 0; i < 15; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function createFloatingText(text, x, y, color) {
+            floatingTexts.push(new FloatingText(text, x, y, color));
+        }
+
+        function handleCatch(mushroom) {
+            if (mushroom.isGood) {
+                score += 10;
+                scoreElement.innerText = score;
+                createExplosion(mushroom.x, mushroom.y, '#4ade80');
+                createFloatingText("+10", mushroom.x, mushroom.y - 20, '#4ade80');
+                
+                // Increase difficulty based on score
+                if (score % 50 === 0) {
+                    difficultyMultiplier += 0.1;
+                    spawnRate = Math.max(30, Math.floor(spawnRate * 0.9)); // Cap spawn rate
+                }
+            } else {
+                loseLife();
+                createExplosion(mushroom.x, mushroom.y, '#ef4444');
+                createFloatingText("독버섯!", mushroom.x, mushroom.y - 20, '#ef4444'); // Korean text
+                
+                // Visual shake effect
+                canvas.style.transform = `translate(${(Math.random()-0.5)*10}px, ${(Math.random()-0.5)*10}px)`;
+                setTimeout(() => canvas.style.transform = 'translate(0, 0)', 100);
+            }
+        }
+
+        function loseLife() {
+            lives--;
+            livesElement.innerText = lives;
+            
+            // Flash screen red
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            if (lives <= 0) {
+                gameOver();
+            }
+        }
+
+        function initGame() {
+            player = new Player();
+            mushrooms = [];
+            particles = [];
+            floatingTexts = [];
+            score = 0;
+            lives = 3;
+            difficultyMultiplier = 1;
+            spawnRate = 80;
+            frameCount = 0;
+            
+            scoreElement.innerText = score;
+            livesElement.innerText = lives;
+            
+            startScreen.classList.add('hidden');
+            gameOverScreen.classList.add('hidden');
+            
+            gameState = 'PLAYING';
+            animate();
+        }
+
+        function gameOver() {
+            gameState = 'GAMEOVER';
+            cancelAnimationFrame(animationId);
+            finalScoreElement.innerText = score;
+            gameOverScreen.classList.remove('hidden');
+        }
+
+        function drawBackground() {
+            if (bgLoaded) {
+                // Draw the loaded image covering the whole canvas
+                ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+                
+                // Add a slight dark overlay so the game elements stand out more
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                // Fallback to the original drawn background if image isn't loaded yet
+                ctx.fillStyle = '#1c2e4a'; 
+                
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height);
+                ctx.lineTo(0, canvas.height - 150);
+                ctx.quadraticCurveTo(canvas.width / 4, canvas.height - 250, canvas.width / 2, canvas.height - 150);
+                ctx.quadraticCurveTo(canvas.width * 0.75, canvas.height - 50, canvas.width, canvas.height - 200);
+                ctx.lineTo(canvas.width, canvas.height);
+                ctx.fill();
+
+                ctx.fillStyle = '#111827'; 
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height);
+                ctx.lineTo(0, canvas.height - 80);
+                ctx.quadraticCurveTo(canvas.width / 3, canvas.height - 150, canvas.width, canvas.height - 50);
+                ctx.lineTo(canvas.width, canvas.height);
+                ctx.fill();
+            }
+        }
+
+        function animate() {
+            if (gameState !== 'PLAYING') return;
+            
+            // Clear and draw bg
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBackground();
+            
+            frameCount++;
+
+            // Spawn Mushrooms
+            if (frameCount % spawnRate === 0) {
+                mushrooms.push(new Mushroom());
+            }
+
+            // Update and draw Mushrooms
+            for (let i = 0; i < mushrooms.length; i++) {
+                mushrooms[i].update();
+                mushrooms[i].draw();
+            }
+            
+            // Remove deleted mushrooms
+            mushrooms = mushrooms.filter(m => !m.markedForDeletion);
+
+            // Update and draw Particles
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            particles = particles.filter(p => p.life > 0);
+
+            // Update and draw Floating Texts
+            for (let i = 0; i < floatingTexts.length; i++) {
+                floatingTexts[i].update();
+                floatingTexts[i].draw();
+            }
+            floatingTexts = floatingTexts.filter(ft => ft.life > 0);
+
+            // Update and draw Player
+            player.update();
+            player.draw();
+
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Keyboard Input
+        window.addEventListener('keydown', (e) => {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = true;
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = false;
+            }
+        });
+
+        // Touch/Mouse Input setup
+        canvas.addEventListener('mousedown', handlePointerDown);
+        canvas.addEventListener('mousemove', handlePointerMove);
+        window.addEventListener('mouseup', handlePointerUp);
+        
+        canvas.addEventListener('touchstart', (e) => handlePointerDown(e.touches[0]), {passive: false});
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Prevent scrolling
+            handlePointerMove(e.touches[0]);
+        }, {passive: false});
+        window.addEventListener('touchend', handlePointerUp);
+
+        function handlePointerDown(e) {
+            if (gameState === 'PLAYING') {
+                touchX = e.clientX;
+            }
+        }
+
+        function handlePointerMove(e) {
+            if (gameState === 'PLAYING' && touchX !== null) {
+                touchX = e.clientX;
+            }
+        }
+
+        function handlePointerUp() {
+            touchX = null;
+        }
+
+        // Button Clicks
+        document.getElementById('startBtn').addEventListener('click', initGame);
+        document.getElementById('restartBtn').addEventListener('click', initGame);
+
+        // Initial setup
+        resizeCanvas();
+
+    </script>
+</body>
+</html>
