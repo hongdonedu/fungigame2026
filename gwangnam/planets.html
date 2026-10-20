@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>태양계 행성 탐험 도감</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap">
+<style>
+/* 레이아웃: 하늘색 헤더 → 행성 8개 카드 격자 → 카드를 누르면 아래 상세 패널, 탐험 도장(localStorage) */
+:root{
+  --bg:#f4f8ff; --fg:#1d2b4f; --muted:#5b6b8c; --card:#ffffff; --line:#d7e2f5;
+  --accent:#2f6fed; --accent2:#ffb13b; --good:#2aa36b; --panel:#eaf1ff;
+  --display:'Jua','Gowun Dodum',sans-serif; --body:'Gowun Dodum','Malgun Gothic',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0e1630;--fg:#eef2ff;--muted:#aab6d6;--card:#172244;--line:#2b3a66;--accent:#7fa6ff;--accent2:#ffc966;--good:#5fd39a;--panel:#1b2a52;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1630;--fg:#eef2ff;--muted:#aab6d6;--card:#172244;--line:#2b3a66;--accent:#7fa6ff;--accent2:#ffc966;--good:#5fd39a;--panel:#1b2a52;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;padding-block:0 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;align-items:center;gap:14px;padding:18px 0 10px}
+header img{width:72px;height:72px;object-fit:contain}
+h1{font-family:var(--display);font-size:clamp(26px,5vw,36px);margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:2px 0 0;font-size:15px}
+.std{display:inline-block;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--muted);margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:14px}
+.pl{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:14px 10px;text-align:center;cursor:pointer;transition:transform .12s;position:relative;min-width:0}
+.pl:hover,.pl:focus-visible{transform:translateY(-3px);border-color:var(--accent);outline:none}
+.pl .ball{width:64px;height:64px;border-radius:50%;margin:0 auto 8px;box-shadow:inset -14px -10px 22px rgba(0,0,0,.28)}
+.pl b{font-family:var(--display);font-size:20px;display:block}
+.pl small{color:var(--muted)}
+.pl .stamp{position:absolute;top:8px;right:8px;background:var(--good);color:#fff;border-radius:999px;font-size:12px;padding:2px 8px}
+.pl[data-done="1"]{border-color:var(--good)}
+#detail{margin-top:18px;background:var(--card);border:2px solid var(--line);border-radius:22px;padding:18px;display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:start}
+#detail .big{width:120px;height:120px;border-radius:50%;box-shadow:inset -26px -18px 40px rgba(0,0,0,.3);margin:0 auto}
+#detail h2{font-family:var(--display);margin:0 0 6px;font-size:28px}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:10px 0}
+dt{color:var(--muted)} dd{margin:0;font-variant-numeric:tabular-nums}
+.fact{background:var(--panel);border-radius:14px;padding:12px 14px;line-height:1.55}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+button{font-family:var(--display);font-size:18px;border:0;border-radius:14px;padding:12px 18px;cursor:pointer;background:var(--accent);color:#fff}
+button.alt{background:var(--accent2);color:#1d2b4f}
+button:focus-visible{outline:3px solid var(--accent2)}
+#quiz{margin-top:18px;background:var(--card);border:2px dashed var(--accent2);border-radius:22px;padding:18px}
+#quiz h3{font-family:var(--display);margin:0 0 8px;font-size:24px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:10px}
+.opts button{background:var(--panel);color:var(--fg);border:2px solid var(--line)}
+.opts button.ok{background:var(--good);color:#fff;border-color:var(--good)}
+.opts button.no{opacity:.5}
+.msg{margin-top:10px;font-weight:700;min-height:1.4em}
+.mascot{display:flex;align-items:center;gap:12px;margin-top:16px;color:var(--muted)}
+.mascot img{width:88px;height:88px;object-fit:contain}
+.progress{margin-top:16px;background:var(--panel);border-radius:999px;height:16px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--good);width:0;transition:width .3s}
+@media (max-width:520px){#detail{grid-template-columns:1fr} #detail .big{width:96px;height:96px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<header>
+  <img src="pose_map.png" alt="탐험 지도를 그리는 닭핑">
+  <div>
+    <h1>태양계 행성 탐험 도감</h1>
+    <p class="sub">행성을 누르면 탐험 도장이 찍혀요. 8개를 모두 모아 보세요!</p>
+    <span class="std">[4과13-02] 태양계 구성원을 알고, 태양과 행성을 조사할 수 있다</span>
+  </div>
+</header>
+
+<div class="progress" aria-label="탐험 진행"><i id="bar"></i></div>
+<div class="grid" id="grid"></div>
+
+<section id="detail" hidden>
+  <div class="big" id="dball"></div>
+  <div>
+    <h2 id="dname"></h2>
+    <dl>
+      <dt>태양에서 순서</dt><dd id="dorder"></dd>
+      <dt>지름 (지구=1)</dt><dd id="dsize"></dd>
+      <dt>태양과의 거리</dt><dd id="ddist"></dd>
+      <dt>한 바퀴 도는 데</dt><dd id="dyear"></dd>
+      <dt>위성 수</dt><dd id="dmoon"></dd>
+    </dl>
+    <div class="fact" id="dfact"></div>
+    <div class="row"><button id="stampBtn">탐험 도장 찍기</button><button class="alt" id="closeBtn">닫기</button></div>
+  </div>
+</section>
+
+<section id="quiz">
+  <h3>행성 퀴즈</h3>
+  <div id="q"></div>
+  <div class="opts" id="opts"></div>
+  <div class="msg" id="qmsg"></div>
+  <div class="row"><button id="nextQ">다음 문제</button><button class="alt" id="resetAll">도장 모두 지우기</button></div>
+</section>
+
+<div class="mascot"><img src="pose_idea.png" alt="전구가 떠오른 닭핑"><span id="tip">탐험 도장은 이 태블릿(브라우저)에만 저장돼요. 다른 기기에서는 보이지 않아요.</span></div>
+
+<script>
+const P=[
+ {n:'수성',c:'#9a9a9a',o:1,s:'0.38',d:'5,790만 km',y:'88일',m:'0개',f:'태양에 가장 가까워요. 낮에는 430℃, 밤에는 -180℃까지 내려가요. 달처럼 울퉁불퉁한 구덩이(크레이터)가 많아요.'},
+ {n:'금성',c:'#e2b96b',o:2,s:'0.95',d:'1억 820만 km',y:'225일',m:'0개',f:'두꺼운 구름이 열을 가둬서 태양계에서 가장 뜨거운 행성(약 465℃)이에요. 다른 행성과 반대 방향으로 자전해요.'},
+ {n:'지구',c:'#3f7fe0',o:3,s:'1',d:'1억 4,960만 km',y:'365일',m:'1개',f:'우리가 사는 행성. 표면의 71%가 바다라서 우주에서 보면 파란 구슬 같아요. 생명이 사는 유일한 행성이에요.'},
+ {n:'화성',c:'#d9603b',o:4,s:'0.53',d:'2억 2,790만 km',y:'687일',m:'2개',f:'흙에 철(녹)이 많아 붉게 보여서 "붉은 행성"이라고 불러요. 태양계에서 가장 높은 산 올림푸스 산(약 22km)이 있어요.'},
+ {n:'목성',c:'#d8a86a',o:5,s:'11.2',d:'7억 7,830만 km',y:'12년',m:'95개',f:'태양계에서 가장 큰 행성. 지구가 1,300개나 들어가요. 거대한 폭풍 "대적점"은 지구보다 커요.'},
+ {n:'토성',c:'#e8d59b',o:6,s:'9.4',d:'14억 3,000만 km',y:'29년',m:'146개',f:'얼음과 돌로 된 멋진 고리가 있어요. 밀도가 물보다 낮아서 커다란 욕조가 있다면 물에 뜰 수 있어요.'},
+ {n:'천왕성',c:'#8fd3e8',o:7,s:'4.0',d:'28억 7,000만 km',y:'84년',m:'28개',f:'누워서 굴러가듯 옆으로 자전해요. 메테인 가스 때문에 청록색으로 보여요.'},
+ {n:'해왕성',c:'#3a5fd9',o:8,s:'3.9',d:'45억 km',y:'165년',m:'16개',f:'태양에서 가장 먼 행성. 태양계에서 가장 빠른 바람(시속 2,000km)이 불어요. 짙은 파란색이에요.'}
+];
+const KEY='planet-stamps-v1';
+let done={}; try{done=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){done={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
+const grid=document.getElementById('grid');
+function render(){
+  grid.innerHTML='';
+  P.forEach((p,i)=>{
+    const d=document.createElement('div'); d.className='pl'; d.tabIndex=0; d.dataset.done=done[p.n]?1:0;
+    d.innerHTML=`<div class="ball" style="background:${p.c}"></div><b>${p.n}</b><small>태양에서 ${p.o}번째</small>${done[p.n]?'<span class="stamp">탐험 완료</span>':''}`;
+    d.onclick=()=>show(i); d.onkeydown=e=>{if(e.key==='Enter')show(i)};
+    grid.appendChild(d);
+  });
+  const n=Object.keys(done).length; document.getElementById('bar').style.width=(n/8*100)+'%';
+  document.getElementById('tip').textContent = n===8 ? '8개 행성을 모두 탐험했어요! 닭핑이 축하해요 🎉' : `탐험한 행성 ${n}/8 · 도장은 이 기기의 브라우저에만 저장돼요.`;
+}
+let cur=0;
+function show(i){cur=i;const p=P[i];const D=document.getElementById('detail');D.hidden=false;
+  document.getElementById('dball').style.background=p.c; document.getElementById('dname').textContent=p.n;
+  dorder.textContent=p.o+'번째'; dsize.textContent=p.s+'배'; ddist.textContent=p.d; dyear.textContent=p.y; dmoon.textContent=p.m; dfact.textContent=p.f;
+  D.scrollIntoView({behavior:'smooth',block:'nearest'});}
+document.getElementById('stampBtn').onclick=()=>{done[P[cur].n]=1;save();render();document.getElementById('detail').hidden=true};
+document.getElementById('closeBtn').onclick=()=>{document.getElementById('detail').hidden=true};
+document.getElementById('resetAll').onclick=()=>{done={};save();render();};
+// quiz
+const Q=[
+ {q:'태양계에서 가장 큰 행성은?',a:'목성',o:['목성','토성','지구','화성']},
+ {q:'멋진 고리를 가진 행성은?',a:'토성',o:['토성','금성','수성','해왕성']},
+ {q:'"붉은 행성"이라고 불리는 행성은?',a:'화성',o:['화성','금성','목성','천왕성']},
+ {q:'태양에 가장 가까운 행성은?',a:'수성',o:['수성','금성','지구','화성']},
+ {q:'태양에서 가장 먼 행성은?',a:'해왕성',o:['해왕성','천왕성','토성','목성']},
+ {q:'표면의 71%가 바다인 행성은?',a:'지구',o:['지구','화성','금성','목성']},
+ {q:'옆으로 누워서 자전하는 행성은?',a:'천왕성',o:['천왕성','해왕성','토성','수성']},
+ {q:'태양계에서 가장 뜨거운 행성은?',a:'금성',o:['금성','수성','화성','지구']}
+];
+let qi=0;
+function askQ(){const x=Q[qi%Q.length];document.getElementById('q').textContent=`Q${qi+1}. ${x.q}`;const o=document.getElementById('opts');o.innerHTML='';qmsg.textContent='';
+  [...x.o].sort(()=>Math.random()-.5).forEach(t=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{[...o.children].forEach(c=>{c.disabled=true;if(c.textContent===x.a)c.classList.add('ok');else c.classList.add('no')});qmsg.textContent=t===x.a?'정답! 잘했어요 👏':`아쉬워요. 정답은 ${x.a}이에요.`};o.appendChild(b)});}
+document.getElementById('nextQ').onclick=()=>{qi++;askQ()};
+render();askQ();
+</script>
+
+</body>
+</html>
