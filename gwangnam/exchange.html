@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta property="og:title" content="세계 여행 환전소"><meta property="og:description" content="6학년 수학 비와 비율 · 사회 무역 – 실시간 환율 API로 우리 돈과 세계 돈을 바꿔 보는 웹앱"><meta property="og:image" content="https://hongdonmax.github.io/fungigame2026/gwangnam/shots/exchange.jpg"><meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>세계 여행 환전소</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap">
+<style>
+:root{--bg:#f3f7f2;--fg:#1f2d24;--muted:#5f6f66;--card:#fff;--line:#d9e6dc;--accent:#2aa36b;--warm:#f26b3a;--panel:#e3f1e8;
+ --display:'Jua','Gowun Dodum',sans-serif;--body:'Gowun Dodum','Malgun Gothic',sans-serif}
+*{box-sizing:border-box} html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;padding:0 max(16px,env(safe-area-inset-left,0px)) 40px max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;align-items:center;gap:14px;padding:18px 0 6px}
+header img{width:78px;height:78px;object-fit:contain}
+h1{font-family:var(--display);font-size:clamp(26px,5vw,36px);margin:0}
+.sub{color:var(--muted);margin:2px 0 0;font-size:15px}
+.std{display:inline-block;background:var(--panel);border-radius:999px;padding:4px 12px;font-size:13px;color:#2b5a3f;margin-top:8px}
+.box{margin-top:14px;background:var(--card);border:2px solid var(--line);border-radius:20px;padding:18px}
+.box h2{font-family:var(--display);margin:0 0 10px;font-size:22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.cur{border:2px solid var(--line);border-radius:16px;padding:12px;text-align:center;cursor:pointer;background:#fff}
+.cur[data-on="1"]{border-color:var(--accent);background:var(--panel)}
+.cur .f{font-size:34px}.cur b{display:block;font-family:var(--display);font-size:18px}.cur small{color:var(--muted);font-size:13px}
+.calc{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin-top:12px}
+@media (max-width:560px){.calc{grid-template-columns:1fr}}
+input,select{font-family:var(--body);font-size:22px;padding:12px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--fg);width:100%;font-variant-numeric:tabular-nums}
+.eq{font-family:var(--display);font-size:30px;text-align:center;color:var(--accent)}
+.big{font-family:var(--display);font-size:clamp(28px,6vw,44px);text-align:center;background:var(--panel);border-radius:16px;padding:14px;margin-top:12px;font-variant-numeric:tabular-nums}
+.rate{color:var(--muted);font-size:15px;text-align:center;margin-top:8px}
+button{font-family:var(--display);font-size:17px;border:0;border-radius:12px;padding:11px 16px;cursor:pointer;background:var(--accent);color:#fff}
+button.alt{background:var(--warm)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;font-size:15px}th{color:var(--muted);font-weight:400}
+.mascot{display:flex;align-items:center;gap:12px;margin-top:14px;color:var(--muted);font-size:14px}
+.mascot img{width:84px;height:84px;object-fit:contain}
+</style>
+</head>
+<body>
+<header>
+  <img src="pose_map.png" alt="지도를 그리는 닭핑">
+  <div>
+    <h1>세계 여행 환전소</h1>
+    <p class="sub">지금 이 순간의 환율로 우리 돈과 세계 돈을 바꿔 봐요</p>
+    <span class="std">[6수02-03] 비율을 이해하고, 비율을 분수·소수·백분율로 나타낼 수 있다 · [6사11-03] 무역의 의미와 국가 간 무역이 발생하는 이유</span>
+  </div>
+</header>
+
+<section class="box">
+  <h2>1. 어느 나라로 떠날까요?</h2>
+  <div class="grid" id="curs"></div>
+</section>
+
+<section class="box">
+  <h2>2. 환전하기</h2>
+  <div class="calc">
+    <div><input id="krw" type="number" value="10000" min="0" step="1000"><div class="rate">원(KRW)</div></div>
+    <div class="eq">=</div>
+    <div><div class="big" id="out">…</div><div class="rate" id="rateTxt">환율을 가져오는 중…</div></div>
+  </div>
+  <div class="btns"><button id="flip">반대로 계산 (외화 → 원)</button><button class="alt" id="reload">환율 다시 가져오기</button></div>
+</section>
+
+<section class="box">
+  <h2>3. 1,000원으로 살 수 있는 것은?</h2>
+  <div class="rate" style="text-align:left">같은 1,000원이라도 나라마다 받는 돈의 수가 달라요. 1 외화 = 몇 원인지(비율)를 비교해 보세요.</div>
+  <table><thead><tr><th>나라 · 돈</th><th>1 외화 = ? 원</th><th>1,000원 = ?</th><th>10,000원 = ?</th></tr></thead><tbody id="rows"></tbody></table>
+</section>
+
+<div class="mascot"><img src="pose_question.png" alt="갸우뚱하는 닭핑"><span>자료 출처: Frankfurter(유럽중앙은행 기준 환율, 키 없는 무료 API). 환율은 평일에 하루 한 번 갱신돼요.</span></div>
+
+<script>
+const CUR=[['USD','미국','달러','🇺🇸'],['JPY','일본','엔','🇯🇵'],['EUR','유럽','유로','🇪🇺'],['CNY','중국','위안','🇨🇳'],['GBP','영국','파운드','🇬🇧'],['THB','태국','바트','🇹🇭'],['AUD','호주','달러','🇦🇺'],['PHP','필리핀','페소','🇵🇭']];
+let rates=null, date='', sel='USD', flip=false;
+const curs=document.getElementById('curs');
+CUR.forEach(([c,n,u,f])=>{const d=document.createElement('div');d.className='cur';d.dataset.c=c;d.innerHTML=`<div class="f">${f}</div><b>${n}</b><small>${u} (${c})</small>`;d.onclick=()=>{sel=c;render()};curs.appendChild(d)});
+async function load(){
+  rateTxt.textContent='환율을 가져오는 중…';
+  try{
+    const r=await fetch('https://api.frankfurter.app/latest?from=KRW&to='+CUR.map(x=>x[0]).join(','));
+    if(!r.ok) throw new Error(r.status);
+    const j=await r.json(); rates=j.rates; date=j.date; render();
+  }catch(e){ rateTxt.textContent='환율을 가져올 수 없어요 ('+e.message+')'; }
+}
+const fmt=(v,c)=>v.toLocaleString('ko-KR',{maximumFractionDigits:c==='JPY'||c==='KRW'?0:2});
+function render(){
+  [...curs.children].forEach(d=>d.dataset.on=d.dataset.c===sel?1:0);
+  if(!rates) return;
+  const info=CUR.find(x=>x[0]===sel), per=1/rates[sel]; // 1 외화 = per 원
+  const v=Number(krw.value||0);
+  if(!flip){ out.textContent=fmt(v*rates[sel],sel)+' '+info[2]; document.querySelector('.calc .rate').textContent='원(KRW)'; }
+  else { out.textContent=fmt(v*per,'KRW')+' 원'; document.querySelector('.calc .rate').textContent=info[1]+' '+info[2]+'('+sel+')'; }
+  rateTxt.textContent=`1 ${info[2]}(${sel}) = ${fmt(per,'KRW')} 원 · 기준일 ${date}`;
+  rows.innerHTML=CUR.map(([c,n,u,f])=>{const p=1/rates[c];return `<tr><td>${f} ${n} ${u}</td><td>${fmt(p,'KRW')} 원</td><td>${fmt(1000*rates[c],c)} ${u}</td><td>${fmt(10000*rates[c],c)} ${u}</td></tr>`}).join('');
+}
+krw.oninput=render;
+document.getElementById('flip').onclick=()=>{flip=!flip;document.getElementById('flip').textContent=flip?'반대로 계산 (원 → 외화)':'반대로 계산 (외화 → 원)';render()};
+document.getElementById('reload').onclick=load;
+render(); load();
+</script>
+</body>
+</html>

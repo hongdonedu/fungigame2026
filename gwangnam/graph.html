@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta property="og:title" content="우리 반 막대그래프 공장"><meta property="og:description" content="4학년 수학 자료의 수집과 정리 – 자료를 넣으면 막대그래프가 그려지는 웹앱"><meta property="og:image" content="https://hongdonmax.github.io/fungigame2026/gwangnam/shots/graph.jpg"><meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리 반 막대그래프 공장</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap">
+<style>
+:root{--bg:#fff7ef;--fg:#2b2a33;--muted:#7a7384;--card:#fff;--line:#f1dcc6;--accent:#f26b3a;--accent2:#3b82f6;--good:#2aa36b;
+ --display:'Jua','Gowun Dodum',sans-serif;--body:'Gowun Dodum','Malgun Gothic',sans-serif}
+*{box-sizing:border-box} html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;padding:0 max(16px,env(safe-area-inset-left,0px)) 40px max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;align-items:center;gap:14px;padding:18px 0 6px}
+header img{width:78px;height:78px;object-fit:contain}
+h1{font-family:var(--display);font-size:clamp(26px,5vw,36px);margin:0}
+.sub{color:var(--muted);margin:2px 0 0;font-size:15px}
+.std{display:inline-block;background:#ffe6d5;border-radius:999px;padding:4px 12px;font-size:13px;color:#8a4a2b;margin-top:8px}
+.wrap{display:grid;grid-template-columns:minmax(260px,1fr) 2fr;gap:16px;margin-top:14px}
+@media (max-width:760px){.wrap{grid-template-columns:1fr}}
+.box{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:18px;min-width:0}
+.box h2{font-family:var(--display);margin:0 0 10px;font-size:22px}
+label{display:block;font-size:14px;color:var(--muted);margin:8px 0 4px}
+input,select{font-family:var(--body);font-size:17px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--fg);width:100%}
+.row{display:grid;grid-template-columns:1fr 90px 40px;gap:8px;align-items:center;margin-bottom:8px}
+.row button{padding:8px 0}
+button{font-family:var(--display);font-size:17px;border:0;border-radius:12px;padding:11px 16px;cursor:pointer;background:var(--accent);color:#fff}
+button.alt{background:#eee;color:var(--fg)} button.blue{background:var(--accent2)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+canvas{width:100%;height:auto;background:#fff;border-radius:14px}
+.quiz{margin-top:14px;background:#fff;border:2px dashed var(--line);border-radius:16px;padding:14px;font-size:16px;line-height:1.6}
+.quiz b{color:var(--accent)}
+.mascot{display:flex;align-items:center;gap:12px;margin-top:14px;color:var(--muted);font-size:14px}
+.mascot img{width:84px;height:84px;object-fit:contain}
+</style>
+</head>
+<body>
+<header>
+  <img src="pose_idea.png" alt="전구가 떠오른 닭핑">
+  <div>
+    <h1>우리 반 막대그래프 공장</h1>
+    <p class="sub">조사한 자료를 넣으면 막대그래프가 바로 그려져요</p>
+    <span class="std">[4수04-01] 자료를 수집하여 그림그래프나 막대그래프로 나타내고 해석할 수 있다</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="box">
+    <h2>1. 자료 넣기</h2>
+    <label>그래프 제목</label><input id="title" value="우리 반이 좋아하는 과일">
+    <label>가로(항목) · 세로(단위)</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><input id="xlab" value="과일"><input id="ylab" value="학생 수(명)"></div>
+    <label>항목과 수</label>
+    <div id="rows"></div>
+    <div class="btns"><button class="alt" id="add">+ 항목 추가</button><button class="alt" id="sample">예시 자료</button></div>
+    <label>눈금 한 칸</label><select id="step"><option value="1">1</option><option value="2">2</option><option value="5">5</option><option value="10">10</option></select>
+    <label>막대 색</label><select id="color"><option value="#f26b3a">주황</option><option value="#3b82f6">파랑</option><option value="#2aa36b">초록</option><option value="#8e7cff">보라</option><option value="rainbow">무지개</option></select>
+    <div class="btns"><button id="draw">그래프 그리기</button><button class="blue" id="save">그림으로 저장</button></div>
+  </section>
+  <section class="box">
+    <h2>2. 막대그래프</h2>
+    <canvas id="c" width="1200" height="760"></canvas>
+    <div class="quiz" id="quiz">자료를 넣고 그래프 그리기를 눌러 보세요.</div>
+  </section>
+</div>
+<div class="mascot"><img src="pose_check.png" alt="체크리스트를 든 닭핑"><span>그래프를 읽을 때는 ① 제목 ② 가로·세로 ③ 눈금 한 칸의 크기 ④ 가장 많은 것·적은 것 순서로 살펴봐요.</span></div>
+
+<script>
+const rows=document.getElementById('rows');
+function addRow(name='',val=''){const d=document.createElement('div');d.className='row';d.innerHTML=`<input placeholder="항목 (예: 사과)" value="${name}"><input type="number" min="0" placeholder="수" value="${val}"><button class="alt" title="지우기">✕</button>`;d.querySelector('button').onclick=()=>{d.remove()};rows.appendChild(d)}
+function data(){return [...rows.querySelectorAll('.row')].map(r=>{const [a,b]=r.querySelectorAll('input');return {n:a.value.trim(),v:Number(b.value)}}).filter(x=>x.n&&!isNaN(x.v))}
+document.getElementById('add').onclick=()=>addRow();
+document.getElementById('sample').onclick=()=>{rows.innerHTML='';[['사과',7],['딸기',9],['포도',4],['수박',6],['바나나',2]].forEach(x=>addRow(...x));draw()};
+const C=document.getElementById('c'),ctx=C.getContext('2d');
+const PAL=['#f26b3a','#3b82f6','#2aa36b','#8e7cff','#ffb830','#ff5c8a'];
+function draw(){
+  const D=data(); if(!D.length){quiz.textContent='항목을 한 개 이상 넣어 주세요.';return}
+  const step=Number(document.getElementById('step').value), col=document.getElementById('color').value;
+  const max=Math.max(...D.map(x=>x.v)), top=Math.ceil(Math.max(max,step)/step)*step;
+  const W=C.width,H=C.height,L=140,R=40,T=110,B=120; const gw=W-L-R, gh=H-T-B;
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#2b2a33';ctx.font='bold 40px Jua, sans-serif';ctx.textAlign='center';ctx.fillText(document.getElementById('title').value||'막대그래프',W/2,62);
+  ctx.strokeStyle='#e5e0d8';ctx.lineWidth=2;ctx.font='24px Gowun Dodum, sans-serif';ctx.textAlign='right';ctx.fillStyle='#555';
+  for(let v=0;v<=top;v+=step){const y=T+gh-gh*v/top;ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(W-R,y);ctx.stroke();ctx.fillText(v,L-14,y+8)}
+  ctx.strokeStyle='#2b2a33';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,T+gh);ctx.lineTo(W-R,T+gh);ctx.stroke();
+  const bw=gw/D.length;
+  D.forEach((d,i)=>{const h=gh*d.v/top,x=L+bw*i+bw*0.2,y=T+gh-h;ctx.fillStyle=col==='rainbow'?PAL[i%PAL.length]:col;ctx.fillRect(x,y,bw*0.6,h);
+    ctx.fillStyle='#2b2a33';ctx.textAlign='center';ctx.font='bold 26px Jua, sans-serif';ctx.fillText(d.v,x+bw*0.3,y-10);ctx.font='26px Gowun Dodum, sans-serif';ctx.fillText(d.n,x+bw*0.3,T+gh+40)});
+  ctx.font='22px Gowun Dodum, sans-serif';ctx.fillStyle='#555';ctx.textAlign='left';ctx.fillText(document.getElementById('ylab').value,L-120,T-20);ctx.textAlign='right';ctx.fillText(document.getElementById('xlab').value,W-R,T+gh+90);
+  const s=[...D].sort((a,b)=>b.v-a.v), total=D.reduce((a,b)=>a+b.v,0);
+  quiz.innerHTML=`읽어 볼까요? 가장 많은 것은 <b>${s[0].n}(${s[0].v})</b>, 가장 적은 것은 <b>${s[s.length-1].n}(${s[s.length-1].v})</b>예요. ${s[0].n}은(는) ${s[s.length-1].n}보다 <b>${s[0].v-s[s.length-1].v}</b> 더 많고, 전체는 <b>${total}</b>이에요. 눈금 한 칸은 <b>${step}</b>!`;
+}
+document.getElementById('draw').onclick=draw;
+document.getElementById('save').onclick=()=>{const a=document.createElement('a');a.download='막대그래프.png';a.href=C.toDataURL('image/png');a.click()};
+['sample'].forEach(()=>{});
+document.getElementById('sample').click();
+</script>
+</body>
+</html>
