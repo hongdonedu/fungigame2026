@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>광남초 바이브코딩 2차시 실습</title>
+<meta name="description" content="④ 앱스 스크립트 · ⑤ 공용 API · ⑥ 제미나이 API · ⑦ 깃허브 — 따라 하며 우리 반 앱 진열장 열기">
+<meta property="og:title" content="광남초 바이브코딩 2차시 실습 안내">
+<meta property="og:description" content="주방·납품·셰프를 붙이고, 깃허브로 간판 달기 — 단계별 따라 하기">
+<meta property="og:image" content="https://hongdonmax.github.io/fungigame2026/gwangnam/day2/img/01_cover.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFBF3; --card:#FFFFFF; --ink:#1E2A4A; --muted:#66708A; --line:#EDE3D1; --soft:#FFF3E0;
+  --coral:#F26B3A; --navy:#1E2A4A;
+  --d4:#7E6CF2; --d4bg:#F1EEFF; --d5:#3E82D6; --d5bg:#EAF2FF; --d6:#2F9E5E; --d6bg:#E8F7EE; --d7:#E0558E; --d7bg:#FFEAF2;
+  --warn:#B4472A; --warnbg:#FFF0EA;
+  --display:'Jua','Noto Sans KR',sans-serif; --body:'Noto Sans KR','Malgun Gothic',system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:-.2px;text-wrap:balance;margin:0}
+code,kbd{overflow-wrap:anywhere;font-family:ui-monospace,Consolas,monospace;font-size:.92em;background:#F4EEE3;border-radius:6px;padding:1px 6px}
+kbd{border:1px solid #DCCFB8;border-bottom-width:2px;background:#fff}
+
+/* 상단 바 */
+.top{position:sticky;top:0;z-index:30;background:rgba(255,251,243,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:10px;padding-block:8px}
+.top .logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex:0 0 auto}
+.top .logo img{width:34px;height:34px;object-fit:contain}
+.top .logo b{font-family:var(--display);font-size:18px;font-weight:400}
+.chips{display:flex;gap:6px;overflow-x:auto;min-width:0;scrollbar-width:none;margin-left:auto;padding:2px}
+.chips::-webkit-scrollbar{display:none}
+.chips a{flex:0 0 auto;text-decoration:none;font-size:14px;font-weight:700;padding:6px 11px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--muted);white-space:nowrap}
+.chips a.on{color:#fff;background:var(--c,var(--coral));border-color:var(--c,var(--coral))}
+
+/* 히어로 */
+.hero{position:relative;background:url('img/06_banner.jpg') center/cover no-repeat #FFE3B8}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,251,243,0) 30%,rgba(255,251,243,.92) 78%,var(--paper))}
+.hero .wrap{position:relative;z-index:1;display:flex;align-items:flex-end;gap:18px;min-height:380px;padding-block:28px 22px}
+.hero .ch{height:200px;width:auto;max-width:32vw;filter:drop-shadow(0 12px 18px rgba(0,0,0,.22));flex:0 0 auto}
+.badge{display:inline-block;background:rgba(255,255,255,.92);border-radius:999px;padding:3px 14px;font-size:14px;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(30px,5.4vw,50px);line-height:1.18;margin:10px 0 8px;text-shadow:0 2px 0 #fff,0 0 20px rgba(255,255,255,.9)}
+.hero p{margin:0;font-size:16px;font-weight:500}
+.cta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:12px;padding:9px 14px;font:inherit;font-size:15px;font-weight:700;text-decoration:none;cursor:pointer;border:2px solid var(--line);background:#fff;color:var(--ink);line-height:1.3}
+.btn:hover{border-color:#D9C9AC}
+.btn.main{background:var(--coral);border-color:var(--coral);color:#fff}
+.btn.c4{background:var(--d4);border-color:var(--d4);color:#fff}.btn.c5{background:var(--d5);border-color:var(--d5);color:#fff}
+.btn.c6{background:var(--d6);border-color:var(--d6);color:#fff}.btn.c7{background:var(--d7);border-color:var(--d7);color:#fff}
+.btn small{font-weight:500;opacity:.85}
+@media (max-width:620px){.hero .wrap{display:block;min-height:0;padding-block:18px 18px}.hero .ch{position:absolute;right:max(10px,env(safe-area-inset-right,0px));top:10px;height:96px;max-width:none}.hero .wrap>div{padding-top:92px}}
+
+/* 섹션 */
+section{padding-block:34px 8px}
+.sec-head{display:flex;gap:14px;align-items:center;margin-bottom:6px}
+.num{flex:0 0 auto;width:54px;height:54px;border-radius:18px;display:grid;place-items:center;font-family:var(--display);font-size:30px;color:#fff;background:var(--c,var(--coral))}
+.sec-head h2{font-size:clamp(25px,4vw,32px);line-height:1.25}
+.sec-head .ana{display:block;font-family:var(--body);font-size:15px;color:var(--muted);font-weight:700;letter-spacing:0}
+.lead{color:var(--muted);margin:6px 0 16px;max-width:70ch}
+.prog{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:14px;color:var(--muted);font-weight:700}
+.prog .bar{flex:1;max-width:260px;height:9px;background:#EFE6D6;border-radius:9px;overflow:hidden}
+.prog .bar i{display:block;height:100%;width:0;background:var(--c,var(--coral));transition:width .3s}
+
+/* 지도 카드 */
+.map{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:860px){.map{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:340px){.map{grid-template-columns:1fr}}
+@media (max-width:520px){.mcard b{font-size:17px}.mcard p{font-size:13px}.mcard div{padding:8px 10px 10px}}
+.mcard{background:#fff;border:2px solid var(--line);border-radius:20px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;min-width:0}
+.mcard img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.mcard div{padding:10px 14px 14px}
+.mcard b{font-family:var(--display);font-weight:400;font-size:21px;color:var(--c)}
+.mcard p{margin:2px 0 0;font-size:14.5px;color:var(--muted);line-height:1.5}
+.tt{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;font-size:15px;margin-top:14px}
+.tt th,.tt td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.tt th{background:var(--soft);font-weight:700;white-space:nowrap}
+.tt td:first-child{white-space:nowrap;font-weight:700;color:var(--muted)}
+.scroll{overflow-x:auto}
+
+/* 단계 */
+.steps{display:flex;flex-direction:column;gap:12px;counter-reset:st}
+.step{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;min-width:0}
+.step.done{border-color:var(--c,var(--coral));background:#FFFDF8}
+.step .chk{grid-row:1/span 2;display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:2px}
+.step .chk span{counter-increment:st;font-family:var(--display);font-size:15px;color:#fff;background:var(--c,var(--coral));width:30px;height:30px;border-radius:50%;display:grid;place-items:center}
+.step .chk span:before{content:counter(st)}
+.step .chk input{width:22px;height:22px;accent-color:var(--c,var(--coral));cursor:pointer;margin:0}
+.step h3{font-size:21px;line-height:1.35;align-self:center}
+.step .body{min-width:0}
+.step .body p{margin:4px 0}
+.step .body ul,.step .body ol{margin:6px 0;padding-left:22px}
+.step .body li{margin:2px 0}
+.shot{max-width:760px;margin:10px 0 4px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;cursor:zoom-in;display:block;max-width:100%}
+.shot img{display:block;width:100%;height:auto}
+.shots2{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+.shots3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:start}
+@media (max-width:640px){.shots2,.shots3{grid-template-columns:1fr}}
+figure{margin:0;min-width:0}
+figcaption{font-size:13px;color:var(--muted);margin-top:2px}
+.path{display:inline-flex;flex-wrap:wrap;gap:4px;align-items:center;font-weight:700;font-size:15px}
+.path i{font-style:normal;background:#F4EEE3;border-radius:8px;padding:1px 9px}
+.path em{font-style:normal;color:var(--muted)}
+.tip,.warn,.key{border-radius:14px;padding:10px 14px;margin:10px 0;font-size:15px}
+.tip{background:var(--soft)}
+.warn{background:var(--warnbg);color:#7A2E17}
+.key{background:#1E2A4A;color:#fff}
+.key b{color:#FFD27A}
+.tip b,.warn b{font-weight:900}
+
+/* 프롬프트 */
+details.more{background:#fff;border:2px dashed var(--line);border-radius:18px;padding:4px 16px;margin-top:12px}
+details.more summary{cursor:pointer;font-weight:900;padding:10px 0;list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary:before{content:"＋ ";color:var(--c,var(--coral))}
+details.more[open] summary:before{content:"－ "}
+.prompt{position:relative;margin:8px 0 14px}
+.prompt pre{white-space:pre-wrap;word-break:break-word;background:#FBF7EF;border:1px solid var(--line);border-radius:12px;padding:14px 14px 14px;margin:0;font-family:var(--body);font-size:14px;line-height:1.6;max-height:300px;overflow:auto}
+.prompt .copy{position:absolute;right:8px;top:-14px}
+.copy{font:inherit;font-size:13.5px;font-weight:700;border:0;background:var(--c,var(--coral));color:#fff;border-radius:999px;padding:5px 12px;cursor:pointer}
+.copy.ok{background:#2F9E5E}
+.line-copy{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#FBF7EF;border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:8px 0}
+.line-copy code{background:none;padding:0;flex:1;min-width:0;word-break:break-all}
+
+/* 비유 표 */
+.ana4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 6px}
+@media (max-width:700px){.ana4{grid-template-columns:1fr 1fr}}
+.ana4 div{background:#fff;border:2px solid var(--line);border-radius:16px;padding:10px 12px;text-align:center}
+.ana4 b{display:block;font-family:var(--display);font-weight:400;font-size:20px;color:var(--d7)}
+.ana4 span{font-size:13.5px;color:var(--muted);line-height:1.45;display:block}
+
+/* FAQ */
+.faq{display:grid;gap:8px}
+.faq details{background:#fff;border:2px solid var(--line);border-radius:16px;padding:2px 16px}
+.faq summary{cursor:pointer;font-weight:700;padding:10px 0}
+.faq details p{margin:0 0 12px}
+.tag{display:inline-block;font-size:12px;font-weight:900;color:#fff;border-radius:6px;padding:0 7px;margin-right:6px;vertical-align:2px;background:var(--c)}
+
+footer{margin:40px 0 50px;text-align:center;color:var(--muted);font-size:14px}
+dialog{border:0;border-radius:20px;padding:0;max-width:min(1100px,calc(100vw - 24px));max-height:calc(100vh - 24px);background:#fff}
+dialog::backdrop{background:rgba(30,42,74,.6)}
+dialog img{display:block;max-width:100%;max-height:calc(100vh - 80px);object-fit:contain}
+dialog .bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;font-size:14px;color:var(--muted)}
+#qrBox{padding:20px;text-align:center}
+#qr{display:flex;justify-content:center;margin:10px 0}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><img src="kit/character.png" alt=""><b>2차시 실습</b></a>
+    <nav class="chips" id="chips">
+      <a href="#map" style="--c:var(--coral)">지도</a>
+      <a href="#prep" style="--c:var(--navy)">준비</a>
+      <a href="#p4" style="--c:var(--d4)">④ 주방</a>
+      <a href="#p5" style="--c:var(--d5)">⑤ 납품</a>
+      <a href="#p6" style="--c:var(--d6)">⑥ 셰프</a>
+      <a href="#p7" style="--c:var(--d7)">⑦ 깃허브</a>
+      <a href="#faq" style="--c:var(--warn)">막히면</a>
+      <a href="#end" style="--c:var(--coral)">마무리</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <img class="ch" src="kit/character.png" alt="태블릿을 든 닭핑">
+    <div>
+      <span class="badge">2026 광남초 교원 연수 · 2차시 · 10월 26일(월) 14:30~16:20 · 다모임실</span>
+      <h1>주방·납품·셰프를 붙이고,<br>깃허브로 간판 달기</h1>
+      <p>지난 시간 서랍 ①②③에 이어, 오늘은 ④⑤⑥ 서랍을 채우고 ⑦ 우리 반 앱 진열장의 문을 엽니다.</p>
+      <div class="cta">
+        <a class="btn main" href="https://padlet.com/oneteacher/ai-s024ok443ip9ruzyris1" target="_blank" rel="noopener">📌 연수 패들렛</a>
+        <a class="btn" href="https://hongdonmax.github.io/fungigame2026/gwangnam/" target="_blank" rel="noopener">📚 1차시 서재</a>
+        <button class="btn" id="qrBtn">📱 이 페이지 QR</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- ───────── 지도 ───────── -->
+<section id="map">
+  <div class="sec-head"><div class="num" style="--c:var(--coral)">🗺</div><h2>오늘의 지도<span class="ana">식당 비유 그대로 — 내 식당에 주방을 차리고, 재료를 받고, 셰프를 모시고, 간판을 겁니다</span></h2></div>
+  <div class="map">
+    <a class="mcard" href="#p4" style="--c:var(--d4)"><img src="img/02_kitchen.jpg" alt="닭핑이 주방에서 요리하는 그림"><div><b>④ 홀 · 주방 · 냉장고</b><p>앱스 스크립트로 내 서버를 — 칭찬이 시트에 쌓여요</p></div></a>
+    <a class="mcard" href="#p5" style="--c:var(--d5)"><img src="img/03_delivery.jpg" alt="닭핑이 식재료 상자를 받는 그림"><div><b>⑤ 식재료 납품</b><p>나이스 급식 · 날씨 데이터를 주소 한 줄로</p></div></a>
+    <a class="mcard" href="#p6" style="--c:var(--d6)"><img src="img/04_chef.jpg" alt="닭핑과 로봇 셰프"><div><b>⑥ 셰프 초빙</b><p>제미나이 API 키 하나로 AI가 즉석 요리</p></div></a>
+    <a class="mcard" href="#p7" style="--c:var(--d7)"><img src="img/05_signboard.jpg" alt="닭핑이 가게 간판에 불을 켜는 그림"><div><b>⑦ 간판 달기</b><p>깃허브로 우리 반 앱 진열장 주소 만들기</p></div></a>
+  </div>
+  <div class="scroll">
+  <table class="tt">
+    <tr><th>시간</th><th>활동</th><th>결과물</th></tr>
+    <tr><td>14:30</td><td>복습 — 서랍 6개, 3일 안에 다시 열기 · 오늘의 지도</td><td>내 서랍 확인</td></tr>
+    <tr><td>14:40</td><td><b style="color:var(--d4)">실습 1 ④</b> 템플릿 사본 → 앱스 스크립트 배포 → 칭찬 보내기</td><td>우리 반 도우미 웹 앱 주소</td></tr>
+    <tr><td>15:05</td><td><b style="color:var(--d5)">실습 2 ⑤</b> 급식 탭 · JSON 구경 · 키 없는 날씨 앱</td><td>오늘 급식 화면</td></tr>
+    <tr><td>15:20</td><td><b style="color:var(--d6)">실습 3 ⑥</b> AI 스튜디오 키 → [설정] 탭 → AI 영양사</td><td>AI 급식 안내</td></tr>
+    <tr><td>15:35</td><td><b style="color:var(--d7)">실습 4 ⑦</b> 깃허브 저장소 → 파일 올리기 → Pages → 내 앱 진열</td><td>https://내아이디.github.io/myclass-apps/</td></tr>
+    <tr><td>16:10</td><td>패들렛 갤러리에 내 진열장 주소 올리기 · 마무리</td><td>서로의 진열장 구경</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ───────── 준비 ───────── -->
+<section id="prep" data-sec="prep" style="--c:var(--navy)">
+  <div class="sec-head"><div class="num">0</div><h2>시작 전에 세 가지<span class="ana">5분이면 끝 — 미리 해 두면 실습이 훨씬 편해요</span></h2></div>
+  <div class="prog"><span class="t">0 / 3</span><div class="bar"><i></i></div></div>
+  <div class="steps">
+    <div class="step" data-k="prep1"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>크롬에서 개인 구글 계정으로 로그인</h3>
+      <div class="body"><p>앱스 스크립트와 AI 스튜디오는 <b>개인 gmail 계정</b>이 가장 잘 됩니다. 학교·교육청 계정은 관리자 설정 때문에 배포나 API 키 발급이 막힐 수 있어요.</p></div></div>
+    <div class="step" data-k="prep2"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>깃허브(GitHub) 가입</h3>
+      <div class="body">
+        <p><a class="btn" href="https://github.com/signup" target="_blank" rel="noopener">🐙 github.com/signup</a></p>
+        <ol><li>이메일 → 비밀번호 → <b>Username(사용자 이름)</b> → 이메일로 온 숫자 코드 입력</li>
+        <li>Username은 <b>내 사이트 주소</b>가 돼요: <code>https://<b>username</b>.github.io/…</code> → 짧은 영어 소문자 추천 (예: <code>kimteacher26</code>)</li>
+        <li>가입 뒤 나오는 설문·요금제 화면은 <b>Skip / Continue for free</b>로 넘어가면 됩니다.</li></ol>
+        <p class="tip">💡 깃허브 화면은 영어예요. 이 페이지는 <b>누를 버튼 이름을 영어 그대로</b> 적어 두었으니 같은 글자를 찾아 누르면 됩니다.</p>
+      </div></div>
+    <div class="step" data-k="prep3"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>(있으면) 1차시에 받은 HTML 파일 찾아 두기</h3>
+      <div class="body"><p>제미나이 캔버스 → 내보내기 → <b>코드 다운로드</b>로 받은 <code>.html</code> 파일(② HTML 저장형). 실습 4에서 내 진열장에 올립니다. 없어도 괜찮아요 — 키트에 예시 앱이 들어 있어요.</p></div></div>
+  </div>
+</section>
+
+<!-- ───────── 실습 1 ④ ───────── -->
+<section id="p4" data-sec="p4" style="--c:var(--d4)">
+  <div class="sec-head"><div class="num">④</div><h2>실습 1 · 우리 반 도우미 열기<span class="ana">홀(index.html) · 주방(Code.gs) · 냉장고(시트) — 코드는 이미 들어 있어요</span></h2></div>
+  <p class="lead">구글 시트 하나에 화면과 서버가 함께 붙어 있는 템플릿을 복사해서, <b>배포 버튼만 눌러</b> 우리 반 웹 앱을 엽니다. 이 앱 하나에 칭찬 게시판(④) · 오늘 급식(⑤) · AI 영양사(⑥)가 모두 들어 있어요.</p>
+  <div class="shots3">
+    <figure class="shot" data-zoom><img src="shots/app_praise_m.jpg" alt="칭찬 게시판 화면" loading="lazy"></figure>
+    <figure class="shot" data-zoom><img src="shots/app_meal_m.jpg" alt="오늘 급식 화면" loading="lazy"></figure>
+    <figure class="shot" data-zoom><img src="shots/app_ai_m.jpg" alt="AI 영양사 화면" loading="lazy"></figure>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin:0 0 14px">완성하면 이런 화면이 됩니다 (예시 데이터로 만든 미리보기)</p>
+  <div class="prog"><span class="t">0 / 6</span><div class="bar"><i></i></div></div>
+  <div class="steps">
+    <div class="step" data-k="p4-1"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>템플릿 사본 만들기</h3>
+      <div class="body">
+        <p><a class="btn c4" href="https://docs.google.com/spreadsheets/d/1bBen3exYHoprbt2uvYCjJ6GCZK9zv8wA30yA6L-Wx0s/copy" target="_blank" rel="noopener">📄 실습 템플릿 사본 만들기</a></p>
+        <p>노란 띠의 <b>“첨부된 Apps Script 파일 및 기능도 복사됩니다”</b>가 핵심 — 시트만이 아니라 코드까지 내 것이 됩니다. <b>[사본 만들기]</b>를 누르세요.</p>
+        <figure class="shot" data-zoom style="max-width:520px"><img src="shots/gas00_copy_page.jpg" alt="문서 복사 화면" loading="lazy"></figure>
+      </div></div>
+    <div class="step" data-k="p4-2"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>[설정] 탭에서 우리 반 이름 바꾸기</h3>
+      <div class="body">
+        <p><b>B열 값만</b> 바꿉니다. <b>학급 이름</b>을 <code>5학년 2반</code>처럼 고쳐 보세요. 광남초는 학교 코드가 이미 들어 있어요. 제미나이 API 키 칸(B6)은 실습 3에서 채웁니다.</p>
+        <figure class="shot" data-zoom><img src="shots/gas_sheet_settings.jpg" alt="설정 탭" loading="lazy"></figure>
+        <p class="tip">🧊 아래쪽 탭 <b>[칭찬]</b>, <b>[AI기록]</b>이 냉장고예요. 앱에서 보낸 글이 여기에 한 줄씩 쌓입니다.</p>
+      </div></div>
+    <div class="step" data-k="p4-3"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>주방 들여다보기 — 확장 프로그램 → Apps Script</h3>
+      <div class="body">
+        <p class="path"><i>확장 프로그램</i><em>→</em><i>Apps Script</i></p>
+        <div class="shots2">
+          <figure class="shot" data-zoom><img src="shots/gas01_extensions_menu.jpg" alt="확장 프로그램 메뉴" loading="lazy"></figure>
+          <figure class="shot" data-zoom><img src="shots/gas02_editor_code.jpg" alt="Apps Script 편집기" loading="lazy"></figure>
+        </div>
+        <p>왼쪽에 <code>Code.gs</code>(주방)와 <code>index.html</code>(홀) 두 파일이 보이면 성공. <b>코드는 고치지 않아도 됩니다.</b></p>
+      </div></div>
+    <div class="step" data-k="p4-4"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>배포 → 새 배포 → 웹 앱 → 모든 사용자</h3>
+      <div class="body">
+        <p class="path"><i>배포</i><em>→</em><i>새 배포</i><em>→</em><i>⚙ 유형 선택: 웹 앱</i><em>→</em><i>액세스 권한: 모든 사용자</i><em>→</em><i>배포</i></p>
+        <div class="shots3">
+          <figure class="shot" data-zoom><img src="shots/gas03_deploy_menu.jpg" alt="배포 메뉴" loading="lazy"><figcaption>① 오른쪽 위 파란 [배포] → 새 배포</figcaption></figure>
+          <figure class="shot" data-zoom><img src="shots/gas04_type_webapp.jpg" alt="유형 선택" loading="lazy"><figcaption>② 톱니바퀴 → 웹 앱</figcaption></figure>
+          <figure class="shot" data-zoom><img src="shots/gas06_webapp_settings.jpg" alt="웹 앱 설정" loading="lazy"><figcaption>③ 실행: 나 · 액세스: <b>모든 사용자</b></figcaption></figure>
+        </div>
+        <p class="warn">⚠ 액세스를 <b>“나만”</b>으로 두면 학생 기기에서 열리지 않아요. 꼭 <b>모든 사용자</b>.</p>
+      </div></div>
+    <div class="step" data-k="p4-5"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>액세스 승인 — 처음 한 번만 나오는 경고 넘기기</h3>
+      <div class="body">
+        <figure class="shot" data-zoom style="max-width:560px"><img src="shots/gas07_authorize.jpg" alt="액세스 승인 버튼" loading="lazy"></figure>
+        <ol>
+          <li><b>[액세스 승인]</b> → 새 창에서 <b>내 구글 계정</b> 선택</li>
+          <li>“Google에서 확인하지 않은 앱” 화면 → 왼쪽 아래 <b>고급(Advanced)</b></li>
+          <li>맨 아래 <b>“우리 반 도우미(으)로 이동(안전하지 않음)”</b> 클릭</li>
+          <li>권한 목록 → <b>모두 선택</b> 후 <b>[허용(Allow)]</b> / <b>[계속]</b></li>
+        </ol>
+        <p class="tip">🙂 “안전하지 않음”은 <b>내가 만든 앱이라 구글이 따로 심사하지 않았다</b>는 뜻이에요. 내 시트를 읽고 쓰고(냉장고), 바깥 주소(나이스·제미나이)에 연결하겠다는 허락입니다.</p>
+      </div></div>
+    <div class="step" data-k="p4-6"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>웹 앱 주소 열고 칭찬 하나 보내기</h3>
+      <div class="body">
+        <p>배포 완료 창의 <b>웹 앱 URL</b>(<code>https://script.google.com/macros/s/…/exec</code>)을 <b>복사</b> → 새 탭에서 열기 → 칭찬 하나 보내기 → 시트 <b>[칭찬]</b> 탭에 한 줄 생겼는지 확인!</p>
+        <p class="key">📋 이 주소를 메모장에 꼭 붙여 두세요. <b>실습 4에서 내 진열장에 걸어 둘 주소</b>예요.</p>
+        <p class="tip">✏️ 나중에 코드를 고쳤다면: <b>배포 → 배포 관리 → ✏️ → 버전: 새 버전 → 배포</b> (주소는 그대로). [설정] 탭 값만 바꾼 건 재배포 없이 바로 반영돼요.</p>
+      </div></div>
+  </div>
+  <details class="more"><summary>더 해 보기 — 프롬프트로 칭찬 게시판을 처음부터 만들기</summary>
+    <p>오늘 템플릿과 같은 구조(홀·주방·냉장고)를 제미나이에게 주문하는 프롬프트예요. 시트 주소 칸만 바꿔서 붙여 넣으세요.</p>
+    <div class="prompt"><button class="copy" data-copy="pPraise">복사</button><pre id="pPraise">나는 초등학교 교사야. 우리 반 친구들이 서로를 칭찬하는 글을 올리는 "칭찬 게시판" 웹앱을 앱스 스크립트로 만들려고 해. Code.gs와 index.html 코드가 필요해.
+[시트]
+시트 주소: (여기에 내 스프레드시트 주소 붙여넣기)
+열 순서: 제출시각 | 칭찬받는 친구 | 칭찬 내용 | 쓴 사람
+[화면]
+① 위쪽: 입력칸 3개 — 칭찬받는 친구 이름, 칭찬 내용(최대 100자), 내 이름 — 그리고 [칭찬 보내기] 버튼
+② 보내면 "따뜻한 칭찬 고마워요 💛" 메시지가 뜨고 입력칸이 비워지고, 아래 목록이 바로 갱신돼
+③ 아래쪽: 지금까지 올라온 칭찬을 카드 모양으로 최신 순 30개까지 보여 줘. 카드마다 "○○에게 → 칭찬 내용 — 쓴 사람" 형식, 작은 하트 아이콘, 카드 배경은 파스텔 색 몇 가지가 번갈아 나오게
+④ 화면 맨 위에 "우리 반 칭찬 ○개!"처럼 전체 개수를 크게 보여 줘
+⑤ 빈 칸이 있으면 저장하지 말고 다정하게 안내
+[디자인]
+글씨 크게, 색은 부드럽게, 학생에게 다정한 말투로. 휴대폰에서도 잘 보이게.
+[기술 조건 — 반드시 지켜 줘]
+1. 파일은 딱 두 개만: Code.gs, index.html. CSS와 JavaScript는 전부 index.html 안에 넣고, 다른 파일(css.html, js.html 등)이나 &lt;?= ?&gt; 템플릿 문법은 쓰지 마.
+2. 웹 앱으로 배포할 거야. doGet()은 HtmlService.createHtmlOutputFromFile('index')를 돌려주고, .addMetaTag('viewport', 'width=device-width, initial-scale=1')을 붙여서 휴대폰에서도 잘 보이게 해.
+3. 화면에서 저장·조회는 google.script.run(withSuccessHandler / withFailureHandler)으로 Code.gs 함수를 호출해.
+4. 시트는 SpreadsheetApp.openByUrl(위 시트 주소)로 열어. 필요한 탭이 없으면 만들고, 비어 있으면 처음 실행할 때 헤더 행을 자동으로 써 줘.
+5. 외부 라이브러리·CDN 없이 순수 HTML/CSS/JS만. 화면의 모든 문구는 한국어.
+6. 출력: 코드 블록 두 개(각 블록 첫 줄에 // 파일명 주석), 중간 생략("...", "나머지는 동일") 없이 전체 코드. 코드 다음에 배포 순서를 4줄로.</pre></div>
+    <p>템플릿의 완성 코드: <a href="https://github.com/hongdonmax/fungigame2026/blob/main/gwangnam/day2/gas/Code.gs.txt" target="_blank" rel="noopener">Code.gs</a> · <a href="https://github.com/hongdonmax/fungigame2026/blob/main/gwangnam/day2/gas/index.html.txt" target="_blank" rel="noopener">index.html</a> (깃허브에서 보기)</p>
+  </details>
+</section>
+
+<!-- ───────── 실습 2 ⑤ ───────── -->
+<section id="p5" data-sec="p5" style="--c:var(--d5)">
+  <div class="sec-head"><div class="num">⑤</div><h2>실습 2 · 식재료 납품 받기<span class="ana">공용 API = 주소로 물으면 JSON으로 답하는 납품 창구</span></h2></div>
+  <p class="lead">내 앱이 직접 재료를 기르지 않아도, 나이스·날씨 서버가 <b>주소 한 줄</b>로 재료를 보내 줍니다.</p>
+  <div class="prog"><span class="t">0 / 3</span><div class="bar"><i></i></div></div>
+  <div class="steps">
+    <div class="step" data-k="p5-1"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>납품 명세서(JSON) 구경하기</h3>
+      <div class="body">
+        <p>아래 주소를 눌러 보세요. 사람이 아니라 <b>앱이 읽는 글</b>(JSON)이 나와요. 주소의 <code>MLSV_YMD=</code> 뒤 날짜만 바꾸면 다른 날 급식이 옵니다.</p>
+        <p><a class="btn c5" href="https://open.neis.go.kr/hub/mealServiceDietInfo?Type=json&amp;ATPT_OFCDC_SC_CODE=C10&amp;SD_SCHUL_CODE=7211040&amp;MLSV_YMD=20261026" target="_blank" rel="noopener">🍚 광남초 10/26 급식 JSON</a> <a class="btn" href="https://api.open-meteo.com/v1/forecast?latitude=35.1532&amp;longitude=129.1185&amp;current=temperature_2m,relative_humidity_2m,surface_pressure,cloud_cover&amp;timezone=Asia%2FSeoul" target="_blank" rel="noopener">🌤 지금 광남초 날씨 JSON</a></p>
+        <p class="tip">💡 크롬에서 <b>“예쁘게 인쇄(Pretty print)”</b>에 체크하면 읽기 쉬워요. <code>DDISH_NM</code>이 메뉴, <code>temperature_2m</code>이 기온.</p>
+      </div></div>
+    <div class="step" data-k="p5-2"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>우리 반 도우미의 [🍚 오늘 급식] 탭 누르기</h3>
+      <div class="body">
+        <p>실습 1에서 연 웹 앱의 두 번째 탭. <b>◀ 어제 · 오늘 · 내일 ▶</b>을 눌러 보세요. 주방(Code.gs)이 나이스 주소로 납품을 받아 알레르기 번호를 식품 이름으로 바꿔 줍니다.</p>
+        <figure class="shot" data-zoom style="max-width:640px"><img src="shots/app_meal_d.jpg" alt="오늘 급식 탭" loading="lazy"></figure>
+        <p class="tip">🏫 다른 학교라면 [설정] 탭의 <b>교육청 코드 · 학교 코드</b>만 바꾸면 돼요. <a href="https://open.neis.go.kr/hub/schoolInfo?Type=json&amp;SCHUL_NM=%EA%B4%91%EB%82%A8%EC%B4%88%EB%93%B1%ED%95%99%EA%B5%90" target="_blank" rel="noopener">학교 코드 찾기(나이스)</a> — 주소의 학교 이름만 바꾸세요.</p>
+      </div></div>
+    <div class="step" data-k="p5-3"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>키 없는 API로 HTML 앱 하나 만들기</h3>
+      <div class="body">
+        <p>제미나이 캔버스에 아래 프롬프트를 붙여 넣으면 「기상 관측소」가 만들어져요. 다 되면 <b>내보내기 → 코드 다운로드</b>로 파일을 받아 두세요 — 실습 4에서 진열장에 올립니다. (키트에도 완성본 <code>weather.html</code>이 들어 있어요.)</p>
+        <div class="prompt"><button class="copy" data-copy="pWeather">복사</button><pre id="pWeather">너는 초등학교 과학 선생님을 돕는 웹 개발자야. 5학년 과학 '날씨와 우리 생활' 단원에서 쓸 '광남초 기상 관측소' 웹앱을 HTML 파일 하나로 만들어줘.
+성취기준: [6과06-01] 기상 요소를 조사하고, 날씨가 우리 생활에 주는 영향을 인식할 수 있다.
+
+[데이터] 키가 필요 없는 Open-Meteo API를 fetch로 호출 (광남초 좌표):
+https://api.open-meteo.com/v1/forecast?latitude=35.1532&amp;longitude=129.1185&amp;current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m&amp;daily=temperature_2m_max,temperature_2m_min&amp;timezone=Asia%2FSeoul
+
+[화면]
+① 현재 기온을 아주 크게, 날씨 설명(맑음·흐림·비·눈)은 weather_code를 한글+이모지로
+② 습도 · 풍속과 풍향(16방위 한글) · 기압 · 구름량 · 강수량 · 오늘 최고/최저 — 6칸, 칸마다 초등 눈높이 한 줄 설명
+③ 기압이 1013hPa보다 높으면 "고기압", 낮으면 "저기압"이라고 판단해 주는 상자 (구름량과 연결해 설명)
+④ "지금 값 기록하기" 버튼: 관측자 이름과 함께 표에 쌓이고 localStorage에 저장 (하루 세 번 기록해 비교), "기록 지우기"
+⑤ 머리글에 안내 캐릭터 그림(character.png — 같은 폴더의 우리 반 캐릭터), 맨 아래 출처 표시(Open-Meteo)
+
+[조건]
+- 둥근 글씨(Jua), 하늘색 테마, 폰·태블릿에서 잘 보이게
+- 서버 없이 파일 하나로, API 키 없음
+- 다른 학교는 주소의 latitude(위도)·longitude(경도)만 바꾸면 되게 맨 위에 상수로 빼 줘</pre></div>
+        <details class="more" style="margin-top:4px"><summary>다른 납품 재료 — 세계 여행 환전소 (Frankfurter 환율 API)</summary>
+          <div class="prompt"><button class="copy" data-copy="pFx">복사</button><pre id="pFx">너는 초등학교 수학 선생님을 돕는 웹 개발자야. 6학년 수학 '비와 비율' 단원(사회 '무역'과 연계)에서 쓸 '세계 여행 환전소' 웹앱을 HTML 파일 하나로 만들어줘.
+성취기준: [6수02-03] 비율을 이해하고, 비율을 분수, 소수, 백분율로 나타낼 수 있다.
+
+[데이터] 키가 필요 없는 환율 API(Frankfurter)를 fetch로 호출:
+https://api.frankfurter.app/latest?from=KRW&amp;to=USD,JPY,EUR,CNY,GBP,THB,AUD,PHP
+
+[화면]
+① 나라 고르기 카드 8개(국기 이모지·나라·돈 이름), 누르면 선택 표시
+② 환전하기: 원(KRW)을 넣으면 선택한 나라 돈으로 바로 계산(크게 표시), "1 외화 = 몇 원 · 기준일" 표시, "반대로 계산" 버튼
+③ 표: 나라별로 1 외화 = ? 원, 1,000원 = ?, 10,000원 = ? (비율 비교)
+④ 머리글에 안내 캐릭터 그림(character.png), 맨 아래 출처(Frankfurter·유럽중앙은행)
+
+[조건]
+- 둥근 글씨(Jua), 초록 테마, 폰·태블릿에서 잘 보이게, 숫자는 천 단위 쉼표
+- 서버 없이 파일 하나로, API 키 없음</pre></div>
+        </details>
+      </div></div>
+  </div>
+</section>
+
+<!-- ───────── 실습 3 ⑥ ───────── -->
+<section id="p6" data-sec="p6" style="--c:var(--d6)">
+  <div class="sec-head"><div class="num">⑥</div><h2>실습 3 · AI 셰프 모셔 오기<span class="ana">생성형 API — 키 하나로 학생마다 다른 답을 즉석에서</span></h2></div>
+  <p class="lead">급식 데이터(⑤)를 제미나이에게 넘기면, 아이 눈높이로 알레르기·영양 안내를 써 줍니다. 필요한 건 <b>API 키 하나</b>.</p>
+  <div class="prog"><span class="t">0 / 3</span><div class="bar"><i></i></div></div>
+  <div class="steps">
+    <div class="step" data-k="p6-1"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>구글 AI 스튜디오에서 API 키 받기</h3>
+      <div class="body">
+        <p><a class="btn c6" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">🔑 aistudio.google.com/apikey</a></p>
+        <ol><li>개인 구글 계정으로 접속 → 약관 동의</li>
+        <li><b>Create API key</b>(API 키 만들기) → 프로젝트 고르기(없으면 새로 만들기)</li>
+        <li>나온 키(<code>AIza…</code>로 시작) <b>복사</b></li></ol>
+      </div></div>
+    <div class="step" data-k="p6-2"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>[설정] 탭 B6 칸에 붙여 넣기</h3>
+      <div class="body">
+        <p>시트 [설정] 탭의 <b>제미나이 API 키</b>(B6) 칸에 붙여 넣기 → 끝. <b>다시 배포할 필요 없어요.</b> 주방이 실행될 때마다 이 칸을 읽습니다.</p>
+        <div class="key">🔐 <b>API 키 = 우리 식당 금고 열쇠.</b> 깃허브·패들렛·카톡·메일에 절대 올리지 않기. 키는 오직 시트(주방)에만 — 화면(홀)으로는 한 번도 보내지 않게 만들어 두었어요. 시트를 다른 사람과 <b>편집자</b>로 공유하면 키가 보이니 주의!</div>
+      </div></div>
+    <div class="step" data-k="p6-3"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>[🤖 AI 영양사] 탭 → 오늘 급식 분석하기</h3>
+      <div class="body">
+        <figure class="shot" data-zoom style="max-width:640px"><img src="shots/app_ai_d.jpg" alt="AI 영양사 탭" loading="lazy"></figure>
+        <p>같은 날짜를 다시 누르면 <b>[AI기록] 탭에 저장된 답</b>을 보여 줘서 키를 아낍니다(무료 한도 보호). “잠시 후 다시”가 뜨면 1분 쉬었다가.</p>
+        <p class="warn">⚠ 학생 이름·건강 정보 같은 개인정보는 AI에게 보내지 않기. AI 안내는 참고용 — 알레르기는 꼭 영양 선생님과 확인.</p>
+      </div></div>
+  </div>
+  <details class="more"><summary>더 해 보기 — 내 앱에 AI 셰프 붙이는 프롬프트 (급식 앱 + 알레르기 분석)</summary>
+    <div class="prompt"><button class="copy" data-copy="pMealAi">복사</button><pre id="pMealAi">위에서 만든 급식 앱에 "알레르기 분석하기" 기능을 추가해 줘. 기존 기능은 그대로 두고, 바뀐 파일(Code.gs, index.html)의 전체 코드를 생략 없이 다시 보여 줘.
+[제미나이 API 키 — 시트에서 읽기]
+- Code.gs 맨 위에 SHEET_URL = "(여기에 내 스프레드시트 주소 붙여넣기)" 상수를 추가해.
+- 제미나이 API 키는 코드에 쓰지 말고, SpreadsheetApp.openByUrl(SHEET_URL).getSheetByName("설정").getRange("A1").getValue()로 읽어 와. "설정" 탭이 없으면 만들고 A1에 "여기에 제미나이 API 키를 붙여넣으세요"라고 써 둬.
+- A1이 비어 있거나 그 안내 문구 그대로면 분석하지 말고 화면에 "설정 탭 A1에 제미나이 API 키를 넣어 주세요"를 보여 줘.
+- 키 값은 어떤 경우에도 화면(index.html)으로 보내지 마. 제미나이 호출은 Code.gs에서만.
+[제미나이 호출 — Code.gs]
+- 모델: gemini-2.5-flash. 주소: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+- UrlFetchApp.fetch로 POST. 헤더에 "x-goog-api-key": 키, contentType "application/json", payload는 JSON.stringify({ contents: [{ parts: [{ text: 프롬프트 }] }] }). muteHttpExceptions: true를 넣고, 응답 코드가 200이 아니면 코드별로 안내: 400·403은 "API 키를 확인해 주세요", 429는 "요청이 많아요. 잠시 후 다시 눌러 주세요", 그 외는 "분석에 실패했어요. 잠시 후 다시 시도해 주세요".
+- 결과 글은 JSON.parse(응답).candidates[0].content.parts[0].text에서 꺼내.
+- 제미나이에게 보낼 프롬프트는 Code.gs에서 만들어: 그날 급식 메뉴 목록(알레르기 번호 포함)과 알레르기 번호표(1 난류 … 19 잣)를 함께 넣고, "초등학생에게 다정한 말투로, 오늘 급식에서 조심할 알레르기 식품을 번호가 아닌 식품 이름으로 바꿔 3~4문장으로 알려 줘. 어떤 메뉴에 무엇이 들어 있는지 말해 주고, 마지막 문장은 '알레르기가 있는 친구는 꼭 선생님께 말해 주세요'로 끝내. 의학적 판단이나 진단은 하지 마"라고 지시해.
+[캐시 — 같은 날짜는 다시 부르지 않기]
+- 분석 결과는 시트의 "분석" 탭에 날짜(yyyyMMdd) | 결과 글 | 분석 시각 순서로 저장해. 탭이 없으면 헤더와 함께 만들어.
+- 분석 버튼을 눌렀을 때 그 날짜 결과가 "분석" 탭에 이미 있으면 제미나이를 부르지 말고 저장된 글을 보여 줘.
+[화면]
+- 급식 카드 아래에 [🔍 알레르기 분석하기] 버튼. 급식이 없는 날은 버튼을 숨겨.
+- 누르면 버튼이 비활성화되고 "AI가 급식을 살펴보는 중…"이 보이다가, 결과가 오면 연한 파란색 카드에 결과 글을 보여 줘. 카드 아래 작은 글씨로 "AI가 만든 안내예요. 정확한 내용은 급식 담당 선생님께 확인하세요".
+- 날짜를 바꾸면 이전 분석 카드는 지워지고 버튼이 다시 활성화돼.
+- 저장된 결과를 보여 줄 때는 카드 위에 작게 "저장된 분석"이라고 표시.
+[기술 조건]
+- 기존 기술 조건(파일 2개, doGet, google.script.run, 순수 HTML/CSS/JS, 한국어) 그대로.
+- 출력: 코드 블록 두 개(각 블록 첫 줄에 // 파일명 주석), 생략 없이 전체 코드. 코드 다음에 "설정 탭 A1에 키 넣기 → 새 버전으로 재배포" 순서를 3줄로.</pre></div>
+    <p class="tip">💡 셰프를 부를 수업 아이디어: 서술형 답에 맞춤 피드백 · 교과서 쪽수를 넣으면 수준별 퀴즈 · 글쓰기 이어 쓰기 짝꿍 — 모두 “키는 Code.gs에만”.</p>
+  </details>
+</section>
+
+<!-- ───────── 실습 4 ⑦ ───────── -->
+<section id="p7" data-sec="p7" style="--c:var(--d7)">
+  <div class="sec-head"><div class="num">⑦</div><h2>실습 4 · 깃허브로 간판 달기<span class="ana">우리 반 앱 진열장 — 주소 하나로 모든 앱을 모아 두기</span></h2></div>
+  <p class="lead">지금까지 만든 앱들이 여기저기 흩어져 있죠? 깃허브(GitHub)는 파일을 올려 두는 <b>창고</b>이고, 깃허브 페이지(Pages)는 그 창고에 <b>간판</b>을 달아 주소로 열어 주는 기능이에요. 무료입니다.</p>
+  <figure class="shot" data-zoom style="cursor:zoom-in"><img src="img/08_github_4steps.jpg" alt="창고 열기, 진열하기, 간판 켜기, 주소 나누기 4컷" loading="lazy"></figure>
+  <div class="ana4">
+    <div><b>창고</b><span>Repository<br>저장소 만들기</span></div>
+    <div><b>진열</b><span>Upload files<br>파일 올리기</span></div>
+    <div><b>간판 켜기</b><span>Settings → Pages<br>main 고르고 Save</span></div>
+    <div><b>주소 나누기</b><span>아이디.github.io<br>/myclass-apps/</span></div>
+  </div>
+  <p style="margin:12px 0"><a class="btn c7" href="https://hongdonmax.github.io/fungigame2026/gwangnam/day2/myclass-apps.zip">📦 실습 키트 받기 (myclass-apps.zip)</a> <a class="btn" href="https://hongdonmax.github.io/myclass-apps/" target="_blank" rel="noopener">👀 완성 예시 진열장</a></p>
+  <div class="prog"><span class="t">0 / 8</span><div class="bar"><i></i></div></div>
+  <div class="steps">
+    <div class="step" data-k="p7-1"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>키트 받아서 압축 풀기</h3>
+      <div class="body">
+        <p>위의 <b>[실습 키트 받기]</b> → 다운로드 폴더의 <code>myclass-apps.zip</code>에서 <b>마우스 오른쪽 → 압축 풀기(모두 압축 풀기)</b>. 폴더 안에 파일 5개가 보이면 OK.</p>
+        <div class="scroll"><table class="tt" style="margin-top:6px">
+          <tr><th>파일</th><th>하는 일</th></tr>
+          <tr><td>index.html</td><td>진열장 첫 화면 — 맨 위 ✏️ 두 칸만 고쳐요</td></tr>
+          <tr><td>banner.jpg · character.png</td><td>맨 위 그림 · 우리 반 캐릭터 (같은 이름으로 올리면 바뀜)</td></tr>
+          <tr><td>weather.html</td><td>⑤ 예시 앱 — 광남초 기상 관측소</td></tr>
+          <tr><td>README.md</td><td>저장소 안내문</td></tr>
+        </table></div>
+      </div></div>
+    <div class="step" data-k="p7-2"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>창고 만들기 — New repository</h3>
+      <div class="body">
+        <p class="path"><i>오른쪽 위 ＋</i><em>→</em><i>New repository</i></p>
+        <figure class="shot" data-zoom style="max-width:600px"><img src="shots/gh01_new_repo.jpg" alt="새 저장소 만들기 화면" loading="lazy"></figure>
+        <ul><li><b>Repository name</b>: <code>myclass-apps</code> (영어 소문자·숫자·하이픈) — 주소 끝이 됩니다</li>
+        <li><b>Public</b> 그대로 (무료 Pages는 공개 저장소에서만)</li>
+        <li>나머지는 건드리지 말고 <b>Create repository</b></li></ul>
+      </div></div>
+    <div class="step" data-k="p7-3"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>진열하기 — 파일 5개 끌어다 놓기</h3>
+      <div class="body">
+        <p>빈 창고 화면 가운데 파란 글씨 <b>uploading an existing file</b> 클릭 → 압축 푼 폴더 <b>안의 파일 5개</b>를 모두 선택(<kbd>Ctrl</kbd>+<kbd>A</kbd>)해서 끌어다 놓기 → 맨 아래 <b>Commit changes</b>.</p>
+        <div class="shots2">
+          <figure class="shot" data-zoom><img src="shots/gh02_empty_repo.jpg" alt="빈 저장소 화면" loading="lazy"><figcaption>① uploading an existing file</figcaption></figure>
+          <figure class="shot" data-zoom><img src="shots/gh04_upload_files.jpg" alt="파일을 올린 화면" loading="lazy"><figcaption>② 파일 5개 → Commit changes</figcaption></figure>
+        </div>
+        <p class="warn">⚠ <b>zip 파일 자체</b>나 <b>폴더째</b> 올리면 사이트가 열리지 않아요. 꼭 폴더 <b>안의 파일들</b>을!</p>
+      </div></div>
+    <div class="step" data-k="p7-4"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>간판 켜기 — Settings → Pages</h3>
+      <div class="body">
+        <p class="path"><i>Settings</i><em>→</em><i>왼쪽 Pages</i><em>→</em><i>Branch: None ▾ → main</i><em>→</em><i>/(root)</i><em>→</em><i>Save</i></p>
+        <div class="shots2">
+          <figure class="shot" data-zoom><img src="shots/gh07_pages_branch.jpg" alt="Branch에서 main 고르기" loading="lazy"><figcaption>① None을 눌러 main 고르기</figcaption></figure>
+          <figure class="shot" data-zoom><img src="shots/gh08_pages_main_save.jpg" alt="main / root 고르고 Save" loading="lazy"><figcaption>② main · /(root) → Save</figcaption></figure>
+        </div>
+        <p class="tip">🔎 <b>Settings가 안 보이면</b> 창이 좁아서 <b>More(…)</b> 안에 숨어 있어요.</p>
+        <figure class="shot" data-zoom style="max-width:600px"><img src="shots/gh16_more_settings.jpg" alt="More 메뉴 안의 Settings" loading="lazy"></figure>
+      </div></div>
+    <div class="step" data-k="p7-5"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>1~2분 뒤 내 주소 받기</h3>
+      <div class="body">
+        <p>Pages 화면을 새로고침하면 <b>“Your site is live at …”</b>이 나와요 → <b>Visit site</b>.</p>
+        <div class="shots2">
+          <figure class="shot" data-zoom><img src="shots/gh15_site_live.jpg" alt="Your site is live at" loading="lazy"></figure>
+          <figure class="shot" data-zoom><img src="shots/gh13_live.jpg" alt="열린 진열장" loading="lazy"></figure>
+        </div>
+        <div class="line-copy"><code>https://<b>내아이디</b>.github.io/myclass-apps/</code></div>
+      </div></div>
+    <div class="step" data-k="p7-6"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>우리 반으로 꾸미기 — index.html ✏️</h3>
+      <div class="body">
+        <p class="path"><i>index.html 클릭</i><em>→</em><i>연필 ✏️</i><em>→</em><i>✏️ 두 칸 고치기</i><em>→</em><i>Commit changes… → Commit changes</i></p>
+        <div class="shots2">
+          <figure class="shot" data-zoom><img src="shots/gh11_edit_line.jpg" alt="index.html 편집 화면" loading="lazy"><figcaption>15~18줄 우리 반 소개, 26줄부터 앱 목록</figcaption></figure>
+          <figure class="shot" data-zoom><img src="shots/gh12_commit_dialog.jpg" alt="Commit changes 창" loading="lazy"><figcaption>초록 Commit changes 두 번</figcaption></figure>
+        </div>
+        <p><b>앱 한 줄</b> = <code>이름 | 한 줄 설명 | 주소 | 서랍 번호 | 이모지</code> — 예:</p>
+        <div class="line-copy"><code id="lineEx">우리 반 도우미 | 칭찬 · 급식 · AI 영양사 | https://script.google.com/macros/s/내주소/exec | 4 | 💛</code><button class="copy" data-copy="lineEx">복사</button></div>
+        <p class="key">🔗 실습 1에서 복사해 둔 <b>웹 앱 주소</b>를 “우리 반 도우미” 줄의 주소 칸에 붙여 넣으면 ④⑤⑥ 앱이 진열장에 걸립니다!</p>
+        <p class="tip">🙈 줄 맨 앞에 <code>#</code>을 붙이면 그 앱은 숨겨져요. 서랍 번호는 1~7 숫자로.</p>
+      </div></div>
+    <div class="step" data-k="p7-7"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>내가 만든 HTML 앱 올리기</h3>
+      <div class="body">
+        <ol><li>저장소 첫 화면 → <b>Add file → Upload files</b> → 내 <code>.html</code> 파일 끌어다 놓기 → <b>Commit changes</b></li>
+        <li>파일 이름은 <b>영어 소문자</b>로 미리 바꾸기 (예: <code>quiz.html</code>, <code>animals.html</code>)</li>
+        <li>index.html 앱 목록에 한 줄: <code>동물 분류 탐정 | 특징으로 동물 나누기 | animals.html | 2 | 🐾</code></li></ol>
+        <p class="warn">⚠ 내 앱 파일 이름이 <code>index.html</code>이면 <b>진열장을 덮어써요!</b> 꼭 다른 이름으로 바꿔서 올리기.</p>
+        <details class="more" style="margin-top:4px"><summary>진열장에 올릴 앱을 새로 만드는 프롬프트 (캐릭터 포함)</summary>
+          <div class="prompt"><button class="copy" data-copy="pGh">복사</button><pre id="pGh">너는 초등학교 선생님을 돕는 웹 개발자야. (학년·과목·단원) 수업에서 쓸 '(앱 이름)' 웹앱을 HTML 파일 하나로 만들어줘.
+성취기준: (여기에 성취기준 붙여넣기)
+
+[화면]
+① (학생이 처음 보는 화면 — 무엇을 고르거나 입력하는지)
+② (누르면 무엇이 바뀌는지 — 정답 확인, 설명, 점수 등)
+③ (마무리 — 다시 하기, 도장, 축하 문구 등)
+④ 머리글에 안내 캐릭터 그림을 넣어 줘: &lt;img src="character.png"&gt; (같은 폴더에 있는 우리 반 캐릭터)
+
+[조건]
+- 깃허브 페이지(GitHub Pages)에 올릴 거야. 서버 없이 파일 하나로 열리게, 외부 라이브러리는 CDN만 써.
+- API 키·비밀번호·학생 실명은 코드에 넣지 마. 기록이 필요하면 브라우저 localStorage에만.
+- 둥근 글씨(Jua), 파스텔 색, 큰 버튼, 태블릿·휴대폰에서 잘 보이게. 모든 문구는 한국어.
+- 출력: 코드 블록 하나, 생략 없이 전체 코드. 코드 다음에 파일 이름을 영어 소문자로 하나 추천해 줘(예: quiz.html). index.html은 쓰지 마.</pre></div>
+        </details>
+      </div></div>
+    <div class="step" data-k="p7-8"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>패들렛 갤러리에 내 진열장 주소 올리기</h3>
+      <div class="body">
+        <p><a class="btn c7" href="https://padlet.com/oneteacher/ai-s024ok443ip9ruzyris1" target="_blank" rel="noopener">📌 패들렛 「2차시 결과물 갤러리」</a></p>
+        <p>주소와 함께 “우리 반에서 이렇게 쓸래요” 한 줄. 다른 선생님 진열장도 열어 보고 댓글로 칭찬 💛</p>
+        <p class="tip">🐥 우리 반 캐릭터로 바꾸고 싶다면: 그림 파일 이름을 <code>character.png</code>로 바꿔 <b>Upload files</b> → 같은 이름이라 저절로 바뀝니다. 그리고 시트 [설정] 탭의 <b>캐릭터 그림 주소</b>에 <code>https://내아이디.github.io/myclass-apps/character.png</code>를 넣으면 도우미 앱에도 우리 반 캐릭터가!</p>
+      </div></div>
+  </div>
+  <details class="more"><summary>시간이 부족하면 — 빠른 길 (Use this template)</summary>
+    <p>예시 진열장을 그대로 복제해서 창고를 만드는 방법이에요. 파일 올리기 단계를 건너뛰고, <b>간판 켜기(4단계)</b>부터 이어 가면 됩니다.</p>
+    <p><a class="btn c7" href="https://github.com/new?template_name=myclass-apps&amp;template_owner=hongdonmax" target="_blank" rel="noopener">⚡ 템플릿으로 저장소 만들기</a> → Repository name <code>myclass-apps</code> → <b>Public</b> → <b>Create repository</b></p>
+    <figure class="shot" data-zoom style="max-width:600px"><img src="shots/gh14_template_btn.jpg" alt="Use this template 버튼" loading="lazy"></figure>
+  </details>
+  <div class="warn" style="margin-top:14px"><b>🔒 공개 창고 규칙</b> — Public 저장소는 전 세계 누구나 볼 수 있어요. <b>API 키 · 비밀번호 · 학생 이름 · 학생 사진</b>은 절대 올리지 않기. 학생 기록이 필요한 앱은 ④(시트)로.</div>
+</section>
+
+<!-- ───────── FAQ ───────── -->
+<section id="faq" style="--c:var(--warn)">
+  <div class="sec-head"><div class="num">?</div><h2>막히면 여기부터<span class="ana">연수 중 가장 자주 나오는 문제와 해결</span></h2></div>
+  <div class="faq">
+    <details><summary><span class="tag" style="--c:var(--d7)">⑦</span>주소를 열었더니 404 “There isn't a GitHub Pages site here”</summary>
+      <p>① 1~2분 더 기다렸다가 새로고침 ② 저장소 첫 화면에 <code>index.html</code>이 <b>바로</b> 보이는지(폴더 안에 들어가 있으면 안 됨) ③ 파일 이름이 <code>index.html.html</code>, <code>Index.html</code>이 아닌지 ④ Settings → Pages에서 Save를 눌렀는지</p></details>
+    <details><summary><span class="tag" style="--c:var(--d7)">⑦</span>zip 파일을 그대로 올렸어요 / 폴더째 올렸어요</summary>
+      <p>잘못 올린 파일을 눌러 오른쪽 위 <b>… → Delete file → Commit changes</b>로 지운 뒤, 압축을 푼 폴더 <b>안의 파일들</b>을 다시 올리세요.</p></details>
+    <details><summary><span class="tag" style="--c:var(--d7)">⑦</span>그림(캐릭터·배너)이 안 나와요</summary>
+      <p>파일 이름이 코드와 <b>글자 하나까지</b> 같아야 해요. <code>Character.PNG</code> ≠ <code>character.png</code>(대소문자·확장자). 같은 창고 같은 위치에 있는지도 확인.</p></details>
+    <details><summary><span class="tag" style="--c:var(--d7)">⑦</span>Settings가 안 보여요 / Pages에 Branch 고르는 칸이 없어요</summary>
+      <p>창이 좁으면 Settings는 <b>More(…)</b> 안에 있어요. Branch 칸이 없으면 저장소가 <b>Private</b>인 경우 → Settings → General 맨 아래 <b>Change visibility → Public</b>.</p></details>
+    <details><summary><span class="tag" style="--c:var(--d7)">⑦</span>고쳤는데 사이트가 그대로예요</summary>
+      <p>깃허브가 다시 짓는 데 1~2분 걸려요. 기다린 뒤 <kbd>Ctrl</kbd>+<kbd>F5</kbd>(강력 새로고침). 저장소의 <b>Actions</b> 탭에서 초록 체크가 뜨면 반영 완료.</p></details>
+    <details><summary><span class="tag" style="--c:var(--d7)">⑦</span>진열장 위쪽에 빨간 “고칠 곳이 있어요” 상자가 떠요</summary>
+      <p>앱 목록 한 줄에 <code>|</code>가 부족한 경우예요. <b>이름 | 설명 | 주소</b>까지는 꼭 있어야 합니다. 안내된 줄을 고쳐 Commit.</p></details>
+    <details><summary><span class="tag" style="--c:var(--d4)">④</span>“Google에서 확인하지 않은 앱” 경고가 나와요</summary>
+      <p>정상이에요. 내가 만든 앱이라 심사를 안 받았다는 뜻. <b>고급 → (안전하지 않음)으로 이동 → 허용</b>. 학교 계정에서 아예 막히면 개인 gmail로 템플릿을 다시 복사하세요.</p></details>
+    <details><summary><span class="tag" style="--c:var(--d4)">④</span>웹 앱 주소를 학생 기기에서 열면 “권한 필요”가 나와요</summary>
+      <p>배포할 때 액세스가 “나만”이었어요. <b>배포 → 배포 관리 → ✏️ → 액세스: 모든 사용자 → 버전: 새 버전 → 배포</b>.</p></details>
+    <details><summary><span class="tag" style="--c:var(--d4)">④</span>웹 앱 주소를 잃어버렸어요</summary>
+      <p>Apps Script → <b>배포 → 배포 관리</b>에 웹 앱 URL이 있어요. 끝이 <code>/exec</code>인 주소가 학생용입니다(<code>/dev</code>는 나만 보는 시험용).</p></details>
+    <details><summary><span class="tag" style="--c:var(--d5)">⑤</span>급식이 “없어요”로 나와요</summary>
+      <p>주말·공휴일·방학이거나 학교가 아직 식단을 올리지 않은 날이에요. ◀ 어제 · 내일 ▶을 눌러 보세요. 다른 학교라면 [설정] 탭의 교육청·학교 코드 확인.</p></details>
+    <details><summary><span class="tag" style="--c:var(--d6)">⑥</span>AI 영양사가 “키를 확인해 주세요”라고 해요</summary>
+      <p>B6 칸 키 앞뒤에 빈칸·따옴표가 없는지, <code>AIza</code>로 시작하는 전체가 들어갔는지 확인. “요청이 많아요”는 무료 한도 — 1분 뒤 다시.</p></details>
+  </div>
+</section>
+
+<!-- ───────── 마무리 ───────── -->
+<section id="end" data-sec="end" style="--c:var(--coral)">
+  <div class="sec-head"><div class="num">✓</div><h2>마무리 · 3일 안에 한 번 더<span class="ana">망각곡선 — 사흘 안에 다시 열면 오래 남아요</span></h2></div>
+  <div class="prog"><span class="t">0 / 4</span><div class="bar"><i></i></div></div>
+  <div class="steps">
+    <div class="step" data-k="end1"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>내 진열장 주소를 북마크 바에 저장 (<kbd>Ctrl</kbd>+<kbd>D</kbd>)</h3>
+      <div class="body"><div class="line-copy"><input id="myUrl" placeholder="https://내아이디.github.io/myclass-apps/" style="flex:1;min-width:0;font:inherit;border:0;background:none;outline:none"><button class="copy" id="saveUrl">이 기기에 기억</button></div>
+      <p id="myUrlOut" style="font-size:14px;color:var(--muted);margin:0"></p></div></div>
+    <div class="step" data-k="end2"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>우리 반 수업에서 앱 하나 써 보기</h3>
+      <div class="body"><p>진열장 QR(📱 이 진열장 QR)을 칠판에 띄우면 학생들이 태블릿으로 바로 들어와요.</p></div></div>
+    <div class="step" data-k="end3"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>새 앱 한 줄 더 진열하기</h3>
+      <div class="body"><p>제미나이로 만든 HTML → Upload files → 앱 목록 한 줄. 서랍 번호를 붙이며 “이건 몇 번 서랍?” 말해 보기.</p></div></div>
+    <div class="step" data-k="end4"><div class="chk"><span></span><input type="checkbox" aria-label="완료"></div><h3>패들렛에서 동료 진열장 하나 열어 보고 댓글 남기기</h3>
+      <div class="body"><p><a href="https://padlet.com/oneteacher/ai-s024ok443ip9ruzyris1" target="_blank" rel="noopener">연수 패들렛</a> · <a href="https://hongdonmax.github.io/fungigame2026/gwangnam/" target="_blank" rel="noopener">1차시 서재(유형별 앱·프롬프트)</a></p></div></div>
+  </div>
+</section>
+
+</main>
+<footer>2026 광남초등학교 교원 연수 「AI와 바이브코딩을 활용한 수업·평가 디지털 도구 만들기」 2차시 · 명진초등학교 교사 최일훈<br>체크 표시와 메모는 이 기기 브라우저에만 저장돼요.</footer>
+
+<dialog id="zoom"><div class="bar"><span id="zoomCap"></span><button class="btn" onclick="this.closest('dialog').close()">닫기 ✕</button></div><img id="zoomImg" alt=""></dialog>
+<dialog id="qrDlg"><div id="qrBox"><h3 style="font-size:22px">이 페이지 QR</h3><div id="qr"></div><p id="qrUrl" style="font-size:13px;color:var(--muted);word-break:break-all;margin:0 0 12px"></p><button class="btn main" onclick="this.closest('dialog').close()">닫기</button></div></dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  const KEY = 'gn-d2-check-v1';
+  let store = {};
+  try { store = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} };
+
+  // 단계 체크 + 진행 막대
+  function refresh(sec) {
+    const steps = sec.querySelectorAll('.step'); const done = sec.querySelectorAll('.step.done').length;
+    const p = sec.querySelector('.prog'); if (!p) return;
+    p.querySelector('.t').textContent = done + ' / ' + steps.length + (done === steps.length ? ' 완료! 🎉' : '');
+    p.querySelector('i').style.width = (steps.length ? done / steps.length * 100 : 0) + '%';
+  }
+  document.querySelectorAll('[data-sec]').forEach(sec => {
+    sec.querySelectorAll('.step').forEach(st => {
+      const cb = st.querySelector('input[type=checkbox]'); const k = st.dataset.k;
+      if (store[k]) { cb.checked = true; st.classList.add('done'); }
+      cb.addEventListener('change', () => { store[k] = cb.checked; st.classList.toggle('done', cb.checked); save(); refresh(sec); });
+    });
+    refresh(sec);
+  });
+
+  // 복사 버튼
+  document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
+    const el = document.getElementById(b.dataset.copy); const t = el.textContent;
+    const ok = () => { const o = b.textContent; b.textContent = '복사됨 ✓'; b.classList.add('ok'); setTimeout(() => { b.textContent = o; b.classList.remove('ok'); }, 1600); };
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); try { document.execCommand('copy'); ok(); } catch (e) {} };
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(ok, fallback); else fallback();
+  }));
+
+  // 그림 크게 보기
+  const zd = document.getElementById('zoom');
+  document.querySelectorAll('.shot').forEach(f => f.addEventListener('click', () => {
+    const img = f.querySelector('img'); if (!img) return;
+    document.getElementById('zoomImg').src = img.src; document.getElementById('zoomCap').textContent = img.alt || '';
+    if (zd.showModal) zd.showModal();
+  }));
+  zd.addEventListener('click', e => { if (e.target === zd) zd.close(); });
+
+  // QR
+  document.getElementById('qrBtn').addEventListener('click', () => {
+    const box = document.getElementById('qr'); box.innerHTML = '';
+    const url = location.href.split('#')[0];
+    if (window.QRCode) new QRCode(box, { text: url, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M }); else box.textContent = '인터넷 연결을 확인해 주세요';
+    document.getElementById('qrUrl').textContent = url;
+    document.getElementById('qrDlg').showModal();
+  });
+
+  // 내 진열장 주소 기억
+  const mu = document.getElementById('myUrl'), mo = document.getElementById('myUrlOut');
+  try { const v = localStorage.getItem('gn-d2-myurl'); if (v) { mu.value = v; mo.innerHTML = '기억한 주소: <a href="' + v.replace(/"/g, '') + '" target="_blank" rel="noopener">' + v.replace(/</g, '&lt;') + '</a>'; } } catch (e) {}
+  document.getElementById('saveUrl').addEventListener('click', () => {
+    const v = mu.value.trim(); if (!/^https?:\/\//.test(v)) { mo.textContent = 'https:// 로 시작하는 주소를 넣어 주세요'; return; }
+    try { localStorage.setItem('gn-d2-myurl', v); } catch (e) {}
+    mo.innerHTML = '기억한 주소: <a href="' + v.replace(/"/g, '') + '" target="_blank" rel="noopener">' + v.replace(/</g, '&lt;') + '</a>';
+  });
+
+  // 위쪽 칩: 지금 보는 구역 표시
+  const chips = [...document.querySelectorAll('#chips a')];
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) chips.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+  }), { rootMargin: '-40% 0px -55% 0px' });
+  document.querySelectorAll('main section[id]').forEach(s => io.observe(s));
+})();
+</script>
+</body>
+</html>

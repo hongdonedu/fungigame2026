@@ -20,14 +20,14 @@
 
 <!-- ✏️ 2. 앱 목록 — 한 줄에 앱 하나:  이름 | 설명 | 주소 | 서랍 | 그림(이모지)
      · 주소: 같은 저장소에 올린 파일은 파일 이름만(예: weather.html), 다른 곳은 https:// 로 시작하는 주소
-     · 서랍: ①~⑦ 중 하나 (모르면 비워 두기)
+     · 서랍: 1~7 숫자 하나 (①~⑦ 도 돼요, 모르면 비워 두기)
      · 맨 앞에 # 을 붙이면 그 줄은 숨겨져요 -->
 <script type="text/plain" id="앱목록">
-광남초 기상 관측소 | 지금 우리 학교 하늘의 기온·습도·기압을 바로 관측해요 | weather.html | ⑤ | 🌤️
-우리 반 도우미 | 칭찬 게시판 · 오늘 급식 · AI 영양사 (앱스 스크립트 웹 앱 주소를 넣으세요) | https://script.google.com/ | ④ | 💛
-태양계 행성 탐험 도감 | 행성 카드를 누르고 탐험 도장을 모아요 | https://hongdonmax.github.io/fungigame2026/gwangnam/planets.html | ② | 🪐
-우리 반 막대그래프 공장 | 조사한 자료를 넣으면 막대그래프가 그려져요 | https://hongdonmax.github.io/fungigame2026/gwangnam/graph.html | ② | 📊
-# 숨긴 앱 예시 | 맨 앞에 #이 있으면 진열장에 나오지 않아요 | weather.html | ⑤ | 🙈
+광남초 기상 관측소 | 지금 우리 학교 하늘의 기온·습도·기압을 바로 관측해요 | weather.html | 5 | 🌤️
+우리 반 도우미 | 칭찬 게시판 · 오늘 급식 · AI 영양사 (앱스 스크립트 웹 앱 주소를 넣으세요) | https://script.google.com/ | 4 | 💛
+태양계 행성 탐험 도감 | 행성 카드를 누르고 탐험 도장을 모아요 | https://hongdonmax.github.io/fungigame2026/gwangnam/planets.html | 2 | 🪐
+우리 반 막대그래프 공장 | 조사한 자료를 넣으면 막대그래프가 그려져요 | https://hongdonmax.github.io/fungigame2026/gwangnam/graph.html | 2 | 📊
+# 숨긴 앱 예시 | 맨 앞에 #이 있으면 진열장에 나오지 않아요 | weather.html | 5 | 🙈
 </script>
 <!-- ═══════════════════ 여기부터는 고치지 않아도 돼요 ═══════════════════ -->
 
@@ -130,7 +130,8 @@ text('앱목록').split('\n').forEach((line, n) => {
   if (!line || line.startsWith('#')) return;
   const p = line.split('|').map(s => s.trim());
   if (p.length < 3 || !p[2]) { problems.push((n) + '번째 줄: "' + line.slice(0, 30) + '…" — | 로 나눈 칸이 3개 이상(이름 | 설명 | 주소) 있어야 해요'); return; }
-  apps.push({ name: p[0], desc: p[1], url: p[2], drawer: (p[3] || '').slice(0, 1), icon: p[4] || '✨' });
+  const d = (p[3] || '').trim().charAt(0);
+  apps.push({ name: p[0], desc: p[1], url: p[2], drawer: /[1-7]/.test(d) ? '①②③④⑤⑥⑦'[d - 1] : d, icon: p[4] || '✨' });
 });
 if (problems.length) document.getElementById('oops').innerHTML = '<div class="oops">✏️ 앱 목록에서 고칠 곳이 있어요<br>' + problems.map(esc).join('<br>') + '</div>';
 
