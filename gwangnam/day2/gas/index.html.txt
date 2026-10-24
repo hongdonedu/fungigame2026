@@ -52,7 +52,7 @@ button.go:disabled{opacity:.55}
 <body>
 <div class="wrap">
 <header>
-  <img id="ch" alt="" src="https://hongdonmax.github.io/fungigame2026/gwangnam/pose_wave.png">
+  <img id="ch" alt="" src="https://hongdonedu.github.io/fungigame2026/gwangnam/pose_wave.png">
   <div><h1 id="title">우리 반 도우미</h1><div class="sub">④ 칭찬 게시판 · ⑤ 오늘 급식 · ⑥ AI 영양사 — 시트 하나로 움직이는 우리 반 식당</div></div>
 </header>
 

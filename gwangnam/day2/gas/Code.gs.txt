@@ -39,7 +39,7 @@ function ensureSheets_() {
       ['학급 이름', '우리 반', '예: 5학년 2반'],
       ['제미나이 API 키', '', '⑥ AI 영양사: aistudio.google.com 에서 받은 키를 붙여 넣기. 깃허브·패들렛에는 절대 올리지 마세요'],
       ['AI 모델', 'gemini-flash-latest', '⑥ 바꾸지 않아도 돼요'],
-      ['캐릭터 그림 주소', 'https://hongdonmax.github.io/fungigame2026/gwangnam/pose_wave.png', '우리 반 캐릭터 그림 주소(깃허브에 올린 그림 주소를 넣어 보세요)'],
+      ['캐릭터 그림 주소', 'https://hongdonedu.github.io/fungigame2026/gwangnam/pose_wave.png', '우리 반 캐릭터 그림 주소(깃허브에 올린 그림 주소를 넣어 보세요)'],
       ['칭찬 지우기 비밀번호', '1234', '선생님만 칭찬 글을 지울 수 있어요']
     ]);
     set.setFrozenRows(1);
