@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>광남초 기상 관측소</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap">
+<style>
+/* 레이아웃: 하늘색 헤더(현재 날씨 크게) → 기상 요소 6칸 → 고기압/저기압 판단 → 우리 반 관측 기록(localStorage) */
+:root{--bg:#eef6ff;--fg:#17304f;--muted:#5d7391;--card:#fff;--line:#cfe0f5;--accent:#1f7ae0;--warm:#ff8c42;--good:#2aa36b;--panel:#dcecff;
+ --display:'Jua','Gowun Dodum',sans-serif;--body:'Gowun Dodum','Malgun Gothic',sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;padding:0 max(16px,env(safe-area-inset-left,0px)) 40px max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;align-items:center;gap:14px;padding:18px 0 8px}
+header img{width:78px;height:78px;object-fit:contain}
+h1{font-family:var(--display);font-size:clamp(26px,5vw,36px);margin:0}
+.sub{color:var(--muted);margin:2px 0 0;font-size:15px}
+.std{display:inline-block;background:var(--panel);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--muted);margin-top:8px}
+.now{margin-top:12px;background:linear-gradient(135deg,#1f7ae0,#5fb0ff);color:#fff;border-radius:24px;padding:22px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.now .t{font-family:var(--display);font-size:clamp(56px,12vw,88px);line-height:1;font-variant-numeric:tabular-nums}
+.now .d{font-size:18px}
+.now .d b{font-size:26px;display:block;font-family:var(--display)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:14px}
+.k{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:14px;min-width:0}
+.k small{color:var(--muted);display:block;font-size:14px}
+.k b{font-family:var(--display);font-size:30px;font-variant-numeric:tabular-nums}
+.k i{display:block;font-style:normal;color:var(--muted);font-size:13px;margin-top:4px;line-height:1.4}
+.box{margin-top:14px;background:var(--card);border:2px solid var(--line);border-radius:20px;padding:18px}
+.box h2{font-family:var(--display);margin:0 0 8px;font-size:24px}
+.judge{font-size:19px;line-height:1.6}
+.judge b{color:var(--accent)}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;align-items:center}
+input,select{font-family:var(--body);font-size:17px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--fg);min-width:0}
+button{font-family:var(--display);font-size:18px;border:0;border-radius:14px;padding:12px 18px;cursor:pointer;background:var(--accent);color:#fff}
+button.alt{background:var(--warm)}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;font-size:15px}
+th{color:var(--muted);font-weight:400}
+.wrap{overflow-x:auto}
+.msg{color:var(--muted);margin-top:8px;min-height:1.4em}
+.mascot{display:flex;align-items:center;gap:12px;margin-top:14px;color:var(--muted)}
+.mascot img{width:84px;height:84px;object-fit:contain}
+@media (max-width:520px){.now{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <img src="character.png" alt="우리 반 캐릭터">
+  <div>
+    <h1 id="h1">광남초 기상 관측소</h1>
+    <p class="sub" id="where">지금 이 순간의 기상 요소 · Open-Meteo 공용 API (키 없음)</p>
+    <span class="std">[6과06-01] 기상 요소를 조사하고, 날씨가 우리 생활에 주는 영향을 인식할 수 있다</span>
+  </div>
+</header>
+
+<section class="now" id="now">
+  <div class="t" id="temp">--°</div>
+  <div class="d"><b id="desc">날씨를 가져오는 중…</b><span id="date"></span><br><span id="feel"></span></div>
+</section>
+
+<div class="grid">
+  <div class="k"><small>습도</small><b id="hum">--%</b><i>공기 속 수증기의 양. 80% 넘으면 눅눅해요</i></div>
+  <div class="k"><small>풍속 · 풍향</small><b id="wind">--</b><i>바람이 불어오는 방향이 풍향이에요</i></div>
+  <div class="k"><small>기압</small><b id="pres">-- hPa</b><i>1013 hPa보다 높으면 고기압, 낮으면 저기압</i></div>
+  <div class="k"><small>구름량</small><b id="cloud">--%</b><i>하늘을 덮은 구름의 비율</i></div>
+  <div class="k"><small>강수량 (지난 1시간)</small><b id="rain">-- mm</b><i>내린 비나 눈의 양</i></div>
+  <div class="k"><small>오늘 최고 / 최저</small><b id="hilo">--</b><i>하루 기온의 변화 폭</i></div>
+</div>
+
+<section class="box">
+  <h2>오늘은 고기압? 저기압?</h2>
+  <div class="judge" id="judge">관측값을 불러오면 닭핑이 판단해 줘요.</div>
+  <div class="row"><button id="reload">다시 관측하기</button><span class="msg" id="upd"></span></div>
+</section>
+
+<section class="box">
+  <h2>우리 반 관측 기록</h2>
+  <p class="msg">관측 버튼을 누르면 지금 값이 표에 쌓여요. 하루 세 번(아침·점심·하교) 기록해 보고 변화를 비교해 보세요.</p>
+  <div class="row"><input id="who" placeholder="관측한 사람 (예: 3모둠)" maxlength="12"><button id="log">지금 값 기록하기</button><button class="alt" id="clear">기록 지우기</button></div>
+  <div class="wrap"><table><thead><tr><th>시각</th><th>관측자</th><th>기온</th><th>습도</th><th>풍속</th><th>기압</th><th>구름</th></tr></thead><tbody id="rows"></tbody></table></div>
+</section>
+
+<div class="mascot"><img src="character.png" alt=""><span>자료 출처: Open-Meteo(무료 날씨 API). 기록은 이 기기의 브라우저에만 저장돼요.</span></div>
+
+<script>
+// ✏️ 우리 학교로 바꾸기: 구글 지도에서 학교를 오른쪽 클릭 → 맨 위 숫자 두 개(위도, 경도)를 복사해 넣으세요
+const SCHOOL='광남초등학교', LAT=35.1532, LON=129.1185;
+const URL=`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul`;
+const WX={0:'맑음 ☀️',1:'대체로 맑음 🌤️',2:'구름 조금 ⛅',3:'흐림 ☁️',45:'안개 🌫️',48:'안개 🌫️',51:'이슬비 🌦️',53:'이슬비 🌦️',55:'이슬비 🌦️',61:'비 🌧️',63:'비 🌧️',65:'강한 비 🌧️',71:'눈 🌨️',73:'눈 🌨️',75:'많은 눈 🌨️',80:'소나기 🌦️',81:'소나기 🌦️',82:'강한 소나기 ⛈️',95:'천둥번개 ⛈️',96:'천둥번개 ⛈️',99:'천둥번개 ⛈️'};
+const DIR=['북','북북동','북동','동북동','동','동남동','남동','남남동','남','남남서','남서','서남서','서','서북서','북서','북북서'];
+let cur=null;
+document.getElementById('h1').textContent=SCHOOL.replace('등학교','')+' 기상 관측소'; document.title=SCHOOL+' 기상 관측소';
+function dirName(d){return DIR[Math.round(d/22.5)%16]+'풍'}
+async function load(){
+  document.getElementById('desc').textContent='날씨를 가져오는 중…';
+  try{
+    const r=await fetch(URL); if(!r.ok) throw new Error(r.status);
+    const j=await r.json(); const c=j.current; cur=c;
+    temp.textContent=Math.round(c.temperature_2m)+'°';
+    desc.textContent=WX[c.weather_code]||'날씨 코드 '+c.weather_code;
+    const d=new Date(c.time); date.textContent=d.toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'long'})+' '+d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' 관측';
+    feel.textContent='체감 온도 '+Math.round(c.apparent_temperature)+'°';
+    hum.textContent=c.relative_humidity_2m+'%';
+    wind.textContent=c.wind_speed_10m+' km/h · '+dirName(c.wind_direction_10m);
+    pres.textContent=c.surface_pressure.toFixed(0)+' hPa';
+    cloud.textContent=c.cloud_cover+'%';
+    rain.textContent=c.precipitation+' mm';
+    hilo.textContent=Math.round(j.daily.temperature_2m_max[0])+'° / '+Math.round(j.daily.temperature_2m_min[0])+'°';
+    const p=c.surface_pressure, hi=p>=1013;
+    judge.innerHTML = hi
+      ? `기압이 <b>${p.toFixed(0)} hPa</b>로 평균(1013 hPa)보다 높아요. <b>고기압</b>의 영향이 크면 공기가 내려와 구름이 적고 맑은 날이 많아요. 지금 구름량은 ${c.cloud_cover}%예요.`
+      : `기압이 <b>${p.toFixed(0)} hPa</b>로 평균(1013 hPa)보다 낮아요. <b>저기압</b>의 영향이 크면 공기가 올라가 구름이 생기고 비가 올 수 있어요. 지금 구름량은 ${c.cloud_cover}%예요.`;
+    upd.textContent='';
+  }catch(e){ desc.textContent='지금은 날씨를 가져올 수 없어요'; upd.textContent='잠시 후 다시 눌러 주세요 ('+e.message+')'; }
+}
+const KEY='gn-weather-log';
+let log=[]; try{log=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
+function renderLog(){rows.innerHTML=log.map(r=>`<tr><td>${r.t}</td><td>${r.w}</td><td>${r.temp}°</td><td>${r.hum}%</td><td>${r.wind}</td><td>${r.pres}</td><td>${r.cloud}%</td></tr>`).join('')||'<tr><td colspan="7" style="color:var(--muted)">아직 기록이 없어요</td></tr>'}
+document.getElementById('log').onclick=()=>{ if(!cur){upd.textContent='먼저 날씨를 불러와 주세요';return;}
+  const d=new Date(); log.unshift({t:d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}),w:(who.value||'우리 반').slice(0,12),temp:Math.round(cur.temperature_2m),hum:cur.relative_humidity_2m,wind:cur.wind_speed_10m+'km/h',pres:cur.surface_pressure.toFixed(0),cloud:cur.cloud_cover});
+  log=log.slice(0,30); try{localStorage.setItem(KEY,JSON.stringify(log))}catch(e){} renderLog(); };
+document.getElementById('clear').onclick=()=>{log=[];try{localStorage.removeItem(KEY)}catch(e){}renderLog()};
+document.getElementById('reload').onclick=load;
+renderLog(); load();
+</script>
+</body>
+</html>
