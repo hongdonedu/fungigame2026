@@ -1,0 +1,248 @@
+/**
+ * 우리 반 도우미 — ④ 칭찬 게시판 · ⑤ 오늘 급식 · ⑥ AI 영양사
+ * 2026 광남초 바이브코딩 연수 2차시 실습 템플릿
+ *
+ * 코드는 고치지 않아도 됩니다. 시트의 [설정] 탭에서
+ * 학교 이름 · 교육청 코드 · 학교 코드 · 학급 이름 · 제미나이 API 키만 바꾸세요.
+ *
+ *   홀(index.html) ── google.script.run ──▶ 주방(이 파일, Code.gs) ──▶ 냉장고(시트)
+ *                                              │
+ *                                              ├─▶ 나이스 급식 API (식재료 납품)
+ *                                              └─▶ 제미나이 API (셰프 초빙)
+ */
+
+// ───────── 시트 이름 ─────────
+var TAB_SETTING = '설정';
+var TAB_PRAISE = '칭찬';
+var TAB_AI = 'AI기록';
+
+// ───────── 웹 앱 첫 화면 ─────────
+function doGet() {
+  ensureSheets_();
+  var s = settings_();
+  return HtmlService.createHtmlOutputFromFile('index')
+    .setTitle(s.school + ' ' + s.className + ' 도우미')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+// ───────── 처음 실행할 때 탭과 머리글 만들기 ─────────
+function ensureSheets_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var set = ss.getSheetByName(TAB_SETTING);
+  if (!set) {
+    set = ss.insertSheet(TAB_SETTING, 0);
+    set.getRange(1, 1, 9, 3).setValues([
+      ['항목', '값', '설명'],
+      ['학교 이름', '광남초등학교', '화면 맨 위에 나와요'],
+      ['교육청 코드', 'C10', '⑤ 급식: 부산 C10 · 서울 B10 · 경기 J10 (나이스에서 확인)'],
+      ['학교 코드', '7211040', '⑤ 급식: 광남초 7211040 (나이스 학교기본정보에서 확인)'],
+      ['학급 이름', '우리 반', '예: 5학년 2반'],
+      ['제미나이 API 키', '', '⑥ AI 영양사: aistudio.google.com 에서 받은 키를 붙여 넣기. 깃허브·패들렛에는 절대 올리지 마세요'],
+      ['AI 모델', 'gemini-flash-latest', '⑥ 바꾸지 않아도 돼요'],
+      ['캐릭터 그림 주소', 'https://hongdonmax.github.io/fungigame2026/gwangnam/pose_wave.png', '우리 반 캐릭터 그림 주소(깃허브에 올린 그림 주소를 넣어 보세요)'],
+      ['칭찬 지우기 비밀번호', '1234', '선생님만 칭찬 글을 지울 수 있어요']
+    ]);
+    set.setFrozenRows(1);
+    set.getRange('A1:C1').setFontWeight('bold').setBackground('#FFF1D6');
+    set.setColumnWidth(1, 150); set.setColumnWidth(2, 320); set.setColumnWidth(3, 520);
+  }
+  var pr = ss.getSheetByName(TAB_PRAISE);
+  if (!pr) {
+    pr = ss.insertSheet(TAB_PRAISE);
+    pr.getRange(1, 1, 1, 4).setValues([['제출시각', '칭찬받는 친구', '칭찬 내용', '쓴 사람']]);
+    pr.setFrozenRows(1);
+    pr.getRange('A1:D1').setFontWeight('bold').setBackground('#FFE3EC');
+    pr.setColumnWidth(3, 420);
+  }
+  var ai = ss.getSheetByName(TAB_AI);
+  if (!ai) {
+    ai = ss.insertSheet(TAB_AI);
+    ai.getRange(1, 1, 1, 3).setValues([['급식 날짜', 'AI 안내 글', '만든 시각']]);
+    ai.setFrozenRows(1);
+    ai.getRange('A1:C1').setFontWeight('bold').setBackground('#E3F0FF');
+    ai.setColumnWidth(2, 520);
+  }
+}
+
+// ───────── 설정 읽기 ─────────
+function settings_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(TAB_SETTING);
+  var map = {};
+  if (sh) {
+    var rows = sh.getRange(1, 1, Math.max(sh.getLastRow(), 1), 2).getValues();
+    for (var i = 0; i < rows.length; i++) map[String(rows[i][0]).trim()] = String(rows[i][1]).trim();
+  }
+  return {
+    school: map['학교 이름'] || '우리 학교',
+    office: (map['교육청 코드'] || 'C10').toUpperCase(),
+    code: map['학교 코드'] || '',
+    className: map['학급 이름'] || '우리 반',
+    key: map['제미나이 API 키'] || '',
+    model: map['AI 모델'] || 'gemini-flash-latest',
+    character: map['캐릭터 그림 주소'] || '',
+    pin: map['칭찬 지우기 비밀번호'] || '1234'
+  };
+}
+
+// 화면이 처음 열릴 때 부르는 함수 (키 값은 절대 화면으로 보내지 않음)
+function getInfo() {
+  ensureSheets_();
+  var s = settings_();
+  return { school: s.school, className: s.className, character: s.character, hasKey: !!s.key && s.key.indexOf('붙여') < 0, hasSchool: !!s.code };
+}
+
+// ═════════ ④ 칭찬 게시판 (홀 → 주방 → 냉장고) ═════════
+var BAD_WORDS = ['바보', '멍청', '꺼져', '죽어', '닥쳐', '찐따', '병신', '시발', '씨발', 'ㅅㅂ', 'ㅂㅅ'];
+
+function clean_(t, max) {
+  t = String(t || '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim();
+  return t.slice(0, max);
+}
+
+function savePraise(to, msg, from) {
+  to = clean_(to, 12); msg = clean_(msg, 100); from = clean_(from, 12);
+  if (!to || !msg || !from) return { ok: false, message: '빈 칸을 모두 채워 주세요 🙂' };
+  var all = to + msg + from;
+  for (var i = 0; i < BAD_WORDS.length; i++) {
+    if (all.indexOf(BAD_WORDS[i]) >= 0) return { ok: false, message: '친구가 기분 좋아지는 말로 다시 써 볼까요? 💛' };
+  }
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    ensureSheets_();
+    SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TAB_PRAISE).appendRow([new Date(), to, msg, from]);
+  } finally {
+    lock.releaseLock();
+  }
+  return { ok: true, message: '따뜻한 칭찬 고마워요 💛', list: listPraise() };
+}
+
+function listPraise() {
+  ensureSheets_();
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TAB_PRAISE);
+  var last = sh.getLastRow();
+  if (last < 2) return { count: 0, items: [] };
+  var start = Math.max(2, last - 29);
+  var rows = sh.getRange(start, 1, last - start + 1, 4).getValues();
+  var items = [];
+  for (var i = rows.length - 1; i >= 0; i--) {
+    if (!rows[i][1] && !rows[i][2]) continue;
+    var d = rows[i][0] instanceof Date ? rows[i][0] : new Date(rows[i][0]);
+    items.push({
+      row: start + i,
+      time: isNaN(d) ? '' : Utilities.formatDate(d, 'Asia/Seoul', 'M/d HH:mm'),
+      to: String(rows[i][1]), msg: String(rows[i][2]), from: String(rows[i][3])
+    });
+  }
+  return { count: last - 1, items: items };
+}
+
+function deletePraise(row, pin) {
+  var s = settings_();
+  if (String(pin) !== String(s.pin)) return { ok: false, message: '비밀번호가 달라요' };
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TAB_PRAISE);
+  row = Number(row);
+  if (row >= 2 && row <= sh.getLastRow()) sh.deleteRow(row);
+  return { ok: true, list: listPraise() };
+}
+
+// ═════════ ⑤ 오늘 급식 (나이스 공용 API = 식재료 납품) ═════════
+var ALLERGY = {1:'난류',2:'우유',3:'메밀',4:'땅콩',5:'대두',6:'밀',7:'고등어',8:'게',9:'새우',10:'돼지고기',11:'복숭아',12:'토마토',13:'아황산류',14:'호두',15:'닭고기',16:'쇠고기',17:'오징어',18:'조개류',19:'잣'};
+
+function ymd_(offset) {
+  var d = new Date();
+  d.setDate(d.getDate() + Number(offset || 0));
+  return {
+    key: Utilities.formatDate(d, 'Asia/Seoul', 'yyyyMMdd'),
+    label: Utilities.formatDate(d, 'Asia/Seoul', 'M월 d일') + ' ' + ['일', '월', '화', '수', '목', '금', '토'][Number(Utilities.formatDate(d, 'Asia/Seoul', 'u')) % 7] + '요일'
+  };
+}
+
+function getMeal(offset) {
+  var s = settings_();
+  var day = ymd_(offset);
+  if (!s.code) return { ok: false, date: day.label, message: '[설정] 탭에 학교 코드를 넣어 주세요' };
+  var cacheKey = 'meal_' + s.office + s.code + day.key;
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get(cacheKey);
+  if (hit) return JSON.parse(hit);
+
+  var url = 'https://open.neis.go.kr/hub/mealServiceDietInfo?Type=json&ATPT_OFCDC_SC_CODE=' + encodeURIComponent(s.office) +
+            '&SD_SCHUL_CODE=' + encodeURIComponent(s.code) + '&MLSV_YMD=' + day.key;
+  var res;
+  try {
+    res = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+  } catch (e) {
+    return { ok: false, date: day.label, message: '급식 정보를 가져오지 못했어요. 잠시 후 다시 눌러 주세요' };
+  }
+  if (res.getResponseCode() !== 200) return { ok: false, date: day.label, message: '급식 정보를 가져오지 못했어요. 잠시 후 다시 눌러 주세요' };
+  var j = JSON.parse(res.getContentText());
+  var out;
+  if (!j.mealServiceDietInfo) {
+    out = { ok: true, empty: true, date: day.label, ymd: day.key, message: '이날은 급식이 없어요 🙂' };
+  } else {
+    var rows = j.mealServiceDietInfo[1].row;
+    var meals = rows.map(function (r) {
+      var dishes = String(r.DDISH_NM).split(/<br\s*\/?>/i).map(function (x) {
+        x = x.trim();
+        var m = x.match(/\(([\d.\s]+)\)\s*$/);
+        var nums = m ? m[1].split('.').map(function (n) { return Number(n); }).filter(function (n) { return ALLERGY[n]; }) : [];
+        return { name: x.replace(/\(([\d.\s]+)\)\s*$/, '').trim(), allergy: nums };
+      }).filter(function (d) { return d.name; });
+      return { type: r.MMEAL_SC_NM, cal: r.CAL_INFO, dishes: dishes };
+    });
+    out = { ok: true, empty: false, date: day.label, ymd: day.key, school: rows[0].SCHUL_NM, meals: meals };
+  }
+  cache.put(cacheKey, JSON.stringify(out), 21600);
+  return out;
+}
+
+// ═════════ ⑥ AI 영양사 (제미나이 API = 셰프 초빙) ═════════
+function analyzeMeal(offset) {
+  var s = settings_();
+  var meal = getMeal(offset);
+  if (!meal.ok || meal.empty) return { ok: false, message: meal.message || '분석할 급식이 없어요' };
+  if (!s.key || s.key.indexOf('붙여') >= 0) return { ok: false, message: '[설정] 탭의 "제미나이 API 키" 칸에 키를 넣어 주세요' };
+
+  // 같은 날짜는 다시 부르지 않기 (AI기록 탭 = 냉장고에 보관)
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TAB_AI);
+  var data = sh.getLastRow() > 1 ? sh.getRange(2, 1, sh.getLastRow() - 1, 2).getValues() : [];
+  for (var i = 0; i < data.length; i++) {
+    if (String(data[i][0]) === meal.ymd) return { ok: true, saved: true, text: String(data[i][1]) };
+  }
+
+  var menu = meal.meals.map(function (m) {
+    return m.type + ': ' + m.dishes.map(function (d) {
+      return d.name + (d.allergy.length ? '(' + d.allergy.map(function (n) { return ALLERGY[n]; }).join(', ') + ')' : '');
+    }).join(' / ');
+  }).join('\n');
+  var prompt = '너는 초등학교의 다정한 AI 영양사야. 아래는 ' + meal.date + ' ' + s.school + ' 급식 메뉴야. 괄호 안은 알레르기 유발 식품이야.\n' + menu +
+    '\n\n초등학생에게 다정한 말투로 4문장 이내로 알려 줘.\n1) 오늘 메뉴에서 영양이 좋은 점 한 가지\n2) 조심할 알레르기 식품을 번호가 아니라 식품 이름으로, 어떤 메뉴에 들어 있는지\n3) 마지막 문장은 반드시 "알레르기가 있는 친구는 꼭 선생님께 말해 주세요."\n의학적 진단이나 치료 이야기는 하지 마.';
+
+  var models = [s.model, 'gemini-2.5-flash'];
+  var text = '', lastCode = 0;
+  for (var k = 0; k < models.length && !text; k++) {
+    var res = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(models[k]) + ':generateContent', {
+      method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+      headers: { 'x-goog-api-key': s.key },
+      payload: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    });
+    lastCode = res.getResponseCode();
+    if (lastCode === 200) {
+      try {
+        var j = JSON.parse(res.getContentText());
+        text = j.candidates[0].content.parts.map(function (p) { return p.text || ''; }).join('').trim();
+      } catch (e) { text = ''; }
+    } else if (lastCode !== 404) {
+      break;
+    }
+  }
+  if (!text) {
+    var msg = (lastCode === 400 || lastCode === 401 || lastCode === 403) ? 'API 키를 확인해 주세요 (설정 탭)' :
+              lastCode === 429 ? '요청이 많아요. 1분 뒤에 다시 눌러 주세요' : 'AI가 답하지 못했어요. 잠시 후 다시 시도해 주세요';
+    return { ok: false, message: msg };
+  }
+  sh.appendRow([meal.ymd, text, new Date()]);
+  return { ok: true, saved: false, text: text };
+}
