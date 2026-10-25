@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>광남초 연수 길잡이</title>
+<meta name="description" content="패들렛 순서 그대로 따라가는 바이브코딩 연수 길잡이">
+<meta property="og:title" content="광남초 연수 길잡이">
+<meta property="og:image" content="https://hongdonedu.github.io/fungigame2026/gwangnam/1026/img/home.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+:root{
+  --bg:#FBF6EF; --surface:#FFFFFF; --sunken:#F5EEE4; --ink:#2A2340; --muted:#6E6684; --line:#ECE2D4;
+  --side:#211B3D; --side-2:#2C2550; --side-ink:#F4EFFF; --side-muted:#A99FCB; --side-line:rgba(255,255,255,.09);
+  --gold:#F5B342; --shadow:0 1px 2px rgba(42,35,64,.06),0 8px 24px -12px rgba(42,35,64,.18);
+  --display:'Jua','Noto Sans KR',system-ui,sans-serif; --body:'Noto Sans KR',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#16122A; --surface:#211B3A; --sunken:#1B1631; --ink:#F3EEFF; --muted:#AFA6CB; --line:#342C55;
+  --side:#110E22; --side-2:#1E1938; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6); color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.25;margin:0;text-wrap:balance}
+img{max-width:100%;display:block}
+[hidden]{display:none!important}
+
+/* ── 틀 ── */
+.app{display:flex;height:100dvh;overflow:hidden}
+.side{width:288px;flex:none;background:var(--side);color:var(--side-ink);display:flex;flex-direction:column;padding:18px 14px 16px;gap:4px;z-index:40;overflow:hidden;
+  background-image:radial-gradient(120% 60% at 0% 0%,rgba(245,179,66,.16),transparent 60%),radial-gradient(90% 50% at 100% 100%,rgba(166,75,211,.22),transparent 65%)}
+.brand{display:flex;align-items:center;gap:10px;padding:2px 8px 12px}
+.brand .orb{width:30px;height:30px;border-radius:50%;flex:none;background:radial-gradient(circle at 32% 30%,#fff 0 12%,transparent 13%),conic-gradient(from 210deg,#F5B342,#E2588C,#7458F5,#2C87DB,#16A589,#F5B342);box-shadow:0 0 18px rgba(245,179,66,.55)}
+.brand b{font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:.01em}
+.brand small{display:block;font-size:12px;color:var(--side-muted);margin-top:-3px}
+.brand .x{margin-left:auto;display:none;background:none;border:0;color:var(--side-muted);font-size:22px;width:36px;height:36px;border-radius:10px}
+.side-label{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--side-muted);padding:10px 10px 6px}
+.nav{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px;margin:0 -4px;padding:0 4px;scrollbar-width:thin}
+.nav button{display:flex;align-items:center;gap:11px;width:100%;border:0;background:transparent;padding:6px 10px;border-radius:12px;text-align:left;color:var(--side-ink);transition:background .15s}
+.nav button:hover{background:var(--side-line)}
+.nav button[aria-current="true"]{background:var(--side-2);box-shadow:inset 3px 0 0 var(--c)}
+.nav .ic{width:28px;height:28px;border-radius:10px;flex:none;display:grid;place-items:center;font-family:var(--display);font-size:16px;background:color-mix(in srgb,var(--c) 26%,transparent);color:#fff;border:1px solid color-mix(in srgb,var(--c) 55%,transparent)}
+.nav .tx{flex:1;min-width:0}
+.nav .tx b{display:block;font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav .tx small{display:block;font-size:12px;color:var(--side-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav .ok{width:20px;height:20px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:12px;border:1.5px solid var(--side-line);color:transparent}
+.nav button.done .ok{background:var(--c);border-color:var(--c);color:#fff}
+.side-foot{border-top:1px solid var(--side-line);padding-top:12px;margin-top:8px;display:flex;flex-direction:column;gap:10px}
+.who{display:flex;align-items:center;gap:12px;padding:4px 6px}
+.who .face{width:58px;height:58px;border-radius:18px;flex:none;background:linear-gradient(160deg,#FFF6E8,#F6E3FF);overflow:hidden;position:relative}
+.who .face img{position:absolute;left:50%;top:6px;width:84%;transform:translateX(-50%)}
+.who b{display:block;font-size:15px}
+.who small{font-size:12.5px;color:var(--side-muted)}
+.prog{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--side-muted);padding:0 6px}
+.prog .bar{flex:1;height:7px;border-radius:9px;background:var(--side-line);overflow:hidden}
+.prog .bar i{display:block;height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,#F5B342,#E2588C,#7458F5);transition:width .4s}
+.prog b{color:var(--side-ink);font-variant-numeric:tabular-nums}
+.padlet-btn{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border-radius:12px;padding:9px 12px;background:rgba(255,255,255,.08);border:1px solid var(--side-line);font-weight:700;font-size:14px}
+.padlet-btn:hover{background:rgba(255,255,255,.14)}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;gap:10px;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(8px)}
+.menu{display:none;width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:18px}
+.crumb{font-family:var(--display);font-size:18px;display:flex;align-items:center;gap:8px;min-width:0}
+.crumb .dot{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.crumb span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .sp{flex:1}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap}
+.page{flex:1;overflow-y:auto;scroll-behavior:smooth}
+.wrap{max-width:1080px;margin:0 auto;padding-block:22px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:26px}
+
+/* ── 배너 ── */
+.banner{position:relative;border-radius:28px;overflow:hidden;background:#2a2140;min-height:300px;display:flex;align-items:flex-end;box-shadow:var(--shadow);isolation:isolate}
+.banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;object-position:center 32%;transform:scale(1.02);transition:transform 8s ease}
+.banner:hover img{transform:scale(1.06)}
+.banner::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(18,12,36,.86) 0%,rgba(18,12,36,.5) 42%,rgba(18,12,36,0) 72%)}
+.banner .in{padding:26px 28px;color:#fff;display:flex;flex-direction:column;gap:8px;max-width:760px}
+.step-tag{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:5px 13px 5px 6px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);font-weight:700;font-size:14px;border:1px solid rgba(255,255,255,.22)}
+.step-tag i{font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--c);font-family:var(--display);font-size:15px}
+.banner h1{font-size:clamp(26px,4vw,40px);text-shadow:0 2px 14px rgba(0,0,0,.35)}
+.banner p{margin:0;font-size:clamp(15px,1.8vw,18px);opacity:.92;max-width:44em}
+.banner.big{min-height:min(62vh,520px)}
+.banner.big h1{font-size:clamp(30px,5vw,52px)}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:14px;padding:10px 18px;font-weight:700;font-size:15px;text-decoration:none;transition:transform .12s,filter .12s}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.btn.gold{background:var(--gold);color:#2A1C00}
+.btn.glass{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.3)}
+
+/* ── 섹션 ── */
+.sec-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec-h h2{font-size:24px}
+.sec-h span{color:var(--muted);font-size:14px}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr));gap:12px;counter-reset:s}
+.steps li{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 16px 14px 54px;position:relative;min-width:0;font-size:15px;line-height:1.55}
+.steps li::before{content:counter(s);position:absolute;left:14px;top:13px;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 16%,transparent);color:var(--c);font-family:var(--display);font-size:17px}
+.steps code,.desc code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;background:var(--sunken);padding:1px 6px;border-radius:6px;word-break:break-all}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.trio div{border-radius:20px;padding:16px;background:color-mix(in srgb,var(--c) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--c) 25%,var(--line));display:flex;flex-direction:column;gap:2px}
+.trio .e{font-size:30px;line-height:1}
+.trio b{font-family:var(--display);font-weight:400;font-size:21px}
+.trio code{font-family:ui-monospace,Consolas,monospace;font-weight:700;color:var(--c);font-size:14px}
+.trio small{color:var(--muted);font-size:13.5px}
+.tip{display:flex;gap:12px;align-items:flex-start;border-radius:18px;padding:14px 16px;background:color-mix(in srgb,var(--gold) 14%,var(--surface));border:1px solid color-mix(in srgb,var(--gold) 40%,var(--line));font-size:15px}
+.tip b{white-space:nowrap}
+
+/* 오늘의 순서 타일 */
+.flow{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.tile{border:1px solid var(--line);background:var(--surface);border-radius:20px;overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.tile:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.tile .th{aspect-ratio:16/9;position:relative;overflow:hidden;background:var(--sunken)}
+.tile .th img{width:100%;height:100%;object-fit:cover}
+.tile .th i{position:absolute;left:10px;top:10px;font-style:normal;min-width:30px;height:30px;padding:0 6px;border-radius:10px;display:grid;place-items:center;background:var(--c);color:#fff;font-family:var(--display);font-size:16px;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.tile .tx{padding:10px 14px 13px;display:flex;flex-direction:column;gap:1px}
+.tile b{font-family:var(--display);font-weight:400;font-size:18px}
+.tile small{color:var(--muted);font-size:13px}
+.tile.done .tx b::after{content:" ✓";color:var(--c)}
+
+/* 카드 */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px 18px;display:flex;flex-direction:column;gap:9px;min-width:0;box-shadow:0 1px 0 rgba(42,35,64,.03)}
+.card .k{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.kind{font-size:12px;font-weight:700;letter-spacing:.04em;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--c) 14%,transparent);color:color-mix(in srgb,var(--c) 80%,var(--ink))}
+.tag{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px}
+.card h3{font-size:20px}
+.card .desc{margin:0;color:var(--muted);font-size:14.5px;line-height:1.55}
+.card .pics{display:flex;gap:8px;background:repeating-conic-gradient(var(--sunken) 0% 25%,var(--surface) 0% 50%) 0 0/14px 14px;border-radius:14px;padding:8px;justify-content:center}
+.card .pics img{max-height:140px;width:auto;min-width:0;object-fit:contain}
+.card .row{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px}
+.b{display:inline-flex;align-items:center;gap:6px;border-radius:11px;padding:7px 12px;font-size:14px;font-weight:700;text-decoration:none;border:1px solid var(--line);background:var(--surface)}
+.b:hover{background:var(--sunken)}
+.b.main{background:var(--c);border-color:var(--c);color:#fff}
+.b.main:hover{filter:brightness(1.07);background:var(--c)}
+.b.copied{background:#16A589;border-color:#16A589;color:#fff}
+details.pr{border-radius:14px;background:var(--sunken);border:1px solid var(--line)}
+details.pr summary{cursor:pointer;list-style:none;padding:8px 12px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+details.pr summary::-webkit-details-marker{display:none}
+details.pr summary::before{content:"▸";color:var(--c);transition:transform .15s}
+details.pr[open] summary::before{transform:rotate(90deg)}
+details.pr summary .cp{margin-left:auto}
+details.pr pre{margin:0;padding:0 14px 14px;white-space:pre-wrap;word-break:break-word;font-family:var(--body);font-size:13.5px;line-height:1.6;max-height:320px;overflow:auto}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+
+.pager{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;border-top:1px dashed var(--line);padding-top:20px}
+.pager a,.pager button{flex:1 1 200px;border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:12px 16px;text-align:left;text-decoration:none;display:flex;flex-direction:column;gap:1px}
+.pager small{color:var(--muted);font-size:12.5px}
+.pager b{font-family:var(--display);font-weight:400;font-size:18px}
+.pager .next{text-align:right}
+.pager .mark{flex:0 1 auto;align-items:center;justify-content:center;text-align:center;background:color-mix(in srgb,var(--c) 12%,var(--surface));border-color:color-mix(in srgb,var(--c) 35%,var(--line))}
+.pager .mark.on{background:var(--c);color:#fff;border-color:var(--c)}
+
+/* 마무리 */
+.closing{position:relative;border-radius:28px;overflow:hidden;min-height:min(78vh,640px);display:flex;align-items:flex-end;isolation:isolate;box-shadow:var(--shadow)}
+.closing img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.closing::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(20,12,30,.88) 0%,rgba(20,12,30,.55) 34%,rgba(20,12,30,0) 64%)}
+.closing .in{padding:34px 34px 38px;color:#fff;display:flex;flex-direction:column;gap:10px;max-width:820px}
+.closing h1{font-size:clamp(28px,4.4vw,46px);text-shadow:0 2px 16px rgba(0,0,0,.4)}
+.closing p{margin:0;font-family:var(--display);font-size:clamp(20px,2.6vw,28px);color:#FFE2A8}
+.recap{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.recap button{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:10px 12px;text-align:left;display:flex;gap:10px;align-items:center}
+.recap i{font-style:normal;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:var(--c);color:#fff;font-family:var(--display);flex:none}
+.recap span{font-size:14px;font-weight:700;min-width:0}
+
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:#211B3D;color:#fff;padding:10px 18px;border-radius:14px;font-weight:700;font-size:14.5px;transition:.25s;z-index:90;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.scrim{display:none}
+
+.view{animation:rise .35s ease both;display:flex;flex-direction:column;gap:26px}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.view{animation:none}.banner img{transition:none}}
+
+@media (max-width:920px){
+  .side{position:fixed;top:0;bottom:0;left:0;transform:translateX(-104%);transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 60px rgba(0,0,0,.4);padding-top:max(18px,env(safe-area-inset-top,0px));padding-left:max(14px,env(safe-area-inset-left,0px))}
+  .app.open .side{transform:none}
+  .app.open .scrim{display:block;position:fixed;inset:0;background:rgba(10,6,24,.45);z-index:35}
+  .brand .x{display:grid;place-items:center}
+  .menu{display:grid;place-items:center}
+  .top{padding-top:max(10px,env(safe-area-inset-top,0px))}
+}
+@media (max-width:800px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){
+  .wrap{padding-block:14px 48px}
+  .view{gap:20px}
+  .steps{grid-template-columns:minmax(0,1fr)}
+  .banner,.banner.big{display:block;min-height:0;border-radius:22px;background:#241C3F}
+  .banner img{position:relative;aspect-ratio:16/9;height:auto;transform:none}
+  .banner::before{display:none}
+  .banner .in{padding:16px 18px 20px}
+  .trio{grid-template-columns:1fr;gap:8px}
+  .trio div{display:grid;grid-template-columns:auto auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;padding:12px 14px}
+  .trio .e{grid-row:1/3;font-size:28px}
+  .trio b{font-size:19px}
+  .trio small{grid-column:2/4}
+  .cards{grid-template-columns:minmax(0,1fr)}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tile b{font-size:16px}
+  .closing{min-height:520px;border-radius:22px}
+  .closing .in{padding:22px}
+  .chip .lbl{display:none}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="side" aria-label="오늘의 순서">
+    <div class="brand"><span class="orb" aria-hidden="true"></span><div><b>연수 길잡이</b><small>광남초 · 10월 26일</small></div><button class="x" id="closeBtn" aria-label="목록 닫기">✕</button></div>
+    <div class="side-label">오늘의 순서</div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-foot">
+      <div class="who"><div class="face"><img src="img/teacher.png" alt=""></div><div><small>명진초</small><b>최일훈 선생님</b></div></div>
+      <div class="prog"><span>진행</span><div class="bar"><i id="progBar"></i></div><b id="progTx">0/9</b></div>
+      <a class="padlet-btn" id="padletSide" target="_blank" rel="noopener">📌 패들렛 열기</a>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <main class="main">
+    <header class="top">
+      <button class="menu" id="menuBtn" aria-label="순서 열기">☰</button>
+      <div class="crumb" id="crumb"><span class="dot"></span><span></span></div>
+      <div class="sp"></div>
+      <a class="chip" id="padletTop" target="_blank" rel="noopener">📌 <span class="lbl">패들렛</span></a>
+    </header>
+    <div class="page" id="page"><div class="wrap" id="view"></div></div>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const DATA = {"views": [{"id": "home", "num": "", "label": "시작하기", "short": "연수 안내 · 준비물", "color": "#F27A54", "art": "img/home.webp", "title": "우리 반 앱, 가게처럼 차려 볼까요?", "analogy": "시식 코너에서 셰프 초빙까지 — 패들렛 순서 그대로 따라가요.", "cards": [{"kind": "사이트", "title": "2차시 실습 안내", "desc": "④ 템플릿 사본부터 ⑦ 깃허브 진열장까지. 단계마다 실제 화면 · 체크박스 · 복사 버튼", "tags": [], "url": "https://hongdonedu.github.io/fungigame2026/gwangnam/day2/", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/9kmlZV5D4qMKQpgV"}, {"kind": "사이트", "title": "연수 서재", "desc": "패들렛의 앱과 프롬프트를 유형별 카드로. 검색 · 내 서재 저장", "tags": [], "url": "https://hongdonedu.github.io/fungigame2026/gwangnam/", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/wKmOZ52LyX60WzMA"}, {"kind": "도구", "title": "Gemini", "desc": "오늘 코드를 만들어 줄 AI. 왼쪽 아래 도구에서 「캔버스」를 켜요", "tags": [], "url": "https://gemini.google.com/app", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/E1P8aXbYMwy3ZwA9"}, {"kind": "도구", "title": "캔바 초대 코드", "desc": "캔바 교육용 팀에 들어가기 — ③ 시트 저장형에서 써요", "tags": [], "url": "https://www.canva.com/brand/join?token=YVz8hdO2OZleEsm4b4pOWw&brandingVariant=edu&invitationDestinationType=group", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/pRxDZ4M8ozzMW183"}, {"kind": "안내", "title": "실습 계정", "desc": "제미나이 · 노트북LM 실습용 계정은 패들렛에서 확인하세요", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/Xb8YaLM5b6e6Qyn1"}]}, {"id": "s1", "num": "①", "label": "시식 코너", "short": "Index형 · 제미나이 캔버스", "color": "#EE8B2B", "art": "img/s1.webp", "title": "만든 자리에서 바로 맛보기", "analogy": "캔버스에 말하면 앱이 생기고, 공유 링크 하나면 누구나 열어요.", "steps": ["제미나이 → 도구에서 <b>캔버스<\/b> 켜기", "프롬프트 붙여 넣기 → 오른쪽에 앱이 바로 생겨요", "고치고 싶은 점을 말로 더하기 (\"버튼을 더 크게\")", "오른쪽 위 <b>공유<\/b> → 링크 복사 → 학생에게"], "cards": [{"kind": "앱", "title": "동물 분류 탐정", "desc": "날개 · 다리 · 사는 곳으로 동물 카드 12장을 바구니에 나눠 담기", "tags": ["3학년 과학", "동물의 생활"], "url": "https://share.gemini.google/rcFK0aZBmkk5", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/J24jalebwV5kQ0A1", "prompt": "너는 초등학교 과학 선생님을 돕는 웹 개발자야. 3학년 과학 '동물의 생활' 단원 수업에서 쓸 '동물 분류 탐정' 웹앱을 만들어줘.\n성취기준: [4과02-01] 여러 가지 동물을 관찰하여 특징에 따라 동물을 분류할 수 있다.\n\n[화면]\n① 분류 기준 고르기 버튼 3개: \"날개가 있나요?\" \"다리가 네 개인가요?\" \"물에서 사나요?\"\n② 동물 카드 12장(참새·개·붕어·나비·고양이·개구리·돌고래·닭·뱀·거북·벌·말, 이모지와 큰 이름)\n③ 카드를 누르면 \"예 / 아니오\" 중 고르게 하고, 고른 바구니로 카드가 이동 (드래그 말고 터치)\n④ \"정답 확인하기\" 버튼: 맞으면 축하, 틀린 카드는 빨갛게 흔들리고 이유를 한 줄로 설명\n⑤ \"다시 하기\" 버튼\n\n[조건]\n- 초등 3학년 눈높이: 크고 둥근 글씨(Jua), 파스텔 색, 버튼은 큼직하게\n- 태블릿에서 잘 보이게, 로그인 없이 한 화면에서\n- HTML 파일 하나로 완성(Tailwind CDN 사용 가능)"}, {"kind": "대화", "title": "비슷하게 만들어 보기", "desc": "같은 흐름으로 만든 제미나이 대화 공유본 — 프롬프트와 고친 과정이 함께 보여요", "tags": [], "url": "https://gemini.google.com/share/74b3608d585e?skid=0ae640ab-42d3-4e5d-8b2b-1aa76ba2affc", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/4b3zaM2vdXL9Q2j7"}]}, {"id": "s2", "num": "②", "label": "포장", "short": "HTML 저장형 · 코드 다운로드", "color": "#E2588C", "art": "img/s2.webp", "title": "파일 하나로 포장해 어디든", "analogy": "앱을 index.html 한 개로 싸 두면 USB · 패들렛 · 학급 홈페이지 어디서나 열려요.", "steps": ["캔버스에서 앱 완성", "오른쪽 위 <b>내보내기 → 코드 다운로드<\/b>", "받은 파일을 더블클릭 → 인터넷 창에서 바로 열려요", "그림을 쓰는 앱은 그림 파일을 <b>같은 폴더<\/b>에 함께"], "cards": [{"kind": "앱", "title": "태양계 행성 탐험 도감", "desc": "행성 카드 · 탐험 도장 · 퀴즈 8문제. 머리글에 pose_map.png 닭핑", "tags": ["4학년 과학", "밤하늘 관찰"], "url": "https://hongdonedu.github.io/fungigame2026/gwangnam/planets.html", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/9kmlZV5zxVknQpgV", "prompt": "너는 초등학교 과학 선생님을 돕는 웹 개발자야. 4학년 과학 '밤하늘 관찰' 단원에서 쓸 '태양계 행성 탐험 도감' 웹앱을 HTML 파일 하나로 만들어줘.\n성취기준: [4과13-02] 태양계 구성원을 알고, 태양과 행성을 조사할 수 있다.\n\n[화면]\n① 8개 행성 카드(수성~해왕성): 색이 다른 동그라미 + 이름 + \"태양에서 n번째\"\n② 카드를 누르면 설명 패널: 지름(지구=1), 태양과의 거리, 한 바퀴 도는 데 걸리는 시간, 위성 수, 한 줄 특징\n③ \"탐험 도장 찍기\" 버튼 – 도장은 브라우저(localStorage)에 저장, 위쪽 진행 막대, 8개 다 모으면 축하 문구\n④ 행성 퀴즈 8문제(4지선다, 바로 채점)\n⑤ 머리글에 안내 캐릭터 그림(pose_map.png), 축하 문구 옆에 pose_idea.png\n\n[조건]\n- 둥근 글씨(Jua) + 본문 Gowun Dodum, 밝은 배경, 폰·태블릿에서 잘 보이게\n- 외부 서버 없이 파일 하나로 (그림 파일은 같은 폴더)\n- 완성되면 내보내기 → 코드 다운로드로 index.html 저장"}, {"kind": "그림", "title": "함께 넣은 그림 2장", "desc": "planets.html 옆 같은 폴더에 두는 투명 PNG — pose_map.png · pose_idea.png", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/1xkVaqdl1eLbWl0e", "img": ["../pose_map.png", "../pose_idea.png"]}, {"kind": "앱", "title": "동물 분류 탐정 – 저장판", "desc": "①에서 코드 다운로드한 파일을 그대로 올린 것", "tags": [], "url": "https://hongdonedu.github.io/fungigame2026/gwangnam/animals.html", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/E1P8aXbJn81qZwA9"}, {"kind": "앱", "title": "우리 반 막대그래프 공장", "desc": "자료를 넣으면 canvas로 막대그래프를 그리고 해석 문장까지", "tags": ["4학년 수학", "자료의 수집과 정리"], "url": "https://hongdonedu.github.io/fungigame2026/gwangnam/graph.html", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/PR3NWxqMlxANab0O", "prompt": "너는 초등학교 수학 선생님을 돕는 웹 개발자야. 4학년 수학 '자료의 수집과 정리' 단원에서 쓸 '우리 반 막대그래프 공장' 웹앱을 HTML 파일 하나로 만들어줘.\n성취기준: [4수04-01] 자료를 수집하여 그림그래프나 막대그래프로 나타내고 해석할 수 있다.\n\n[화면]\n① 왼쪽: 그래프 제목, 가로(항목)·세로(단위) 이름, 항목과 수를 넣는 줄(항목 추가/지우기), 눈금 한 칸(1·2·5·10), 막대 색 고르기, \"그래프 그리기\"·\"그림으로 저장\" 버튼, \"예시 자료\" 버튼\n② 오른쪽: canvas에 막대그래프 — 제목, 눈금선, 막대 위에 값, 가로축 항목 이름, 축 이름\n③ 그래프 아래에 해석 문장: 가장 많은 것·가장 적은 것·둘의 차이·전체 합·눈금 한 칸을 자동으로 읽어 주기\n④ 머리글에 안내 캐릭터 그림, 아래에 그래프 읽는 순서 안내와 \n\n[조건]\n- 둥근 글씨(Jua), 따뜻한 주황 테마, 글자 크게, 태블릿에서 잘 보이게\n- 외부 라이브러리 없이 canvas로 직접 그리기, 서버 없이 파일 하나로\n- 완성되면 내보내기 → 코드 다운로드로 index.html 저장"}, {"kind": "프롬프트", "title": "자연물 빙고", "desc": "1학년 3×3 빙고 — 도장 · 음성 · 계절 버튼", "tags": ["1학년", "통합"], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/jpoxajzNBqgKabPE", "prompt": "1학년이 교사와 함께 태블릿으로 사용할 '자연물 빙고' 웹앱을 만들어 줘.- 3×3 빙고판. 칸마다 자연물 이모지 하나와 큰 글씨 이름 (솔방울, 민들레, 개미, 나뭇잎, 돌멩이, 무당벌레, 나비, 도토리, 꽃잎 등)- 칸을 누르면 큰 도장이 찍히고, 이름을 한국어 음성으로 읽어 주고, 짧은 효과음이 난다- 가로·세로·대각선 한 줄이 완성되면 \"빙고!\" 하고 화면 가득 축하 효과가 나온다- '새 빙고판' 버튼을 누르면 자연물이 섞여서 새 판이 나온다. 실수로 누르지 않게 확인창을 한 번 띄운다- 봄·여름·가을·겨울 버튼으로 계절에 맞는 자연물 세트를 고를 수 있다- 찍은 도장은 기기 안에 저장되어 앱을 다시 열어도 그대로 남는다- 자연물 목록을 고치는 교사용 설정은 톱니바퀴 아이콘을 길게 눌러야 열리게 한다- 글자는 아주 크게, 칸은 손가락으로 누르기 쉽게, 로그인 없이 한 화면에서, 세로와 가로 화면 모두 잘 보이게- 아이가 글자를 입력하는 칸은 없게html 파일로 다운 받을 수 있게 해줘"}, {"kind": "프롬프트", "title": "우리 반 자연물 도감", "desc": "사진 찍기 → 이름 카드 → 소리 내어 읽기", "tags": ["1학년", "통합"], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/J24jaleB7YN4Q0A1", "prompt": "1학년이 교사와 함께 태블릿으로 사용할 '우리 반 자연물 도감' 웹앱을 만들어 줘. 기능은 세 가지야.첫째, 사진을 찍거나 올린다.둘째, 교사가 이름을 입력하면 큰 글씨의 카드로 저장된다.셋째, 카드를 누르면 이름을 한국어 음성으로 읽어 준다.화면은 위에서부터 초록 머리글과 노란 '사진 찍기' 버튼, 꽃·나뭇잎·곤충 분류 버튼 한 줄, 파스텔 색 카드 격자 순서로 만들고, 글자는 크고 버튼은 그림 위주로, 로그인 없이 한 화면에서 모두 되게 해 줘.html 파일로 다운 받을 수 있게 해줘"}]}, {"id": "s3", "num": "③", "label": "주문서", "short": "시트 저장·공유형 · 캔바", "color": "#16A589", "art": "img/s3.webp", "title": "주문서가 쌓이는 식당", "analogy": "학생이 누른 응답(주문서)이 시트 한 장에 한 줄씩 차곡차곡 쌓여요.", "steps": ["캔바 → <b>Canva AI<\/b>에 프롬프트 붙여 넣기", "응답이 <b>캔바 시트<\/b>로 모이게 연결", "게시해서 주소를 학생에게", "선생님은 시트에서 결과 확인"], "cards": [{"kind": "앱", "title": "수업 이해도 신호등", "desc": "🟢🟡🔴 하나만 누르면 제출 — 선생님은 색깔별 개수를 한눈에", "tags": [], "url": "https://goodteacher.my.canva.site/cn6yfa7tj1g84afr", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/lkROZPwD6qzLQjMg", "prompt": "초등학교 교실에서 쓸 \"수업 이해도 신호등\" 앱을 만들어 줘. 학생이 자기 폰이나 태블릿에서 열어 이름을 넣고 신호등 색 하나를 고르면 응답이 모이는 앱이야.\n[화면]\n① 맨 위 제목 \"오늘 수업, 어땠나요?\"\n② 이름(또는 번호) 입력칸\n③ 큰 버튼 3개: 🟢 잘 알겠어요 / 🟡 조금 헷갈려요 / 🔴 어려워요 — 하나를 누르면 바로 제출돼\n④ 그 아래 \"궁금한 점이 있으면 적어 주세요\" 한 줄 입력칸(선택)\n⑤ 제출되면 \"고마워요! 선생님이 확인할게요 😊\" 메시지가 뜨고 입력칸이 비워져. 이름이 비어 있으면 제출하지 말고 다정하게 안내해 줘.\n[응답 모으기]\n- 제출 내용(제출시각, 이름, 신호, 궁금한 점)이 캔바 시트로 수집되는 폼으로 연결해 줘. 선생님은 그 캔바 시트에서 색깔별 개수와 궁금한 점을 볼 거야.\n- 캔바 시트 연결이 안 되면 이렇게 해 줘: 화면 맨 아래 작은 \"선생님용\" 버튼 → 비밀번호 1234 → 이 기기에서 모인 응답을 초록·노랑·빨강 개수(큰 숫자)와 🔴를 누른 학생 이름 목록, 궁금한 점 목록(최신 순)으로 보여 주고, [결과 복사] 버튼을 누르면 \"제출시각, 이름, 신호, 궁금한 점\" 표(탭으로 구분)가 복사되게 해 줘.\n[디자인]\n글씨 크게, 색은 부드럽게, 학생에게 다정한 말투로. 휴대폰 세로 화면에서 버튼 3개가 손가락으로 누르기 쉽게 크게. 자동 새로고침은 넣지 마.\n[조건]\n화면 하나로. 외부 라이브러리 없이. 모든 문구는 한국어."}, {"kind": "앱", "title": "줄넘기 카운터", "desc": "화면을 톡톡 누를 때마다 +1, 기록은 시트로", "tags": ["스포츠클럽"], "url": "https://goodteacher.my.canva.site/c1cjx92wgss60djf", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/zV61Q6nrGqMRQO98", "prompt": "다음 조건에 맞는 줄넘기 카운터 웹 앱을 만들어줘.\n\n[화면 구성]\n1. 로그인 화면: 학년, 반, 번호, 이름 입력 필드 → \"시작하기\" 버튼\n2. 카운터 화면:\n   - 상단: 학생 정보(예: 3학년 2반 15번 김철수) 표시\n   - 중앙: 큰 숫자(줄넘기 횟수) - 처음에 0\n   - 화면 아무 곳이나 탭/클릭하면 숫자가 1씩 증가\n   - 하단 버튼: \"초기화\"(0으로 리셋), \"기록 저장\" 버튼\n3. 기록 화면: 날짜별 줄넘기 기록을 표로 보여줌\n\n[디자인]\n- 초등학생 친화적인 밝고 큰 UI\n- 숫자는 최소 120px 이상 큰 글씨\n- 탭할 때마다 숫자에 바운스 애니메이션 효과\n- 색상: 초록색 계열 메인 컬러\n\n[기능]\n- 시트(Sheet) 기능으로 학생별 기록 저장 (이름, 날짜, 횟수)\n- 선생님이 전체 학생 기록을 한 눈에 볼 수 있는 교사용 보기 모드\n- 교사용 보기: 비밀번호 \"teacher\" 입력 시 접근 가능"}, {"kind": "프롬프트", "title": "우리 반 칭찬 게시판", "desc": "전자칠판에 띄워 두고 돌아가며 칭찬 남기기 — ⑤에서 시트판으로 다시 만나요", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/0BA3Zpb7vnkbanPb", "prompt": "초등학교 교실 전자칠판(또는 태블릿 한 대)에 띄워 두고, 친구들이 돌아가며 칭찬을 남기는 \"우리 반 칭찬 게시판\" 앱을 만들어 줘. 한 화면 안에서 모든 게 돌아가고, 저장은 이 화면이 열려 있는 동안 유지돼.\n[화면]\n① 위쪽: 입력칸 3개 — 칭찬받는 친구 이름, 칭찬 내용(최대 100자), 내 이름 — 그리고 [칭찬 보내기] 버튼\n② 보내면 \"따뜻한 칭찬 고마워요 💛\" 메시지가 2초 떴다 사라지고, 입력칸이 비워지고, 아래 목록이 바로 갱신돼\n③ 아래쪽: 지금까지 올라온 칭찬을 카드 모양으로 최신 순 30개까지. 카드마다 \"○○에게 → 칭찬 내용 — 쓴 사람\" 형식, 작은 하트 아이콘, 카드 배경은 파스텔 색 4~5가지가 번갈아 나오게. 새 카드는 살짝 커지며 나타나는 효과.\n④ 화면 맨 위에 \"우리 반 칭찬 ○개!\"처럼 전체 개수를 크게\n⑤ 빈 칸이 있으면 저장하지 말고 다정하게 안내\n⑥ 맨 아래 작은 버튼 2개: [내보내기] — 지금까지 칭찬을 \"시각, 칭찬받는 친구, 칭찬 내용, 쓴 사람\" 표(탭으로 구분)로 복사해서 선생님이 시트에 붙일 수 있게 / [전체 지우기] — 확인을 두 번 물어본 뒤 지움\n⑦ 가능하면 브라우저 저장소에 저장해서 화면을 새로고침해도 칭찬이 남아 있게 해 줘. 안 되면 맨 아래 작은 글씨로 \"화면을 닫으면 사라져요. 수업 끝에 [내보내기]를 눌러 주세요\"라고 안내.\n[디자인]\n글씨 크게, 색은 부드럽게, 학생에게 다정한 말투로. 전자칠판(가로 큰 화면)과 태블릿 둘 다에서 잘 보이게.\n[조건]\n화면 하나로. 외부 라이브러리 없이. 모든 문구는 한국어."}, {"kind": "앱", "title": "수행평가 웹앱", "desc": "반 · 번호 · 이름 → 질문 8개 → 제출하면 시트에 한 줄", "tags": ["6학년 실과", "일과 직업"], "url": "https://goodteacher.my.canva.site/ckxyw947a4ct6wsx", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/dMA1W8wVGY7KZ4OV", "prompt": "6학년 실과 수행평가 웹앱을 만들어줘. 캔바 시트(Canva Sheets)와 연동해줘.\n \n[전체 흐름]\n1단계: 로그인 화면\n2단계: 수행평가 입력 화면\n3단계: 제출 완료 화면\n \n[1단계 - 로그인 화면]\n- 제목: \"6학년 실과 수행평가 - 일과 직업\"\n- 입력 필드 3개:\n① 반 (드롭다운: 1반~6반 중 선택)\n② 번호 (드롭다운: 1번~30번 중 선택)\n③ 이름 (텍스트 입력)\n- 모든 필드 필수 입력. 비어있으면 \"모두 입력해주세요\" 알림\n- \"시작하기\" 버튼 클릭 시 2단계로 이동\n \n[2단계 - 수행평가 입력 화면]\n- 상단에 \"6학년 O반 OO번 OOO\" 표시 (1단계 입력 정보 반영)\n- 아래 항목들을 순서대로 입력받아:\n \n질문1: \"일과 직업이 중요한 이유는 무엇인지 설명해 보세요.\"\n→ 여러 줄 텍스트 입력 (textarea, 최소 3줄 높이)\n \n구분선 넣고, 소제목: \"나의 적성을 탐색하여 내게 맞는 직업을 탐구해 봅시다.\"\n \n질문2: \"내가 좋아하는 것\" → 텍스트 입력\n질문3: \"내가 잘 하는 것\" → 텍스트 입력\n질문4: \"나의 장점\" → 텍스트 입력\n질문5: \"나의 단점\" → 텍스트 입력\n질문6: \"내가 관심이 있는 것들\" → 텍스트 입력\n질문7: \"원하는 직업\" → 텍스트 입력\n질문8: \"원하는 직업을 위해 노력해야 할 점\" → 여러 줄 텍스트 입력\n \n- 모든 항목 필수 입력\n- 하단에 \"제출하기\" 버튼\n- 제출 전 \"정말 제출하시겠습니까?\" 확인 팝업\n \n[3단계 - 제출 완료 화면]\n- \"제출이 완료되었습니다!\" 메시지\n- 내가 입력한 내용 요약 표시 (읽기 전용)\n- \"처음으로 돌아가기\" 버튼\n \n[캔바 시트 연동]\n- 캔바 시트와 직접 연동하여 제출 데이터를 자동 기록해줘\n- 시트 열(column) 구성:\nA: 제출시간\nB: 반\nC: 번호\nD: 이름\nE: 일과 직업이 중요한 이유\nF: 좋아하는 것\nG: 잘 하는 것\nH: 장점\nI: 단점\nJ: 관심 있는 것들\nK: 원하는 직업\nL: 노력해야 할 점\n- 학생이 제출할 때마다 시트에 새로운 행(row)이 추가되도록 해줘\n- 같은 반+번호로 중복 제출 시 \"이미 제출했습니다\" 알림은 뜨지만 새로 입력할 수 있도록 해줘\n \n[디자인 요청]\n- 초등학생 친화적인 밝고 깔끔한 UI\n- 큰 글씨(16px 이상), 넉넉한 입력 칸\n- 태블릿/모바일 반응형 필수\n- 색상: 파란색·초록색 계열 밝은 톤\n- 각 질문 사이 여백 충분히\n- 입력 칸에 예시 placeholder 텍스트 넣어줘\n(예: \"좋아하는 것\" → \"예: 그림 그리기, 축구, 요리 등\")"}]}, {"id": "logo", "num": "✦", "label": "우리 가게 로고", "short": "디테일 입히기 · 학급 캐릭터", "color": "#D99A00", "art": "img/logo.webp", "title": "우리 반 캐릭터가 손님을 맞아요", "analogy": "가게 로고처럼, 학급 캐릭터가 앱 곳곳에 등장하면 우리 반만의 앱이 돼요.", "steps": ["학급 캐릭터 그림을 제미나이에 올리고 <b>\"3D로 만들어줘\"<\/b>", "포즈 시트 프롬프트로 <b>9포즈를 한 장<\/b>에", "<b>포즈 시트 가위<\/b>로 잘라 pose_wave.png처럼 이름 붙이기", "앱 프롬프트에서 <b>파일 이름으로 부르기<\/b>"], "cards": [{"kind": "그림", "title": "닭핑", "desc": "광남초 연수의 마스코트 — 아래 프롬프트로 3D · 앱 등장까지", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/L8KjW9VzGjxEaJbv", "prompts": [["3D로", "이 캐릭터를 3D로 만들어줘"], ["앱 곳곳에", "이 프로그램 곳곳에 이 캐릭터가 등장하게 해줘. 포즈 적절히 바꿔도 돼."]], "img": ["../dakping.png"]}, {"kind": "프롬프트", "title": "포즈 시트 3×3", "desc": "격자선 없이, 포즈 사이 여백 넉넉하게 — 그래야 잘 잘려요", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/BJkrQAdKG466aEge", "prompt": "이 캐릭터의 포즈 시트를 3×3 격자로 한 장에 그려줘. 격자선 없이 균등 배치, 포즈 사이 여백 넉넉하게: ① 손 흔들며 인사 ② 두루마리 문서를 펼쳐 읽기 ③ 전구가 반짝 떠오른 표정 ④ 체크리스트와 저울 들기 ⑤ 붓으로 지도 그리기 ⑥ 태블릿과 도구상자 들기 ⑦ 지팡이 휘둘러 반짝이 마법 시전 ⑧ 폭죽과 함께 만세 ⑨ 갸우뚱하며 머리 위 물음표", "img": ["../pose-cutter/sample-sheet.png"]}, {"kind": "앱", "title": "포즈 시트 가위", "desc": "포즈 시트를 올리면 칸마다 잘라 배경을 지우고 투명 PNG · ZIP으로", "tags": [], "url": "https://hongdonedu.github.io/fungigame2026/gwangnam/pose-cutter/", "prompts": [["직접 만들기 (메타 프롬프트)", "나는 초등학교 교사야. 제미나이나 챗GPT로 그린 캐릭터 '포즈 시트'(한 장에 여러 포즈가 격자로 그려진 그림)를 포즈별로 잘라 투명 PNG로 받는 웹앱을 만들고 싶어.\n제미나이 캔버스에 넣을 좋은 프롬프트를 만들어 줘. 디자인은 예쁘고 귀엽게 만들어지게 해 줘.\n프롬프트에는 이 조건이 꼭 들어가게 해 줘:\n- HTML 파일 하나로 완성, 그림은 어디에도 올리지 않고 브라우저 안에서만 처리\n- 그림 넣기: 끌어다 놓기 · 클릭해서 고르기 · Ctrl+V 붙여넣기\n- 칸 자동 찾기(그림 사이 빈 줄을 기준으로) + 잘 안 되면 '가로 ○칸 × 세로 ○줄'로 똑같이 나누기\n- 원본 위에 자를 칸을 번호 붙은 상자로 미리 보여 주기\n- 배경 지우기(가장자리와 비슷한 색을 투명하게, 민감도 슬라이더)와 남는 여백 자동 정리\n- 조각마다 파일 이름을 고칠 수 있게(영어 소문자, 예: pose_wave), 한 장씩 저장 + 전체 ZIP으로 저장\n- 태블릿에서도 잘 보이게"]]}, {"kind": "프롬프트", "title": "9포즈를 앱 곳곳에", "desc": "잘라 둔 포즈를 장면마다 하나씩 등장시키기", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/x5A7arD0x4VKZwr6", "prompt": "이 9개 포즈 캐릭터가 웹앱 곳곳에 등장하게 해줘. 캐릭터는 등장할때 하나씩 등장해서 써줘. 포즈를 개별로 잘라 사용해줘"}, {"kind": "프롬프트", "title": "파일 이름으로 부르기", "desc": "그림은 index.html 옆에 두고 이름으로 — 행성 도감 예시", "tags": [], "url": "https://hongdonedu.github.io/fungigame2026/gwangnam/planets.html", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/Xb8YaLMqoypwQyn1", "prompt": "앱 머리글 왼쪽에 우리 반 캐릭터 그림을 넣어 줘.\n그림 파일은 index.html과 같은 폴더에 있는 pose_map.png (투명 배경 PNG).\n높이 80px, 제목 옆에 나란히 두고 둥근 말풍선으로 \"행성을 눌러 탐험 도장을 찍어요!\"라고 말하게 해 줘.\n축하 문구 옆에는 pose_idea.png, 맨 아래 안내 문장 옆에는 pose_check.png를 넣어 줘.\n(캔버스 미리보기에서도 보이게 하려면 파일 이름 대신 공개 주소를 써 줘: https://hongdonedu.github.io/fungigame2026/gwangnam/pose_map.png)\n\n[캐릭터 준비 순서]\n① 학급 캐릭터 그림을 제미나이에 올리고: \"이 캐릭터를 3D로 만들어줘\"\n② 포즈 시트: \"이 캐릭터의 포즈 시트를 3×3 격자로 한 장에 그려줘. 격자선 없이 균등 배치, 포즈 사이 여백 넉넉하게: ① 손 흔들며 인사 ② 두루마리 문서를 펼쳐 읽기 ③ 전구가 반짝 떠오른 표정 ④ 체크리스트와 저울 들기 ⑤ 붓으로 지도 그리기 ⑥ 태블릿과 도구상자 들기 ⑦ 지팡이 휘둘러 반짝이 마법 시전 ⑧ 폭죽과 함께 만세 ⑨ 갸우뚱하며 머리 위 물음표\"\n③ 한 장씩 잘라 캔바 '배경 제거'로 투명 PNG → pose_map.png 처럼 이름 붙여 index.html 옆에 두기"}]}, {"id": "s4", "num": "④", "label": "앱 진열장", "short": "깃허브 · 우리 반 가게", "color": "#7458F5", "art": "img/s4.webp", "title": "메뉴가 바뀌어도 간판은 그대로", "analogy": "깃허브에 진열장을 차리면 앱을 더하고 고쳐도 주소는 그대로예요.", "steps": ["깃허브 가입 — <b>Username이 내 주소<\/b>가 돼요", "<b>New repository<\/b> → 이름 myclass-apps · Public → Create", "<b>creating a new file<\/b> → 이름 index.html → 제미나이가 만든 진열장 코드 붙여 넣기 → Commit", "<b>Settings → Pages<\/b> → Branch: main · /(root) → Save", "1~2분 뒤 <code>https://내아이디.github.io/myclass-apps/<\/code>", "planets.html · 그림 파일은 <b>Add file → Upload files<\/b>로 옆에"], "cards": [{"kind": "시작", "title": "깃허브 가입", "desc": "짧은 영어 소문자 Username 추천(예: kimteacher26) · 개인 메일 추천 · 설문은 Skip", "tags": [], "url": "https://github.com/signup", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/YDgnZe2VDp2yWwrA", "prompts": [["진열장 메타 프롬프트", "나는 초등학교 담임교사야. 우리 반이 쓰는 수업 앱들을 한곳에 모아 두는 '우리 반 앱 진열장' 웹페이지를 깃허브 페이지에 올리려고 해.제미나이 캔버스에 넣을 좋은 프롬프트를 만들어 줘. 디자인은 예쁘고 귀엽게 만들어지게 해줘프롬프트에는 이 조건이 꼭 들어가게 해 줘:HTML 파일 하나(index.html)로 완성앱 목록은 코드 맨 위 한 곳에 모아서, 한 줄만 더 쓰면 카드가 하나 생기게카드를 누르면 앱이 새 탭으로 열리게학생 이름 · 비밀번호 · API 키는 넣지 않기태블릿 · 휴대폰에서도 잘 보이게"]]}, {"kind": "프롬프트", "title": "진열장 앱 바꾸기", "desc": "예시 앱을 지우고 우리 반 앱 3개만 — 디자인은 그대로", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/yEPVZk7p3wpbZb0Y", "prompts": [["앱 바꾸기", "위 index.html에서 예시 앱을 모두 지우고 아래 3개만 넣어 줘. 디자인은 그대로 두고, 코드 전체를 생략 없이 다시 보여 줘.\n동물 분류 탐정 | https://gemini.google.com/share/ef8ddfaf4dd1\n태양계 행성 탐험 도감 | planets.html\n수업 이해도 신호등 | https://goodteacher.my.canva.site/cn6yfa7tj1g84afr"]]}, {"kind": "프롬프트", "title": "진열장 배경 바꾸기", "desc": "같은 폴더에 bg.jpg를 올리고 배경으로", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/YBl3Z2Y9G363Qv16", "prompt": "index.html의 배경을 같은 폴더에 있는 bg.jpg 그림으로 바꿔 줘. 그림은 화면에 꽉 차게 하고, 카드 글씨가 잘 보이도록 그림 위에 아주 연한 흰색 반투명 막을 깔아 줘. 나머지 디자인과 앱 목록은 그대로 두고, 코드 전체를 생략 없이 다시 보여 줘."}, {"kind": "자료", "title": "실습 키트", "desc": "myclass-apps.zip — 압축을 풀고 안의 파일을 저장소에 끌어다 놓기 (zip째 올리면 안 열려요)", "tags": [], "url": "https://hongdonedu.github.io/fungigame2026/gwangnam/day2/myclass-apps.zip", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/MxrmZYeXojw8ZGOq"}, {"kind": "앱", "title": "완성 예시", "desc": "광남초 5학년 2반 앱 진열장", "tags": [], "url": "https://hongdonedu.github.io/myclass-apps/", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/PR3NWxq7RPy7ab0O"}]}, {"id": "s5", "num": "⑤", "label": "홀 · 주방 · 냉장고", "short": "앱스 스크립트 + 시트", "color": "#2C87DB", "art": "img/s5.webp", "title": "홀 · 주방 · 냉장고가 있는 식당", "analogy": "화면(홀)은 index.html, 일하는 곳(주방)은 Code.gs, 저장(냉장고)은 구글 시트.", "trio": [["🍽️", "홀", "index.html", "학생이 보고 누르는 화면"], ["🍳", "주방", "Code.gs", "저장 · 조회 · 계산을 처리"], ["🧊", "냉장고", "구글 시트", "응답이 한 줄씩 보관"]], "steps": ["구글 시트 만들기 → <b>확장 프로그램 → Apps Script<\/b>", "Code.gs와 index.html 붙여 넣기 — <b>끝 표시까지<\/b> 다 들어갔는지 확인", "<b>배포 → 새 배포<\/b> → 웹 앱 · 액세스: 모든 사용자 → 권한 허용", "고친 뒤에는 <b>배포 관리 → ✏️ → 새 버전<\/b> (주소 그대로)"], "cards": [{"kind": "앱", "title": "우리 반 칭찬 게시판", "desc": "③의 칭찬 게시판을 시트에 저장하는 판으로 — 새로고침해도 칭찬이 남아요", "tags": [], "url": "https://script.google.com/macros/s/AKfycbz72_-VecGMCfrwSmi3xVdsZyPxCttUYQ8HYDaZA1-M6tTFNVjmChdyPZETHy6cTDi8/exec", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/PVKBQOrdP9z5aj5x", "prompt": "나는 초등학교 교사야. 우리 반 친구들이 서로를 칭찬하는 글을 올리는 \"칭찬 게시판\" 웹앱을 앱스 스크립트로 만들려고 해. Code.gs와 index.html 코드가 필요해.\n[시트]\n시트 주소: (여기에 내 스프레드시트 주소 붙여넣기)\n열 순서: 제출시각 | 칭찬받는 친구 | 칭찬 내용 | 쓴 사람\n[화면]\n① 위쪽: 입력칸 3개 — 칭찬받는 친구 이름, 칭찬 내용(최대 100자), 내 이름 — 그리고 [칭찬 보내기] 버튼\n② 보내면 \"따뜻한 칭찬 고마워요 💛\" 메시지가 뜨고 입력칸이 비워지고, 아래 목록이 바로 갱신돼\n③ 아래쪽: 지금까지 올라온 칭찬을 카드 모양으로 최신 순 30개까지 보여 줘. 카드마다 \"○○에게 → 칭찬 내용 — 쓴 사람\" 형식, 작은 하트 아이콘, 카드 배경은 파스텔 색 몇 가지가 번갈아 나오게\n④ 화면 맨 위에 \"우리 반 칭찬 ○개!\"처럼 전체 개수를 크게 보여 줘\n⑤ 빈 칸이 있으면 저장하지 말고 다정하게 안내\n[디자인]\n글씨 크게, 색은 부드럽게, 학생에게 다정한 말투로. 휴대폰에서도 잘 보이게.\n[기술 조건 — 반드시 지켜 줘]\n1. 파일은 딱 두 개만: Code.gs, index.html. CSS와 JavaScript는 전부 index.html 안에 넣고, 다른 파일(css.html, js.html 등)이나 <?= ?> 템플릿 문법은 쓰지 마.\n2. 웹 앱으로 배포할 거야. doGet()은 HtmlService.createHtmlOutputFromFile('index')를 돌려주고, .addMetaTag('viewport', 'width=device-width, initial-scale=1')을 붙여서 휴대폰에서도 잘 보이게 해.\n3. 화면에서 저장·조회는 google.script.run(withSuccessHandler / withFailureHandler)으로 Code.gs 함수를 호출해.\n4. 시트는 SpreadsheetApp.openByUrl(위 시트 주소)로 열어. 필요한 탭이 없으면 만들고, 비어 있으면 처음 실행할 때 헤더 행을 자동으로 써 줘.\n5. 외부 라이브러리·CDN 없이 순수 HTML/CSS/JS만. 화면의 모든 문구는 한국어.\n6. 출력: 코드 블록 두 개(각 블록 첫 줄에 // 파일명 주석), 중간 생략(\"...\", \"나머지는 동일\") 없이 전체 코드. 코드 다음에 배포 순서를 4줄로."}, {"kind": "시트", "title": "칭찬 게시판 냉장고", "desc": "칭찬이 쌓이는 구글 시트", "tags": [], "url": "https://docs.google.com/spreadsheets/d/191NiJdqJrz8q2yy_hV-lUeLB2zkmudtGB8-tbfJPLN0/edit?gid=0#gid=0", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/e9YpQNnbD0mlQxjM"}], "links": [["구글 스프레드시트", "https://docs.google.com/spreadsheets/u/0/"], ["구글 앱스 스크립트", "https://script.google.com/home/?hl=ko"]]}, {"id": "s6", "num": "⑥", "label": "식재료 납품", "short": "공용 API · 급식 · 날씨", "color": "#3C9A4A", "art": "img/s6.webp", "title": "재료는 매일 납품받아요", "analogy": "급식 · 날씨 같은 데이터는 기관이 매일 보내 줘요. 우리는 요리만 하면 돼요.", "steps": ["제미나이에 <b>\"공용 API 찾아줘\"<\/b>", "나이스 포털에서 <b>학교 코드<\/b> 알아내기 (광남초 C10 · 7211040)", "급식 프롬프트의 <b>학교 코드만 바꾸기<\/b>", "날씨 · 포켓몬처럼 <b>키 없는 API<\/b>는 HTML 하나로"], "cards": [{"kind": "프롬프트", "title": "공용 API 찾기", "desc": "제미나이에 그대로 물어보기", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/YBl3Z2YjG6M8Qv16", "prompts": [["API 찾기", "HTML로 바로 호출 가능한 활용할 수 있는 공용 API 찾아줘"]]}, {"kind": "프롬프트", "title": "학교 정보 API 찾기", "desc": "급식 · 학사일정 · 시간표", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/dMA1W8w2g84pZ4OV", "prompts": [["학교 정보 API", "우리 학교 급식 · 학사일정 · 시간표 같은 학교 정보를 가져올 수 있는 사이트 주소와 공공 API를 알려 줘. 학교 코드 찾는 방법도 같이."]]}, {"kind": "사이트", "title": "나이스 교육정보 개방 포털", "desc": "급식 · 학사일정 · 시간표 API가 모여 있는 곳", "tags": [], "url": "https://open.neis.go.kr/portal/mainPage.do", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/pRxDZ4MeG04qW183"}, {"kind": "자료", "title": "학교 코드 알아내기", "desc": "광남초등학교 → 교육청 C10(부산) · 학교 7211040", "tags": [], "url": "https://open.neis.go.kr/hub/schoolInfo?Type=json&SCHUL_NM=%EA%B4%91%EB%82%A8%EC%B4%88%EB%93%B1%ED%95%99%EA%B5%90", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/do3MQJYx5Dmka15w"}, {"kind": "앱", "title": "광남초 급식 알리미", "desc": "어제 · 오늘 · 내일 급식을 앱스 스크립트로", "tags": [], "url": "https://script.google.com/macros/s/AKfycbyjaWCym7W-Bqt4Tray6-hd3-NFvLg1F-iMQPZWh_c5ngUzmVa_GfOVrOR2uK5u9XxtkQ/exec", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/9kmlZV5DAmBnQpgV"}, {"kind": "프롬프트", "title": "오늘의 급식 만들기", "desc": "녹산초 예시 — Code.gs 맨 위 학교 코드만 바꾸면 우리 학교", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/lDK1ZRz60Y4jZJ9z", "prompt": "나는 부산 녹산초등학교 교사야. 우리 학교 오늘 급식을 보여 주는 웹앱을 앱스 스크립트로 만들려고 해. Code.gs와 index.html 코드가 필요해.\n[API]\n나이스 교육정보 개방포털 급식식단정보 API를 Code.gs에서 UrlFetchApp으로 호출해(브라우저에서 직접 부르지 말고).\n호출 주소 형식:\nhttps://open.neis.go.kr/hub/mealServiceDietInfo?Type=json&ATPT_OFCDC_SC_CODE=C10&SD_SCHUL_CODE=7201106&MLSV_YMD=(YYYYMMDD)\n- Code.gs 맨 위에 상수로: OFFICE_CODE = \"C10\"(부산교육청), SCHOOL_CODE = \"7201211\"(녹산초등학교), SCHOOL_NAME = \"녹산초등학교\", API_KEY = \"\". 다른 학교는 이 값만 바꾸면 되게.\n- API_KEY가 비어 있으면 주소에 KEY 파라미터를 붙이지 마(인증키 없이도 5건까지 나오고 하루 급식은 그 안에 들어가). 값이 있으면 &KEY=값 을 붙여.\n- 날짜는 화면이 아니라 Code.gs에서 만들어. Utilities.formatDate(날짜, \"Asia/Seoul\", \"yyyyMMdd\")를 써서 한국 시간 기준으로.\n- 응답 구조: 성공하면 mealServiceDietInfo[1].row[0]에 데이터가 있고, 그 안의 DDISH_NM(메뉴), CAL_INFO(칼로리), MMEAL_SC_NM(식사명, 보통 \"중식\"), MLSV_YMD(날짜)를 써. 급식이 없는 날은 mealServiceDietInfo 대신 RESULT.CODE가 \"INFO-200\"으로 오니까 그때는 \"오늘은 급식이 없어요 🙂\"를 보여 줘. 그 외 오류는 \"급식 정보를 가져오지 못했어요. 잠시 후 다시 눌러 주세요\".\n- DDISH_NM은 메뉴가 <br/>로 이어져 있고, 메뉴 이름 뒤에 알레르기 번호가 괄호로 붙어 있어(예: \"감자국 (5.6.13)\"). <br/>로 나눠 한 줄씩 보여 주고, 괄호 안 번호는 메뉴 이름과 분리해서 작은 회색 글씨로.\n- 알레르기 번호의 뜻을 화면 맨 아래 작은 글씨로 표시: 1 난류, 2 우유, 3 메밀, 4 땅콩, 5 대두, 6 밀, 7 고등어, 8 게, 9 새우, 10 돼지고기, 11 복숭아, 12 토마토, 13 아황산류, 14 호두, 15 닭고기, 16 쇠고기, 17 오징어, 18 조개류(굴·전복·홍합 포함), 19 잣.\n[화면]\n① 맨 위: \"화명초등학교 오늘 급식\" + 날짜(9월 28일 월요일처럼 한국어, 요일 포함)\n② [◀ 어제] [오늘] [내일 ▶] 버튼으로 날짜 이동. 이동해도 제목 날짜가 같이 바뀌게.\n③ 메뉴를 카드 안에 한 줄씩 크게(첫 줄이 밥, 둘째 줄이 국인 경우가 많으니 순서 그대로), 알레르기 번호는 각 줄 오른쪽에 작게\n④ 카드 아래에 칼로리(CAL_INFO)를 작게, 식사명(MMEAL_SC_NM)도 함께\n⑤ 불러오는 동안 \"급식을 가져오는 중…\", 급식 없는 날과 오류는 위 문구대로\n⑥ 하루 안에 같은 날짜를 다시 누르면 다시 부르지 않게 화면 안에서 기억(객체에 저장)\n[디자인]\n글씨 크게, 색은 부드럽게(연노랑·연주황 계열, 급식판 느낌), 학생에게 다정한 말투로. 휴대폰 세로 화면에서도 잘 보이게. 자동 새로고침은 넣지 마.\n[기술 조건 — 반드시 지켜 줘]\n1. 파일은 딱 두 개만: Code.gs, index.html. CSS와 JavaScript는 전부 index.html 안에 넣고, 다른 파일(css.html, js.html 등)이나 <?= ?> 템플릿 문법은 쓰지 마.\n2. 웹 앱으로 배포할 거야. doGet()은 HtmlService.createHtmlOutputFromFile('index')를 돌려주고, .addMetaTag('viewport', 'width=device-width, initial-scale=1')을 붙여 줘.\n3. 화면에서 조회는 google.script.run(withSuccessHandler / withFailureHandler)으로 Code.gs 함수를 호출해. 화면은 날짜 오프셋(-1, 0, +1)만 넘기고, 실제 날짜 계산과 API 호출·정리는 전부 Code.gs에서.\n4. UrlFetchApp.fetch에는 muteHttpExceptions: true를 넣고, 응답 코드가 200이 아니면 오류 메시지로 처리해.\n5. 외부 라이브러리·CDN 없이 순수 HTML/CSS/JS만. 화면의 모든 문구는 한국어.\n6. 출력: 코드 블록 두 개(각 블록 첫 줄에 // 파일명 주석), 중간 생략(\"...\", \"나머지는 동일\") 없이 전체 코드. 코드 다음에 배포 순서를 4줄로."}, {"kind": "앱", "title": "광남초 기상 관측소", "desc": "키 없는 Open-Meteo 날씨 API · HTML 하나", "tags": ["5학년 과학", "날씨와 우리 생활"], "url": "https://hongdonedu.github.io/fungigame2026/gwangnam/weather.html", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/mlNDZ3ep2ByqaznG", "prompt": "너는 초등학교 과학 선생님을 돕는 웹 개발자야. 5학년 과학 '날씨와 우리 생활' 단원에서 쓸 '광남초 기상 관측소' 웹앱을 HTML 파일 하나로 만들어줘.\n성취기준: [6과06-01] 기상 요소를 조사하고, 날씨가 우리 생활에 주는 영향을 인식할 수 있다.\n\n[데이터] 키가 필요 없는 Open-Meteo API를 fetch로 호출 (광남초 좌표):\nhttps://api.open-meteo.com/v1/forecast?latitude=35.1532&longitude=129.1185&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul\n\n[화면]\n① 현재 기온을 아주 크게, 날씨 설명(맑음·흐림·비·눈)은 weather_code를 한글+이모지로\n② 습도 · 풍속과 풍향(16방위 한글) · 기압 · 구름량 · 강수량 · 오늘 최고/최저 — 6칸, 칸마다 초등 눈높이 한 줄 설명\n③ 기압이 1013hPa보다 높으면 \"고기압\", 낮으면 \"저기압\"이라고 판단해 주는 상자 (구름량과 연결해 설명)\n④ \"지금 값 기록하기\" 버튼: 관측자 이름과 함께 표에 쌓이고 localStorage에 저장 (하루 세 번 기록해 비교), \"기록 지우기\"\n⑤ 머리글에 안내 캐릭터 그림(pose_tablet.png), 맨 아래 출처 표시(Open-Meteo)와 pose_check.png\n\n[조건]\n- 둥근 글씨(Jua), 하늘색 테마, 폰·태블릿에서 잘 보이게\n- 서버 없이 파일 하나로, API 키 없음"}, {"kind": "프롬프트", "title": "우리 반 포켓몬 도감", "desc": "PokeAPI(키 없음)로 번호 · 이름 검색", "tags": [], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/v3w8Zw9D075LaN52", "prompt": "나는 초등학교 교사야. 학생들이 번호나 이름으로 포켓몬을 찾아보는 \"우리 반 포켓몬 도감\" 웹페이지를 HTML 파일 하나로 만들려고 해. 서버 없이 브라우저에서 바로 열리는 index.html 하나만 필요해.\n[API]\nPokeAPI(키 필요 없음)를 fetch로 직접 호출해. 포켓몬 하나를 보여 주려면 두 주소를 모두 불러야 해:\n- https://pokeapi.co/api/v2/pokemon/(번호 또는 영어이름) → id, height, weight, types, stats, sprites\n- https://pokeapi.co/api/v2/pokemon-species/(번호) → names 배열에서 language.name이 \"ko\"인 name(한국어 이름), flavor_text_entries에서 language.name이 \"ko\"인 첫 항목의 flavor_text(한국어 도감 설명, 줄바꿈 문자는 공백으로)\n그림은 sprites.other[\"official-artwork\"].front_default를 쓰고, 없으면 sprites.front_default.\n타입 영어 이름은 한국어로 바꿔서 표시: normal 노말, fire 불꽃, water 물, grass 풀, electric 전기, ice 얼음, fighting 격투, poison 독, ground 땅, flying 비행, psychic 에스퍼, bug 벌레, rock 바위, ghost 고스트, dragon 드래곤, dark 악, steel 강철, fairy 페어리. 타입마다 어울리는 파스텔 배경색.\n[화면]\n① 맨 위: \"우리 반 포켓몬 도감\" 제목, 검색칸(번호 1~151 또는 영어 이름) + [찾기] 버튼, 그 옆에 [🎲 오늘의 포켓몬] 버튼(1~151 중 무작위)\n② 카드 하나에: 큰 그림, 번호(No.025처럼 세 자리), 한국어 이름을 아주 크게, 영어 이름은 작게, 타입 배지, 키(m)·몸무게(kg) — API 값은 10으로 나눠서 표시\n③ 한국어 도감 설명 한 문단\n④ 능력치 6개(HP, 공격, 방어, 특수공격, 특수방어, 스피드)를 가로 막대로, 막대 길이는 값/255 비율\n⑤ 카드 아래 [◀ 이전] [다음 ▶] 버튼으로 번호 이동(1~151 안에서만)\n⑥ 불러오는 동안 \"포켓몬을 찾는 중…\", 없는 번호·이름이면 \"그런 포켓몬은 없어요. 1~151 사이 번호나 영어 이름을 넣어 주세요\"\n⑦ 한 번 불러온 포켓몬은 다시 부르지 않게 화면 안에서 기억(객체에 저장)해 줘\n[디자인]\n글씨 크게, 둥근 카드, 색은 부드럽게, 학생에게 다정한 말투. 휴대폰 세로 화면에서도 잘 보이게.\n[기술 조건 — 반드시 지켜 줘]\n1. 파일은 index.html 하나. CSS·JS 모두 안에 넣고 외부 라이브러리·CDN 없이.\n2. 파일을 더블클릭해서 열어도(file://) 동작해야 해. 자동으로 여러 포켓몬을 한꺼번에 불러오지 마(한 번에 한 마리만).\n3. 모든 문구는 한국어.\n4. 출력: 코드 블록 하나, 생략 없이 전체 코드. 코드 뒤에 \"메모장에 붙여넣고 index.html로 저장(인코딩 UTF-8) → 더블클릭\" 순서 3줄."}, {"kind": "사이트", "title": "PokeAPI", "desc": "포켓몬 데이터를 주는 무료 API", "tags": [], "url": "https://pokeapi.co/", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/x5A7arDydwN5Zwr6"}]}, {"id": "s7", "num": "⑦", "label": "셰프 초빙", "short": "생성형 API · 제미나이", "color": "#A64BD3", "art": "img/s7.webp", "title": "AI 셰프를 주방에 모셔요", "analogy": "열쇠(API 키)는 금고(시트)에, 셰프(제미나이)는 주방(Code.gs)에서만 일해요.", "steps": ["AI 스튜디오 → <b>Create API key<\/b> → 복사", "시트 <b>[설정] 탭 A1<\/b>에 붙여 넣기 — 코드에는 쓰지 않아요", "급식앱에 <b>알레르기 분석<\/b> 프롬프트 더하기", "편집기에서 함수 한 번 실행(권한 허용) → <b>배포 관리 → 새 버전<\/b>"], "tip": "키는 비밀번호와 같아요. 연수가 끝나면 AI 스튜디오에서 지우고 새로 만드세요.", "cards": [{"kind": "시작", "title": "제미나이 API 키 받기", "desc": "Create API key → 복사 → 시트 [설정] 탭 A1", "tags": [], "url": "https://aistudio.google.com/apikey", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/94PGWn5Kj35xZLRV"}, {"kind": "앱", "title": "API 붙인 급식앱", "desc": "오늘 급식의 알레르기 식품을 AI가 다정하게 알려 줘요", "tags": [], "url": "https://script.google.com/macros/s/AKfycbzzDAO0gYs6ug7evOaCdjDx7rQNxC4hIx_B1Yrz-VV2MpK3O1crVps-FUtWgoLl3bHUBg/exec", "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1/wish/lkDVaKjyvP0GWPp9", "prompt": "위에서 만든 급식 앱에 \"알레르기 분석하기\" 기능을 추가해 줘. 기존 기능은 그대로 두고, 바뀐 파일(Code.gs, index.html)의 전체 코드를 생략 없이 다시 보여 줘.\n[제미나이 API 키 — 시트에서 읽기]\n- Code.gs 맨 위에 SHEET_URL = \"여기에 내 스프레드시트 주소\" 상수를 추가해.\n- 제미나이 API 키는 코드에 쓰지 말고, SpreadsheetApp.openByUrl(SHEET_URL).getSheetByName(\"설정\").getRange(\"A1\").getValue()로 읽어 와. \"설정\" 탭이 없으면 만들고 A1에 \"여기에 제미나이 API 키를 붙여넣으세요\"라고 써 둬.\n- A1이 비어 있거나 그 안내 문구 그대로면 분석하지 말고 화면에 \"설정 탭 A1에 제미나이 API 키를 넣어 주세요\"를 보여 줘.\n- 키 값은 어떤 경우에도 화면(index.html)으로 보내지 마. 제미나이 호출은 Code.gs에서만.\n- 시트를 여는 부분도 try/catch로 감싸서, 권한 오류가 나면 \"앱스 스크립트 편집기에서 함수를 한 번 실행해 권한을 허용해 주세요\"를 보여 줘.\n[제미나이 호출 — Code.gs]\n- 모델: gemini-flash-lite-latest (항상 최신 Flash-Lite를 가리키는 이름). 주소: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent\n- 응답이 404나 503이면 gemini-flash-latest로 한 번 더 시도해.\n- UrlFetchApp.fetch로 POST. 헤더에 \"x-goog-api-key\": 키, contentType \"application/json\", payload는 JSON.stringify({ contents: [{ parts: [{ text: 프롬프트 }] }] }). muteHttpExceptions: true를 넣어.\n- 응답 코드별 안내: 400·401·403은 \"API 키를 확인해 주세요\", 429는 \"요청이 많아요. 잠시 후 다시 눌러 주세요\", 503은 \"지금 AI 셰프가 바빠요. 잠시 후 다시 눌러 주세요\", 그 외는 \"분석에 실패했어요. 잠시 후 다시 시도해 주세요\".\n- 실패하면 안내 문구 아래에 작은 글씨로 응답 코드와 구글이 보낸 오류 문장(응답 JSON의 error.message)을 같이 보여 줘.\n- 결과 글은 JSON.parse(응답).candidates[0].content.parts[0].text에서 꺼내.\n- 제미나이에게 보낼 프롬프트는 Code.gs에서 만들어: 그날 급식 메뉴 목록(알레르기 번호 포함)과 알레르기 번호표(1 난류, 2 우유, 3 메밀, 4 땅콩, 5 대두, 6 밀, 7 고등어, 8 게, 9 새우, 10 돼지고기, 11 복숭아, 12 토마토, 13 아황산류, 14 호두, 15 닭고기, 16 쇠고기, 17 오징어, 18 조개류, 19 잣)를 함께 넣고, \"초등학생에게 다정한 말투로, 오늘 급식에서 조심할 알레르기 식품을 번호가 아닌 식품 이름으로 바꿔 3~4문장으로 알려 줘. 어떤 메뉴에 무엇이 들어 있는지 말해 주고, 마지막 문장은 '알레르기가 있는 친구는 꼭 선생님께 말해 주세요'로 끝내. 의학적 판단이나 진단은 하지 마\"라고 지시해.\n[캐시 — 같은 날짜는 다시 부르지 않기]\n- 분석 결과는 시트의 \"분석\" 탭에 날짜(yyyyMMdd) | 결과 글 | 분석 시각 순서로 저장해. 탭이 없으면 헤더와 함께 만들어.\n- 분석 버튼을 눌렀을 때 그 날짜 결과가 \"분석\" 탭에 이미 있으면 제미나이를 부르지 말고 저장된 글을 보여 줘.\n[화면]\n- 급식 카드 아래에 [🔍 알레르기 분석하기] 버튼. 급식이 없는 날은 버튼을 숨겨.\n- 누르면 버튼이 비활성화되고 \"AI가 급식을 살펴보는 중…\"이 보이다가, 결과가 오면 연한 파란색 카드에 결과 글을 보여 줘. 카드 아래 작은 글씨로 \"AI가 만든 안내예요. 정확한 내용은 급식 담당 선생님께 확인하세요\".\n- 오류가 나도 alert 창은 쓰지 말고 결과 카드 안에 안내를 보여 줘.\n- 날짜를 바꾸면 이전 분석 카드는 지워지고 버튼이 다시 활성화돼.\n- 저장된 결과를 보여 줄 때는 카드 위에 작게 \"저장된 분석\"이라고 표시.\n[기술 조건]\n- 기존 기술 조건(파일 2개, doGet, google.script.run, 순수 HTML/CSS/JS, 한국어) 그대로.\n- 출력: 코드 블록 두 개(각 블록 첫 줄에 // 파일명 주석), 생략 없이 전체 코드.\n- 각 코드 블록 맨 마지막 줄에 끝 표시를 넣어 줘: Code.gs는 // ===== Code.gs 끝 =====, index.html은 <!-- ===== index.html 끝 ===== -->\n- 코드 다음에 순서를 4줄로 알려 줘: ① 설정 탭 A1에 키 넣기 ② 편집기에서 함수를 한 번 실행해 시트 권한 허용 ③ 배포 관리 → 새 버전 ④ 웹 앱 새로고침"}], "links": [["구글 스프레드시트", "https://docs.google.com/spreadsheets/u/0/"], ["AI 스튜디오", "https://aistudio.google.com/"]]}, {"id": "end", "num": "♥", "label": "마무리", "short": "데이터 너머를 읽는 눈", "color": "#F27A54", "art": "img/end.webp", "title": "웹앱과 데이터 너머를 읽는 눈은 선생님들께 있습니다", "analogy": "그 눈이 교실을 행복하게 만듭니다."}], "padlet": "https://padlet.com/oneteacher/1026-ai-s024ok443ip9ruzyris1"};
+const V = DATA.views, $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const STEPS = V.filter(v => v.id !== 'home');
+let done = new Set();
+try { done = new Set(JSON.parse(localStorage.getItem('gn1026-done') || '[]')); } catch (e) {}
+const save = () => { try { localStorage.setItem('gn1026-done', JSON.stringify([...done])); } catch (e) {} };
+
+$('#padletSide').href = $('#padletTop').href = DATA.padlet;
+
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('on'), 1600); }
+async function copy(text, btn) {
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
+    const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand('copy'); } catch (e2) {} ta.remove();
+  }
+  toast(ok ? '복사했어요! 제미나이에 붙여 넣으세요' : '복사가 안 돼요. 펼쳐서 직접 선택해 주세요');
+  if (ok && btn) { const o = btn.innerHTML; btn.classList.add('copied'); btn.innerHTML = '✓ 복사됨'; setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = o; }, 1400); }
+}
+
+function navHTML() {
+  $('#nav').innerHTML = V.map(v => `<button data-go="${v.id}" style="--c:${v.color}" class="${done.has(v.id) ? 'done' : ''}">
+    <span class="ic">${v.num || '★'}</span><span class="tx"><b>${esc(v.label)}</b><small>${esc(v.short)}</small></span>${v.id === 'home' ? '' : '<span class="ok">✓</span>'}</button>`).join('');
+  const n = STEPS.filter(v => done.has(v.id)).length;
+  $('#progBar').style.width = (n / STEPS.length * 100) + '%';
+  $('#progTx').textContent = n + '/' + STEPS.length;
+}
+
+function cardHTML(c) {
+  const prompts = c.prompts ? c.prompts : (c.prompt ? [['프롬프트', c.prompt]] : []);
+  const pics = c.img ? `<div class="pics">${c.img.map(s => `<img src="${esc(s)}" alt="" loading="lazy">`).join('')}</div>` : '';
+  const tags = (c.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('');
+  const open = c.url ? `<a class="b main" href="${esc(c.url)}" target="_blank" rel="noopener">${c.kind === '앱' ? '앱 열기' : '열기'} ↗</a>` : '';
+  const quick = prompts.length === 1 ? `<button class="b" data-copy="0">📋 프롬프트 복사</button>` : '';
+  const pad = c.padlet ? `<a class="b" href="${esc(c.padlet)}" target="_blank" rel="noopener">📌 패들렛</a>` : '';
+  const det = prompts.map((p, i) => `<details class="pr"><summary>${esc(p[0])} 보기${prompts.length > 1 ? `<button class="b cp" data-copy="${i}">📋 복사</button>` : ''}</summary><pre>${esc(p[1])}</pre></details>`).join('');
+  return `<article class="card"><div class="k"><span class="kind">${esc(c.kind)}</span>${tags}</div><h3>${esc(c.title)}</h3>${c.desc ? `<p class="desc">${esc(c.desc)}</p>` : ''}${pics}<div class="row">${open}${quick}${pad}</div>${det}</article>`;
+}
+
+function pagerHTML(i) {
+  const v = V[i], prev = V[i - 1], next = V[i + 1];
+  return `<div class="pager">
+    ${prev ? `<a href="#${prev.id}" data-go="${prev.id}"><small>← 이전</small><b>${prev.num ? prev.num + ' ' : ''}${esc(prev.label)}</b></a>` : ''}
+    ${v.id !== 'home' && v.id !== 'end' ? `<button class="mark ${done.has(v.id) ? 'on' : ''}" data-mark="${v.id}"><b>${done.has(v.id) ? '✓ 이 단계 끝!' : '이 단계 끝 ✓'}</b></button>` : ''}
+    ${next ? `<a class="next" href="#${next.id}" data-go="${next.id}"><small>다음 →</small><b>${next.num ? next.num + ' ' : ''}${esc(next.label)}</b></a>` : ''}
+  </div>`;
+}
+
+function render(id) {
+  const i = Math.max(0, V.findIndex(v => v.id === id)), v = V[i];
+  document.documentElement.style.setProperty('--c', v.color);
+  $('#crumb').style.setProperty('--c', v.color);
+  $('#crumb span:last-child').textContent = v.id === 'home' ? '시작하기' : `${v.num} ${v.label}`;
+  document.querySelectorAll('#nav button').forEach(b => b.setAttribute('aria-current', b.dataset.go === v.id));
+  let h = '';
+  if (v.id === 'home') {
+    h += `<section class="banner big"><img src="${v.art}" alt="노트북과 태블릿 위로 빛나는 앱 아이콘을 띄워 보는 선생님들"><div class="in">
+      <h1>${esc(v.title)}</h1><p>${esc(v.analogy)}</p>
+      <div class="cta"><a class="btn gold" href="#s1" data-go="s1">▶ ① 시식 코너부터</a><a class="btn glass" href="${DATA.padlet}" target="_blank" rel="noopener">📌 패들렛 열기</a></div></div></section>`;
+    h += `<div class="sec-h"><h2>오늘의 순서</h2><span>식당을 차리듯 한 단계씩</span></div><div class="flow">${STEPS.map(s => `<button class="tile ${done.has(s.id) ? 'done' : ''}" data-go="${s.id}" style="--c:${s.color}"><div class="th"><img src="${s.art}" alt="" loading="lazy"><i>${s.num}</i></div><div class="tx"><b>${esc(s.label)}</b><small>${esc(s.short)}</small></div></button>`).join('')}</div>`;
+    h += `<div class="sec-h"><h2>준비물</h2><span>먼저 열어 두세요</span></div><div class="cards">${v.cards.map(cardHTML).join('')}</div>`;
+  } else if (v.id === 'end') {
+    h += `<section class="closing"><img src="${v.art}" alt="데이터 홀로그램 앞에서 웃는 학생들을 바라보는 선생님의 뒷모습"><div class="in"><span class="step-tag" style="--c:${v.color}"><i>♥</i>마무리</span><h1>${esc(v.title)}</h1><p>${esc(v.analogy)}</p></div></section>`;
+    h += `<div class="sec-h"><h2>오늘 차린 가게</h2><span>다시 보고 싶은 곳을 누르세요</span></div><div class="recap">${STEPS.filter(s => s.id !== 'end').map(s => `<button data-go="${s.id}" style="--c:${s.color}"><i>${s.num}</i><span>${esc(s.label)}</span></button>`).join('')}</div>`;
+    h += pagerHTML(i);
+  } else {
+    h += `<section class="banner"><img src="${v.art}" alt=""><div class="in"><span class="step-tag"><i>${v.num}</i>${esc(v.label)} · ${esc(v.short)}</span><h1>${esc(v.title)}</h1><p>${esc(v.analogy)}</p></div></section>`;
+    if (v.trio) h += `<div class="trio">${v.trio.map(t => `<div><span class="e">${t[0]}</span><b>${t[1]}</b><code>${t[2]}</code><small>${t[3]}</small></div>`).join('')}</div>`;
+    if (v.steps) h += `<div class="sec-h"><h2>이렇게 해요</h2></div><ol class="steps" style="--cols:${v.steps.length<=4?v.steps.length:3}">${v.steps.map(s => `<li>${s}</li>`).join('')}</ol>`;
+    if (v.tip) h += `<div class="tip"><b>🔑 잊지 마세요</b><span>${esc(v.tip)}</span></div>`;
+    h += `<div class="sec-h"><h2>패들렛 자료</h2><span>${v.cards.length}개</span></div><div class="cards">${v.cards.map(cardHTML).join('')}</div>`;
+    if (v.links) h += `<div class="links">${v.links.map(l => `<a class="chip" href="${esc(l[1])}" target="_blank" rel="noopener">↗ ${esc(l[0])}</a>`).join('')}</div>`;
+    h += pagerHTML(i);
+  }
+  if (v.id === 'home') h += pagerHTML(i);
+  $('#view').innerHTML = `<div class="view">${h}</div>`;
+  $('#view').querySelectorAll('.card').forEach((el, k) => { el.__c = (v.cards || [])[k]; });
+  $('#page').scrollTop = 0;
+  $('#app').classList.remove('open');
+  try { history.replaceState(null, '', '#' + v.id); } catch (e) {}
+}
+
+document.addEventListener('click', e => {
+  const go = e.target.closest('[data-go]');
+  if (go) { e.preventDefault(); render(go.dataset.go); return; }
+  const cp = e.target.closest('[data-copy]');
+  if (cp) {
+    e.preventDefault(); e.stopPropagation();
+    const c = cp.closest('.card').__c; const list = c.prompts ? c.prompts : [['', c.prompt]];
+    copy(list[+cp.dataset.copy][1], cp); return;
+  }
+  const mk = e.target.closest('[data-mark]');
+  if (mk) {
+    const id = mk.dataset.mark; done.has(id) ? done.delete(id) : done.add(id); save(); navHTML();
+    if (done.has(id)) { toast('잘하셨어요! 다음 단계로 가요'); const i = V.findIndex(v => v.id === id); setTimeout(() => render(V[i + 1].id), 500); }
+    else render(id);
+  }
+});
+$('#menuBtn').onclick = () => $('#app').classList.add('open');
+$('#closeBtn').onclick = $('#scrim').onclick = () => $('#app').classList.remove('open');
+addEventListener('keydown', e => { if (e.key === 'Escape') $('#app').classList.remove('open'); });
+addEventListener('hashchange', () => render(location.hash.slice(1)));
+
+navHTML();
+render(location.hash.slice(1) || 'home');
+</script>
+</body>
+</html>
