@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>디지털 친구 그림자 찾기</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Jua Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 기본 설정 및 폰트 */
+        body {
+            font-family: 'Jua', sans-serif;
+            background-color: #FEF3C7; /* 귀여운 파스텔 노랑 */
+            background-image: radial-gradient(#FDE68A 20%, transparent 20%), radial-gradient(#FDE68A 20%, transparent 20%);
+            background-position: 0 0, 25px 25px;
+            background-size: 50px 50px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* 그림자 만들기 핵심 로직: 모든 색상을 검은색 실루엣으로 변경 */
+        .shadow-svg svg {
+            filter: brightness(0) drop-shadow(4px 4px 0px rgba(0,0,0,0.1));
+            transition: filter 0.5s ease;
+        }
+
+        /* 오답 시 흔들림 애니메이션 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0) scale(0.95); }
+            25% { transform: translateX(-15px) rotate(-5deg) scale(0.95); }
+            50% { transform: translateX(15px) rotate(5deg) scale(0.95); }
+            75% { transform: translateX(-15px) rotate(-5deg) scale(0.95); }
+        }
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* 등장 팝 애니메이션 */
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-in {
+            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+<body class="w-screen h-screen overflow-hidden flex flex-col items-center justify-center relative">
+
+    <!-- 1. 시작 화면 -->
+    <div id="start-screen" class="flex flex-col items-center justify-center w-full h-full relative z-10 bg-white/40 backdrop-blur-sm">
+        <div class="bg-white px-12 py-10 rounded-[3rem] shadow-2xl flex flex-col items-center border-8 border-yellow-300">
+            <h2 class="text-3xl sm:text-4xl text-gray-500 mb-2">디지털은 내 친구 1</h2>
+            <h1 class="text-5xl sm:text-7xl text-blue-600 mb-10 drop-shadow-md text-center leading-tight">
+                똑같은 <span class="text-pink-500">모양</span>을 찾아요!
+            </h1>
+            <button onclick="startGame()" class="bg-yellow-400 hover:bg-yellow-300 text-black text-4xl sm:text-5xl px-16 py-6 rounded-full shadow-[0_8px_0_#B45309] active:shadow-[0_0px_0_#B45309] active:translate-y-2 transition-all transform hover:scale-105">
+                시작하기
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. 게임 화면 -->
+    <div id="game-screen" class="hidden flex-col items-center w-full h-full max-w-5xl z-10 pb-4">
+        <!-- 상단: 제목 & 별 도장 -->
+        <div class="w-full flex flex-row justify-between items-center px-6 py-4 mt-2">
+            <h2 class="text-2xl sm:text-4xl text-gray-700 bg-white px-8 py-3 rounded-full shadow-[0_4px_0_#D1D5DB] border-2 border-gray-200">
+                그림자 친구는 누구일까요?
+            </h2>
+            <div id="star-container" class="flex gap-1 sm:gap-2 items-center bg-white px-6 py-2 rounded-full shadow-[0_4px_0_#D1D5DB] border-2 border-gray-200">
+                <!-- 별 도장 -->
+            </div>
+        </div>
+        
+        <!-- 중앙: 문제 (검은 그림자) -->
+        <div class="flex-1 w-full flex items-center justify-center relative">
+            <div class="bg-white w-56 h-56 sm:w-72 sm:h-72 rounded-[3rem] flex items-center justify-center shadow-inner border-8 border-dashed border-blue-300 p-8 sm:p-12 relative drop-shadow-xl bg-blue-50/50">
+                <div id="shadow-container" class="w-full h-full shadow-svg pop-in">
+                    <!-- SVG 그림자 위치 -->
+                </div>
+                
+                <!-- 오답 피드백 메시지 -->
+                <div id="feedback-msg" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white px-8 py-4 rounded-full shadow-2xl text-3xl sm:text-4xl opacity-0 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-50">
+                    다시 찾아볼까?
+                </div>
+            </div>
+        </div>
+        
+        <!-- 하단: 선택 카드 3장 -->
+        <div id="cards-container" class="w-full flex flex-row justify-center items-center gap-6 sm:gap-12 px-4 pb-4">
+            <!-- 자바스크립트로 카드 생성 -->
+        </div>
+    </div>
+
+    <!-- 3. 결과 화면 -->
+    <div id="end-screen" class="hidden flex-col items-center justify-center w-full h-full relative z-10 bg-white/40 backdrop-blur-sm">
+        <div class="bg-white px-16 py-12 rounded-[3rem] shadow-2xl flex flex-col items-center border-8 border-green-300">
+            <div class="text-[120px] mb-4 pop-in animate-bounce">👑</div>
+            <h1 class="text-5xl sm:text-7xl text-pink-500 mb-6 drop-shadow-md text-center pop-in" style="animation-delay: 0.1s;">
+                참 잘했어요!
+            </h1>
+            <h2 class="text-4xl sm:text-6xl text-gray-800 mb-12 text-center pop-in" style="animation-delay: 0.3s;">
+                오늘의 <span class="text-blue-600 bg-blue-100 px-6 py-2 rounded-3xl inline-block shadow-md ml-2">디지털 반장</span>
+            </h2>
+            <button onclick="startGame()" class="pop-in bg-green-400 hover:bg-green-300 text-black text-4xl sm:text-5xl px-16 py-6 rounded-full shadow-[0_8px_0_#166534] active:shadow-[0_0px_0_#166534] active:translate-y-2 transition-all transform hover:scale-105" style="animation-delay: 0.5s;">
+                다시 하기
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- 데이터 정의 (8개의 디지털 기기 SVG 이미지) ---
+        const items = [
+            {
+                id: 1, name: '본체',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="25" y="10" width="50" height="80" rx="6" fill="#4B5563"/><rect x="30" y="20" width="40" height="8" fill="#1F2937"/><rect x="30" y="35" width="12" height="4" fill="#1F2937"/><rect x="30" y="45" width="12" height="4" fill="#1F2937"/><circle cx="50" cy="70" r="8" fill="#9CA3AF"/><circle cx="50" cy="70" r="4" fill="#3B82F6"/></svg>`
+            },
+            {
+                id: 2, name: '모니터',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="10" y="15" width="80" height="55" rx="4" fill="#374151"/><rect x="15" y="20" width="70" height="45" fill="#93C5FD"/><path d="M 15 20 L 85 65 L 85 20 Z" fill="#BFDBFE" opacity="0.5"/><rect x="42" y="70" width="16" height="15" fill="#4B5563"/><rect x="30" y="85" width="40" height="8" rx="4" fill="#374151"/></svg>`
+            },
+            {
+                id: 3, name: '키보드',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="5" y="30" width="90" height="40" rx="6" fill="#D1D5DB"/><g fill="#FFFFFF"><rect x="10" y="36" width="8" height="8" rx="2"/><rect x="20" y="36" width="8" height="8" rx="2"/><rect x="30" y="36" width="8" height="8" rx="2"/><rect x="40" y="36" width="8" height="8" rx="2"/><rect x="50" y="36" width="8" height="8" rx="2"/><rect x="60" y="36" width="8" height="8" rx="2"/><rect x="70" y="36" width="8" height="8" rx="2"/><rect x="80" y="36" width="10" height="8" rx="2"/><rect x="10" y="47" width="12" height="8" rx="2"/><rect x="24" y="47" width="8" height="8" rx="2"/><rect x="34" y="47" width="8" height="8" rx="2"/><rect x="44" y="47" width="8" height="8" rx="2"/><rect x="54" y="47" width="8" height="8" rx="2"/><rect x="64" y="47" width="8" height="8" rx="2"/><rect x="74" y="47" width="16" height="8" rx="2"/><rect x="10" y="58" width="16" height="8" rx="2"/><rect x="28" y="58" width="44" height="8" rx="2"/><rect x="74" y="58" width="16" height="8" rx="2"/></g></svg>`
+            },
+            {
+                id: 4, name: '마우스',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="25" y="15" width="50" height="70" rx="25" fill="#E5E7EB"/><path d="M 25 45 Q 50 50 75 45" stroke="#9CA3AF" stroke-width="3" fill="transparent"/><path d="M 50 15 L 50 47" stroke="#9CA3AF" stroke-width="3" fill="transparent"/><rect x="45" y="25" width="10" height="15" rx="5" fill="#6B7280"/></svg>`
+            },
+            {
+                id: 5, name: '스마트 패드',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="15" y="10" width="70" height="80" rx="8" fill="#111827"/><rect x="20" y="15" width="60" height="70" fill="#60A5FA"/><circle cx="50" cy="12.5" r="1.5" fill="#9CA3AF"/><rect x="45" y="87" width="10" height="1.5" rx="0.5" fill="#4B5563"/></svg>`
+            },
+            {
+                id: 6, name: '노트북',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="15" y="25" width="70" height="45" rx="4" fill="#374151"/><rect x="18" y="28" width="64" height="39" fill="#93C5FD"/><path d="M 5 75 L 95 75 L 90 70 L 10 70 Z" fill="#9CA3AF"/><path d="M 5 75 L 95 75 L 95 78 L 5 78 Z" fill="#6B7280"/><rect x="40" y="72" width="20" height="2" rx="1" fill="#4B5563"/></svg>`
+            },
+            {
+                id: 7, name: '스마트 워치',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="35" y="10" width="30" height="80" rx="4" fill="#4B5563"/><rect x="35" y="15" width="30" height="15" fill="#374151"/><rect x="35" y="70" width="30" height="15" fill="#374151"/><rect x="32" y="30" width="36" height="40" rx="8" fill="#D1D5DB"/><rect x="35" y="33" width="30" height="34" rx="4" fill="#000000"/><rect x="37" y="35" width="26" height="30" rx="2" fill="#3B82F6"/><rect x="68" y="45" width="2" height="10" rx="1" fill="#9CA3AF"/></svg>`
+            },
+            {
+                id: 8, name: '스피커', // 인공지능 스피커를 1학년이 읽기 쉽게 축약
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect x="25" y="20" width="50" height="60" rx="10" fill="#374151"/><ellipse cx="50" cy="20" rx="25" ry="8" fill="#4B5563"/><path d="M 25 35 Q 50 45 75 35" stroke="#06B6D4" stroke-width="4" fill="transparent"/><path d="M 30 50 Q 50 56 70 50" stroke="#1F2937" stroke-width="3" fill="transparent"/><path d="M 30 60 Q 50 66 70 60" stroke="#1F2937" stroke-width="3" fill="transparent"/><path d="M 32 70 Q 50 75 68 70" stroke="#1F2937" stroke-width="3" fill="transparent"/></svg>`
+            }
+        ];
+
+        // --- 전역 상태 변수 ---
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let questions = [];
+        let isAnswering = false;
+        let audioCtx;
+
+        // --- 오디오 및 음성 엔진 초기화 ---
+        function unlockAudio() {
+            // Web Audio API 초기화 (효과음 용)
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            
+            // TTS 초기화 (모바일 환경 권한 확보)
+            if (window.speechSynthesis) {
+                const unlockUtterance = new SpeechSynthesisUtterance('');
+                window.speechSynthesis.speak(unlockUtterance);
+            }
+        }
+
+        // --- "딩동댕" 효과음 ---
+        function playDingDongDang() {
+            if (!audioCtx) return;
+            const playNote = (frequency, startTime, duration) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(frequency, audioCtx.currentTime + startTime);
+                
+                gain.gain.setValueAtTime(0, audioCtx.currentTime + startTime);
+                gain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + startTime + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + startTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(audioCtx.currentTime + startTime);
+                osc.stop(audioCtx.currentTime + startTime + duration);
+            };
+            
+            // 다장조 미-솔-도 (E5 - G5 - C6) 발랄한 딩동댕
+            playNote(659.25, 0, 0.4);      // E5
+            playNote(783.99, 0.25, 0.4);   // G5
+            playNote(1046.50, 0.5, 0.6);   // C6
+        }
+
+        // --- 이름 읽어주기 (TTS) ---
+        function speakName(name) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel(); // 진행 중인 음성 취소
+            const utterance = new SpeechSynthesisUtterance(name);
+            utterance.lang = 'ko-KR';
+            utterance.rate = 0.8;  // 천천히
+            utterance.pitch = 1.3; // 아이들이 좋아하는 약간 높은 톤
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // --- 게임 시작 ---
+        function startGame() {
+            unlockAudio();
+            
+            // 8개의 기기를 섞어서 문제 출제 준비
+            questions = [...items].sort(() => Math.random() - 0.5);
+            currentQuestionIndex = 0;
+            score = 0;
+            
+            // 화면 전환
+            document.getElementById('start-screen').classList.replace('flex', 'hidden');
+            document.getElementById('end-screen').classList.replace('flex', 'hidden');
+            document.getElementById('game-screen').classList.replace('hidden', 'flex');
+            
+            initStars();
+            loadQuestion();
+        }
+
+        // --- 문제 불러오기 ---
+        function loadQuestion() {
+            isAnswering = false;
+            const currentItem = questions[currentQuestionIndex];
+            
+            // 정답을 제외한 오답 2개 랜덤 추출
+            let remaining = items.filter(i => i.id !== currentItem.id).sort(() => Math.random() - 0.5);
+            let options = [currentItem, remaining[0], remaining[1]].sort(() => Math.random() - 0.5);
+            
+            // 가운데 그림자 그리기 (초기화)
+            const shadowContainer = document.getElementById('shadow-container');
+            shadowContainer.classList.add('shadow-svg'); 
+            shadowContainer.innerHTML = currentItem.svg;
+            
+            // 카드 3장 그리기
+            const cardsContainer = document.getElementById('cards-container');
+            cardsContainer.innerHTML = '';
+            
+            options.forEach(opt => {
+                const card = document.createElement('div');
+                // 크고 누르기 편하게 설정 (카드 UI)
+                card.className = "bg-white p-4 sm:p-8 rounded-[2rem] shadow-[0_6px_0_#D1D5DB] cursor-pointer transform transition active:scale-95 hover:-translate-y-2 flex flex-col items-center justify-center gap-4 w-36 h-48 sm:w-56 sm:h-72 card-option border-2 border-transparent";
+                
+                card.onclick = () => checkAnswer(opt.id, currentItem.id, card, currentItem.name);
+                
+                // SVG 영역
+                const svgContainer = document.createElement('div');
+                svgContainer.className = "w-20 h-20 sm:w-36 sm:h-36 pointer-events-none drop-shadow-md";
+                svgContainer.innerHTML = opt.svg;
+                
+                // 이름표 영역
+                const nameDiv = document.createElement('div');
+                nameDiv.className = "text-2xl sm:text-4xl text-gray-800 pointer-events-none font-bold mt-2";
+                nameDiv.textContent = opt.name;
+                
+                card.appendChild(svgContainer);
+                card.appendChild(nameDiv);
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        // --- 정답 확인 로직 ---
+        function checkAnswer(selectedId, correctId, cardElement, correctName) {
+            // 이미 정답을 맞추고 넘어가는 중이라면 무시
+            if (isAnswering) return;
+            
+            // 흔들림 애니메이션 진행 중이면 무시
+            if (cardElement.classList.contains('shake')) return;
+            
+            if (selectedId === correctId) {
+                // 정답!
+                isAnswering = true;
+                playDingDongDang();
+                speakName(correctName);
+                earnStar(score);
+                score++;
+                
+                // 정답 카드 스타일 효과
+                cardElement.classList.remove('shadow-[0_6px_0_#D1D5DB]');
+                cardElement.classList.add('border-green-400', 'bg-green-100', 'shadow-[0_0px_0_transparent]', 'scale-105');
+                
+                // 가운데 그림자 컬러로 짠! 나타나기 (깜짝 보상)
+                const shadowContainer = document.getElementById('shadow-container');
+                shadowContainer.classList.remove('shadow-svg');
+                
+                // 2초 후 다음 문제로
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < questions.length) {
+                        loadQuestion();
+                    } else {
+                        showEndScreen();
+                    }
+                }, 2000);
+            } else {
+                // 오답!
+                cardElement.classList.add('shake');
+                showFeedbackMessage("다시 찾아볼까?");
+                
+                setTimeout(() => {
+                    cardElement.classList.remove('shake');
+                }, 500);
+            }
+        }
+
+        // --- 오답 피드백 팝업 ---
+        function showFeedbackMessage(text) {
+            const msg = document.getElementById('feedback-msg');
+            msg.textContent = text;
+            msg.classList.remove('opacity-0');
+            
+            setTimeout(() => {
+                msg.classList.add('opacity-0');
+            }, 1200);
+        }
+
+        // --- 별 도장 UI 초기화 ---
+        function initStars() {
+            const container = document.getElementById('star-container');
+            container.innerHTML = '';
+            for(let i=0; i<8; i++) {
+                container.innerHTML += `<svg id="star-${i}" class="w-8 h-8 sm:w-12 sm:h-12 text-gray-200 transition-colors duration-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>`;
+            }
+        }
+
+        // --- 별 도장 획득 ---
+        function earnStar(index) {
+            const star = document.getElementById(`star-${index}`);
+            if (star) {
+                star.classList.remove('text-gray-200');
+                star.classList.add('text-yellow-400', 'drop-shadow-md', 'pop-in');
+            }
+        }
+
+        // --- 모든 문제 완료 화면 ---
+        function showEndScreen() {
+            document.getElementById('game-screen').classList.replace('flex', 'hidden');
+            document.getElementById('end-screen').classList.replace('hidden', 'flex');
+            
+            // 축하 효과음
+            if (audioCtx) {
+                playDingDongDang();
+                setTimeout(playDingDongDang, 500);
+            }
+            speakName("참 잘했어요, 오늘의 디지털 반장!");
+        }
+    </script>
+</body>
+</html>

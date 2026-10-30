@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <!-- 화면 확대 방지 및 모바일 기기 최적화 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>도움 신호등</title>
+    <!-- Tailwind CSS 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 구글 폰트 (Jua: 저학년이 읽기 좋고 귀여운 폰트) -->
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Jua', sans-serif;
+            /* 더블 탭 시 화면 확대되는 현상 방지 */
+            touch-action: manipulation; 
+            /* 텍스트 선택 방지 (아이들이 실수로 텍스트를 드래그하는 것 방지) */
+            user-select: none;
+            -webkit-user-select: none;
+            overflow: hidden; /* 스크롤 방지 */
+        }
+        
+        /* 버튼 누를 때 살짝 들어가는 효과 */
+        .btn-active:active {
+            transform: scale(0.97);
+        }
+        
+        /* 숨기기 유틸리티 */
+        .hidden-screen {
+            display: none !important;
+        }
+        
+        /* 튜터용 깜빡이는 테두리 */
+        @keyframes border-blink {
+            0%, 100% { border-color: rgba(255, 255, 255, 0.2); }
+            50% { border-color: rgba(255, 255, 255, 1); }
+        }
+        .blink-border {
+            border: 24px solid rgba(255, 255, 255, 0.2);
+            animation: border-blink 2s infinite ease-in-out;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 w-screen h-screen">
+
+    <!-- 1. 메인 화면 (신호등 버튼 3개) -->
+    <div id="main-screen" class="flex flex-col w-full h-full p-4 gap-4">
+        <button onclick="showScreen('green')" class="btn-active flex-1 bg-green-500 rounded-3xl shadow-xl flex items-center justify-center text-5xl md:text-7xl lg:text-8xl text-white transition-transform">
+            <span class="mr-4 md:mr-8 text-6xl md:text-8xl lg:text-9xl">🟢</span> 잘하고 있어요
+        </button>
+        <button onclick="showScreen('yellow')" class="btn-active flex-1 bg-yellow-400 rounded-3xl shadow-xl flex items-center justify-center text-5xl md:text-7xl lg:text-8xl text-gray-900 transition-transform">
+            <span class="mr-4 md:mr-8 text-6xl md:text-8xl lg:text-9xl">🟡</span> 궁금해요
+        </button>
+        <button onclick="showScreen('red-menu')" class="btn-active flex-1 bg-red-500 rounded-3xl shadow-xl flex items-center justify-center text-5xl md:text-7xl lg:text-8xl text-white transition-transform">
+            <span class="mr-4 md:mr-8 text-6xl md:text-8xl lg:text-9xl">🔴</span> 멈췄어요, 도와주세요
+        </button>
+    </div>
+
+    <!-- 2. 초록색 화면 (잘하고 있어요) -->
+    <div id="green-screen" class="hidden-screen flex flex-col items-center justify-center w-full h-full bg-green-500 text-white relative">
+        <div class="absolute top-6 left-6 text-lg md:text-xl opacity-90 bg-black/20 px-4 py-2 rounded-full">화면을 두 번 통통 누르면 처음으로 가요</div>
+        <button onclick="showScreen('main')" class="absolute top-6 right-6 bg-white text-green-700 px-6 py-3 rounded-2xl text-2xl md:text-4xl shadow-xl btn-active font-bold">↩ 처음으로</button>
+        
+        <div class="text-[10rem] md:text-[15rem] mb-4 mt-12">😄</div>
+        <div class="text-6xl md:text-8xl lg:text-9xl text-center break-keep">아주 잘하고 있어요!</div>
+    </div>
+
+    <!-- 3. 노란색 화면 (궁금해요) -->
+    <div id="yellow-screen" class="hidden-screen blink-border flex flex-col items-center justify-center w-full h-full bg-yellow-400 text-gray-900 relative">
+        <div class="absolute top-6 left-6 text-lg md:text-xl opacity-80 bg-white/50 px-4 py-2 rounded-full">화면을 두 번 통통 누르면 처음으로 가요</div>
+        <button onclick="showScreen('main')" class="absolute top-6 right-6 bg-white text-yellow-600 px-6 py-3 rounded-2xl text-2xl md:text-4xl shadow-xl btn-active font-bold">↩ 처음으로</button>
+
+        <div class="text-[10rem] md:text-[15rem] mb-4 mt-12 animate-bounce">🤔</div>
+        <div class="text-6xl md:text-8xl lg:text-9xl text-center break-keep">궁금한 것이 있어요!</div>
+        <div class="mt-12 bg-white/70 px-10 py-5 rounded-full text-5xl md:text-6xl text-blue-600">
+            튜터 선생님이 곧 와요 🏃
+        </div>
+        <div class="mt-8 text-4xl md:text-5xl font-bold bg-black/10 px-8 py-3 rounded-2xl">
+            기다린 시간: <span id="yellow-timer" class="text-red-600">0</span>초
+        </div>
+    </div>
+
+    <!-- 4. 빨간색 메뉴 화면 (문제 선택) -->
+    <div id="red-menu-screen" class="hidden-screen flex flex-col items-center w-full h-full bg-red-100 p-6 relative">
+        <div class="absolute top-6 left-6 text-lg md:text-xl text-gray-500 bg-white px-4 py-2 rounded-full shadow">화면을 두 번 통통 누르면 처음으로 가요</div>
+        <button onclick="showScreen('main')" class="absolute top-6 right-6 bg-white text-red-500 px-6 py-3 rounded-2xl text-2xl md:text-4xl shadow-xl btn-active font-bold">↩ 처음으로</button>
+
+        <div class="text-5xl md:text-7xl text-red-600 font-bold mb-8 mt-24 md:mt-28">무엇이 안 되나요?</div>
+        <div class="grid grid-cols-2 grid-rows-2 gap-6 w-full max-w-5xl flex-1 mb-10">
+            <button onclick="showRedActive('🔑', '로그인')" class="btn-active bg-white rounded-3xl shadow-lg border-4 border-red-200 flex flex-col items-center justify-center gap-4">
+                <span class="text-7xl md:text-9xl">🔑</span>
+                <span class="text-5xl md:text-7xl text-gray-800">로그인</span>
+            </button>
+            <button onclick="showRedActive('🔇', '소리')" class="btn-active bg-white rounded-3xl shadow-lg border-4 border-red-200 flex flex-col items-center justify-center gap-4">
+                <span class="text-7xl md:text-9xl">🔇</span>
+                <span class="text-5xl md:text-7xl text-gray-800">소리</span>
+            </button>
+            <button onclick="showRedActive('📶', '인터넷')" class="btn-active bg-white rounded-3xl shadow-lg border-4 border-red-200 flex flex-col items-center justify-center gap-4">
+                <span class="text-7xl md:text-9xl">📶</span>
+                <span class="text-5xl md:text-7xl text-gray-800">인터넷</span>
+            </button>
+            <button onclick="showRedActive('🖼️', '화면 이상함')" class="btn-active bg-white rounded-3xl shadow-lg border-4 border-red-200 flex flex-col items-center justify-center gap-4">
+                <span class="text-7xl md:text-9xl">🖼️</span>
+                <span class="text-4xl md:text-6xl text-gray-800">화면이 이상해요</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 5. 빨간색 활성 화면 (도와주세요 요청 중) -->
+    <div id="red-active-screen" class="hidden-screen blink-border flex flex-col items-center justify-center w-full h-full bg-red-500 text-white relative">
+        <div class="absolute top-6 left-6 text-lg md:text-xl opacity-90 bg-black/20 px-4 py-2 rounded-full">화면을 두 번 통통 누르면 처음으로 가요</div>
+        <button onclick="showScreen('main')" class="absolute top-6 right-6 bg-white text-red-600 px-6 py-3 rounded-2xl text-2xl md:text-4xl shadow-xl btn-active font-bold">↩ 처음으로</button>
+
+        <div id="red-icon" class="text-[10rem] md:text-[15rem] mb-4 mt-12 animate-pulse">😭</div>
+        <div id="red-text" class="text-6xl md:text-8xl lg:text-9xl text-center break-keep">도와주세요!</div>
+        <div class="mt-12 bg-black/30 px-10 py-5 rounded-full text-5xl md:text-6xl text-yellow-300">
+            튜터 선생님이 곧 와요 🏃
+        </div>
+        <div class="mt-8 text-4xl md:text-5xl font-bold bg-white/20 px-8 py-3 rounded-2xl">
+            기다린 시간: <span id="red-timer" class="text-yellow-300">0</span>초
+        </div>
+    </div>
+
+    <script>
+        // 화면 관리용 변수
+        const screens = ['main-screen', 'green-screen', 'yellow-screen', 'red-menu-screen', 'red-active-screen'];
+        let timerInterval = null;
+        let waitingSeconds = 0;
+
+        // 특정 화면을 보여주고 나머지는 숨기는 함수
+        function showScreen(screenName) {
+            stopTimer(); // 화면이 바뀔 때마다 타이머 초기화
+            
+            screens.forEach(id => {
+                document.getElementById(id).classList.add('hidden-screen');
+            });
+            
+            if(screenName === 'green') {
+                document.getElementById('green-screen').classList.remove('hidden-screen');
+            } else if (screenName === 'yellow') {
+                document.getElementById('yellow-screen').classList.remove('hidden-screen');
+                startTimer('yellow-timer');
+            } else if (screenName === 'red-menu') {
+                document.getElementById('red-menu-screen').classList.remove('hidden-screen');
+            } else if (screenName === 'main') {
+                document.getElementById('main-screen').classList.remove('hidden-screen');
+            }
+        }
+
+        // 빨간색 세부 문제 선택 시 실행되는 함수
+        function showRedActive(icon, text) {
+            stopTimer();
+            screens.forEach(id => {
+                document.getElementById(id).classList.add('hidden-screen');
+            });
+            
+            // 선택한 아이콘과 텍스트로 화면 업데이트
+            document.getElementById('red-icon').innerText = icon;
+            document.getElementById('red-text').innerText = text;
+            
+            document.getElementById('red-active-screen').classList.remove('hidden-screen');
+            startTimer('red-timer');
+        }
+
+        // 타이머 시작 함수
+        function startTimer(elementId) {
+            waitingSeconds = 0;
+            const timerElement = document.getElementById(elementId);
+            timerElement.innerText = waitingSeconds;
+            
+            timerInterval = setInterval(() => {
+                waitingSeconds++;
+                timerElement.innerText = waitingSeconds;
+            }, 1000);
+        }
+
+        // 타이머 정지 함수
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        // 더블 탭(터치) 또는 더블 클릭 시 메인 화면으로 돌아가는 기능
+        let lastTap = 0;
+        
+        // 터치 기기 지원 (태블릿)
+        document.addEventListener('touchend', function(e) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            // 500ms 이내에 두 번 터치하면 더블 탭으로 인식
+            if (tapLength < 500 && tapLength > 0) {
+                showScreen('main');
+                e.preventDefault(); // 기본 동작(확대 등) 방지
+            }
+            lastTap = currentTime;
+        });
+
+        // 마우스 기기 지원 (PC 테스트용)
+        document.addEventListener('dblclick', function() {
+            showScreen('main');
+        });
+        
+    </script>
+</body>
+</html>

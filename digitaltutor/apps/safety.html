@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>수업 전 3분 안전 점검표</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        /* 커스텀 스크롤바 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* 버튼 터치 시 부드러운 효과 */
+        .btn-touch { transition: transform 0.1s ease, background-color 0.2s ease; }
+        .btn-touch:active { transform: scale(0.97); }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex justify-center">
+
+    <!-- 메인 앱 컨테이너 (모바일 뷰 최적화) -->
+    <div class="w-full max-w-md bg-white min-h-screen shadow-2xl relative flex flex-col">
+        
+        <!-- 상단 헤더 & 진행률 (고정) -->
+        <div class="sticky top-0 z-20 bg-white border-b border-slate-200 shadow-sm">
+            <div class="p-4 flex items-center justify-between">
+                <h1 class="text-lg font-bold text-slate-800">✅ 3분 안전 점검표</h1>
+                <span id="current-date" class="text-sm font-medium text-slate-500 bg-slate-100 py-1 px-3 rounded-full"></span>
+            </div>
+            
+            <!-- 진행 막대 -->
+            <div class="w-full bg-slate-100 h-2">
+                <div id="progress-bar" class="bg-indigo-600 h-2 transition-all duration-300 w-0"></div>
+            </div>
+            <div class="text-right px-4 py-1 text-xs font-semibold text-slate-500">
+                점검 완료: <span id="progress-text" class="text-indigo-600">0/9</span>
+            </div>
+        </div>
+
+        <!-- 스크롤 영역 -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-6 pb-32">
+            
+            <!-- ① 학년/반/교시 입력 -->
+            <section class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <h2 class="text-sm font-bold text-slate-600 flex items-center gap-1">
+                    <span>🏫</span> 수업 정보
+                </h2>
+                <div class="flex gap-3">
+                    <div class="flex-1">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">학년</label>
+                        <input type="number" id="grade" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-3 text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="예: 3">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">반</label>
+                        <input type="number" id="classNum" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-3 text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="예: 2">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">교시</label>
+                        <select id="period" class="w-full bg-white border border-slate-300 rounded-xl px-2 py-3 text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
+                            <option value="">선택</option>
+                            <option value="1">1교시</option>
+                            <option value="2">2교시</option>
+                            <option value="3">3교시</option>
+                            <option value="4">4교시</option>
+                            <option value="5">5교시</option>
+                            <option value="6">6교시</option>
+                            <option value="7">7교시</option>
+                            <option value="방과후">방과후</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ② 점검 항목 컨테이너 (JS로 동적 렌더링) -->
+            <div id="checklist-container" class="space-y-5">
+                <!-- 항목들이 여기에 생성됩니다. -->
+            </div>
+            
+            <!-- 디지털 수업 5계명 (아코디언) -->
+            <details class="group bg-indigo-50 mt-6 rounded-2xl border border-indigo-100 p-4 shadow-sm">
+                <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-indigo-800 text-sm">
+                    <span>⭐ 학생 안내용: 디지털 수업 5계명</span>
+                    <span class="transition group-open:rotate-180">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </summary>
+                <ul class="text-sm text-indigo-700 mt-4 space-y-2.5 font-medium">
+                    <li class="flex gap-2"><span>1.</span><span>이동할 때는 화면을 보지 않아요</span></li>
+                    <li class="flex gap-2"><span>2.</span><span>전선과 충전기는 허락 없이 만지지 않아요</span></li>
+                    <li class="flex gap-2"><span>3.</span><span>기기는 책상 안쪽에 두어요</span></li>
+                    <li class="flex gap-2"><span>4.</span><span>친구 기기로 로그인하지 않아요</span></li>
+                    <li class="flex gap-2"><span>5.</span><span>이상한 일은 바로 알려요</span></li>
+                </ul>
+            </details>
+
+            <!-- 점검 기록 목록 -->
+            <section class="mt-8">
+                <h3 class="text-sm font-bold text-slate-600 mb-3 border-b pb-2">📋 최근 점검 기록 (현재 세션)</h3>
+                <div id="history-list" class="space-y-3">
+                    <p class="text-sm text-slate-400 text-center py-4">아직 저장된 점검 기록이 없습니다.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- 하단 액션 버튼 (고정) -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-20 flex gap-3">
+            <button onclick="saveAndReset()" class="flex-1 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl btn-touch text-sm">
+                새 점검하기 🔄
+            </button>
+            <button onclick="openReportModal()" class="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md shadow-indigo-200 btn-touch text-sm">
+                보고 문장 만들기 📝
+            </button>
+        </div>
+
+    </div>
+
+    <!-- 맞춤형 알림 (Toast) -->
+    <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50 flex items-center gap-2 font-medium text-sm">
+        <span id="toast-icon">ℹ️</span>
+        <span id="toast-msg">알림 메시지</span>
+    </div>
+
+    <!-- 보고서 모달 -->
+    <div id="report-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex flex-col justify-end items-center sm:justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh] transform transition-transform translate-y-full sm:translate-y-0 duration-300" id="report-modal-content">
+            <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 class="font-bold text-slate-800">⚠️ 보고 문장 생성기</h3>
+                <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 p-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-5 flex-1 overflow-y-auto">
+                <p class="text-xs text-slate-500 mb-2">필요에 따라 아래 문장을 수정할 수 있습니다.</p>
+                <textarea id="report-textarea" class="w-full h-40 p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 leading-relaxed resize-none"></textarea>
+            </div>
+            <div class="p-4 bg-white border-t border-slate-100 flex gap-3">
+                <button onclick="closeReportModal()" class="flex-1 py-3 bg-slate-100 text-slate-700 font-semibold rounded-xl btn-touch">닫기</button>
+                <button onclick="copyReportText()" class="flex-1 py-3 bg-indigo-600 text-white font-semibold rounded-xl shadow-md btn-touch flex items-center justify-center gap-2">
+                    <span>복사하기</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 데이터 구조 설정 ---
+        const checklistData = [
+            {
+                category: "전기·충전 🔌",
+                items: [
+                    { id: "c1_1", text: "충전선이 통로를 가로지르지 않는다", problemText: "충전선 통로 가로지름" },
+                    { id: "c1_2", text: "멀티탭 과부하·물기 없음", problemText: "멀티탭 과부하 또는 물기 있음" },
+                    { id: "c1_3", text: "충전함 문이 동선을 막지 않는다", problemText: "충전함 문이 동선을 막음" }
+                ]
+            },
+            {
+                category: "기기 상태 📱",
+                items: [
+                    { id: "c2_1", text: "파손·발열·부푼 배터리 기기 없음", problemText: "파손·발열·배터리 부품 등 문제 기기 발견" },
+                    { id: "c2_2", text: "기기 번호와 자리가 맞다", problemText: "기기 번호와 자리가 맞지 않음" }
+                ]
+            },
+            {
+                category: "네트워크 🌐",
+                items: [
+                    { id: "c3_1", text: "무선 AP 불빛이 정상이다(초록/파랑)", problemText: "무선 AP 상태 비정상" },
+                    { id: "c3_2", text: "학습 사이트 정상 접속 확인", problemText: "학습 사이트 접속 불안정" }
+                ]
+            },
+            {
+                category: "이동·자리 🪑",
+                items: [
+                    { id: "c4_1", text: "책상 사이 이동 통로가 넓다", problemText: "책상 사이 통로 확보 안 됨" },
+                    { id: "c4_2", text: "기기는 책상 안쪽 안전한 곳에 둔다", problemText: "기기 낙하 위험 위치 방치" }
+                ]
+            }
+        ];
+
+        // --- 상태 관리 ---
+        let currentAnswers = {}; // { itemId: 'good' | 'fixed' | 'report' }
+        const totalItems = 9;
+        let checkHistory = []; // { id, date, time, grade, classNum, period, summary }
+
+        // --- 초기화 ---
+        window.onload = () => {
+            setTodayDate();
+            renderChecklist();
+        };
+
+        function setTodayDate() {
+            const today = new Date();
+            const dateStr = `${today.getMonth() + 1}월 ${today.getDate()}일`;
+            document.getElementById('current-date').innerText = dateStr;
+        }
+
+        // --- 화면 렌더링 ---
+        function renderChecklist() {
+            const container = document.getElementById('checklist-container');
+            container.innerHTML = '';
+
+            checklistData.forEach((section, sIndex) => {
+                // 카테고리 카드 생성
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-4";
+                
+                const title = document.createElement('h3');
+                title.className = "text-sm font-bold text-slate-800 mb-4 border-b border-slate-100 pb-2";
+                title.innerText = section.category;
+                card.appendChild(title);
+
+                const list = document.createElement('div');
+                list.className = "space-y-5";
+
+                section.items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = "flex flex-col gap-2";
+                    
+                    // 질문 텍스트
+                    const qText = document.createElement('p');
+                    qText.className = "text-sm font-semibold text-slate-700 leading-tight";
+                    qText.innerText = `• ${item.text}`;
+                    itemDiv.appendChild(qText);
+
+                    // 버튼 그룹
+                    const btnGroup = document.createElement('div');
+                    btnGroup.className = "flex gap-2 w-full";
+                    btnGroup.innerHTML = `
+                        <button onclick="selectAnswer('${item.id}', 'good', this)" class="ans-btn flex-1 py-3 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-200 bg-slate-50 text-slate-500 transition-all btn-touch" data-id="${item.id}" data-val="good">
+                            괜찮아요 ✅
+                        </button>
+                        <button onclick="selectAnswer('${item.id}', 'fixed', this)" class="ans-btn flex-1 py-3 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-200 bg-slate-50 text-slate-500 transition-all btn-touch" data-id="${item.id}" data-val="fixed">
+                            조치했어요 🔧
+                        </button>
+                        <button onclick="selectAnswer('${item.id}', 'report', this)" class="ans-btn flex-1 py-3 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-200 bg-slate-50 text-slate-500 transition-all btn-touch" data-id="${item.id}" data-val="report">
+                            보고 필요 ⚠️
+                        </button>
+                    `;
+                    itemDiv.appendChild(btnGroup);
+                    list.appendChild(itemDiv);
+                });
+
+                card.appendChild(list);
+                container.appendChild(card);
+            });
+        }
+
+        // --- 상호작용 및 로직 ---
+        function selectAnswer(itemId, value, btnElement) {
+            currentAnswers[itemId] = value;
+            
+            // 해당 문항의 모든 버튼 스타일 초기화
+            const siblings = btnElement.parentElement.querySelectorAll('.ans-btn');
+            siblings.forEach(btn => {
+                btn.className = "ans-btn flex-1 py-3 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-200 bg-slate-50 text-slate-500 transition-all btn-touch";
+            });
+
+            // 선택된 버튼 스타일 적용
+            if (value === 'good') {
+                btnElement.className = "ans-btn flex-1 py-3 px-1 rounded-xl text-xs sm:text-sm font-bold border-green-500 bg-green-500 text-white shadow-md shadow-green-200 transition-all btn-touch";
+            } else if (value === 'fixed') {
+                btnElement.className = "ans-btn flex-1 py-3 px-1 rounded-xl text-xs sm:text-sm font-bold border-blue-500 bg-blue-500 text-white shadow-md shadow-blue-200 transition-all btn-touch";
+            } else if (value === 'report') {
+                btnElement.className = "ans-btn flex-1 py-3 px-1 rounded-xl text-xs sm:text-sm font-bold border-red-500 bg-red-500 text-white shadow-md shadow-red-200 transition-all btn-touch";
+            }
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answeredCount = Object.keys(currentAnswers).length;
+            const percentage = (answeredCount / totalItems) * 100;
+            
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            document.getElementById('progress-text').innerText = `${answeredCount}/${totalItems}`;
+            
+            if (answeredCount === totalItems) {
+                document.getElementById('progress-bar').classList.remove('bg-indigo-600');
+                document.getElementById('progress-bar').classList.add('bg-green-500');
+            } else {
+                document.getElementById('progress-bar').classList.add('bg-indigo-600');
+                document.getElementById('progress-bar').classList.remove('bg-green-500');
+            }
+        }
+
+        // --- 보고 문장 생성 ---
+        function openReportModal() {
+            const grade = document.getElementById('grade').value;
+            const classNum = document.getElementById('classNum').value;
+            const period = document.getElementById('period').value;
+
+            if (!grade || !classNum || !period) {
+                showToast('학년, 반, 교시를 모두 입력해주세요.', 'error');
+                return;
+            }
+
+            let reportItems = [];
+            let fixedItems = [];
+            
+            checklistData.forEach(section => {
+                section.items.forEach(item => {
+                    if (currentAnswers[item.id] === 'report') {
+                        reportItems.push(`[${item.problemText}]`);
+                    } else if (currentAnswers[item.id] === 'fixed') {
+                        fixedItems.push(`[${item.text}]`);
+                    }
+                });
+            });
+
+            const textarea = document.getElementById('report-textarea');
+            let reportStr = "";
+            
+            if (reportItems.length === 0) {
+                reportStr = `${grade}학년 ${classNum}반 ${period}교시 점검 결과, 특이사항 없이 안전합니다.`;
+            } else {
+                const itemsStr = reportItems.join(', ');
+                reportStr = `${grade}학년 ${classNum}반 ${period}교시 점검 결과 ${itemsStr}에 문제가 있어 확인이 필요합니다.\n\n현재 [       ]로 임시 조치 중입니다.`;
+            }
+
+            if (fixedItems.length > 0) {
+                reportStr += `\n\n※ ${fixedItems.join(', ')} 항목은 조치 완료.`;
+            }
+            
+            textarea.value = reportStr;
+
+            // 모달 열기 애니메이션 적용
+            const modal = document.getElementById('report-modal');
+            const modalContent = document.getElementById('report-modal-content');
+            modal.classList.remove('hidden');
+            // setTimeout for CSS transition to kick in
+            setTimeout(() => {
+                modalContent.classList.remove('translate-y-full');
+            }, 10);
+        }
+
+        function closeReportModal() {
+            const modal = document.getElementById('report-modal');
+            const modalContent = document.getElementById('report-modal-content');
+            modalContent.classList.add('translate-y-full');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function copyReportText() {
+            const text = document.getElementById('report-textarea').value;
+            
+            // 클립보드 복사 로직 (Fallback 포함)
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('보고 내용이 복사되었습니다.', 'success');
+                    closeReportModal();
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if(successful) {
+                    showToast('보고 내용이 복사되었습니다.', 'success');
+                    closeReportModal();
+                } else {
+                    showToast('복사에 실패했습니다. 직접 선택하여 복사해주세요.', 'error');
+                }
+            } catch (err) {
+                showToast('복사에 실패했습니다.', 'error');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // --- 새 점검 및 기록 저장 (세션 메모리) ---
+        function saveAndReset() {
+            const grade = document.getElementById('grade').value;
+            const classNum = document.getElementById('classNum').value;
+            const period = document.getElementById('period').value;
+
+            // 기록 저장 조건: 하나라도 응답했거나 반 정보가 있을 때
+            if (Object.keys(currentAnswers).length > 0 && grade && classNum && period) {
+                const now = new Date();
+                const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+                
+                let issues = 0;
+                Object.values(currentAnswers).forEach(val => {
+                    if (val === 'report') issues++;
+                });
+
+                let statusBadge = issues > 0 
+                    ? `<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-bold">주의 ${issues}건</span>`
+                    : `<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">이상 없음</span>`;
+
+                checkHistory.unshift({
+                    id: Date.now(),
+                    time: timeStr,
+                    title: `${grade}학년 ${classNum}반 (${period}교시)`,
+                    status: statusBadge
+                });
+
+                renderHistory();
+                showToast('점검 기록이 저장되었습니다.', 'success');
+            } else if (Object.keys(currentAnswers).length > 0) {
+                 showToast('현재 진행 중인 내용이 초기화됩니다.', 'info');
+            }
+
+            // 폼 초기화
+            document.getElementById('grade').value = '';
+            document.getElementById('classNum').value = '';
+            document.getElementById('period').value = '';
+            currentAnswers = {};
+            updateProgress();
+            renderChecklist();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('history-list');
+            if (checkHistory.length === 0) {
+                list.innerHTML = `<p class="text-sm text-slate-400 text-center py-4">아직 저장된 점검 기록이 없습니다.</p>`;
+                return;
+            }
+
+            list.innerHTML = '';
+            checkHistory.forEach(record => {
+                const item = document.createElement('div');
+                item.className = "flex justify-between items-center bg-white p-3 rounded-xl border border-slate-200 shadow-sm";
+                item.innerHTML = `
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-slate-700">${record.title}</span>
+                        <span class="text-xs text-slate-400">${record.time} 완료</span>
+                    </div>
+                    <div>
+                        ${record.status}
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // --- 커스텀 Toast 알림 ---
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            const iconEl = document.getElementById('toast-icon');
+
+            msgEl.innerText = message;
+            
+            if (type === 'success') {
+                iconEl.innerText = '✅';
+                toast.className = "fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-5 py-3 rounded-full shadow-lg transition-opacity duration-300 pointer-events-none z-[60] flex items-center gap-2 font-medium text-sm w-max";
+            } else if (type === 'error') {
+                iconEl.innerText = '⚠️';
+                toast.className = "fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-5 py-3 rounded-full shadow-lg transition-opacity duration-300 pointer-events-none z-[60] flex items-center gap-2 font-medium text-sm w-max";
+            } else {
+                iconEl.innerText = 'ℹ️';
+                toast.className = "fixed top-5 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-5 py-3 rounded-full shadow-lg transition-opacity duration-300 pointer-events-none z-[60] flex items-center gap-2 font-medium text-sm w-max";
+            }
+
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
