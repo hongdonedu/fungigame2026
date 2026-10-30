@@ -12,7 +12,8 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--cream);color:var(--navy);font-family:'Gowun Dodum',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden;min-height:100vh;word-break:keep-all;overflow-wrap:anywhere}
-body::before{content:"";position:fixed;inset:0;background:url(../art/bg/stage.webp) center/cover no-repeat;opacity:.12;pointer-events:none;z-index:-1}
+body::before{content:"";position:fixed;inset:0;background:url(../art/bg/hq.webp) center/cover no-repeat;opacity:.13;pointer-events:none;z-index:-1}
+body.fin::before{background-image:url(../art/bg/stage.webp);opacity:.22}
 h1,h2,h3,.jua{font-family:'Jua','Gowun Dodum',sans-serif;font-weight:400;margin:0;line-height:1.3}
 p{margin:0}
 button{font:inherit;color:inherit;cursor:pointer;-webkit-user-select:none;user-select:none}
@@ -138,13 +139,13 @@ img.gone{display:none}
 .face.front.name{background:var(--lemon);border-color:#FFE36B}
 .face .nm{font-family:'Jua',sans-serif;font-size:clamp(15px,4.4vw,22px);text-align:center;line-height:1.2}
 .face .fl{font-size:11px;color:var(--navy2);background:rgba(255,255,255,.75);border-radius:999px;padding:0 8px;white-space:nowrap}
-.mcard .dev{width:74%;height:auto;aspect-ratio:1}
+.mcard .dev{width:88%;height:auto;aspect-ratio:1;max-height:72%}
 .mcard .dev-emo{font-size:clamp(28px,7.5vw,50px)}
 .mcard.ok .face.front{border-color:var(--good);box-shadow:0 0 0 3px rgba(31,157,103,.25),0 4px 0 rgba(31,42,107,.12)}
 .mcard.ok{animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
 .mcard.no{animation:wig .5s ease}
 .say{display:flex;align-items:center;gap:10px;background:var(--mint);border-radius:18px;padding:10px 12px;min-height:84px}
-.say .dev{width:62px;height:62px}
+.say .dev{width:76px;height:76px}
 .say b{font-family:'Jua',sans-serif;font-weight:400;display:block;font-size:17px}
 .say .ph{color:var(--navy2);font-size:15px}
 
@@ -163,6 +164,7 @@ img.gone{display:none}
 .hint{background:#fff;border-radius:16px;padding:10px 14px;margin:12px 0;font-size:15px;min-height:48px;box-shadow:var(--sh)}
 .tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
 .scard{border:3px solid transparent;background:#fff;border-radius:20px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;touch-action:none;min-height:112px;box-shadow:var(--sh);transition:transform .15s,border-color .15s,opacity .15s;min-width:0}
+.scard .dev{width:76px;height:76px}
 .scard .snm{font-family:'Jua',sans-serif;font-size:15px;text-align:center;line-height:1.2}
 .scard.sel{border-color:var(--orange);transform:translateY(-5px);box-shadow:0 10px 20px rgba(237,125,49,.3)}
 .scard.lifted{opacity:.3}
@@ -523,7 +525,7 @@ try{var raw=localStorage.getItem(KEY);if(raw){var o=JSON.parse(raw);if(o&&o.best
 function save(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
 function total(){return ST.best[1]+ST.best[2]+ST.best[3]+ST.best[4];}
 function starStr(n){return '★★★'.slice(0,n)+'☆☆☆'.slice(0,3-n);}
-function unlocked(id){return id===1||ST.best[id-1]>0;}
+function unlocked(id){return true;}
 
 /* ---------- hosts ---------- */
 var HOST={1:'seoa',2:'doyun',3:'minjun',4:'taeo'};
@@ -538,7 +540,7 @@ var badgeImg=withImg($('#fBadgeArt'),'../art/medal.webp','','');
 /* ---------- navigation ---------- */
 var timer=null;
 function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
-function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id);});window.scrollTo(0,0);}
+function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id);});document.body.classList.toggle('fin',id==='final');window.scrollTo(0,0);}
 function go(n){closeModal();stopTimer();if(n===1)s1Build(S1.mode||6);if(n===2)s2Init();if(n===3)s3Init();if(n===4)s4Init();show('s'+n);}
 function goHub(){closeModal();stopTimer();renderHub();show('hub');}
 document.querySelectorAll('.back-hub').forEach(function(b){b.addEventListener('click',goHub);});
