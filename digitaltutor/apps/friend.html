@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>디지털 친구 놀이터</title>
+<meta name="description" content="「디지털은 내 친구」 1~3학년 지원을 준비하는 디지털 튜터 연수 게임: 짝꿍 찾기, 입력·출력 분류, 스마트패드 순서, 눈높이 말하기">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap">
+<style>
+:root{--cream:#FFF8EC;--mint:#CFF3E2;--sky:#D6ECFF;--peach:#FFE1CC;--lemon:#FFF3B0;--navy:#1F2A6B;--navy2:#4B5592;--orange:#ED7D31;--orange2:#C45E19;--good:#1F9D67;--bad:#E25A4F;
+--sh:0 4px 0 rgba(31,42,107,.07),0 10px 24px rgba(31,42,107,.10);--sh2:0 6px 0 rgba(31,42,107,.10),0 18px 36px rgba(31,42,107,.16)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:'Gowun Dodum',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden;min-height:100vh;word-break:keep-all;overflow-wrap:anywhere}
+body::before{content:"";position:fixed;inset:0;background:url(../art/bg/stage.webp) center/cover no-repeat;opacity:.12;pointer-events:none;z-index:-1}
+h1,h2,h3,.jua{font-family:'Jua','Gowun Dodum',sans-serif;font-weight:400;margin:0;line-height:1.3}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-user-select:none;user-select:none}
+button:focus-visible,[role=button]:focus-visible,a:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+img{max-width:100%;transition:opacity .3s}
+img.gone{display:none}
+.has-img>.fb{visibility:hidden}
+.av,.ico,.sc-ic{position:relative;display:inline-grid;place-items:center;flex:none}
+.av>img,.ico>img,.sc-ic>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.av>.fb{font-size:46px;line-height:1}
+.ico{width:28px;height:28px}.ico>.fb{font-size:20px;line-height:1}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:40;background:rgba(255,248,236,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:2px dashed rgba(237,125,49,.3)}
+.top-in{max-width:1080px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:10px}
+.back{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;background:#fff;color:var(--navy);text-decoration:none;font-family:'Jua',sans-serif;box-shadow:var(--sh);white-space:nowrap;flex:none}
+.brand{flex:1;min-width:0;font-family:'Jua',sans-serif;font-size:19px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{flex:none;min-height:40px;display:inline-flex;align-items:center;padding:0 12px;border-radius:999px;background:var(--navy);color:#FFE07A;font-family:'Jua',sans-serif;white-space:nowrap}
+@media(max-width:430px){.brand{font-size:15px}.back{padding:0 10px}}
+
+.wrap{max-width:1080px;margin:0 auto;padding:16px 16px 56px}
+.screen{display:none}.screen.on{display:block;animation:rise .4s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.88)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes wig{0%,100%{transform:none}20%{transform:translateX(-6px) rotate(-4deg)}40%{transform:translateX(6px) rotate(4deg)}60%{transform:translateX(-4px) rotate(-2deg)}80%{transform:translateX(3px) rotate(1deg)}}
+@keyframes bob{0%,100%{transform:none}40%{transform:translateY(-8px) scale(1.04)}}
+@keyframes droop{0%,100%{transform:none}50%{transform:translateY(5px) rotate(-4deg)}}
+@keyframes boing{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.04);opacity:1}100%{transform:scale(1)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.pop{animation:pop .38s cubic-bezier(.3,1.6,.5,1)}
+.wig{animation:wig .5s ease}
+.bob{animation:bob .55s ease}
+.droop{animation:droop .6s ease}
+
+/* buttons */
+.btn{min-height:48px;padding:0 18px;border-radius:999px;border:0;background:#fff;box-shadow:var(--sh);font-family:'Jua',sans-serif;font-size:17px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:var(--navy)}
+.btn.pri{background:var(--orange);color:#fff;box-shadow:0 4px 0 var(--orange2)}
+.btn.navy{background:var(--navy);color:#fff;box-shadow:0 4px 0 #111842}
+.btn:active{transform:translateY(2px)}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+/* hero */
+.hero{display:grid;background:#fff;border-radius:28px;overflow:hidden;box-shadow:var(--sh2)}
+.hero-art{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,var(--sky),var(--mint))}
+.hero-art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-art>.fb{position:absolute;inset:0;display:grid;place-items:center;font-size:72px}
+.hero-txt{padding:18px 20px 22px}
+.pill{display:inline-block;background:var(--lemon);color:var(--orange2);padding:4px 12px;border-radius:999px;font-size:14px;font-weight:700}
+.hero h1{font-size:clamp(32px,8vw,48px);margin:8px 0 6px}
+.hero h1 span{color:var(--orange)}
+.hero-txt>p{color:var(--navy2)}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:14px}
+.flow .f{border-radius:14px;padding:6px 12px;font-family:'Jua',sans-serif;font-size:16px;background:var(--mint)}
+.flow .f.k2{background:var(--sky)}.flow .f.k3{background:var(--peach)}.flow .f.k4{background:var(--lemon)}
+.flow .ar{color:var(--orange);font-family:'Jua',sans-serif}
+@media(min-width:860px){.hero{grid-template-columns:1.25fr 1fr}.hero-art{aspect-ratio:auto;min-height:340px}.hero-txt{align-self:center;padding:28px}}
+.greet{display:flex;align-items:flex-end;gap:10px;margin:18px 0 4px}
+.greet .av{width:84px;height:96px;animation:floaty 3s ease-in-out infinite}
+.bubble{position:relative;flex:1;min-width:0;background:#fff;border-radius:20px;padding:12px 16px;box-shadow:var(--sh);font-size:16px}
+.bubble::before{content:"";position:absolute;left:-9px;bottom:18px;border:10px solid transparent;border-right-color:#fff;border-left:0}
+
+/* stage cards */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:14px}
+.stage-card{position:relative;text-align:left;border:0;border-radius:26px;padding:16px 16px 14px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:4px;min-height:260px;overflow:hidden;transition:transform .2s}
+.stage-card:hover{transform:translateY(-4px) rotate(-.6deg)}
+.c1{background:var(--mint)}.c2{background:var(--sky)}.c3{background:var(--peach)}.c4{background:var(--lemon)}
+.sc-art{position:relative;height:112px;margin-bottom:4px}
+.sc-ic{position:absolute;left:0;top:0;width:104px;height:104px}
+.sc-ic>.fb{font-size:58px;line-height:1}
+.sc-ic>img{filter:drop-shadow(0 6px 6px rgba(31,42,107,.15))}
+.sc-kid{position:absolute;right:-6px;top:-6px;width:118px;height:128px}
+.sc-kid>img{object-position:bottom right}
+.sc-kid>.fb{display:none}
+.tag{display:inline-block;align-self:flex-start;background:rgba(255,255,255,.8);color:var(--orange2);border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700}
+.stage-card h3{font-size:22px;position:relative}
+.stage-card p{color:var(--navy2);font-size:15px;line-height:1.5}
+.sc-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:10px;flex-wrap:wrap}
+.stars{color:var(--orange);font-size:22px;letter-spacing:2px;line-height:1}
+.sc-state{background:var(--navy);color:#fff;border-radius:999px;padding:5px 12px;font-size:14px;font-family:'Jua',sans-serif}
+.stage-card.locked{filter:grayscale(.6);opacity:.82}
+.stage-card.locked .sc-state{background:#8A90B5}
+.clear-badge{position:absolute;top:16px;left:-34px;transform:rotate(-35deg);background:var(--orange);color:#fff;font-family:'Jua',sans-serif;padding:2px 40px;font-size:13px;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.hub-foot{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
+
+/* stage layout */
+.st-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.st-title h2{font-size:clamp(23px,5.6vw,30px)}
+.stage-body{display:grid;gap:14px}
+@media(min-width:900px){.stage-body{grid-template-columns:300px minmax(0,1fr);align-items:start}.side{position:sticky;top:76px}}
+.side{display:grid;gap:12px;min-width:0}
+.panel{background:#fff;border-radius:24px;padding:14px;box-shadow:var(--sh);min-width:0}
+.panel>.jua{display:block;font-size:17px;margin-bottom:8px}
+.host{display:flex;align-items:flex-end;gap:10px;background:transparent;box-shadow:none;padding:0}
+.host .av{width:92px;height:104px}
+.host .av>.fb{font-size:54px}
+.tip{background:var(--lemon);border-radius:20px;padding:12px 14px;font-size:15px;line-height:1.6}
+.tip b{font-family:'Jua',sans-serif;font-weight:400;color:var(--orange2);display:block;font-size:17px;margin-bottom:2px}
+.board{border-radius:28px;padding:16px;box-shadow:var(--sh);min-width:0}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.stat{display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:5px 12px 5px 8px;box-shadow:var(--sh);font-family:'Jua',sans-serif;font-size:16px;min-height:38px}
+
+/* devices */
+.dev{position:relative;display:inline-grid;place-items:center;width:64px;height:64px;flex:none}
+.dev-emo{font-size:40px;line-height:1}
+.dev-img{display:none;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(31,42,107,.15))}
+.dev.has-img .dev-img{display:block}.dev.has-img .dev-emo{display:none}
+.dev.xs{width:28px;height:28px}.dev.xs .dev-emo{font-size:20px}
+
+/* stage 1 */
+.modes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.mode{min-height:44px;border:3px solid transparent;border-radius:999px;background:#fff;padding:0 14px;font-family:'Jua',sans-serif;font-size:16px;box-shadow:var(--sh)}
+.mode.on{border-color:var(--orange);color:var(--orange2)}
+.mgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media(min-width:760px){.mgrid.n12{grid-template-columns:repeat(6,minmax(0,1fr))}.mgrid.n16{grid-template-columns:repeat(8,minmax(0,1fr))}}
+.mcard{aspect-ratio:3/4;border:0;padding:0;background:none;perspective:900px;border-radius:18px;min-width:0}
+.mcard .inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.3,1.35,.5,1);transform-style:preserve-3d}
+.mcard.flip .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 4px 0 rgba(31,42,107,.12);overflow:hidden;padding:4px}
+.face.back{background:radial-gradient(circle at 25% 25%,rgba(255,255,255,.35) 0 8px,transparent 9px) 0 0/34px 34px,linear-gradient(150deg,#F79A55,var(--orange));border:3px solid #fff}
+.face.back .q{font-family:'Jua',sans-serif;color:#fff;font-size:clamp(28px,8vw,44px);text-shadow:0 3px 0 rgba(0,0,0,.12)}
+.face.front{transform:rotateY(180deg);background:#fff;border:3px solid var(--sky)}
+.face.front.name{background:var(--lemon);border-color:#FFE36B}
+.face .nm{font-family:'Jua',sans-serif;font-size:clamp(15px,4.4vw,22px);text-align:center;line-height:1.2}
+.face .fl{font-size:11px;color:var(--navy2);background:rgba(255,255,255,.75);border-radius:999px;padding:0 8px;white-space:nowrap}
+.mcard .dev{width:74%;height:auto;aspect-ratio:1}
+.mcard .dev-emo{font-size:clamp(28px,7.5vw,50px)}
+.mcard.ok .face.front{border-color:var(--good);box-shadow:0 0 0 3px rgba(31,157,103,.25),0 4px 0 rgba(31,42,107,.12)}
+.mcard.ok{animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
+.mcard.no{animation:wig .5s ease}
+.say{display:flex;align-items:center;gap:10px;background:var(--mint);border-radius:18px;padding:10px 12px;min-height:84px}
+.say .dev{width:62px;height:62px}
+.say b{font-family:'Jua',sans-serif;font-weight:400;display:block;font-size:17px}
+.say .ph{color:var(--navy2);font-size:15px}
+
+/* stage 2 */
+.baskets{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.basket{border:3px dashed;border-radius:24px;min-height:150px;padding:10px;background:#fff;transition:transform .15s,box-shadow .15s;cursor:pointer;min-width:0}
+.basket.in{border-color:#4FA7DE;background:#EEF7FF}.basket.out{border-color:var(--orange);background:#FFF2E8}
+.basket.ready{box-shadow:0 0 0 4px rgba(237,125,49,.18)}
+.basket.hot{transform:scale(1.03);box-shadow:0 0 0 6px rgba(237,125,49,.35)}
+.bk-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bk-ico{font-size:30px;line-height:1}
+.bk-head h3{font-size:20px}
+.bk-head small{display:block;font-size:13px;color:var(--navy2)}
+.bk-list{display:flex;flex-wrap:wrap;gap:6px}
+.chipdev{display:inline-flex;align-items:center;gap:4px;background:#fff;border-radius:999px;padding:3px 10px 3px 4px;font-size:14px;box-shadow:0 2px 0 rgba(31,42,107,.08);animation:pop .4s}
+.hint{background:#fff;border-radius:16px;padding:10px 14px;margin:12px 0;font-size:15px;min-height:48px;box-shadow:var(--sh)}
+.tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.scard{border:3px solid transparent;background:#fff;border-radius:20px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;touch-action:none;min-height:112px;box-shadow:var(--sh);transition:transform .15s,border-color .15s,opacity .15s;min-width:0}
+.scard .snm{font-family:'Jua',sans-serif;font-size:15px;text-align:center;line-height:1.2}
+.scard.sel{border-color:var(--orange);transform:translateY(-5px);box-shadow:0 10px 20px rgba(237,125,49,.3)}
+.scard.lifted{opacity:.3}
+.ghost{position:fixed;z-index:90;pointer-events:none;transform:translate(-50%,-50%) rotate(-5deg) scale(1.06);box-shadow:var(--sh2);margin:0}
+.done-msg{background:#fff;border-radius:18px;padding:14px;text-align:center;font-family:'Jua',sans-serif;grid-column:1/-1}
+
+/* stage 3 */
+.pad-hd{background:#fff;border-radius:18px;padding:10px 14px;font-size:15px;margin-bottom:12px}
+.rail{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding:6px 0 4px;margin-bottom:14px;background:rgba(255,255,255,.6);border-radius:20px}
+.rail::before,.rail .fill{content:"";position:absolute;left:8.33%;top:26px;height:8px;border-radius:8px}
+.rail::before{right:8.33%;background:rgba(31,42,107,.12)}
+.rail .fill{width:0;background:var(--orange);transition:width .5s ease}
+.rnode{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;min-width:0}
+.rnum{width:48px;height:48px;border-radius:50%;background:#fff;border:3px dashed #B9BEDA;display:grid;place-items:center;font-family:'Jua',sans-serif;font-size:20px;color:#9AA0C6}
+.rnode.on .rnum{background:var(--orange);border:3px solid #fff;color:#fff;box-shadow:0 4px 10px rgba(237,125,49,.4);animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+.rlab{font-size:12px;font-family:'Jua',sans-serif;color:var(--navy2);min-height:2.4em;line-height:1.2;padding:0 2px}
+@media(max-width:430px){.rnum{width:40px;height:40px;font-size:17px}.rail::before,.rail .fill{top:22px}.rlab{font-size:11px}}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.step{position:relative;min-height:84px;border:3px solid transparent;border-radius:20px;background:#fff;box-shadow:var(--sh);display:flex;align-items:center;gap:10px;padding:10px 12px;text-align:left;font-family:'Jua',sans-serif;font-size:17px;line-height:1.3;color:var(--navy)}
+.step .se{font-size:30px;line-height:1;flex:none}
+.step .ord{position:absolute;top:-10px;right:-6px;width:32px;height:32px;border-radius:50%;background:var(--good);color:#fff;display:none;place-items:center;font-size:16px;border:3px solid #fff}
+.step.done{background:var(--mint);box-shadow:none;cursor:default}
+.step.done .ord{display:grid;animation:pop .4s}
+.step:disabled{color:var(--navy)}
+.say3{background:var(--peach);border-radius:18px;padding:10px 12px;font-size:16px;min-height:60px}
+
+/* stage 4 */
+.dots{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.dots i{width:30px;height:10px;border-radius:6px;background:rgba(31,42,107,.15)}
+.dots i.cur{background:var(--orange)}.dots i.ok{background:var(--good)}.dots i.no{background:var(--bad)}
+.ctx{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:3px 12px;font-size:13px;margin-bottom:8px}
+.adult{background:#fff;border-radius:22px;padding:14px 16px;border:3px solid #E4E7F5}
+.adult .lab{font-size:13px;color:#6E76A8;font-weight:700}
+.adult .txt{font-family:'Jua',sans-serif;font-size:clamp(19px,4.8vw,24px)}
+.q4{font-family:'Jua',sans-serif;font-size:19px;margin:14px 0 8px;color:var(--orange2)}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;border:3px solid transparent;background:#fff;border-radius:20px;padding:12px 14px;box-shadow:var(--sh);font-size:17px;line-height:1.5;min-height:56px;color:var(--navy)}
+.opt:hover:not(:disabled){border-color:#FFD0AE}
+.opt-k{flex:none;width:30px;height:30px;border-radius:50%;background:var(--sky);display:grid;place-items:center;font-family:'Jua',sans-serif}
+.opt.best{border-color:var(--good);background:#E9FBF2}
+.opt.best .opt-k{background:var(--good);color:#fff}
+.opt.wrong{border-color:var(--bad);background:#FFF0EE}
+.opt:disabled{cursor:default}
+.fbk{display:none;margin-top:12px;background:#fff;border-radius:22px;padding:16px;box-shadow:var(--sh);border-left:8px solid var(--good)}
+.fbk.on{display:block;animation:rise .35s}
+.fbk.bad{border-left-color:var(--bad)}
+.fbk h3{font-size:21px;margin-bottom:4px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tags span{background:var(--mint);border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700}
+.better{background:#E9FBF2;border-radius:16px;padding:10px 12px;margin-top:10px}
+.better b{font-family:'Jua',sans-serif;font-weight:400;color:var(--good);display:block}
+.fbk .btn{margin-top:12px}
+.tiplist{margin:0;padding-left:20px}.tiplist li{margin:2px 0}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:70;background:rgba(31,42,107,.45);display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex;animation:fade .25s}
+.mbox{position:relative;width:min(460px,100%);background:#fff;border-radius:28px;padding:20px 18px 18px;text-align:center;box-shadow:var(--sh2);animation:boing .5s cubic-bezier(.3,1.6,.5,1);max-height:calc(100vh - 32px);overflow:auto}
+.m-art{display:flex;justify-content:center;align-items:flex-end;gap:6px;height:124px}
+.m-art .av{width:110px;height:124px}
+.m-art .ico{width:72px;height:72px}.m-art .ico>.fb{font-size:52px}
+.mbox h2{font-size:28px;margin-top:4px}
+.mstars{font-size:48px;color:var(--orange);letter-spacing:4px;line-height:1.2}
+.mstars span{display:inline-block;animation:pop .5s cubic-bezier(.3,1.7,.5,1) both}
+.mstars span.off{color:#D8DBEC}
+.mmsg{margin:6px 0}
+.mrec{font-size:14px;color:var(--navy2)}
+.mtake{background:var(--lemon);border-radius:16px;padding:10px 12px;font-size:15px;text-align:left;margin-top:10px}
+.mcrit{font-size:12px;color:#7A80AA;margin-top:8px}
+.mbtns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+
+/* final */
+.final-top{display:grid;gap:16px}
+@media(min-width:900px){.final-top{grid-template-columns:340px minmax(0,1fr);align-items:start}}
+.badge-card{background:linear-gradient(160deg,var(--lemon),var(--peach));border-radius:28px;padding:20px;text-align:center;box-shadow:var(--sh2)}
+.badge-card .av{width:130px;height:130px;animation:floaty 3s ease-in-out infinite}
+.badge-card .av>.fb{font-size:84px}
+.badge-name{font-family:'Jua',sans-serif;font-size:clamp(30px,8vw,40px);color:var(--orange2);margin-top:4px}
+.total{font-family:'Jua',sans-serif;font-size:22px}
+.rows{display:grid;gap:8px;margin-top:12px;text-align:left}
+.row{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.75);border-radius:14px;padding:8px 12px;gap:8px}
+.row .stars{font-size:18px;white-space:nowrap}
+.fbtns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+.sheet{background:#fff;border-radius:28px;padding:20px;box-shadow:var(--sh2);border:3px dashed var(--orange);min-width:0}
+.sheet h2{font-size:clamp(24px,6vw,30px)}
+.sheet .sub{color:var(--navy2);font-size:15px;margin:2px 0 14px}
+.sheet h3{font-size:20px;margin:16px 0 8px;color:var(--orange2)}
+.fl3{display:grid;gap:10px}
+@media(min-width:640px){.fl3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.fstep{border-radius:20px;padding:12px 14px;font-size:15px;line-height:1.55}
+.fstep b{font-family:'Jua',sans-serif;font-weight:400;font-size:20px;display:block}
+.fstep small{display:block;margin-top:6px;color:var(--navy2);background:rgba(255,255,255,.65);border-radius:10px;padding:4px 8px}
+.tips5{counter-reset:t;list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.tips5 li{counter-increment:t;display:flex;gap:10px;align-items:flex-start;background:var(--cream);border-radius:16px;padding:10px 12px;font-size:15px}
+.tips5 li::before{content:counter(t);flex:none;width:32px;height:32px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-family:'Jua',sans-serif;font-size:17px}
+.tips5 li b{font-family:'Jua',sans-serif;font-weight:400;font-size:17px;display:block}
+.swap{display:flex;flex-wrap:wrap;gap:6px}
+.swap span{background:var(--sky);border-radius:999px;padding:4px 12px;font-size:14px}
+
+/* confetti */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:80;overflow:hidden}
+.cf{position:absolute;top:-24px;width:10px;height:14px;border-radius:3px;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}#fx{display:none}}
+@media print{.top,.badge-card,.fbtns,#fx,.modal,body::before{display:none!important}body{background:#fff}.screen{display:none!important}#final{display:block!important}.final-top{display:block}.sheet{box-shadow:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="back" href="../index.html#s4">← 아카이브로</a>
+    <div class="brand">디지털 친구 놀이터</div>
+    <span class="chip" id="totalChip">★ 0 / 12</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HUB -->
+  <section id="hub" class="screen on" aria-label="놀이터">
+    <div class="hero">
+      <div class="hero-art" data-img="../art/part_friend.webp"><span class="fb">🏫</span></div>
+      <div class="hero-txt">
+        <span class="pill">디지털 튜터 연수 · 「디지털은 내 친구」 1~3학년</span>
+        <h1>디지털 친구 <span>놀이터</span></h1>
+        <p>저학년 교실에 들어가기 전에, 교과서 내용과 <b>아이 눈높이로 말하기</b>를 놀이로 먼저 익혀요.</p>
+        <div class="flow" aria-label="교과서 흐름">
+          <span class="f">만나요</span><span class="ar">→</span><span class="f k2">놀아요</span><span class="ar">→</span><span class="f k3">친해져요</span><span class="ar">→</span><span class="f k4">튜터 미션</span>
+        </div>
+      </div>
+    </div>
+    <div class="greet">
+      <span class="av" data-img="../art/narae_wave.webp"><span class="fb">🧑‍🏫</span></span>
+      <p class="bubble" id="hubBubble" aria-live="polite"></p>
+    </div>
+    <div class="sgrid" id="stageGrid"></div>
+    <div class="hub-foot">
+      <button class="btn pri" type="button" id="finalBtn">결과 보기</button>
+      <button class="btn" type="button" id="resetBtn">↺ 기록 지우기</button>
+    </div>
+  </section>
+
+  <!-- STAGE 1 -->
+  <section id="s1" class="screen" aria-label="1학년 짝꿍 찾기">
+    <div class="st-head">
+      <button class="btn back-hub" type="button">← 놀이터</button>
+      <div class="st-title"><span class="tag">1학년 · 만나요</span><h2>디지털 친구 짝꿍 찾기</h2></div>
+    </div>
+    <div class="stage-body">
+      <aside class="side">
+        <div class="panel host"><span class="av" id="hp1"><span class="fb">👧</span></span><p class="bubble" id="b1" aria-live="polite"></p></div>
+        <div class="panel"><span class="jua">💬 기기 친구의 말</span><div class="say" id="s1Say"></div></div>
+        <div class="tip"><b>튜터 팁 · 만나요</b>1학년은 기기를 “친구”처럼 이름 불러 주면 금방 기억해요. “마우스 친구를 손바닥으로 살포시 감싸 볼까?”처럼 만져 보며 이름을 익히게 해요.</div>
+      </aside>
+      <div class="board c1">
+        <div class="modes">
+          <button class="mode" type="button" data-m="6">기본 · 6쌍</button>
+          <button class="mode" type="button" data-m="8">도전 · 8쌍</button>
+          <button class="mode" type="button" id="s1Re">↻ 다시 섞기</button>
+        </div>
+        <div class="stats">
+          <span class="stat"><span class="ico" data-img="../art/stopwatch.webp"><span class="fb">⏱️</span></span><span id="s1Time">0:00</span></span>
+          <span class="stat"><span class="ico"><span class="fb">👆</span></span><span id="s1Moves">0번</span></span>
+          <span class="stat"><span class="ico"><span class="fb">💞</span></span><span id="s1Pairs">0 / 6</span></span>
+        </div>
+        <div class="mgrid" id="mgrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 2 -->
+  <section id="s2" class="screen" aria-label="2학년 입력 출력 분류">
+    <div class="st-head">
+      <button class="btn back-hub" type="button">← 놀이터</button>
+      <div class="st-title"><span class="tag">2학년 · 놀아요</span><h2>들어가요? 나와요?</h2></div>
+    </div>
+    <div class="stage-body">
+      <aside class="side">
+        <div class="panel host"><span class="av" id="hp2"><span class="fb">🧒</span></span><p class="bubble" id="b2" aria-live="polite"></p></div>
+        <div class="tip"><b>튜터 팁 · 놀아요</b>입력은 “컴퓨터 안으로 <u>들어가요</u>!”(두 손을 가슴 쪽으로 끌어당기며), 출력은 “컴퓨터에서 <u>나와요</u>!”(두 손을 앞으로 쭉 내밀며). 몸짓 놀이로 말하면 2학년도 바로 구분해요.</div>
+      </aside>
+      <div class="board c2">
+        <div class="stats">
+          <span class="stat"><span class="ico" data-img="../art/boxes.webp"><span class="fb">🧺</span></span><span id="s2Placed">0 / 10</span></span>
+          <span class="stat"><span class="ico"><span class="fb">🙈</span></span><span id="s2Miss">틀림 0</span></span>
+        </div>
+        <div class="baskets">
+          <div class="basket in" id="basketIn" data-io="in" role="button" tabindex="0" aria-label="입력 장치 바구니">
+            <div class="bk-head"><span class="bk-ico" aria-hidden="true">⬇️</span><div><h3>입력 장치</h3><small>컴퓨터로 들어가요</small></div></div>
+            <div class="bk-list" id="bkIn"></div>
+          </div>
+          <div class="basket out" id="basketOut" data-io="out" role="button" tabindex="0" aria-label="출력 장치 바구니">
+            <div class="bk-head"><span class="bk-ico" aria-hidden="true">⬆️</span><div><h3>출력 장치</h3><small>컴퓨터에서 나와요</small></div></div>
+            <div class="bk-list" id="bkOut"></div>
+          </div>
+        </div>
+        <p class="hint" id="s2Hint" aria-live="polite"></p>
+        <div class="tray" id="tray"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 3 -->
+  <section id="s3" class="screen" aria-label="3학년 스마트패드 순서">
+    <div class="st-head">
+      <button class="btn back-hub" type="button">← 놀이터</button>
+      <div class="st-title"><span class="tag">3학년 · 친해져요</span><h2>스마트패드 순서 퍼즐</h2></div>
+    </div>
+    <div class="stage-body">
+      <aside class="side">
+        <div class="panel host"><span class="av" id="hp3"><span class="fb">👦</span></span><p class="bubble" id="b3" aria-live="polite"></p></div>
+        <div class="panel"><span class="jua">🗣️ 튜터는 이렇게 말해요</span><p class="say3" id="s3Tip"></p></div>
+        <div class="tip"><b>튜터 팁 · 친해져요</b>교실 속 스마트패드 수업은 ‘순서’가 절반이에요. “꺼내고, 켜고, 풀고, 찾고, 홈으로, 꽂고!” 구호처럼 함께 외치면 3학년이 스스로 해내요.</div>
+      </aside>
+      <div class="board c3">
+        <p class="pad-hd">📱 오늘은 스마트패드로 그림 앱을 써요. 처음부터 끝까지 <b>순서대로</b> 콕콕 눌러 줄을 세워 볼까요?</p>
+        <div class="rail" id="rail"><div class="fill" id="railFill"></div></div>
+        <div class="stats"><span class="stat"><span class="ico" data-img="../art/blocks.webp"><span class="fb">🧩</span></span><span id="s3Count">0 / 6</span></span><span class="stat"><span class="ico"><span class="fb">🙈</span></span><span id="s3Miss">틀림 0</span></span></div>
+        <div class="steps" id="steps"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 4 -->
+  <section id="s4" class="screen" aria-label="튜터 미션 눈높이 말하기">
+    <div class="st-head">
+      <button class="btn back-hub" type="button">← 놀이터</button>
+      <div class="st-title"><span class="tag">튜터 미션</span><h2>1학년 눈높이로 말해요</h2></div>
+    </div>
+    <div class="stage-body">
+      <aside class="side">
+        <div class="panel host"><span class="av" id="hp4"><span class="fb">🧒</span></span><p class="bubble" id="b4" aria-live="polite"></p></div>
+        <div class="tip"><b>좋은 말 고르는 눈</b>
+          <ul class="tiplist"><li>짧은가? 한 번에 하나인가?</li><li>소리말·몸짓이 있나? (따닥! 콕! 쓱~)</li><li>누를 곳이 눈에 그려지나? (위치·모양·색)</li><li>아이 손이 기기 위에 있나?</li><li>기다려 주고, 과정을 칭찬하나?</li></ul>
+        </div>
+      </aside>
+      <div class="board c4" id="s4Board">
+        <div class="dots" id="s4Dots" aria-hidden="true"></div>
+        <span class="ctx" id="s4Ctx"></span>
+        <div class="adult"><div class="lab" id="s4Lab"></div><div class="txt" id="s4Adult"></div></div>
+        <div class="q4" id="s4Q"></div>
+        <div class="opts" id="s4Opts"></div>
+        <div class="fbk" id="s4Fb" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="final" class="screen" aria-label="결과">
+    <div class="final-top">
+      <div class="badge-card">
+        <span class="av" id="fBadgeArt"><span class="fb" id="fBadgeEmo">🏅</span></span>
+        <div class="badge-name" id="fBadge"></div>
+        <div class="total" id="fTotal"></div>
+        <p id="fDesc"></p>
+        <div class="rows" id="fRows"></div>
+        <div class="fbtns">
+          <button class="btn back-hub" type="button">← 놀이터</button>
+          <button class="btn navy" type="button" id="printBtn">🖨️ 요약 인쇄</button>
+        </div>
+      </div>
+      <article class="sheet" id="sheet">
+        <h2>📄 저학년 지원 한 장 요약</h2>
+        <p class="sub">「디지털은 내 친구」 1~3학년 수업에 들어가는 디지털 튜터를 위한 메모</p>
+        <h3>교과서 흐름: 만나요 → 놀아요 → 친해져요</h3>
+        <div class="fl3">
+          <div class="fstep c1"><b>① 만나요</b>처음 만나기: 기기의 모양을 보고, 만져 보고, 이름을 불러요.<small>1학년 「안녕, 디지털!」 본체·모니터·키보드·마우스·스피커·태블릿의 모양과 이름</small></div>
+          <div class="fstep c2"><b>② 놀아요</b>놀이로 익히기: 게임·노래·몸짓으로 기능을 직접 경험해요.<small>2학년 컴퓨터를 이루는 주변 기기와 기능, 입력(들어가요)·출력(나와요)</small></div>
+          <div class="fstep c3"><b>③ 친해져요</b>생활 속에서 바르게: 순서와 약속을 지키며 스스로 써요.<small>3학년 교실 속 스마트패드: 꺼내기→켜기→잠금 풀기→앱 실행→홈으로→끄고 충전</small></div>
+        </div>
+        <h3>눈높이 말하기 5가지 팁</h3>
+        <ol class="tips5">
+          <li><span><b>짧게, 한 번에 하나씩</b>“마우스를 잡아요.” → 해 보면 → “왼쪽 단추를 눌러요.”</span></li>
+          <li><span><b>소리말과 몸짓으로</b>따닥! 콕! 쓱~ 쏙! 손동작을 함께 보여 줘요.</span></li>
+          <li><span><b>대신 눌러 주지 않기</b>튜터 손은 아이 기기 위가 아니라 내 무릎 위에. 말과 손가락으로 가리켜 안내해요.</span></li>
+          <li><span><b>기다려 주기</b>속으로 “하나, 둘, 셋, 넷, 다섯”. 스스로 찾을 시간을 먼저 줘요.</span></li>
+          <li><span><b>과정 칭찬하기</b>“잘했어” 대신 “끝까지 찾아봤구나!”, “순서대로 했네!”</span></li>
+        </ol>
+        <h3>어려운 말 바꾸기</h3>
+        <div class="swap">
+          <span>아이콘 → 그림</span><span>더블클릭 → 따닥! 두 번</span><span>드래그 → 꾹 누른 채 쭉~ 쏙!</span><span>로그인 → 열쇠로 문 열기</span><span>최소화 → 쏙 숨기기</span><span>볼륨 → 소리 크기</span><span>종료 → 잘 자, 끄기</span>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="mbox">
+    <div class="m-art"><span class="ico" data-img="../art/medal.webp"><span class="fb">🏅</span></span><span class="av" id="mNarae"><span class="fb">🧑‍🏫</span></span></div>
+    <h2 id="mTitle"></h2>
+    <div class="mstars" id="mStars" aria-hidden="true"></div>
+    <p class="mmsg" id="mMsg"></p>
+    <p class="mrec" id="mRec"></p>
+    <p class="mtake" id="mTake"></p>
+    <p class="mcrit" id="mCrit"></p>
+    <div class="mbtns">
+      <button class="btn" type="button" id="mHub">놀이터로</button>
+      <button class="btn" type="button" id="mRetry">↻ 다시 하기</button>
+      <button class="btn pri" type="button" id="mNext">다음 놀이 →</button>
+    </div>
+  </div>
+</div>
+<div id="fx" aria-hidden="true"></div>
+<noscript><p style="text-align:center;padding:20px">이 놀이는 자바스크립트가 켜져 있어야 해요.</p></noscript>
+
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s);};
+function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function josa(w,a,b){var c=w.charCodeAt(w.length-1);if(c<0xAC00||c>0xD7A3)return w+b;return w+(((c-0xAC00)%28)?a:b);}
+function retrigger(node,cls,ms){node.classList.remove(cls);void node.offsetWidth;node.classList.add(cls);setTimeout(function(){node.classList.remove(cls);},ms||600);}
+/* image with fallback: wrapper gets .has-img only when the image actually loads */
+function withImg(wrap,src,cls,alt){
+  var i=new Image();i.className=cls||'';i.alt=alt||'';i.decoding='async';i.draggable=false;
+  i.addEventListener('load',function(){wrap.classList.add('has-img');i.classList.remove('gone');});
+  i.addEventListener('error',function(){wrap.classList.remove('has-img');i.classList.add('gone');});
+  i.src=src;wrap.appendChild(i);return i;
+}
+function setSrc(img,src){if(img&&img.getAttribute('src')!==src)img.src=src;}
+document.querySelectorAll('[data-img]').forEach(function(w){withImg(w,w.getAttribute('data-img'),'','');});
+
+/* ---------- data ---------- */
+var D={
+  computer:{n:'본체',e:'🗄️',q:'나는 컴퓨터의 머리! 생각하고 기억하는 건 내 일이야.'},
+  monitor:{n:'모니터',e:'🖥️',io:'out',q:'나를 보면 글자랑 그림이 반짝 나타나!',h:'컴퓨터가 글자와 그림을 내 눈에 “보여 주는” 친구예요. 컴퓨터 → 나!'},
+  keyboard:{n:'키보드',e:'⌨️',io:'in',q:'나를 톡톡 누르면 글자가 나와!',h:'내가 누른 글자를 컴퓨터에게 “알려 주는” 친구예요. 나 → 컴퓨터!'},
+  mouse:{n:'마우스',e:'🖱️',io:'in',q:'나를 딸깍! 누르면 “여기!” 하고 골라져.',h:'“여기 눌렀어!” 하고 컴퓨터에게 알려 줘요. 나 → 컴퓨터!'},
+  speaker:{n:'스피커',e:'🔊',io:'out',q:'쿵짝쿵짝! 노랫소리는 나한테 맡겨!',h:'컴퓨터 속 소리를 내 귀로 “들려주는” 친구예요. 소리가 나와요!'},
+  tablet:{n:'태블릿',e:'📱',q:'손가락으로 콕! 쓱~ 밀어도 나는 다 알아.'},
+  printer:{n:'프린터',e:'🖨️',io:'out',q:'화면 속 그림을 종이로 쓰윽~ 꺼내 줄게!',h:'화면 속 내용이 종이에 찍혀 “나와요”.'},
+  headset:{n:'헤드셋',e:'🎧',io:'out',q:'쉿! 나를 쓰면 너만 소리가 들려.',h:'소리가 내 귀로 “나와요”. (마이크 달린 헤드셋은 입력도 함께 해요!)'},
+  mic:{n:'마이크',e:'🎤',io:'in',q:'아~ 아~ 네 목소리를 컴퓨터에 전해 줄게!',h:'내 목소리가 컴퓨터 “안으로” 들어가요.'},
+  camera:{n:'카메라',e:'📷',io:'in',q:'찰칵! 네 모습을 컴퓨터에 보내 줄게.',h:'내 모습이 컴퓨터 “안으로” 들어가요.'},
+  projector:{n:'빔프로젝터',e:'📽️',io:'out',q:'화면을 크~게! 칠판 위로 쏘아 줄게.',h:'컴퓨터 화면이 벽이나 칠판 위로 크게 “나와요”.'},
+  touch:{n:'터치스크린',e:'👆',io:'in',q:'화면을 콕 누르면 내가 바로 알아들어!',h:'손가락으로 콕! 내 손짓이 컴퓨터로 “들어가요”. (화면을 보여 주기도 하지만, 여기서는 누르는 기능을 봐요.)'}
+};
+function devEl(k,cls){var w=el('span','dev'+(cls?' '+cls:''));var e=el('span','dev-emo',D[k].e);e.setAttribute('aria-hidden','true');w.appendChild(e);withImg(w,'../art/dev/'+k+'.webp','dev-img',D[k].n);return w;}
+
+var STAGES=[
+  {id:1,tag:'1학년 · 만나요',title:'디지털 친구 짝꿍 찾기',desc:'기기 그림 카드와 이름 카드를 뒤집어 짝을 찾아요.',icon:'../art/cards.webp',kid:'../art/people/seoa_ok.webp',emo:'🃏',cls:'c1',
+   take:'1학년 수업 포인트: 기기를 “친구”처럼 이름 불러 주기. 모양을 손가락으로 따라 그리며 이름을 익혀요.',crit:'6쌍: 9번 이하 ★3 · 13번 이하 ★2 / 8쌍: 12번 이하 ★3 · 17번 이하 ★2'},
+  {id:2,tag:'2학년 · 놀아요',title:'들어가요? 나와요?',desc:'입력 장치와 출력 장치를 바구니에 나눠 담아요.',icon:'../art/boxes.webp',kid:'../art/people/doyun_ok.webp',emo:'🧺',cls:'c2',
+   take:'2학년 수업 포인트: 입력은 “들어가요”(끌어당기는 몸짓), 출력은 “나와요”(내미는 몸짓). 정의보다 몸으로 먼저!',crit:'틀림 0번 ★3 · 2번 이하 ★2'},
+  {id:3,tag:'3학년 · 친해져요',title:'스마트패드 순서 퍼즐',desc:'꺼내기부터 충전까지, 6단계 순서를 맞춰요.',icon:'../art/blocks.webp',kid:'../art/people/minjun_ok.webp',emo:'🧩',cls:'c3',
+   take:'3학년 수업 포인트: 순서를 구호로! “꺼내고·켜고·풀고·찾고·홈으로·꽂고!” 마지막 충전까지가 수업이에요.',crit:'틀림 0번 ★3 · 2번 이하 ★2'},
+  {id:4,tag:'튜터 미션',title:'1학년 눈높이로 말해요',desc:'어른 말을 짧고 재미있는 아이 말로 바꿔요.',icon:'../art/talk.webp',kid:'../art/people/taeo_ok.webp',emo:'💬',cls:'c4',
+   take:'튜터 포인트: 짧게 · 소리말로 · 아이 손으로 · 기다려 주고 · 과정을 칭찬해요.',crit:'7장면 모두 ★3 · 5장면 이상 ★2'}
+];
+
+/* ---------- save ---------- */
+var KEY='dt_friend_playground_v1';
+var ST={best:{1:0,2:0,3:0,4:0}};
+try{var raw=localStorage.getItem(KEY);if(raw){var o=JSON.parse(raw);if(o&&o.best){[1,2,3,4].forEach(function(k){var v=parseInt(o.best[k],10)||0;ST.best[k]=Math.max(0,Math.min(3,v));});}}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
+function total(){return ST.best[1]+ST.best[2]+ST.best[3]+ST.best[4];}
+function starStr(n){return '★★★'.slice(0,n)+'☆☆☆'.slice(0,3-n);}
+function unlocked(id){return id===1||ST.best[id-1]>0;}
+
+/* ---------- hosts ---------- */
+var HOST={1:'seoa',2:'doyun',3:'minjun',4:'taeo'};
+var hostImg={};
+[1,2,3,4].forEach(function(n){hostImg[n]=withImg($('#hp'+n),'../art/people/'+HOST[n]+'_ok.webp','','');});
+function mood(n,m){setSrc(hostImg[n],'../art/people/'+HOST[n]+'_'+(m==='sad'?'sad':'ok')+'.webp');retrigger($('#hp'+n),m==='sad'?'droop':'bob',650);}
+function say(n,t){var b=$('#b'+n);b.textContent=t;retrigger(b,'pop',400);}
+function hubSay(t){var b=$('#hubBubble');b.textContent=t;retrigger(b,'pop',400);}
+var naraeImg=withImg($('#mNarae'),'../art/narae_thumb.webp','','');
+var badgeImg=withImg($('#fBadgeArt'),'../art/medal.webp','','');
+
+/* ---------- navigation ---------- */
+var timer=null;
+function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
+function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id);});window.scrollTo(0,0);}
+function go(n){closeModal();stopTimer();if(n===1)s1Build(S1.mode||6);if(n===2)s2Init();if(n===3)s3Init();if(n===4)s4Init();show('s'+n);}
+function goHub(){closeModal();stopTimer();renderHub();show('hub');}
+document.querySelectorAll('.back-hub').forEach(function(b){b.addEventListener('click',goHub);});
+
+function renderHub(){
+  var g=$('#stageGrid');g.textContent='';
+  STAGES.forEach(function(s){
+    var lock=!unlocked(s.id),best=ST.best[s.id];
+    var b=el('button','stage-card '+s.cls+(lock?' locked':'')+(best?' clear':''));b.type='button';
+    var art=el('div','sc-art');
+    var ic=el('span','sc-ic');var fb=el('span','fb',s.emo);fb.setAttribute('aria-hidden','true');ic.appendChild(fb);withImg(ic,s.icon,'','');art.appendChild(ic);
+    var kid=el('span','av sc-kid');withImg(kid,s.kid,'','');art.appendChild(kid);
+    b.appendChild(art);
+    if(best)b.appendChild(el('span','clear-badge','CLEAR'));
+    b.appendChild(el('span','tag',s.tag));
+    b.appendChild(el('h3','',s.title));
+    b.appendChild(el('p','',s.desc));
+    var f=el('div','sc-foot');var st=el('span','stars',starStr(best));st.setAttribute('aria-label','별 '+best+'개');f.appendChild(st);
+    f.appendChild(el('span','sc-state',lock?'🔒 잠겨 있어요':best?'다시 하기 ↻':'시작하기 ▶'));b.appendChild(f);
+    b.addEventListener('click',function(){
+      if(lock){retrigger(b,'wig',550);hubSay('🔒 「'+STAGES[s.id-2].title+'」부터 마쳐 주세요! 놀이는 순서대로 열려요.');return;}
+      go(s.id);
+    });
+    g.appendChild(b);
+  });
+  $('#totalChip').textContent='★ '+total()+' / 12';
+  var all=[1,2,3,4].every(function(k){return ST.best[k]>0;});
+  var fbn=$('#finalBtn');fbn.disabled=!all;fbn.textContent=all?'🏆 결과와 한 장 요약 보기':'🔒 4개 놀이를 모두 마치면 결과가 열려요';
+}
+$('#finalBtn').addEventListener('click',function(){if(!this.disabled)showFinal();});
+var resetArm=0;
+$('#resetBtn').addEventListener('click',function(){
+  var btn=this;
+  if(!resetArm){btn.textContent='한 번 더 누르면 지워져요';resetArm=setTimeout(function(){resetArm=0;btn.textContent='↺ 기록 지우기';},3000);return;}
+  clearTimeout(resetArm);resetArm=0;ST.best={1:0,2:0,3:0,4:0};save();btn.textContent='↺ 기록 지우기';renderHub();hubSay('기록을 지웠어요. 1학년 놀이부터 다시 시작해 볼까요?');
+});
+
+/* ---------- STAGE 1: memory ---------- */
+var S1={mode:6};
+function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function s1Stats(){$('#s1Moves').textContent=S1.moves+'번';$('#s1Time').textContent=fmt(S1.sec);$('#s1Pairs').textContent=S1.matched+' / '+S1.mode;}
+function s1Build(mode){
+  stopTimer();
+  S1={mode:mode,open:[],lock:false,moves:0,matched:0,sec:0,started:false,done:false};
+  var keys=['computer','monitor','keyboard','mouse','speaker','tablet'].concat(mode===8?['printer','headset']:[]);
+  var deck=[];keys.forEach(function(k){deck.push({k:k,t:'pic'},{k:k,t:'name'});});deck=shuffle(deck);
+  var g=$('#mgrid');g.textContent='';g.className='mgrid n'+deck.length;
+  deck.forEach(function(c){
+    var b=el('button','mcard');b.type='button';b.setAttribute('aria-label','뒤집힌 카드');
+    var inner=el('div','inner'),back=el('div','face back'),front=el('div','face front '+c.t);
+    back.appendChild(el('span','q','?'));
+    if(c.t==='pic'){front.appendChild(devEl(c.k));front.appendChild(el('span','fl','그림 카드'));}
+    else{front.appendChild(el('span','nm',D[c.k].n));front.appendChild(el('span','fl','이름 카드'));}
+    inner.appendChild(back);inner.appendChild(front);b.appendChild(inner);
+    b._c=c;b.addEventListener('click',function(){s1Flip(b);});g.appendChild(b);
+  });
+  document.querySelectorAll('.mode[data-m]').forEach(function(x){x.classList.toggle('on',+x.getAttribute('data-m')===mode);});
+  var sy=$('#s1Say');sy.textContent='';sy.appendChild(el('span','ph','짝을 찾으면 기기 친구가 한마디 해요!'));
+  s1Stats();mood(1,'ok');
+  say(1,mode===8?'우와, 도전 모드! 프린터랑 헤드셋도 왔어. 짝꿍을 다 찾아 줘!':'안녕! 나는 1학년 서아야. 그림 카드랑 이름 카드를 짝지어 줘!');
+}
+document.querySelectorAll('.mode[data-m]').forEach(function(x){x.addEventListener('click',function(){s1Build(+x.getAttribute('data-m'));});});
+$('#s1Re').addEventListener('click',function(){s1Build(S1.mode);});
+function s1Quote(k){var sy=$('#s1Say');sy.textContent='';sy.appendChild(devEl(k));var t=el('div');t.appendChild(el('b','',D[k].n));t.appendChild(el('span','','“'+D[k].q+'”'));sy.appendChild(t);retrigger(sy,'pop',400);}
+function s1Flip(b){
+  if(S1.lock||S1.done||b.classList.contains('flip'))return;
+  if(!S1.started){S1.started=true;timer=setInterval(function(){S1.sec++;s1Stats();},1000);}
+  b.classList.add('flip');b.setAttribute('aria-label',D[b._c.k].n+(b._c.t==='pic'?' 그림 카드':' 이름 카드'));
+  S1.open.push(b);
+  if(S1.open.length<2)return;
+  S1.moves++;var a=S1.open[0],c=S1.open[1];S1.open=[];
+  if(a._c.k===c._c.k&&a._c.t!==c._c.t){
+    a.classList.add('ok');c.classList.add('ok');a.disabled=true;c.disabled=true;S1.matched++;
+    s1Quote(a._c.k);mood(1,'ok');say(1,pick(['짝꿍 찾았다! 야호!','우와, 딱 맞아!','최고! 이 친구 이름 기억할래!','맞아 맞아, '+josa(D[a._c.k].n,'이','가')+' 여기 있었어!']));
+    if(S1.matched===S1.mode){
+      S1.done=true;stopTimer();
+      var m=S1.moves,st=S1.mode===6?(m<=9?3:m<=13?2:1):(m<=12?3:m<=17?2:1);
+      say(1,'다 찾았다! 이제 기기 친구들 이름 다 알아!');
+      setTimeout(function(){clearStage(1,st,m+'번 뒤집어 '+fmt(S1.sec)+' 만에 '+S1.mode+'쌍을 모두 찾았어요.');},800);
+    }
+  }else{
+    S1.lock=true;a.classList.add('no');c.classList.add('no');mood(1,'sad');say(1,'어? 짝꿍이 아니네. 어디 있었는지 기억해 볼까?');
+    setTimeout(function(){[a,c].forEach(function(x){x.classList.remove('flip','no');x.setAttribute('aria-label','뒤집힌 카드');});S1.lock=false;mood(1,'ok');},1000);
+  }
+  s1Stats();
+}
+
+/* ---------- STAGE 2: sort ---------- */
+var S2={};
+var S2KEYS=['keyboard','mouse','mic','camera','touch','monitor','speaker','printer','headset','projector'];
+function s2Stats(){$('#s2Placed').textContent=S2.placed+' / 10';$('#s2Miss').textContent='틀림 '+S2.miss;}
+function clearReady(){document.querySelectorAll('.basket').forEach(function(b){b.classList.remove('ready','hot');});}
+function s2Init(){
+  S2={sel:null,placed:0,miss:0,done:false};
+  var tray=$('#tray');tray.textContent='';$('#bkIn').textContent='';$('#bkOut').textContent='';clearReady();
+  shuffle(S2KEYS).forEach(function(k){
+    var c=el('button','scard');c.type='button';c.setAttribute('data-k',k);c.setAttribute('aria-label',D[k].n+' 카드');
+    c.appendChild(devEl(k));c.appendChild(el('span','snm',D[k].n));bindDrag(c);tray.appendChild(c);
+  });
+  s2Stats();mood(2,'ok');say(2,'나는 2학년 도윤이! 컴퓨터로 들어가는 친구, 나오는 친구를 나눠 줄래?');
+  $('#s2Hint').textContent='👉 카드를 콕 고르고 → 바구니를 콕! 꾹 눌러 끌어다 놓아도 돼요.';
+}
+function s2Select(c){
+  if(S2.done)return;
+  if(S2.sel===c){c.classList.remove('sel');S2.sel=null;clearReady();return;}
+  if(S2.sel)S2.sel.classList.remove('sel');
+  S2.sel=c;c.classList.add('sel');document.querySelectorAll('.basket').forEach(function(b){b.classList.add('ready');});
+  say(2,josa(D[c.getAttribute('data-k')].n,'은','는')+' 어느 바구니일까? 바구니를 콕!');
+}
+function basketAt(x,y){var t=document.elementFromPoint(x,y);return t&&t.closest?t.closest('.basket'):null;}
+function bindDrag(c){
+  var st=null,ghost=null,hot=null;
+  c.addEventListener('pointerdown',function(e){if(S2.done||(e.pointerType==='mouse'&&e.button!==0))return;st={x:e.clientX,y:e.clientY,id:e.pointerId,drag:false};try{c.setPointerCapture(e.pointerId);}catch(_){}});
+  c.addEventListener('pointermove',function(e){
+    if(!st||e.pointerId!==st.id)return;
+    if(!st.drag){
+      if(Math.abs(e.clientX-st.x)+Math.abs(e.clientY-st.y)<10)return;
+      st.drag=true;ghost=c.cloneNode(true);ghost.classList.remove('sel');ghost.classList.add('ghost');ghost.style.width=c.offsetWidth+'px';document.body.appendChild(ghost);c.classList.add('lifted');
+    }
+    ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px';
+    var b=basketAt(e.clientX,e.clientY);if(b!==hot){if(hot)hot.classList.remove('hot');hot=b;if(hot)hot.classList.add('hot');}
+    e.preventDefault();
+  });
+  function end(e,cancel){
+    if(!st||e.pointerId!==st.id)return;
+    var wasDrag=st.drag;st=null;if(ghost){ghost.remove();ghost=null;}c.classList.remove('lifted');if(hot){hot.classList.remove('hot');hot=null;}
+    if(cancel)return;
+    if(wasDrag){var b=basketAt(e.clientX,e.clientY);if(b)tryDrop(c,b.getAttribute('data-io'));}
+    else s2Select(c);
+  }
+  c.addEventListener('pointerup',function(e){end(e,false);});
+  c.addEventListener('pointercancel',function(e){end(e,true);});
+  c.addEventListener('click',function(e){if(e.detail===0)s2Select(c);});
+}
+document.querySelectorAll('.basket').forEach(function(bk){
+  function act(){if(S2.done)return;if(S2.sel)tryDrop(S2.sel,bk.getAttribute('data-io'));else{say(2,'먼저 아래 기기 카드를 하나 콕 골라 줘!');retrigger(bk,'wig',550);}}
+  bk.addEventListener('click',act);
+  bk.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});
+});
+function tryDrop(c,io){
+  if(S2.done||!c.isConnected)return;
+  var k=c.getAttribute('data-k'),n=D[k].n;c.classList.remove('sel');S2.sel=null;clearReady();
+  if(D[k].io===io){
+    S2.placed++;c.remove();
+    var chip=el('span','chipdev');chip.appendChild(devEl(k,'xs'));chip.appendChild(el('span','',n));$(io==='in'?'#bkIn':'#bkOut').appendChild(chip);
+    retrigger($(io==='in'?'#basketIn':'#basketOut'),'pop',400);
+    mood(2,'ok');say(2,pick(['딩동댕!','맞았어!','우와, 정답!','척척박사!'])+' '+josa(n,'은','는')+' '+(io==='in'?'컴퓨터로 들어가는 입력 장치야.':'컴퓨터에서 나오는 출력 장치야.'));
+    $('#s2Hint').textContent='💡 '+n+': '+D[k].h;
+    if(S2.placed===10){
+      S2.done=true;var st=S2.miss===0?3:S2.miss<=2?2:1;
+      var tray=$('#tray');tray.appendChild(el('div','done-msg','🎉 바구니 정리 끝! 입력은 들어가요, 출력은 나와요!'));
+      setTimeout(function(){clearStage(2,st,'10개 기기를 모두 나눠 담았어요. 틀린 횟수 '+S2.miss+'번.');},700);
+    }
+  }else{
+    S2.miss++;retrigger(c,'wig',550);mood(2,'sad');
+    say(2,'음… '+josa(n,'은','는')+' 반대쪽 바구니 같아!');
+    $('#s2Hint').textContent='🤔 힌트: '+D[k].h;
+  }
+  s2Stats();
+}
+
+/* ---------- STAGE 3: order ---------- */
+var STEPS=[
+  {e:'🔋',t:'충전함에서 꺼내기',s:'꺼내기',talk:'“내 번호 칸에서 두 손으로 꼬옥 잡고, 살살 꺼내요.”',hint:'맨 처음엔 스마트패드가 어디 있을까요? 손에 들어야 시작할 수 있어요.'},
+  {e:'🔘',t:'전원 켜기',s:'켜기',talk:'“옆에 있는 작은 단추를 꾸욱~ 하나, 둘, 셋! 화면이 반짝할 때까지 기다려요.”',hint:'손에 들었으면, 이제 화면을 깨워야겠죠?'},
+  {e:'🔓',t:'잠금 풀기',s:'잠금 풀기',talk:'“화면을 아래에서 위로 쓰윽~! 비밀 숫자는 콕콕콕, 친구한테는 비밀!”',hint:'화면이 켜졌는데… 자물쇠가 잠겨 있어요!'},
+  {e:'📲',t:'앱 찾아 실행하기',s:'앱 실행',talk:'“선생님이 말한 그림을 찾아서 콕! 한 번만 눌러요.”',hint:'잠금이 풀렸으니 오늘 쓸 앱을 찾을 차례예요.'},
+  {e:'🏠',t:'다 쓰면 홈 화면으로',s:'홈으로',talk:'“다 했으면 집으로 돌아가요! 아래에서 위로 쓱~ 또는 집 모양 콕.”',hint:'활동이 끝났어요. 끄기 전에 먼저 처음 화면으로 돌아가요.'},
+  {e:'🔌',t:'끄고 충전함에 꽂기',s:'끄고 꽂기',talk:'“전원을 끄고, 내 번호 칸에 쏙! 충전선까지 꽂으면 진짜 끝!”',hint:'마지막! 끄고 제자리에 돌려놓아요.'}
+];
+var S3={};
+function s3Init(){
+  S3={next:0,miss:0,done:false,nodes:[]};
+  var rail=$('#rail');rail.querySelectorAll('.rnode').forEach(function(n){n.remove();});
+  STEPS.forEach(function(s,i){var n=el('div','rnode');n.appendChild(el('span','rnum',String(i+1)));n.appendChild(el('span','rlab',''));rail.appendChild(n);S3.nodes.push(n);});
+  $('#railFill').style.width='0';
+  var order=[0,1,2,3,4,5];do{order=shuffle(order);}while(order.join()==='0,1,2,3,4,5');
+  var box=$('#steps');box.textContent='';
+  order.forEach(function(i){
+    var s=STEPS[i],b=el('button','step');b.type='button';
+    var se=el('span','se',s.e);se.setAttribute('aria-hidden','true');b.appendChild(se);b.appendChild(el('span','',s.t));b.appendChild(el('span','ord',''));
+    b.addEventListener('click',function(){s3Tap(b,i);});box.appendChild(b);
+  });
+  $('#s3Tip').textContent='단계를 맞히면, 아이에게 건넬 말이 여기 나타나요.';
+  s3Stats();mood(3,'ok');say(3,'나는 3학년 민준이! 스마트패드 쓰는 순서, 같이 맞혀 보자!');
+}
+function s3Stats(){$('#s3Count').textContent=S3.next+' / 6';$('#s3Miss').textContent='틀림 '+S3.miss;}
+function s3Tap(b,i){
+  if(S3.done||b.disabled)return;
+  if(i===S3.next){
+    b.disabled=true;b.classList.add('done');b.querySelector('.ord').textContent=String(i+1);
+    var node=S3.nodes[i];node.classList.add('on');node.querySelector('.rnum').textContent=STEPS[i].e;node.querySelector('.rlab').textContent=STEPS[i].s;
+    S3.next++;$('#railFill').style.width=(83.34*Math.max(0,S3.next-1)/5)+'%';
+    $('#s3Tip').textContent=(i+1)+'. '+STEPS[i].t+' → '+STEPS[i].talk;retrigger($('#s3Tip'),'pop',400);
+    mood(3,'ok');say(3,S3.next===6?'끝까지 해냈다! 이제 나 혼자서도 할 수 있어!':pick(['아하, 그다음이구나!','좋아, 하나 더!','척척 잘한다!','순서대로 하니까 쉽다!']));
+    if(S3.next===6){S3.done=true;var st=S3.miss===0?3:S3.miss<=2?2:1;setTimeout(function(){clearStage(3,st,'스마트패드 6단계 순서를 완성했어요. 틀린 횟수 '+S3.miss+'번.');},900);}
+  }else{
+    S3.miss++;retrigger(b,'wig',550);mood(3,'sad');say(3,'앗, 그건 조금 뒤에 해요! '+STEPS[S3.next].hint);
+  }
+  s3Stats();
+}
+
+/* ---------- STAGE 4: talk ---------- */
+var ROUNDS=[
+  {ctx:'1학년 컴퓨터실 · 프로그램 열기',adult:'애플리케이션 아이콘을 더블클릭하여 실행하세요.',
+   opts:[
+    {t:'마우스 왼쪽 단추를 ‘따닥!’ 두 번 빠르게 눌러 볼까?',best:true,tags:['의성어','누를 곳을 콕','아이 손으로'],why:'‘따닥!’ 소리말로 “두 번 빠르게”를 몸으로 느끼게 하고, ‘왼쪽 단추’로 누를 곳을 콕 집어 줬어요. “~볼까?”는 아이 손이 직접 하게 만드는 말이에요.'},
+    {t:'아이콘을 더블클릭해서 애플리케이션을 실행해 보세요.',why:'존댓말이라 다정해 보이지만 ‘아이콘·더블클릭·실행’은 1학년에게 외국어 같아요. 어려운 낱말을 쉬운 말과 소리로 바꿔야 해요.'},
+    {t:'여기, 이거 이렇게 하면 돼. 봐, 됐지?',why:'‘이거, 이렇게’로는 무엇을 어떻게 할지 알 수 없어요. 결국 어른이 대신 눌러 버리기 쉬운 말이에요.'}]},
+  {ctx:'1학년 · 학습 사이트 들어가기',adult:'로그인 후 비밀번호를 입력하세요.',
+   opts:[
+    {t:'문을 여는 열쇠 놀이야! 내 이름 칸을 콕, 비밀 숫자 네 개를 하나씩 콕콕 눌러 볼까?',best:true,tags:['비유','한 번에 하나씩','소리말'],why:'‘로그인’을 ‘문 여는 열쇠’로 바꿔 머릿속에 그림이 그려지게 했어요. ‘하나씩’이라고 말해 한 단계씩 따라오게 도와요.'},
+    {t:'아이디로 로그인한 다음 비밀번호 입력란에 비밀번호를 입력하세요.',why:'‘로그인·입력란·입력’ 같은 낱말이 한 문장에 몰려 있어요. 1학년은 긴 문장을 끝까지 기억하기 어려워요.'},
+    {t:'비밀번호가 뭐야? 크게 말해 줘, 선생님이 쳐 줄게.',why:'두 가지가 아쉬워요. 비밀번호를 소리 내어 말하게 해서 모두가 알게 되고, 아이 대신 어른이 입력해 버려요.'}]},
+  {ctx:'1학년 · 그림 옮기기 놀이',adult:'드래그해서 옮기세요.',
+   opts:[
+    {t:'그림을 손가락으로 꾹~ 누른 채로, 쭈욱 끌고 가서 ‘쏙!’ 놓아 볼까?',best:true,tags:['의성어','동작 순서','몸짓'],why:'‘꾹~ → 쭈욱 → 쏙!’ 세 마디가 드래그의 세 동작(누르기·끌기·놓기)을 그대로 보여 줘요. 허공에 손짓을 함께 하면 더 좋아요.'},
+    {t:'객체를 선택한 상태에서 드래그 앤 드롭으로 이동시키세요.',why:'‘객체·드래그 앤 드롭·이동’은 어른의 컴퓨터 낱말이에요. 아이는 무엇을 해야 할지 그림이 떠오르지 않아요.'},
+    {t:'빨리빨리! 그냥 옮기면 되잖아.',why:'재촉하는 말은 아이를 얼어붙게 해요. 방법도 알려 주지 않았고요. 저학년에게는 ‘기다려 주기’가 먼저예요.'}]},
+  {ctx:'2학년 · 창 정리하기',adult:'현재 창을 최소화하세요.',
+   opts:[
+    {t:'오른쪽 위에 있는 ‘—’ 작은 막대 단추를 콕! 화면이 아래로 쏙 숨어요.',best:true,tags:['위치·모양','결과 미리 말하기','짧게'],why:'누를 곳의 위치(오른쪽 위)와 모양(작은 막대)을 알려 주고, 누르면 어떻게 되는지(쏙 숨어요)까지 말해 줘서 아이가 스스로 확인할 수 있어요.'},
+    {t:'작업 표시줄로 창을 최소화하면 됩니다.',why:'‘작업 표시줄·최소화’는 아이가 모르는 낱말이에요. 어디를 눌러야 하는지도 빠져 있어요.'},
+    {t:'그거 말고 저거! 아니, 그 옆에 거!',why:'‘그거·저거’처럼 가리키는 말만 쓰면 아이는 더 헷갈려요. 위치·모양·색처럼 눈에 보이는 단서로 말해 주세요.'}]},
+  {ctx:'1학년 · 노래 듣기 활동',adult:'볼륨을 적당히 조절하세요.',
+   opts:[
+    {t:'스피커 그림을 콕! 동그라미를 스르륵 밀어서 ‘개미 목소리’만큼 작게 해 볼까?',best:true,tags:['눈에 그려지는 기준','소리말','아이 손으로'],why:'‘적당히’는 아이마다 달라요. ‘개미 목소리만큼’처럼 기준을 그림으로 말하고, ‘스르륵’으로 미는 동작을 알려 줬어요.'},
+    {t:'음량 슬라이더를 조작해서 출력 볼륨을 맞추세요.',why:'‘음량·슬라이더·조작·출력’… 어려운 낱말 대잔치예요. 얼마나 맞추라는 기준도 없어요.'},
+    {t:'소리는 알아서 적당히 맞춰.',why:'‘알아서, 적당히’는 저학년에게 가장 어려운 말이에요. 무엇을 어디까지 할지 구체적으로 알려 주세요.'}]},
+  {ctx:'1학년 · 수업 마무리',adult:'사용을 마쳤으면 전원을 종료하세요.',
+   opts:[
+    {t:'컴퓨터 친구에게 “잘 자~” 인사하고, 시작 단추 → 전원 → 끄기를 차례로 콕! 화면이 깜깜해지면 끝!',best:true,tags:['놀이처럼','차례대로','스스로 확인'],why:'인사 놀이로 마무리를 즐겁게 만들고, 누를 순서를 짧게 끊어 말했어요. ‘깜깜해지면 끝!’처럼 다 됐는지 스스로 확인하는 방법도 알려 줬어요.'},
+    {t:'시스템을 종료하고 전원을 차단하세요.',why:'‘시스템·종료·차단’은 아이에게 너무 어려운 말이에요. 어떤 단추를 누르는지도 알 수 없어요.'},
+    {t:'다 했지? 선생님이 다 꺼 줄게, 얼른 가서 앉아.',why:'편해 보이지만 아이가 스스로 끝맺는 연습을 빼앗아요. 기기를 끄는 것도 중요한 배움이에요.'}]},
+  {ctx:'상황 · 아이가 멈췄어요!',sit:true,adult:'1학년 태오가 앱을 못 찾고 “선생님, 못 하겠어요…” 하며 손을 내려놓았어요.',sad:'…역시 나는 못 하나 봐.',
+   opts:[
+    {t:'괜찮아, 같이 찾아보자! 노란 해님 그림이 어디 숨었을까? 태오 손가락으로 찾아서 콕!',best:true,tags:['마음 먼저','단서만 주기','기다려 주기','과정 칭찬'],why:'먼저 마음을 다독이고(괜찮아), 색·모양 단서만 주고, 누르는 건 아이 손에 맡겼어요. 찾을 때까지 속으로 ‘하나, 둘, 셋…’ 세며 기다리고, 찾으면 “끝까지 찾았네!” 하고 과정을 칭찬해요.'},
+    {t:'(기기를 가져가며) 줘 봐, 선생님이 해 줄게.',why:'가장 빠르지만, 아이는 ‘나는 못 하는 사람’이라고 배워요. 튜터의 손은 아이 기기 위가 아니라 내 무릎 위에 두세요.'},
+    {t:'아까 설명했잖아. 이번엔 잘 들어 봐.',why:'핀잔은 아이의 마음을 닫게 해요. 다시 해 볼 용기가 먼저예요.'}]}
+];
+var S4={};
+function s4Init(){S4={i:0,ok:0,res:[],answered:false};s4Render();}
+function s4Render(){
+  var r=ROUNDS[S4.i];S4.answered=false;
+  var dots=$('#s4Dots');dots.textContent='';
+  ROUNDS.forEach(function(_,j){var d=el('i');if(j===S4.i)d.className='cur';else if(S4.res[j]===1)d.className='ok';else if(S4.res[j]===-1)d.className='no';dots.appendChild(d);});
+  $('#s4Ctx').textContent=(S4.i+1)+' / '+ROUNDS.length+' · '+r.ctx;
+  $('#s4Lab').textContent=r.sit?'📌 이런 상황이에요':'🧑‍💼 어른 말 그대로라면…';
+  $('#s4Adult').textContent=r.sit?r.adult:'“'+r.adult+'”';
+  $('#s4Q').textContent=r.sit?'튜터는 어떻게 할까요?':'1학년 눈높이로 바꾸면?';
+  var box=$('#s4Opts');box.textContent='';
+  shuffle(r.opts).forEach(function(o,idx){
+    var b=el('button','opt');b.type='button';b._o=o;
+    b.appendChild(el('span','opt-k',String.fromCharCode(65+idx)));b.appendChild(el('span','',o.t));
+    b.addEventListener('click',function(){s4Pick(b,o);});box.appendChild(b);
+  });
+  var fb=$('#s4Fb');fb.classList.remove('on','bad');fb.textContent='';
+  mood(4,'ok');say(4,r.sit?'(태오가 고개를 푹 숙였어요…)':pick(['선생님, 쉬운 말로 말해 주세요!','나는 1학년 태오! 어떻게 하는 거예요?','음… 무슨 말이에요?']));
+}
+function s4Pick(b,o){
+  if(S4.answered)return;S4.answered=true;
+  var r=ROUNDS[S4.i],best=null;
+  $('#s4Opts').querySelectorAll('.opt').forEach(function(x){x.disabled=true;if(x._o.best){x.classList.add('best');best=x._o;}});
+  S4.res[S4.i]=o.best?1:-1;
+  var fb=$('#s4Fb');fb.textContent='';
+  if(o.best){
+    S4.ok++;mood(4,'ok');say(4,r.sit?'(다시 손을 올리며) 찾았다! 내가 찾았어요!':pick(['아하! 이제 할 수 있어요!','따라 해 볼게요! 재밌다!','오, 쉽다! 내가 해 볼래요!']));
+    fb.appendChild(el('h3','','🎉 딩동댕! 눈높이 말하기 성공'));
+    var tg=el('div','tags');(o.tags||[]).forEach(function(t){tg.appendChild(el('span','','#'+t));});fb.appendChild(tg);
+    fb.appendChild(el('p','',o.why));
+  }else{
+    b.classList.add('wrong');retrigger(b,'wig',550);mood(4,'sad');say(4,r.sad||pick(['음… 무슨 말인지 잘 모르겠어요.','어려워요… 어디를 눌러요?','나 그냥 안 할래요…']));
+    fb.classList.add('bad');fb.appendChild(el('h3','','🤔 아쉬워요! 더 좋은 말이 있어요'));
+    fb.appendChild(el('p','',o.why));
+    var bt=el('div','better');bt.appendChild(el('b','','이렇게 말해 보세요'));bt.appendChild(el('p','','“'+best.t+'”'));
+    var tg2=el('div','tags');(best.tags||[]).forEach(function(t){tg2.appendChild(el('span','','#'+t));});bt.appendChild(tg2);bt.appendChild(el('p','',best.why));fb.appendChild(bt);
+  }
+  var last=S4.i===ROUNDS.length-1;
+  var nx=el('button','btn pri',last?'미션 완료! 결과 보기 →':'다음 장면 →');nx.type='button';
+  nx.addEventListener('click',function(){
+    if(last){var st=S4.ok===ROUNDS.length?3:S4.ok>=5?2:1;clearStage(4,st,ROUNDS.length+'개 장면 중 '+S4.ok+'개에서 눈높이 말하기를 골랐어요.');}
+    else{S4.i++;s4Render();var bd=$('#s4Board');if(bd.getBoundingClientRect().top<0)bd.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+  fb.appendChild(nx);fb.classList.add('on');
+  setTimeout(function(){var rc=fb.getBoundingClientRect();if(rc.bottom>window.innerHeight)fb.scrollIntoView({behavior:'smooth',block:'nearest'});},80);
+}
+
+/* ---------- clear modal ---------- */
+var modalStage=0;
+function clearStage(n,st,msg){
+  var prev=ST.best[n];if(st>prev){ST.best[n]=st;save();}
+  $('#totalChip').textContent='★ '+total()+' / 12';
+  modalStage=n;
+  $('#mTitle').textContent=st===3?'완벽해요! 별 세 개!':st===2?'참 잘했어요!':'끝까지 해냈어요!';
+  var ms=$('#mStars');ms.textContent='';
+  for(var i=0;i<3;i++){var s=el('span',i<st?'':'off',i<st?'★':'☆');s.style.animationDelay=(0.15+i*0.18)+'s';ms.appendChild(s);}
+  $('#mMsg').textContent=msg;
+  $('#mRec').textContent=prev===0?'첫 클리어! 다음 놀이가 열렸어요.':st>prev?'최고 기록 갱신! (★'+prev+' → ★'+st+')':'최고 기록 ★'+prev+'이 그대로 남아 있어요.';
+  if(n===4)$('#mRec').textContent+=(prev===0?' 이제 결과를 볼 수 있어요.':'');
+  $('#mTake').textContent=STAGES[n-1].take;
+  $('#mCrit').textContent='별 기준 · '+STAGES[n-1].crit;
+  setSrc(naraeImg,st===3?'../art/narae_wow.webp':'../art/narae_thumb.webp');
+  $('#mNext').textContent=n<4?'다음 놀이 →':'🏆 결과 보기';
+  $('#modal').classList.add('on');
+  confetti(st===3?90:50);
+  setTimeout(function(){$('#mNext').focus();},50);
+}
+function closeModal(){$('#modal').classList.remove('on');}
+$('#mHub').addEventListener('click',goHub);
+$('#mRetry').addEventListener('click',function(){go(modalStage);});
+$('#mNext').addEventListener('click',function(){if(modalStage<4)go(modalStage+1);else showFinal();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&$('#modal').classList.contains('on'))goHub();});
+
+/* ---------- final ---------- */
+function showFinal(){
+  closeModal();stopTimer();
+  var t=total(),bd;
+  if(t>=11)bd={n:'👑 눈높이 마스터',d:'아이 말로 생각하고, 아이 손을 믿는 튜터! 바로 교실에 들어가도 좋아요.',img:'../art/trophy.webp',e:'🏆'};
+  else if(t>=7)bd={n:'💛 다정한 튜터',d:'눈높이 말하기가 몸에 붙고 있어요. 별이 적은 놀이를 한 번 더 해 보세요.',img:'../art/medal.webp',e:'🏅'};
+  else bd={n:'🌱 새싹 튜터',d:'첫걸음을 뗐어요! 아래 한 장 요약을 읽고 다시 도전해 봐요.',img:'../art/kobi_love.webp',e:'🌱'};
+  $('#fBadge').textContent=bd.n;$('#fTotal').textContent='모은 별 ★ '+t+' / 12';$('#fDesc').textContent=bd.d;$('#fBadgeEmo').textContent=bd.e;
+  setSrc(badgeImg,bd.img);
+  var rows=$('#fRows');rows.textContent='';
+  STAGES.forEach(function(s){var r=el('div','row');r.appendChild(el('span','',s.tag+' · '+s.title));r.appendChild(el('span','stars',starStr(ST.best[s.id])));rows.appendChild(r);});
+  show('final');confetti(110);
+}
+$('#printBtn').addEventListener('click',function(){window.print();});
+
+/* ---------- confetti ---------- */
+function confetti(n){
+  var fx=$('#fx'),cols=['#ED7D31','#FFD23F','#5BC0EB','#7BD389','#FF8FAB','#9B8CFF'];
+  for(var i=0;i<n;i++){
+    var p=el('i','cf');p.style.left=(Math.random()*100)+'vw';p.style.background=cols[i%cols.length];
+    p.style.animationDuration=(1.8+Math.random()*1.6)+'s';p.style.animationDelay=(Math.random()*.4)+'s';
+    p.style.setProperty('--dx',(Math.random()*160-80)+'px');p.style.setProperty('--r',(Math.random()*720-360)+'deg');
+    if(i%3===0)p.style.borderRadius='50%';fx.appendChild(p);
+    (function(q){setTimeout(function(){q.remove();},4200);})(p);
+  }
+}
+
+/* ---------- start ---------- */
+renderHub();
+hubSay(total()>0?'다시 왔군요, 튜터 선생님! 별이 적은 놀이에 다시 도전하거나, 다음 놀이를 이어서 해 봐요.':'안녕하세요, 튜터 선생님! 저는 나래예요. 「디지털은 내 친구」는 만나요 → 놀아요 → 친해져요 순서로 흘러가요. 아이들처럼 놀면서 먼저 익혀 볼까요?');
+})();
+</script>
+</body>
+</html>
