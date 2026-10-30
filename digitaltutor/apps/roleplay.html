@@ -4,14 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>튜터 출동! 교실 롤플레이</title>
-<meta name="description" content="디지털 튜터가 교실의 여섯 학생에게 출동해 상황별 대응을 연습하는 롤플레이 게임">
+<meta name="description" content="디지털 튜터 나래가 되어 교실의 여섯 학생에게 출동해 상황별 대응을 연습하는 롤플레이 게임">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#1F2A6B;--orange:#ED7D31;--cream:#FFF8EC;--card:#FFFFFF;--ink:#23273D;--muted:#6B6F85;
-  --line:#F0E2C6;--shadow:#E8D4AE;--green:#2E9E6B;--amber:#D99A12;--red:#D2504B;--board:#2F5D4E;--wood:#9A6A43;
+  --navy:#1F2A6B;--navy2:#2E3D94;--orange:#ED7D31;--orange-d:#C45E1A;--cream:#FFF8EC;--ink:#23273D;--muted:#6B6F85;
+  --line:#F1E3C8;--gold:#F5B301;--green:#2E9E6B;--amber:#D99A12;--red:#D2504B;--wood:#C08A5B;--wood-d:#8E5F38;
+  --sh:0 14px 34px rgba(31,42,107,.14);--sh-sm:0 6px 18px rgba(31,42,107,.10);
+  --art:'../art/';
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -19,147 +21,214 @@
 html,body{margin:0;padding:0}
 body{background:var(--cream);color:var(--ink);font-family:'Gowun Dodum','Noto Sans KR',sans-serif;font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%;overflow-x:hidden;word-break:keep-all;overflow-wrap:anywhere}
 h1,h2,h3,.jua{font-family:'Jua','Noto Sans KR',sans-serif;font-weight:400}
+img{max-width:100%}
+img.broken{visibility:hidden}
 button{font:inherit;color:inherit}
-button:focus-visible,a:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
 
-/* top bar */
-header.top{position:sticky;top:0;z-index:30;background:rgba(255,248,236,.95);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:2px solid var(--line)}
-.topbar{max-width:940px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.back{color:var(--navy);text-decoration:none;font-weight:700;font-size:14px;padding:8px 12px;border-radius:12px;background:#fff;border:2px solid var(--line);min-height:42px;display:inline-flex;align-items:center}
-.back:hover{border-color:var(--navy)}
-.title{flex:1 1 180px;margin:0;font-size:22px;color:var(--navy);line-height:1.2}
-.title span{color:var(--orange)}
-.hud{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+/* ---------- 상단 바 ---------- */
+header.top{background:rgba(255,248,236,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:40;position:relative}
+@media (min-width:700px){header.top{position:sticky;top:0}}
+.topbar{max-width:1080px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.back{color:var(--navy);text-decoration:none;font-weight:700;font-size:14px;padding:8px 12px;border-radius:14px;background:#fff;box-shadow:var(--sh-sm);min-height:42px;display:inline-flex;align-items:center}
+.back:hover{color:var(--orange)}
+.brand{flex:1 1 150px;display:flex;align-items:center;gap:8px;min-width:0;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.brand img{width:36px;height:36px;border-radius:50%;background:#FFE3C7;flex:none}
+.brand b{font-family:'Jua',sans-serif;font-weight:400;font-size:20px;color:var(--navy);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand b span{color:var(--orange)}
+.hud{display:flex;gap:6px;align-items:center}
 .pill{background:var(--navy);color:#fff;border-radius:999px;padding:6px 12px;font-family:'Jua',sans-serif;font-size:15px;white-space:nowrap}
-.btn-reset{border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:12px;padding:6px 12px;min-height:42px;cursor:pointer;font-family:'Jua',sans-serif;font-size:15px}
-.btn-reset.armed{background:var(--orange);border-color:var(--orange);color:#fff}
+.btn-reset{border:0;background:#fff;color:var(--navy);border-radius:14px;padding:6px 12px;min-height:42px;cursor:pointer;font-family:'Jua',sans-serif;font-size:15px;box-shadow:var(--sh-sm)}
+.btn-reset.armed{background:var(--orange);color:#fff}
 
-.wrap{max-width:940px;margin:0 auto;padding:0 16px 48px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 48px}
 
-/* board */
-.board{position:relative;background:var(--board);color:#F4F1E1;border-radius:14px;padding:18px 18px 16px;margin:16px 0 8px;border:8px solid var(--wood);box-shadow:0 6px 0 #7A5233}
-.board h2{margin:0 0 4px;font-size:24px;color:#FFF7D6}
-.board p{margin:0;font-size:15px;opacity:.92}
-.chalk{position:absolute;right:14px;bottom:-14px;width:46px;height:8px;background:#fff;border-radius:3px;box-shadow:56px 0 0 #FFD27A}
-.progress{height:12px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden;margin-top:12px}
-.progress i{display:block;height:100%;width:0;background:var(--orange);border-radius:99px;transition:width .6s}
-.progtxt{margin-top:6px;font-family:'Jua',sans-serif;font-size:15px}
-.btn-sum{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 16px;min-height:46px;font-family:'Jua',sans-serif;font-size:17px;cursor:pointer;box-shadow:0 4px 0 #B85C1F}
+/* ---------- 공통 버튼 ---------- */
+.primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(180deg,#F59149,var(--orange));color:#fff;border:0;border-radius:18px;padding:12px 24px;min-height:54px;font-family:'Jua',sans-serif;font-size:19px;cursor:pointer;box-shadow:0 6px 0 var(--orange-d),0 12px 22px rgba(237,125,49,.3);transition:transform .12s}
+.primary:hover{transform:translateY(-2px)}
+.primary:active{transform:translateY(4px);box-shadow:0 2px 0 var(--orange-d)}
+.secondary{display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--navy);border:3px solid var(--navy);border-radius:18px;padding:10px 20px;min-height:54px;font-family:'Jua',sans-serif;font-size:18px;cursor:pointer}
+.secondary:hover{background:#F1F3FF}
 
-.rules{margin:18px 0 6px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:4px 14px}
-.rules summary{cursor:pointer;font-family:'Jua',sans-serif;color:var(--navy);font-size:17px;padding:10px 0;min-height:44px;display:flex;align-items:center}
+/* ---------- 인트로 ---------- */
+.hero{position:relative;margin-top:16px;border-radius:24px;overflow:hidden;box-shadow:var(--sh);aspect-ratio:16/9;background:#CFE6FF}
+.hero>img{width:100%;height:100%;object-fit:cover;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(31,42,107,0) 55%,rgba(31,42,107,.45))}
+.ribbon{position:absolute;top:14px;left:14px;z-index:1;background:rgba(255,255,255,.92);color:var(--navy);font-family:'Jua',sans-serif;border-radius:99px;padding:4px 14px;font-size:14px;box-shadow:var(--sh-sm)}
+.intro-card{position:relative;z-index:2;margin:-56px auto 0;max-width:760px;background:#fff;border-radius:24px;padding:24px 18px 22px;box-shadow:var(--sh);text-align:center}
+.big{margin:0;font-size:clamp(32px,7.4vw,52px);color:var(--navy);line-height:1.12}
+.big span{color:var(--orange)}
+.lead{margin:8px auto 0;color:var(--muted);max-width:520px;font-size:16px}
+.faces{display:flex;justify-content:center;margin:16px 0 6px;padding-left:12px}
+.faces img{width:54px;height:54px;border-radius:50%;object-fit:cover;object-position:top;background:#FFE9CF;border:3px solid #fff;box-shadow:var(--sh-sm);margin-left:-12px}
+.faces-cap{font-size:13.5px;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 20px}
+.step{background:var(--cream);border-radius:18px;padding:12px 6px 10px}
+.step img{width:52px;height:52px;object-fit:contain;display:block;margin:0 auto 4px}
+.step b{display:block;font-family:'Jua',sans-serif;font-weight:400;color:var(--navy);font-size:16px}
+.step span{font-size:13px;color:var(--muted);line-height:1.4;display:block}
+
+/* ---------- 교실 지도 ---------- */
+.mapwrap{margin-top:16px;border-radius:24px;padding:16px 14px 26px;background:linear-gradient(rgba(255,248,236,.84),rgba(255,248,236,.93)),url('../art/bg/hq.webp') center/cover;box-shadow:var(--sh)}
+.board{display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:22px;padding:14px 16px;box-shadow:var(--sh)}
+.board>img{width:62px;height:62px;object-fit:contain;flex:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
+.board .bt{flex:1;min-width:0}
+.board h2{margin:0;font-size:22px;line-height:1.2}
+.board p{margin:2px 0 0;font-size:14px;opacity:.9}
+.progress{height:12px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;margin-top:10px}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FFB067,var(--orange));border-radius:99px;transition:width .6s}
+.progtxt{margin-top:4px;font-family:'Jua',sans-serif;font-size:15px}
+.btn-sum{margin-top:10px;min-height:46px;font-size:17px;padding:8px 16px}
+
+.rules{margin:14px 0 4px;background:rgba(255,255,255,.9);border-radius:18px;padding:2px 14px;box-shadow:var(--sh-sm)}
+.rules summary{cursor:pointer;font-family:'Jua',sans-serif;color:var(--navy);font-size:17px;padding:10px 0;min-height:46px;display:flex;align-items:center;gap:8px}
+.rules summary img{width:28px;height:28px;object-fit:contain}
 .rules ul{margin:0 0 12px;padding-left:20px;font-size:15px}
-.rules li{margin:4px 0}
+.rules li{margin:5px 0}
 .rules b{color:var(--navy)}
 
-.teacher-desk{display:flex;justify-content:center;margin:20px 0 12px}
-.teacher-desk span{background:var(--wood);color:#FFF3E0;font-family:'Jua',sans-serif;padding:6px 26px;border-radius:10px 10px 4px 4px;font-size:15px;box-shadow:0 4px 0 #7A5233}
+.teacher-desk{display:flex;justify-content:center;margin:18px 0 4px}
+.teacher-desk span{background:linear-gradient(var(--wood),var(--wood-d));color:#FFF3E0;font-family:'Jua',sans-serif;padding:6px 30px;border-radius:12px;font-size:15px;box-shadow:0 5px 0 #6E4527}
 
-.desks{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
-.desk{position:relative;width:100%;text-align:left;background:var(--card);border:3px solid var(--line);border-radius:18px;padding:16px 14px 14px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;box-shadow:0 7px 0 var(--shadow);transition:transform .15s,box-shadow .15s,border-color .15s}
-.desk:hover{transform:translateY(-3px);border-color:var(--orange)}
-.desk:active{transform:translateY(3px);box-shadow:0 3px 0 var(--shadow)}
-.desk .seat{position:absolute;top:-11px;left:14px;background:var(--navy);color:#fff;font-family:'Jua',sans-serif;font-size:12px;padding:1px 10px;border-radius:99px}
-.ava{flex:none;width:62px;height:62px;border-radius:50%;background:#FFEBD2;display:grid;place-items:center;font-size:36px;line-height:1}
-.desk .info{flex:1;min-width:0}
-.desk .row{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
-.desk .nm{font-family:'Jua',sans-serif;font-size:21px;color:var(--navy)}
-.grade{font-size:13px;background:#EEF0FA;color:var(--navy);border-radius:99px;padding:1px 9px;font-weight:700}
-.desk .sit{font-size:15px;margin:4px 0 8px;color:var(--ink)}
-.meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:13px}
-.tagp{background:#FFF0E3;color:#B4561A;border-radius:99px;padding:1px 9px;font-weight:700}
-.diff{color:var(--orange);letter-spacing:1px}
-.desk.cleared{background:#F5FCF8;border-color:#BFE3CF}
-.stamp{position:absolute;top:10px;right:10px;transform:rotate(7deg);border:2px solid var(--green);color:var(--green);background:#fff;border-radius:8px;padding:1px 8px;font-family:'Jua',sans-serif;font-size:13px}
-.go{display:inline-block;margin-top:8px;font-family:'Jua',sans-serif;color:var(--orange);font-size:15px}
+.desks{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:14px 12px}
+@media (min-width:700px){.desks{grid-template-columns:repeat(3,1fr);gap:22px 20px}}
+.desk{position:relative;margin-top:58px;background:#fff;border:0;border-radius:22px;padding:0 0 14px;box-shadow:var(--sh-sm);cursor:pointer;text-align:center;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s}
+.desk:hover{transform:translateY(-4px);box-shadow:var(--sh)}
+.desk:active{transform:translateY(2px)}
+.desk .pic{height:150px;margin-top:-58px;display:flex;justify-content:center;align-items:flex-end;position:relative}
+.desk .pic::before{content:"";position:absolute;left:50%;bottom:6px;width:120px;height:120px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,#FFE6CC 0,#FFF3E4 60%,rgba(255,243,228,0) 72%)}
+.desk .pic img{position:relative;height:150px;width:auto;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(31,42,107,.18));transition:transform .25s}
+.desk:hover .pic img{transform:translateY(-4px) scale(1.04)}
+.tabletop{position:relative;z-index:1;height:16px;margin:-12px 8px 0;background:linear-gradient(#D19A69,var(--wood-d));border-radius:8px;box-shadow:0 4px 0 #6E4527}
+.desk .bd{padding:12px 10px 0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.nameb{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:#fff;border-radius:99px;padding:3px 6px 3px 12px;font-family:'Jua',sans-serif;font-size:17px;line-height:1.3}
+.nameb small{background:var(--orange);border-radius:99px;padding:0 8px;font-size:12.5px}
+.hook{font-size:14.5px;line-height:1.45;color:var(--ink);min-height:2.9em}
+.meta{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;align-items:center;font-size:12.5px}
+.chap{background:#FFF0E3;color:#B4561A;border-radius:99px;padding:1px 9px;font-weight:700}
+.diff{color:var(--orange);letter-spacing:1px;font-size:13px}
+.go{margin-top:2px;font-family:'Jua',sans-serif;color:#fff;background:var(--orange);border-radius:99px;padding:3px 14px;font-size:15px}
+.desk.cleared .go{background:#E9F6EF;color:var(--green)}
+.seatno{position:absolute;top:10px;left:10px;z-index:2;width:28px;height:28px;border-radius:50%;background:#fff;color:var(--navy);font-family:'Jua',sans-serif;display:grid;place-items:center;font-size:14px;box-shadow:var(--sh-sm)}
+.stamp{position:absolute;top:-6px;right:-6px;z-index:3;width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE58A,var(--gold) 70%);border:3px solid #fff;box-shadow:0 6px 14px rgba(201,138,0,.35);display:grid;place-items:center;align-content:center;transform:rotate(10deg);font-family:'Jua',sans-serif;color:#6E4300;line-height:1.05;font-size:12px;animation:stamp .45s cubic-bezier(.2,1.6,.4,1)}
+.stamp b{font-weight:400;font-size:13px;letter-spacing:-1px}
 
-/* scene */
-.scene-top{display:flex;align-items:center;gap:8px;margin:14px 0 8px;flex-wrap:wrap}
-.ghost{background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 12px;min-height:42px;cursor:pointer;color:var(--navy);font-weight:700;font-size:14px}
-.ghost:hover{border-color:var(--navy)}
-.rd{margin-left:auto;display:flex;gap:6px;align-items:center;font-family:'Jua',sans-serif;color:var(--navy)}
-.rd i{width:14px;height:14px;border-radius:50%;background:#E6DAC4;display:inline-block}
+/* ---------- 장면 ---------- */
+.scene{display:grid;gap:14px;margin-top:14px;align-items:start}
+@media (min-width:820px){.scene{grid-template-columns:300px minmax(0,1fr)}}
+.panel{position:sticky;top:0;z-index:20;background:linear-gradient(rgba(255,248,236,.55),rgba(255,248,236,.9)),url('../art/bg/hq.webp') center/cover;border-radius:24px;box-shadow:var(--sh);padding:12px;display:grid;grid-template-columns:104px minmax(0,1fr);gap:10px;align-items:end}
+@media (min-width:820px){.panel{top:80px;grid-template-columns:1fr;padding:16px;text-align:center}}
+.portrait{position:relative;height:128px;display:flex;justify-content:center;align-items:flex-end}
+.portrait::before{content:"";position:absolute;left:50%;bottom:0;width:96%;aspect-ratio:1;max-height:100%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95) 0,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 70%)}
+.portrait img{position:relative;height:100%;width:auto;object-fit:contain;filter:drop-shadow(0 10px 14px rgba(31,42,107,.22))}
+.portrait img.bounce{animation:bounce .55s cubic-bezier(.2,1.5,.4,1)}
+@media (min-width:820px){.portrait{height:270px}}
+.mood{display:inline-block;background:#fff;border-radius:99px;padding:2px 12px;font-size:13px;font-family:'Jua',sans-serif;box-shadow:var(--sh-sm);color:var(--red)}
+.mood.ok{color:var(--green)}
+.pinfo .nm{font-family:'Jua',sans-serif;font-size:21px;color:var(--navy);line-height:1.25;margin-top:4px}
+.pinfo .psit{font-size:14px;color:var(--ink);margin:2px 0 0;display:none}
+@media (min-width:820px){.pinfo .psit{display:block}}
+.gauge{margin-top:8px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);font-weight:700}
+.gauge .bar{flex:1;min-width:60px;height:10px;border-radius:99px;background:#fff;box-shadow:inset 0 0 0 1px rgba(31,42,107,.18);overflow:hidden}
+.gauge .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FFB067,var(--orange));border-radius:99px;transition:width .5s}
+.rd{display:flex;gap:6px;align-items:center;margin-top:8px;font-family:'Jua',sans-serif;color:var(--navy);font-size:14px;flex-wrap:wrap}
+@media (min-width:820px){.rd{justify-content:center}}
+.rd i{width:14px;height:14px;border-radius:50%;background:#E6DAC4;display:inline-block;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .rd i.on{background:var(--orange)}
 .rd i.best{background:var(--green)}.rd i.ok{background:var(--amber)}.rd i.poor{background:var(--red)}
-.scene-head{display:flex;gap:12px;align-items:center;background:#fff;border:3px solid var(--line);border-radius:18px;padding:12px;box-shadow:0 5px 0 var(--shadow)}
-.scene-head .nm{font-family:'Jua',sans-serif;font-size:21px;color:var(--navy);line-height:1.3}
-.scene-head .sub{font-size:14px;color:var(--muted)}
+.leave{margin-top:8px;background:#fff;border:0;border-radius:12px;padding:6px 12px;min-height:40px;cursor:pointer;color:var(--navy);font-weight:700;font-size:14px;box-shadow:var(--sh-sm)}
 
-.chat{display:flex;flex-direction:column;gap:12px;padding:18px 0 6px}
-.narr{align-self:center;background:rgba(31,42,107,.07);color:var(--navy);border-radius:12px;padding:8px 14px;font-size:14.5px;text-align:center;max-width:94%;animation:pop .3s ease-out}
-.divider{align-self:center;font-family:'Jua',sans-serif;color:#fff;background:var(--navy);padding:2px 14px;border-radius:99px;font-size:14px;animation:pop .3s ease-out}
+.stagecol{min-width:0;background:linear-gradient(rgba(255,248,236,.9),rgba(255,248,236,.95)),url('../art/bg/hq.webp') center/cover;border-radius:24px;box-shadow:var(--sh);padding:14px 12px 18px}
+.chat{display:flex;flex-direction:column;gap:12px}
+.narr{align-self:center;background:rgba(31,42,107,.08);color:var(--navy);border-radius:14px;padding:8px 14px;font-size:14.5px;text-align:center;max-width:94%;animation:pop .3s ease-out}
+.divider{align-self:center;font-family:'Jua',sans-serif;color:#fff;background:var(--navy);padding:3px 16px;border-radius:99px;font-size:14px;animation:pop .3s ease-out;box-shadow:var(--sh-sm)}
 .msg{display:flex;gap:8px;align-items:flex-end;animation:pop .28s ease-out}
-.msg .av{flex:none;width:42px;height:42px;border-radius:50%;background:#FFEBD2;display:grid;place-items:center;font-size:25px;line-height:1}
+.av{flex:none;width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:top;background:#FFE9CF;border:2px solid #fff;box-shadow:0 3px 8px rgba(31,42,107,.15);display:block}
 .msg .body{max-width:min(80%,560px);min-width:0}
-.msg .who{font-size:12.5px;color:var(--muted);font-weight:700;margin:0 4px 2px}
-.bub{background:#fff;border:2px solid var(--line);border-radius:18px 18px 18px 5px;padding:10px 14px;font-size:16px}
+.msg .who{font-size:12.5px;color:var(--muted);font-weight:700;margin:0 6px 2px}
+.bub{background:#fff;border-radius:20px 20px 20px 6px;padding:10px 15px;font-size:16px;box-shadow:0 3px 10px rgba(31,42,107,.08)}
 .bub .act{color:var(--muted);font-size:14px}
-.msg.friend .av{background:#E7F3FF}
-.msg.teacher .av{background:#EEF0FA}
-.msg.teacher .bub{background:#F2F4FF;border-color:#D3D9F5}
+.msg.friend .av{background:#E3EEFF}
+.msg.teacher .av{background:#E8EBFA}
+.msg.teacher .bub{background:#EEF1FF}
 .msg.me{flex-direction:row-reverse}
 .msg.me .who{text-align:right}
 .msg.me .av{background:#FFE1C9}
-.msg.me .bub{background:var(--orange);border-color:var(--orange);color:#fff;border-radius:18px 18px 5px 18px}
+.msg.me .bub{background:linear-gradient(180deg,#F38C45,var(--orange));color:#fff;border-radius:20px 20px 6px 20px}
 .msg.me .bub .act{color:#FFE7D4}
-.typing .bub{display:flex;gap:5px;align-items:center;padding:14px 16px}
+.typing .bub{display:flex;gap:5px;align-items:center;padding:15px 16px}
 .typing .bub i{width:8px;height:8px;border-radius:50%;background:#CDB995;animation:blink 1s infinite}
 .typing .bub i:nth-child(2){animation-delay:.15s}.typing .bub i:nth-child(3){animation-delay:.3s}
 
-.choices{display:grid;gap:12px;margin-top:10px;animation:pop .3s ease-out}
-.ask{font-family:'Jua',sans-serif;color:var(--navy);font-size:17px}
-.choice{position:relative;text-align:left;background:#fff;border:3px solid var(--navy);border-radius:16px;padding:14px 14px 14px 54px;min-height:58px;cursor:pointer;font-size:16px;box-shadow:0 5px 0 var(--navy);transition:transform .12s,background .12s}
-.choice:hover{background:#FFF3E7}
-.choice:active{transform:translateY(3px);box-shadow:0 2px 0 var(--navy)}
-.choice:disabled{opacity:.5;cursor:default}
-.choice .key{position:absolute;left:12px;top:13px;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:'Jua',sans-serif;font-weight:400}
+.choices{display:grid;gap:12px;margin-top:16px;animation:pop .3s ease-out}
+.ask{display:flex;align-items:center;gap:8px;font-family:'Jua',sans-serif;color:var(--navy);font-size:18px}
+.ask img{width:34px;height:34px;object-fit:contain}
+.choice{position:relative;text-align:left;background:#fff;border:2px solid #EADCC0;border-radius:20px;padding:14px 14px 14px 60px;min-height:62px;cursor:pointer;font-size:16px;box-shadow:0 5px 0 #E3D1AE;transition:transform .12s,border-color .12s,background .12s}
+.choice:hover{border-color:var(--orange);background:#FFFBF5;transform:translateY(-2px)}
+.choice:active{transform:translateY(3px);box-shadow:0 2px 0 #E3D1AE}
+.choice:disabled{opacity:.5;cursor:default;transform:none}
+.choice .key{position:absolute;left:14px;top:14px;width:32px;height:32px;border-radius:12px;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:'Jua',sans-serif;font-weight:400;font-size:17px}
 .choice .act{color:var(--muted);font-size:14px}
 
-.fb{margin-top:10px;background:#fff;border:3px solid var(--line);border-radius:18px;padding:14px 16px;animation:pop .35s ease-out}
-.fb.best{border-color:var(--green);background:#F4FCF7}
-.fb.ok{border-color:var(--amber);background:#FFFAEE}
-.fb.poor{border-color:var(--red);background:#FFF5F4}
-.fb .hd{display:flex;align-items:center;gap:8px;font-family:'Jua',sans-serif;font-size:20px;flex-wrap:wrap}
+.fb{margin-top:14px;background:#fff;border-radius:22px;padding:16px;box-shadow:var(--sh);border-top:6px solid var(--line);display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;animation:pop .35s ease-out}
+.fb>img{width:64px;height:64px;object-fit:contain}
+.fb.best{border-top-color:var(--green)}.fb.ok{border-top-color:var(--amber)}.fb.poor{border-top-color:var(--red)}
+.fb .hd{display:flex;align-items:center;gap:8px;font-family:'Jua',sans-serif;font-size:21px;flex-wrap:wrap;line-height:1.3}
 .fb.best .hd{color:var(--green)}.fb.ok .hd{color:#A87405}.fb.poor .hd{color:var(--red)}
 .fb .pts{margin-left:auto;background:var(--navy);color:#fff;border-radius:99px;padding:2px 12px;font-size:16px}
-.chip{display:inline-block;margin:8px 0 4px;background:var(--navy);color:#fff;border-radius:99px;padding:2px 12px;font-size:13.5px}
+.chip{display:inline-block;margin:6px 0 2px;background:#EEF0FA;color:var(--navy);border-radius:99px;padding:2px 12px;font-size:13.5px;font-weight:700}
 .fb p{margin:6px 0 0}
-.tip{margin-top:10px;background:#fff;border:2px dashed #E3CFA8;border-radius:12px;padding:10px 12px;font-size:15px}
-.tip b{display:block;font-family:'Jua',sans-serif;font-weight:400;color:var(--navy);margin-bottom:2px}
-.primary{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--orange);color:#fff;border:0;border-radius:14px;padding:12px 20px;min-height:50px;font-family:'Jua',sans-serif;font-size:18px;cursor:pointer;box-shadow:0 5px 0 #B85C1F;margin-top:12px}
-.primary:active{transform:translateY(3px);box-shadow:0 2px 0 #B85C1F}
-.secondary{display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--navy);border:3px solid var(--navy);border-radius:14px;padding:10px 18px;min-height:50px;font-family:'Jua',sans-serif;font-size:17px;cursor:pointer;margin-top:12px}
+.rep{display:flex;align-items:center;gap:8px;margin-top:10px;background:#EEF1FF;border-radius:14px;padding:6px 10px 6px 6px;font-size:14px;color:var(--navy);font-weight:700}
+.rep img{width:34px;height:34px;border-radius:50%;object-fit:cover;object-position:top;background:#fff;flex:none}
+.tip{margin-top:10px;background:var(--cream);border:2px dashed #E3CFA8;border-radius:14px;padding:10px 12px;font-size:15px}
+.tip b{display:flex;align-items:center;gap:6px;font-family:'Jua',sans-serif;font-weight:400;color:var(--navy);margin-bottom:2px}
+.tip b img{width:24px;height:24px;border-radius:50%}
+.fb .primary{margin-top:14px}
+@media (max-width:480px){
+  .fb{grid-template-columns:44px minmax(0,1fr);gap:10px;padding:14px 12px}
+  .fb>img{width:44px;height:44px}
+}
 
-/* modal */
+/* ---------- 결과 모달 ---------- */
 .overlay{position:fixed;inset:0;z-index:60;background:rgba(31,42,107,.55);display:grid;place-items:center;padding:16px;animation:fade .25s}
-.modal{position:relative;overflow:hidden;width:100%;max-width:440px;max-height:calc(100vh - 32px);overflow-y:auto;background:var(--cream);border:4px solid #fff;border-radius:24px;padding:24px 18px 20px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.25);animation:rise .4s ease-out}
-.modal .bigava{font-size:52px;line-height:1}
-.modal h3{margin:6px 0 0;font-size:25px;color:var(--navy)}
-.starsbig{font-size:46px;letter-spacing:6px;margin:6px 0 2px;line-height:1.2}
-.starsbig span{display:inline-block;color:#D9CDB5;transform:scale(0);animation:starpop .5s cubic-bezier(.2,1.6,.4,1) forwards}
-.starsbig span.on{color:#F5B301;text-shadow:0 2px 0 #C98A00}
-.starsbig span:nth-child(1){animation-delay:.25s}.starsbig span:nth-child(2){animation-delay:.5s}.starsbig span:nth-child(3){animation-delay:.75s}
+.modal{position:relative;overflow:hidden;width:100%;max-width:450px;max-height:calc(100vh - 32px);overflow-y:auto;background:linear-gradient(180deg,#FFF1DD,var(--cream) 40%);border-radius:28px;padding:22px 18px 20px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);animation:rise .4s ease-out}
+.prize{position:relative;height:150px;display:flex;justify-content:center;align-items:flex-end;gap:0}
+.prize .kid{height:150px;width:auto;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(31,42,107,.2))}
+.prize .cup{height:100px;width:auto;object-fit:contain;margin-left:-18px;animation:rise .5s .2s both;filter:drop-shadow(0 8px 10px rgba(201,138,0,.3))}
+.modal h3{margin:8px 0 0;font-size:26px;color:var(--navy);line-height:1.2}
+.starsbig{font-size:46px;letter-spacing:6px;margin:4px 0 0;line-height:1.2}
+.starsbig span{display:inline-block;color:#DCCFB6;transform:scale(0);animation:starpop .5s cubic-bezier(.2,1.6,.4,1) forwards}
+.starsbig span.on{color:var(--gold);text-shadow:0 3px 0 #C98A00}
+.starsbig span:nth-child(1){animation-delay:.3s}.starsbig span:nth-child(2){animation-delay:.55s}.starsbig span:nth-child(3){animation-delay:.8s}
 .scoreline{font-family:'Jua',sans-serif;color:var(--navy);font-size:18px}
-.picks{font-size:22px;letter-spacing:4px;margin:2px 0}
-.newbest{display:inline-block;background:var(--green);color:#fff;border-radius:99px;padding:0 10px;font-size:13px;font-family:'Jua',sans-serif}
-.keyline{margin:14px 0 0;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;text-align:left}
+.picks{display:flex;justify-content:center;gap:6px;margin:6px 0}
+.picks span{font-size:13px;font-weight:700;border-radius:99px;padding:1px 10px;color:#fff}
+.picks .best{background:var(--green)}.picks .ok{background:var(--amber)}.picks .poor{background:var(--red)}
+.newbest{display:inline-block;background:var(--navy);color:#fff;border-radius:99px;padding:1px 12px;font-size:13px;font-family:'Jua',sans-serif}
+.keyline{margin:14px 0 0;background:#fff;border-radius:18px;padding:12px 14px;text-align:left;box-shadow:var(--sh-sm);display:flex;gap:10px;align-items:flex-start}
+.keyline img{width:40px;height:40px;border-radius:50%;flex:none;background:#FFE3C7}
 .keyline b{display:block;font-family:'Jua',sans-serif;font-weight:400;color:var(--orange);font-size:15px}
-.modal .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.modal .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
 .confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .confetti i{position:absolute;top:-16px;width:9px;height:15px;border-radius:2px;opacity:.95;animation:fall 1.8s ease-in forwards}
 
-/* summary */
-.sumcard{margin:20px 0;background:#fff;border:3px solid var(--line);border-radius:22px;padding:22px 16px;text-align:center;box-shadow:0 7px 0 var(--shadow)}
-.badge{width:132px;height:132px;margin:0 auto 8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFD9A8,var(--orange));border:6px solid var(--navy);display:grid;place-items:center;font-size:58px;animation:rise .5s ease-out;box-shadow:0 6px 0 #16205A}
-.sumcard h2{margin:6px 0 0;font-size:30px;color:var(--navy)}
+/* ---------- 최종 결과 ---------- */
+.sumwrap{margin-top:16px;border-radius:24px;padding:18px 14px 24px;background:linear-gradient(rgba(255,248,236,.55),rgba(255,248,236,.95) 45%),url('../art/bg/stage.webp') center top/cover;box-shadow:var(--sh)}
+.sumhead{display:flex;align-items:flex-end;justify-content:center;gap:4px;min-height:220px}
+.sumhead .narae{height:240px;width:auto;object-fit:contain;filter:drop-shadow(0 10px 14px rgba(31,42,107,.25));animation:rise .5s ease-out}
+.sumhead .award{height:130px;width:auto;object-fit:contain;margin-bottom:12px;animation:rise .5s .2s both;filter:drop-shadow(0 8px 12px rgba(201,138,0,.35))}
+.sumcard{position:relative;max-width:720px;margin:-12px auto 0;background:#fff;border-radius:24px;padding:20px 16px;text-align:center;box-shadow:var(--sh)}
+.sumcard .tag{display:inline-block;background:var(--orange);color:#fff;font-family:'Jua',sans-serif;border-radius:99px;padding:2px 14px;font-size:14px}
+.sumcard h2{margin:6px 0 0;font-size:34px;color:var(--navy);line-height:1.2}
 .sumcard .total{font-family:'Jua',sans-serif;font-size:20px;color:var(--orange)}
 .sumcard .desc{color:var(--muted);font-size:15px;margin:4px 0 0}
 .klist{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px;text-align:left}
-.klist li{display:flex;gap:10px;align-items:flex-start;background:var(--cream);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
-.klist .av{flex:none;width:44px;height:44px;border-radius:50%;background:#FFEBD2;display:grid;place-items:center;font-size:24px}
+@media (min-width:700px){.klist{grid-template-columns:1fr 1fr}}
+.klist li{display:flex;gap:10px;align-items:flex-start;background:var(--cream);border-radius:18px;padding:10px 12px}
 .klist .kn{font-family:'Jua',sans-serif;color:var(--navy);font-size:16px}
-.klist .ks{color:#E0A100;font-size:14px;margin-left:4px}
-.klist .kt{font-size:15px}
+.klist .ks{color:#D49A00;font-size:14px;margin-left:4px}
+.klist .kt{font-size:15px;line-height:1.5}
+.sumbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
 
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:99px;font-family:'Jua',sans-serif;z-index:80;max-width:calc(100% - 32px);text-align:center;animation:rise .3s ease-out}
 
@@ -168,12 +237,18 @@ header.top{position:sticky;top:0;z-index:30;background:rgba(255,248,236,.95);bac
 @keyframes fade{from{opacity:0}to{opacity:1}}
 @keyframes rise{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:none}}
 @keyframes starpop{0%{transform:scale(0) rotate(-30deg)}100%{transform:scale(1) rotate(0)}}
-@keyframes fall{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(560px) rotate(620deg);opacity:0}}
+@keyframes fall{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(600px) rotate(620deg);opacity:0}}
+@keyframes bounce{0%{transform:scale(.9) translateY(6px)}60%{transform:scale(1.06) translateY(-6px)}100%{transform:none}}
+@keyframes stamp{0%{transform:rotate(10deg) scale(1.8);opacity:0}100%{transform:rotate(10deg) scale(1);opacity:1}}
 @media (max-width:420px){
-  .title{font-size:19px}
-  .desk .nm{font-size:19px}
-  .msg .body{max-width:84%}
-  .choice{padding-left:50px}
+  .brand b{font-size:17px}
+  .msg .body{max-width:82%}
+  .av{width:40px;height:40px}
+  .choice{padding-left:54px}
+  .choice .key{left:12px}
+  .desk .pic,.desk .pic img{height:136px}
+  .hook{font-size:13.5px}
+  .sumhead .narae{height:200px}.sumhead .award{height:104px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}
@@ -185,7 +260,7 @@ header.top{position:sticky;top:0;z-index:30;background:rgba(255,248,236,.95);bac
 <header class="top">
   <div class="topbar">
     <a class="back" href="../index.html#home">← 아카이브로</a>
-    <h1 class="title">튜터 출동! <span>교실 롤플레이</span></h1>
+    <button type="button" class="brand" id="brandBtn" aria-label="처음 화면으로"><img src="../art/narae_face.webp" alt=""><b>튜터 출동! <span>교실 롤플레이</span></b></button>
     <div class="hud">
       <span class="pill" id="hud">출동 0/6 · 0점</span>
       <button type="button" class="btn-reset" id="resetBtn">처음부터</button>
@@ -194,60 +269,94 @@ header.top{position:sticky;top:0;z-index:30;background:rgba(255,248,236,.95);bac
 </header>
 
 <main class="wrap">
-  <!-- MAP -->
-  <section id="map">
-    <div class="board">
-      <h2>오늘의 출동 명단 🚨</h2>
-      <p>손을 든 친구에게 출동하세요! 친구를 누르면 그 자리로 가서 대화가 시작돼요. 상황마다 세 번, 튜터의 한마디를 골라요.</p>
-      <div class="progress" aria-hidden="true"><i id="prog"></i></div>
-      <div class="progtxt" id="progTxt">출동 완료 0 / 6명</div>
-      <button type="button" class="btn-sum" id="toSummary" hidden>🏆 최종 결과 보기</button>
-      <span class="chalk" aria-hidden="true"></span>
+  <!-- 인트로 -->
+  <section id="intro">
+    <div class="hero">
+      <img src="../art/bg/keyart.webp" alt="디지털 튜터 나래와 손을 든 아이들이 있는 교실">
+      <span class="ribbon">4·5차시 연계 실습</span>
     </div>
-
-    <details class="rules">
-      <summary>📋 출동 전에 기억할 약속 (눌러서 펼치기)</summary>
-      <ul>
-        <li><b>S-A-F-E-R</b> — Stop 멈추기 → Assess 살피기 → First safety 안전 먼저 → Escalate 선생님께 알리기 → Record 기록하기</li>
-        <li><b>장애 보고 4요소</b> — 범위(누가·몇 대) · 유형(무엇이 안 되나) · 대안(수업은 어떻게) · 정보(시간·증상·확인한 것)</li>
-        <li><b>저학년 지원</b> — 만나요 → 놀아요 → 친해져요. ‘손을 잡아 주는 지원’에서 ‘스스로 서도록’. 대신 눌러 주기보다 말로 안내, 기다려 주기, 구체적으로 칭찬하기</li>
-        <li><b>디지털 시민성</b> — 사진의 주인은 찍힌 사람. 동의 먼저, 얼굴·이름·학교는 올리지 않기</li>
-        <li><b>바이브코딩 약속</b> — AI 결과는 초안. 직접 실행·확인·수정, 오류 메시지는 그대로 붙여 넣기, 개인정보는 넣지 않기</li>
-      </ul>
-    </details>
-
-    <div class="teacher-desk" aria-hidden="true"><span>교 탁</span></div>
-    <div class="desks" id="desks"></div>
+    <div class="intro-card">
+      <h1 class="big">튜터 출동! <span>교실 롤플레이</span></h1>
+      <p class="lead">나는 디지털 튜터 <b>나래</b>! 교실 곳곳에서 손을 든 친구들에게 출동해, 상황에 딱 맞는 한마디로 도와주세요.</p>
+      <div class="faces" id="faces"></div>
+      <div class="faces-cap">오늘 도움이 필요한 친구 6명</div>
+      <div class="steps">
+        <div class="step"><img src="../art/siren.webp" alt=""><b>출동</b><span>교실 지도에서 친구를 골라요</span></div>
+        <div class="step"><img src="../art/talk.webp" alt=""><b>대화</b><span>3번, 튜터의 한마디를 골라요</span></div>
+        <div class="step"><img src="../art/trophy.webp" alt=""><b>별 모으기</b><span>원칙대로 도우면 별 3개!</span></div>
+      </div>
+      <button type="button" class="primary" id="startBtn">🚨 출동 시작</button>
+    </div>
   </section>
 
-  <!-- SCENE -->
-  <section id="scene" hidden>
-    <div class="scene-top">
-      <button type="button" class="ghost" id="leaveBtn">← 교실 지도로</button>
-      <div class="rd" id="rd" aria-label="진행 상황"><span id="rdTxt">상황 1/3</span><i></i><i></i><i></i></div>
+  <!-- 교실 지도 -->
+  <section id="map" hidden>
+    <div class="mapwrap">
+      <div class="board">
+        <img src="../art/siren.webp" alt="">
+        <div class="bt">
+          <h2>오늘의 출동 명단</h2>
+          <p>친구 책상을 누르면 그 자리로 출동해요. 상황마다 세 번, 튜터의 한마디를 골라요.</p>
+          <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+          <div class="progtxt" id="progTxt">출동 완료 0 / 6명</div>
+          <button type="button" class="primary btn-sum" id="toSummary" hidden>🏆 최종 결과 보기</button>
+        </div>
+      </div>
+
+      <details class="rules">
+        <summary><img src="../art/kobi.webp" alt="">출동 전에 기억할 약속 (눌러서 펼치기)</summary>
+        <ul>
+          <li><b>S-A-F-E-R</b> — Stop 멈추기 → Assess 살피기 → First safety 안전 먼저 → Escalate 선생님께 알리기 → Record 기록하기</li>
+          <li><b>장애 보고 4요소</b> — 범위(누가·몇 대) · 유형(무엇이 안 되나) · 대안(수업은 어떻게) · 정보(시간·증상·확인한 것)</li>
+          <li><b>저학년 지원</b> — 만나요 → 놀아요 → 친해져요. ‘손을 잡아 주는 지원’에서 ‘스스로 서도록’. 대신 눌러 주기보다 말로 안내, 기다려 주기, 구체적으로 칭찬하기</li>
+          <li><b>디지털 시민성</b> — 사진의 주인은 찍힌 사람. 동의 먼저, 얼굴·이름·학교는 올리지 않기</li>
+          <li><b>바이브코딩 약속</b> — AI 결과는 초안. 직접 실행·확인·수정, 오류 메시지는 그대로 붙여 넣기, 개인정보는 넣지 않기</li>
+        </ul>
+      </details>
+
+      <div class="teacher-desk" aria-hidden="true"><span>교 탁</span></div>
+      <div class="desks" id="desks"></div>
     </div>
-    <div class="scene-head">
-      <div class="ava" id="sAva"></div>
-      <div>
-        <div class="nm" id="sName"></div>
-        <div class="sub" id="sSit"></div>
+  </section>
+
+  <!-- 장면 -->
+  <section id="scene" hidden>
+    <div class="scene">
+      <aside class="panel">
+        <div class="portrait"><img id="pImg" alt=""></div>
+        <div class="pinfo">
+          <span class="mood" id="pMood">도움이 필요해요</span>
+          <div class="nm" id="pName"></div>
+          <p class="psit" id="pSit"></p>
+          <div class="gauge"><span>마음 게이지</span><span class="bar"><i id="pGauge"></i></span></div>
+          <div class="rd" id="rd"><span id="rdTxt">상황 1/3</span><i></i><i></i><i></i></div>
+          <button type="button" class="leave" id="leaveBtn">← 교실 지도로</button>
+        </div>
+      </aside>
+      <div class="stagecol">
+        <div class="chat" id="chat" aria-live="polite"></div>
+        <div id="act"></div>
       </div>
     </div>
-    <div class="chat" id="chat" aria-live="polite"></div>
-    <div id="act"></div>
   </section>
 
-  <!-- SUMMARY -->
+  <!-- 최종 결과 -->
   <section id="summary" hidden>
-    <div class="sumcard">
-      <div class="badge" id="badgeIco">🌱</div>
-      <h2 id="badgeName">새내기 튜터</h2>
-      <div class="total" id="sumTotal"></div>
-      <p class="desc" id="sumDesc"></p>
-      <ol class="klist" id="klist"></ol>
-      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-        <button type="button" class="secondary" id="sumMap">교실 지도로</button>
-        <button type="button" class="primary" id="sumReset">처음부터 다시 출동</button>
+    <div class="sumwrap">
+      <div class="sumhead">
+        <img class="narae" src="../art/narae_wow.webp" alt="놀라며 기뻐하는 튜터 나래">
+        <img class="award" id="sumAward" src="../art/trophy.webp" alt="">
+      </div>
+      <div class="sumcard">
+        <span class="tag">출동 6명 완료!</span>
+        <h2 id="badgeName">새내기 튜터</h2>
+        <div class="total" id="sumTotal"></div>
+        <p class="desc" id="sumDesc"></p>
+        <ol class="klist" id="klist"></ol>
+        <div class="sumbtns">
+          <button type="button" class="secondary" id="sumMap">교실 지도로</button>
+          <button type="button" class="primary" id="sumReset">처음부터 다시 출동</button>
+        </div>
       </div>
     </div>
   </section>
@@ -257,23 +366,32 @@ header.top{position:sticky;top:0;z-index:30;background:rgba(255,248,236,.95);bac
 (function(){
 "use strict";
 
+var ART="../art/", PPL="../art/people/";
+var IMG={
+  narae:ART+"narae_face.webp", teacher:PPL+"teacherkim.webp",
+  kobi:ART+"kobi.webp", kobiLove:ART+"kobi_love.webp", siren:ART+"siren.webp",
+  trophy:ART+"trophy.webp", medal:ART+"medal.webp", stopwatch:ART+"stopwatch.webp"
+};
+function kidImg(base,mood){return PPL+base+"_"+(mood==="ok"?"ok":"sad")+".webp";}
+
 /* ---------- 대사 도우미 ---------- */
-var K=function(t){return {w:"k",t:t};};             // 주인공 학생
-var F=function(n,e,t){return {w:"f",n:n,e:e,t:t};}; // 친구
-var T=function(t){return {w:"t",t:t};};             // 담임 선생님
-var N=function(t){return {w:"n",t:t};};             // 상황 설명
+var K=function(t){return {w:"k",t:t};};                      // 주인공 학생
+var F=function(n,a,m,t){return {w:"f",n:n,a:a,m:m,t:t};};    // 친구 (이름, 그림, 표정, 대사)
+var T=function(t){return {w:"t",t:t};};                      // 김 담임 선생님
+var N=function(t){return {w:"n",t:t};};                      // 상황 설명
 
 /* ---------- 시나리오 ---------- */
 var SCENES=[
 {
- id:"hajun",emoji:"👦",name:"하준",grade:"1학년",diff:1,topic:"저학년 지원",lesson:"5차시",
+ id:"minjun",art:"minjun",name:"민준",grade:"1학년",diff:1,topic:"저학년 지원",lesson:"5차시",
+ hook:"QR 로그인이 안 돼서 울먹여요",
  sit:"태블릿 로그인 QR이 안 찍혀서 울먹이고 있어요.",
- intro:[N("1학년 교실. 모두 QR 카드로 태블릿에 로그인하는 중이에요. 하준이가 태블릿을 꼭 쥔 채 멈춰 있어요.")],
+ intro:[N("1학년 교실. 모두 QR 카드로 태블릿에 로그인하는 중이에요. 민준이가 태블릿을 꼭 쥔 채 멈춰 있어요.")],
  rounds:[
   {tag:"저학년 지원 · 마음 먼저, 함께 살피기",
    lines:[K("선생님… 이거 안 돼요ㅠㅠ"),K("아까 눌렀는데 또 안 돼요. 다른 애들은 다 됐는데… 나만 안 돼요…")],
    c:[
-    {q:"best",t:"(무릎을 굽혀 눈높이를 맞추며) 괜찮아, 하준아. 선생님이 옆에 있을게. 지금 화면에 뭐가 보이는지 같이 볼까?",
+    {q:"best",t:"(무릎을 굽혀 눈높이를 맞추며) 괜찮아, 민준아. 선생님이 옆에 있을게. 지금 화면에 뭐가 보이는지 같이 볼까?",
      r:[K("(훌쩍) …응. 여기 네모 나오는데요, 까매요. 카메라래요.")],
      fb:"눈높이를 맞추고 ‘옆에 있을게’로 불안부터 낮췄어요. 저학년은 마음이 안정돼야 손이 움직여요. 기기는 아이 손에 둔 채 ‘같이 보기’로 상황을 살피는 게 출발점이에요."},
     {q:"ok",t:"어디 보자, 태블릿 잠깐 선생님 줘 볼래?",
@@ -286,10 +404,10 @@ var SCENES=[
   {tag:"저학년 지원 · 대신 눌러 주지 말고 말로 안내",
    lines:[K("카메라 켰는데요, 이 종이를 대도 아무것도 안 돼요."),K("자꾸 흔들려요… 손이 막 떨려요.")],
    c:[
-    {q:"best",t:"QR 카드를 카메라에서 한 뼘만 떨어뜨려 볼까? 하준이가 카드를 들고, 하나, 둘, 셋 셀 때까지 꼼짝 말고 멈춰 보자.",
+    {q:"best",t:"QR 카드를 카메라에서 한 뼘만 떨어뜨려 볼까? 민준이가 카드를 들고, 하나, 둘, 셋 셀 때까지 꼼짝 말고 멈춰 보자.",
      r:[K("한 뼘… 이만큼요? 하나… 둘… 셋…"),K("어! 삑 했어요!! 선생님 삑 했어요!!")],
      fb:"대신 눌러 주지 않고 ‘말로 안내’해서 아이 손으로 성공하게 했어요. ‘한 뼘’, ‘셋 셀 때까지’처럼 짧고 구체적인 말이 저학년에게 가장 잘 통해요."},
-    {q:"ok",t:"선생님이 카드 잡아 줄게. 하준이는 태블릿만 꼭 잡고 있어.",
+    {q:"ok",t:"선생님이 카드 잡아 줄게. 민준이는 태블릿만 꼭 잡고 있어.",
      r:[K("…됐다! 근데… 선생님이 해 준 거죠? 나 혼자는 못 해요?")],
      fb:"함께 하는 ‘손을 잡아 주는 지원’ 단계로는 괜찮아요. 다음 시도에서는 손을 떼고 아이 혼자 해 볼 기회를 꼭 주세요."},
     {q:"poor",t:"(태블릿을 가져가 직접 찍어 주며) 자, 됐다! 이제 수업 들어가자.",
@@ -299,8 +417,8 @@ var SCENES=[
   {tag:"저학년 지원 · 구체적 칭찬으로 스스로 서기",
    lines:[K("헤헤, 들어왔어요. 내 이름 나왔어요!"),K("근데… 내일도 또 안 되면 어떡해요?")],
    c:[
-    {q:"best",t:"오늘 하준이가 카드 한 뼘 띄우고, 셋 셀 때까지 멈춰서 해냈잖아! 내일은 하준이가 옆 친구한테 알려 줘도 되겠다.",
-     r:[K("진짜요? 한 뼘, 하나 둘 셋! 나 이제 알아요! (어깨 으쓱)"),K("민서야, 내가 알려 줄까?")],
+    {q:"best",t:"오늘 민준이가 카드 한 뼘 띄우고, 셋 셀 때까지 멈춰서 해냈잖아! 내일은 민준이가 옆 친구한테 알려 줘도 되겠다.",
+     r:[K("진짜요? 한 뼘, 하나 둘 셋! 나 이제 알아요! (어깨 으쓱)"),K("서진아, 내가 알려 줄까?")],
      fb:"무엇을 잘했는지 구체적으로 칭찬하고, 방법을 아이 말로 다시 정리하게 했어요. 다음에 혼자 설 수 있는 힘이 생기고, 친구를 돕는 자신감까지 생겨요."},
     {q:"ok",t:"내일 또 안 되면 그때 선생님 불러~",
      r:[K("네… 근데 선생님 내일도 와요?")],
@@ -313,7 +431,8 @@ var SCENES=[
  key:"대신 눌러 주지 말고, 말로 안내하고 기다려 주기 — 아이 손으로 성공하게."
 },
 {
- id:"seoa",emoji:"👧",name:"서아",grade:"1학년",diff:1,topic:"놀아요 단계",lesson:"5차시",
+ id:"seoa",art:"seoa",name:"서아",grade:"1학년",diff:1,topic:"놀아요 단계",lesson:"5차시",
+ hook:"더블클릭이 안 돼서 “컴퓨터가 나 싫어해!”",
  sit:"마우스 더블클릭이 안 돼서 잔뜩 화났어요. “컴퓨터가 나 싫어해!”",
  intro:[N("컴퓨터실. 「디지털은 내 친구」 ‘놀아요’ 활동 — 마우스로 그림 폴더를 두 번 눌러 여는 중이에요. 서아가 마우스를 탁탁 내리치고 있어요.")],
  rounds:[
@@ -337,8 +456,8 @@ var SCENES=[
      r:[K("따닥! 따닥! 따닥! 이렇게요? 헤헤 재밌다."),K("이제 마우스로 해 볼래요!")],
      fb:"원인을 아이 수준의 말(‘딱… 딱’ vs ‘따닥!’)로 설명하고, 기기 없이 몸으로 먼저 연습하게 했어요. ‘놀아요’ 단계답게 놀이처럼 익히면 실패해도 덜 속상해요."},
     {q:"ok",t:"더블클릭은 빨리 두 번 누르는 거야. 다시 해 봐.",
-     r:[K("…빨리? 딱딱! …아 또 안 돼. 더블클릭이 뭔데요."),]
-     ,fb:"설명은 맞지만 ‘더블클릭’ 같은 용어와 말만으로는 1학년에게 부족해요. 시범을 보이고, 몸으로 먼저 연습하게 해 주세요."},
+     r:[K("…빨리? 딱딱! …아 또 안 돼. 더블클릭이 뭔데요.")],
+     fb:"설명은 맞지만 ‘더블클릭’ 같은 용어와 말만으로는 1학년에게 부족해요. 시범을 보이고, 몸으로 먼저 연습하게 해 주세요."},
     {q:"poor",t:"(마우스를 잡고 대신 열어 주며) 봐, 이렇게 하면 열리잖아.",
      r:[K("…선생님은 되고 나는 안 되잖아. 역시 컴퓨터는 나 싫어해.")],
      fb:"대신 해 주면 ‘나는 못 한다’는 생각이 굳어져요. 손은 아이의 것, 튜터는 말과 시범으로만 도와주세요."}
@@ -360,28 +479,29 @@ var SCENES=[
  key:"감정 먼저 읽고, 몸으로 연습하고, 과정을 칭찬하기 — 기다림이 ‘친해져요’를 만든다."
 },
 {
- id:"doyun",emoji:"🧒",name:"도윤",grade:"2학년",diff:2,topic:"S-A-F-E-R",lesson:"4차시",
+ id:"doyun",art:"doyun",name:"도윤",grade:"2학년",diff:2,topic:"S-A-F-E-R",lesson:"4차시",
+ hook:"충전선에 걸려 넘어졌어요. 화면에 금이…",
  sit:"충전선에 걸려 넘어졌어요. 태블릿 화면에 금이 갔고 무릎이 아프대요.",
- intro:[N("쿵! 2학년 교실 뒤쪽 충전함 앞. 바닥에 늘어진 충전선에 발이 걸려 도윤이가 넘어졌고, 태블릿이 바닥에 떨어졌어요."),F("친구들","🙋","헐! 도윤이 넘어졌다!"),F("친구들","🙋","태블릿 깨졌대!! (우르르 몰려옴)")],
+ intro:[N("쿵! 2학년 교실 뒤쪽 충전함 앞. 바닥에 늘어진 충전선에 발이 걸려 도윤이가 넘어졌고, 태블릿이 바닥에 떨어졌어요."),F("친구들","taeo","sad","헐! 도윤이 넘어졌다!"),F("친구들","taeo","sad","태블릿 깨졌대!! (우르르 몰려옴)")],
  rounds:[
   {tag:"S-A-F-E-R · S 멈추기 · A 살피기 · F 안전 먼저",
    lines:[K("으아앙… 무릎 아파요…"),K("태블릿… 화면 깨졌어요… 나 혼나요?ㅠㅠ")],
    c:[
     {q:"best",t:"도윤아, 일단 움직이지 말고 그대로 앉아 있어. 얘들아, 다들 제자리에 앉아 줘! 바닥에 유리 있을 수 있어. …도윤아, 어디가 제일 아파?",
-     r:[K("(훌쩍) 여기… 오른쪽 무릎이요. 피는… 안 나는 거 같아요."),F("친구들","🙋","(자리로 돌아가며) 도윤아 괜찮아?")],
+     r:[K("(훌쩍) 여기… 오른쪽 무릎이요. 피는… 안 나는 거 같아요."),F("친구들","taeo","ok","(자리로 돌아가며) 도윤아 괜찮아?")],
      fb:"S(멈추기)로 몰려드는 친구들을 멈추고, A(살피기)로 다친 곳을 확인했어요. F(안전 먼저) — 2차 사고(유리 조각, 밀림)를 막는 게 기기보다 먼저예요."},
     {q:"ok",t:"괜찮아? 일어날 수 있겠어?",
      r:[K("(일어나다가) 아야야! 아파요!! (다시 주저앉음)")],
      fb:"걱정하는 마음은 좋지만, 상태를 살피기 전에 일으키면 2차 부상 위험이 있어요. 몰려드는 친구들도 먼저 멈춰야 해요."},
     {q:"poor",t:"(태블릿부터 집어 들며) 어머, 화면 금 갔네… 이거 어떡하지?",
-     r:[K("으아앙!! 나 진짜 혼나는 거죠?ㅠㅠ"),F("친구들","🙋","우와 완전 깨졌다! 보여 줘 보여 줘!")],
+     r:[K("으아앙!! 나 진짜 혼나는 거죠?ㅠㅠ"),F("친구들","taeo","sad","우와 완전 깨졌다! 보여 줘 보여 줘!")],
      fb:"기기를 먼저 챙기면 아이는 ‘나보다 태블릿이 중요하구나’라고 느껴요. 학생 안전이 먼저, 기기는 나중! 깨진 화면을 들고 있으면 손을 다칠 수도 있어요."}
    ]},
-  {tag:"S-A-F-E-R · E 선생님께 알리기",
+  {tag:"S-A-F-E-R · E 선생님께 알리기",rep:"김 담임 선생님께 바로 알리기 — 튜터 혼자 판단·처리하지 않아요",
    lines:[N("도윤이는 바닥에 앉은 채 금 간 태블릿을 바라봐요."),K("근데 태블릿 진짜 깨졌어요… 엄마한테 혼나요… 그거 비싼 거잖아요.")],
    c:[
-    {q:"best",t:"도윤이가 다친 게 제일 중요해. 태블릿은 선생님들이 처리할 거니까 걱정하지 마. 깨진 데는 아무도 만지지 말자. 지금 바로 담임선생님께 알릴게.",
-     r:[K("…진짜요? 나 안 혼나요? (훌쩍)"),T("어머, 도윤아! 튜터 선생님 고마워요. 도윤이는 제가 보건실 데려갈게요.")],
+    {q:"best",t:"도윤이가 다친 게 제일 중요해. 태블릿은 선생님들이 처리할 거니까 걱정하지 마. 깨진 데는 아무도 만지지 말자. 지금 바로 김 선생님께 알릴게.",
+     r:[K("…진짜요? 나 안 혼나요? (훌쩍)"),T("도윤아, 괜찮니? 튜터 선생님, 알려 줘서 고마워요. 도윤이는 제가 보건실 데려갈게요.")],
      fb:"E(선생님께 알리기) — 튜터 혼자 판단하거나 처리하지 않고 담임교사에게 즉시 보고했어요. 파손 기기는 만지지 않게 따로 두는 것도 안전 조치예요."},
     {q:"ok",t:"괜찮아, 태블릿은 고치면 돼. 보건실 혼자 갈 수 있지?",
      r:[K("…혼자요? (절뚝) 무서운데…")],
@@ -390,11 +510,11 @@ var SCENES=[
      r:[K("…진짜요? (주변 눈치) …그래도 돼요?")],
      fb:"사고 은폐는 절대 금지예요. 부상·파손은 반드시 보고해야 보건 처치, 수리, 보호자 안내까지 제대로 이어질 수 있어요."}
    ]},
-  {tag:"S-A-F-E-R · R 기록하기",
+  {tag:"S-A-F-E-R · R 기록하기",rep:"기록은 김 담임 선생님께 — 시간·장소·경위·조치·기기 상태",
    lines:[N("쉬는 시간, 도윤이가 보건실에서 돌아왔어요."),K("다녀왔어요! 파스 붙였어요. 이제 별로 안 아파요."),K("근데 아까 그 줄… 또 걸리면 어떡해요?")],
    c:[
-    {q:"best",t:"다행이다! 아까 일은 언제·어디서·어떻게 넘어졌는지, 태블릿 상태까지 선생님이 기록해서 담임선생님께 드렸어. 충전선도 책상 밑으로 정리해 달라고 말씀드렸고.",
-     r:[K("오~ 그럼 이제 안 걸리겠다!"),K("나도 바닥에 줄 보이면 바로 말할게요!")],
+    {q:"best",t:"다행이다! 아까 일은 언제·어디서·어떻게 넘어졌는지, 태블릿 상태까지 선생님이 기록해서 김 선생님께 드렸어. 충전선도 책상 밑으로 정리해 달라고 말씀드렸고.",
+     r:[K("오~ 그럼 이제 안 걸리겠다!"),T("튜터 선생님 기록 덕분에 수리 신청 바로 했어요. 충전선은 오늘 정리합시다."),K("나도 바닥에 줄 보이면 바로 말할게요!")],
      fb:"R(기록하기) — 시간·장소·경위·조치·기기 상태를 기록하고, 위험 요인(충전선 배치) 개선까지 제안했어요. 기록이 있어야 수리 처리와 재발 방지가 가능해요."},
     {q:"ok",t:"다음엔 앞을 잘 보고 다니자~",
      r:[K("…내가 안 보고 다녀서 그런 거예요? (시무룩)")],
@@ -407,44 +527,45 @@ var SCENES=[
  key:"아이 먼저, 기기는 나중 — 멈추고 → 살피고 → 안전 먼저 → 선생님께 → 기록까지 (S-A-F-E-R)."
 },
 {
- id:"jiyu",emoji:"🙋‍♀️",name:"지유와 친구들",grade:"3학년",diff:3,topic:"장애 보고",lesson:"4차시",
+ id:"jihu",art:"jihu",name:"지후와 친구들",grade:"3학년",diff:3,topic:"장애 보고",lesson:"4차시",
+ hook:"와이파이가 끊겨 반 전체가 “안 돼요!!”",
  sit:"수업 중 와이파이가 끊겨 반 전체가 “선생님 안 돼요!!” 소란이에요.",
  intro:[N("3학년 교실, 패들렛에 ‘우리 동네 소개’ 글을 올리는 중. 갑자기 모든 화면이 뱅글뱅글 돌기 시작해요.")],
  rounds:[
   {tag:"S-A-F-E-R · 튜터부터 침착하게 멈추기",
-   lines:[K("선생님!! 안 돼요!! 뱅글뱅글만 돌아요!"),F("친구들","🙋","저도요! 저도!"),F("친구들","🙋","나 다 썼는데 날아갔어ㅠㅠ"),F("친구들","🙋","선생님 내 거 먼저 봐 줘요!!")],
+   lines:[K("선생님!! 안 돼요!! 뱅글뱅글만 돌아요!"),F("친구들","taeo","sad","저도요! 저도!"),F("친구들","taeo","sad","나 다 썼는데 날아갔어ㅠㅠ"),F("친구들","taeo","sad","선생님 내 거 먼저 봐 줘요!!")],
    c:[
     {q:"best",t:"(손을 들고 차분한 목소리로) 얘들아, 잠깐! 태블릿 화면을 엎어 놓고 선생님 보자. 다 같이 안 되는 거면 너희 잘못이 아니야. 선생님이 지금 확인해 볼게.",
-     r:[K("(태블릿을 엎으며) …다 같이 안 되는 거예요?"),F("친구들","🙋","휴~ 나만 그런 줄 알았네.")],
+     r:[K("(태블릿을 엎으며) …다 같이 안 되는 거예요?"),F("친구들","taeo","ok","휴~ 나만 그런 줄 알았네.")],
      fb:"S(멈추기) — 튜터가 침착하면 교실이 침착해져요. ‘화면 엎기’로 주의를 모으고, ‘너희 잘못 아니야’로 불안을 낮춘 뒤 확인에 들어갔어요."},
     {q:"ok",t:"(한 명씩 돌아다니며) 어디 보자, 새로고침 한번 눌러 볼래?",
-     r:[F("친구들","🙋","선생님 나도요! 나도 봐 줘요!"),K("새로고침 했는데 또 뱅글뱅글이에요!! (소란이 더 커짐)")],
+     r:[F("친구들","taeo","sad","선생님 나도요! 나도 봐 줘요!"),K("새로고침 했는데 또 뱅글뱅글이에요!! (소란이 더 커짐)")],
      fb:"개별 대응보다 ‘전체 멈춤’이 먼저예요. 한 명씩 보다 보면 교실 전체 상황을 놓치고, 모두 같은 원인일 때는 시간만 흘러가요."},
     {q:"poor",t:"(큰 소리로) 다들 조용히 해! 가만히 기다려!",
-     r:[K("(움찔) …내 글 날아갔는데…"),F("친구들","🙋","(웅성웅성) 뭐야, 무섭게…")],
+     r:[K("(움찔) …내 글 날아갔는데…"),F("친구들","taeo","sad","(웅성웅성) 뭐야, 무섭게…")],
      fb:"큰 소리는 잠깐 조용하게 할 뿐 불안은 그대로예요. 무슨 일인지, 지금 무엇을 하면 되는지를 알려 줘야 교실이 진정돼요."}
    ]},
-  {tag:"장애 보고 4요소 · 범위·유형·대안·정보",
-   lines:[K("근데 선생님, 우리 반만 안 되는 거예요? 옆 반은요?"),N("담임 선생님이 다가와 튜터에게 물어요."),T("튜터 선생님, 지금 어떤 상황이에요?")],
+  {tag:"장애 보고 4요소 · 범위·유형·대안·정보",rep:"김 담임 선생님께 보고 — 범위·유형·대안·정보를 한 번에",
+   lines:[K("근데 선생님, 우리 반만 안 되는 거예요? 옆 반은요?"),N("김 담임 선생님이 다가와 튜터에게 물어요."),T("튜터 선생님, 지금 어떤 상황이에요?")],
    c:[
     {q:"best",t:"선생님, 2시 10분쯤부터 우리 반 태블릿 24대 전부 와이파이가 끊겼어요(범위). 패들렛만이 아니라 인터넷 전체가 안 돼요(유형). 우선 공책 활동으로 바꾸면 좋겠고요(대안), 무선 AP 불빛이랑 옆 반 상황 확인해서 정보 담당 선생님께 전달할게요(정보).",
-     r:[T("좋아요, 그렇게 해요. 얘들아, 공책 꺼내자!"),K("공책에 써요? 오, 그럼 그림도 그려도 돼요?")],
+     r:[T("좋아요, 그렇게 합시다. 얘들아, 공책 꺼내자!"),K("공책에 써요? 오, 그럼 그림도 그려도 돼요?")],
      fb:"장애 보고 4요소를 한 번에 전달했어요. 범위(누가·몇 대), 유형(무엇이 안 되나), 대안(수업을 어떻게 이어갈지), 정보(시간·증상·확인 사항). 담임 선생님이 바로 결정할 수 있어요."},
     {q:"ok",t:"선생님, 와이파이가 안 되는 것 같아요.",
-     r:[T("몇 대가요? 다 안 돼요? 언제부터요?"),F("친구들","🙋","(그새 다시 웅성웅성)")],
+     r:[T("몇 대가요? 다 안 돼요? 언제부터요?"),F("친구들","taeo","sad","(그새 다시 웅성웅성)")],
      fb:"보고는 했지만 정보가 부족해 되묻게 돼요. 그 사이 교실은 다시 소란해지고요. 범위·유형·대안·정보를 한 번에 정리해서 말해 보세요."},
     {q:"poor",t:"제가 공유기 껐다 켜 볼게요! (교실 뒤 장비 전원을 뽑으러 감)",
-     r:[T("어, 잠깐만요! 그건 학교 네트워크 장비라 함부로 만지면…"),F("친구들","🙋","우와~ 튜터 선생님이 고친대!")],
+     r:[T("어, 잠깐만요! 그건 학교 네트워크 장비라 함부로 만지면 안 돼요."),F("친구들","taeo","ok","우와~ 튜터 선생님이 고친대!")],
      fb:"학교 네트워크 장비는 임의로 조작하지 않아요. 판단은 담임·정보 담당 선생님께. 튜터의 역할은 확인 → 보고 → 대안 안내예요."}
    ]},
   {tag:"대안 활동 · 학생의 결과물 지키기",
-   lines:[F("친구들","🙋","공책 활동 재미없어요~ 언제 다시 돼요?"),K("근데 아까 내가 쓴 글 다 날아갔어요… 처음부터 다시 써야 돼요?ㅠㅠ")],
+   lines:[F("친구들","taeo","sad","공책 활동 재미없어요~ 언제 다시 돼요?"),K("근데 아까 내가 쓴 글 다 날아갔어요… 처음부터 다시 써야 돼요?ㅠㅠ")],
    c:[
-    {q:"best",t:"지유가 쓴 내용, 기억나는 만큼 공책에 먼저 적어 두자. 인터넷 돌아오면 그대로 옮기면 돼. 그리고 다음부터 긴 글은 중간중간 ‘저장’ 누르는 것도 알려 줄게.",
-     r:[K("오! 그럼 공책이 백업이네? 나 다 기억나요!"),F("친구들","🙋","나도 공책에 먼저 쓸래!")],
+    {q:"best",t:"지후가 쓴 내용, 기억나는 만큼 공책에 먼저 적어 두자. 인터넷 돌아오면 그대로 옮기면 돼. 그리고 다음부터 긴 글은 중간중간 ‘저장’ 누르는 것도 알려 줄게.",
+     r:[K("오! 그럼 공책이 백업이네? 나 다 기억나요!"),F("친구들","taeo","ok","나도 공책에 먼저 쓸래!")],
      fb:"대안 활동을 ‘버리는 시간’이 아니라 다음 활동과 연결했어요. 결과물 손실을 줄이는 습관(중간 저장)까지 알려 주면 다음 장애 때 피해가 줄어요."},
     {q:"ok",t:"곧 될 거야, 조금만 기다려 보자~",
-     r:[F("친구들","🙋","곧 언제요~? 5분? 10분?"),K("(한숨) …")],
+     r:[F("친구들","taeo","sad","곧 언제요~? 5분? 10분?"),K("(한숨) …")],
      fb:"확실하지 않은 약속은 기다림을 더 길게 느끼게 해요. 기다리는 동안 ‘지금 할 수 있는 일’을 주세요."},
     {q:"poor",t:"어쩔 수 없지 뭐. 날아간 건 날아간 거야.",
      r:[K("…(울먹) 열심히 썼는데.")],
@@ -454,28 +575,29 @@ var SCENES=[
  key:"튜터가 침착하면 교실이 침착하다 — 먼저 멈추고, 범위·유형·대안·정보로 보고하기."
 },
 {
- id:"minjae",emoji:"📸",name:"민재",grade:"4학년",diff:2,topic:"디지털 시민성",lesson:"연계",
+ id:"yuna",art:"yuna",name:"유나",grade:"4학년",diff:2,topic:"디지털 시민성",lesson:"연계",
+ hook:"친구 얼굴을 찍어 앱에 올리고 싶대요",
  sit:"친구 얼굴을 찍어서 꾸미기 앱에 올리고 싶대요.",
- intro:[N("4학년 교실, ‘우리 반 소개 카드’ 만들기 시간. 민재가 태블릿 카메라를 친구 얼굴에 들이대며 킥킥 웃고 있어요.")],
+ intro:[N("4학년 교실, ‘우리 반 소개 카드’ 만들기 시간. 유나가 휴대폰 카메라를 친구 얼굴에 들이대며 킥킥 웃고 있어요.")],
  rounds:[
   {tag:"디지털 시민성 · 초상권과 동의",
-   lines:[K("선생님! 준우 사진 찍어서 이 앱에 넣을래요. 얼굴에 강아지 귀 붙이면 완전 웃겨요ㅋㅋㅋ"),F("준우","🙅‍♂️","야, 하지 마~ 찍지 말라고!")],
+   lines:[K("선생님! 준우 사진 찍어서 이 앱에 넣을래요. 얼굴에 강아지 귀 붙이면 완전 웃겨요ㅋㅋㅋ"),F("준우","taeo","sad","야, 하지 마~ 찍지 말라고!")],
    c:[
-    {q:"best",t:"잠깐, 민재야. 준우가 지금 ‘하지 마’라고 했지? 사진은 찍히는 사람 허락이 먼저야. 준우 생각부터 들어 보자.",
-     r:[K("…아 장난인데. (카메라를 내림)"),F("준우","🙅‍♂️","나 싫어. 맨날 이상하게 나오잖아.")],
+    {q:"best",t:"잠깐, 유나야. 준우가 지금 ‘하지 마’라고 했지? 사진은 찍히는 사람 허락이 먼저야. 준우 생각부터 들어 보자.",
+     r:[K("…아 장난인데. (카메라를 내림)"),F("준우","taeo","sad","나 싫어. 맨날 이상하게 나오잖아.")],
      fb:"먼저 멈추게 하고(Stop), 사진 속 주인공의 마음을 확인하게 했어요. 초상권의 핵심은 ‘찍히는 사람의 동의’예요."},
     {q:"ok",t:"수업 시간에는 사진 찍지 말자~",
      r:[K("왜요? 그럼 쉬는 시간엔 돼요? ㅋㅋ")],
      fb:"규칙만 말하면 ‘왜’를 놓쳐요. 문제는 시간이 아니라 친구의 동의와 개인정보예요. 이유를 함께 알려 주세요."},
     {q:"poor",t:"ㅋㅋ 귀엽겠다. 대신 예쁘게 찍어 줘~",
-     r:[K("오케이! 준우야 웃어~ 찰칵!"),F("준우","🙅‍♂️","아 진짜 싫다고!! (얼굴을 가림)")],
+     r:[K("오케이! 준우야 웃어~ 찰칵!"),F("준우","taeo","sad","아 진짜 싫다고!! (얼굴을 가림)")],
      fb:"튜터가 웃으며 허용하면 ‘괜찮은 행동’으로 배워요. 싫다는 친구를 찍는 건 장난이 아니라 괴롭힘이 될 수 있어요."}
    ]},
   {tag:"디지털 시민성 · 개인정보와 지워지지 않는 흔적",
    lines:[K("그럼 준우가 괜찮다고 하면 돼요?"),K("이 앱 진짜 재밌는데요, 이름이랑 학교도 쓰면 다른 애들도 다 볼 수 있대요!")],
    c:[
     {q:"best",t:"준우가 허락해도, 얼굴 사진이랑 이름·학교는 ‘개인정보’라서 앱에 올리면 모르는 사람도 볼 수 있어. 한번 올라가면 지우기도 어렵고. 대신 얼굴 말고 캐릭터 그림으로 소개 카드 만들면 어때?",
-     r:[K("모르는 사람도요? …헐. 그건 좀 무섭다."),K("그럼 캐릭터로 할래요. 준우는 강아지로 그려야지ㅋㅋ"),F("준우","🙅‍♂️","강아지는… 인정.")],
+     r:[K("모르는 사람도요? …헐. 그건 좀 무섭다."),K("그럼 캐릭터로 할래요. 준우는 강아지로 그려야지ㅋㅋ"),F("준우","taeo","ok","강아지는… 인정.")],
      fb:"얼굴·이름·학교는 개인정보이고, 앱의 공개 범위와 ‘지워지지 않는 디지털 흔적’까지 설명했어요. 금지로 끝내지 않고 대안(캐릭터)을 준 게 핵심이에요."},
     {q:"ok",t:"그 앱은 선생님이 허락한 앱이 아니라서 안 돼.",
      r:[K("아 왜요… 그럼 다른 앱은 돼요?")],
@@ -484,24 +606,25 @@ var SCENES=[
      r:[K("앗싸! 그럼 학교 이름은 써도 되죠?")],
      fb:"친구의 동의만으로는 충분하지 않아요. 얼굴 사진 자체가 개인정보이고, 학교 밖 앱에 올리는 건 담임 선생님 판단과 학교 규칙이 먼저예요."}
    ]},
-  {tag:"디지털 시민성 · 숨기지 않고 투명하게",
+  {tag:"디지털 시민성 · 숨기지 않고 투명하게",rep:"김 담임 선생님께 함께 알리기 — 튜터 혼자 덮지 않아요",
    lines:[K("근데요… 사실 아까 한 장 찍었어요."),K("갤러리에 있어요. 어떡해요?")],
    c:[
-    {q:"best",t:"솔직하게 말해 줘서 고마워. 준우랑 같이 보면서, 준우가 원하면 지금 바로 지우자. 휴지통까지 비우고, 담임선생님께도 같이 말씀드리자.",
-     r:[K("…준우야 미안. 지금 지울게. (삭제) 휴지통도 비웠어요."),F("준우","🙅‍♂️","…응, 괜찮아.")],
+    {q:"best",t:"솔직하게 말해 줘서 고마워. 준우랑 같이 보면서, 준우가 원하면 지금 바로 지우자. 휴지통까지 비우고, 김 선생님께도 같이 말씀드리자.",
+     r:[K("…준우야 미안. 지금 지울게. (삭제) 휴지통도 비웠어요."),F("준우","taeo","ok","…응, 괜찮아."),T("유나가 먼저 말해 줘서 고마워요. 준우 마음도 잘 들어 줬네요.")],
      fb:"솔직함을 먼저 인정하고, 당사자의 뜻으로 삭제(휴지통까지)한 뒤 담임 선생님께 공유했어요. 튜터 혼자 덮지 않고 투명하게 처리하는 게 중요해요."},
     {q:"ok",t:"그럼 지워. 다음부터 그러지 마.",
      r:[K("…네. (삭제 — 하지만 휴지통엔 그대로 남아 있음)")],
      fb:"지우게 한 건 맞지만, 준우의 확인·휴지통 비우기·담임 공유가 빠졌어요. 사과의 기회도 놓쳤고요."},
     {q:"poor",t:"한 장은 괜찮아. 안 올리면 되지 뭐.",
-     r:[K("오 그럼 나중에 집에서 보면 되겠다ㅋㅋ"),F("준우","🙅‍♂️","…(표정이 굳음)")],
+     r:[K("오 그럼 나중에 집에서 보면 되겠다ㅋㅋ"),F("준우","taeo","sad","…(표정이 굳음)")],
      fb:"동의 없이 찍은 사진은 갖고 있는 것만으로도 문제예요. 친구 마음이 다쳤다는 신호를 놓치지 마세요."}
    ]}
  ],
  key:"사진의 주인은 찍힌 사람 — 동의 먼저, 얼굴·이름·학교는 올리지 않기."
 },
 {
- id:"harin",emoji:"👩‍💻",name:"하린",grade:"6학년",diff:3,topic:"바이브코딩",lesson:"연계 실습",
+ id:"harin",art:"harin",name:"하린",grade:"6학년",diff:3,topic:"바이브코딩",lesson:"연계 실습",
+ hook:"“AI가 다 해 주는데, 그냥 고쳐 주세요”",
  sit:"바이브코딩 중 에러가 났어요. “AI가 다 해 주는데 왜 직접 눌러 봐요? 그냥 고쳐 주세요.”",
  intro:[N("6학년 AI 동아리, 바이브코딩으로 ‘우리 반 퀴즈 게임’ 만들기. 하린이가 의자에 등을 기대고 한숨을 푹 쉬어요.")],
  rounds:[
@@ -550,11 +673,25 @@ var SCENES=[
 ];
 
 var PTS={best:3,ok:1,poor:0};
-var QINFO={best:{e:"🌟",l:"최고의 대응"},ok:{e:"🙂",l:"괜찮은 대응"},poor:{e:"😥",l:"아쉬운 대응"}};
+var QINFO={
+  best:{l:"최고의 대응!",img:IMG.kobiLove,s:"최고"},
+  ok:{l:"괜찮은 대응",img:IMG.kobi,s:"괜찮음"},
+  poor:{l:"아쉬운 대응",img:IMG.siren,s:"아쉬움"}
+};
 var TYPE_MS=550;
-var KEY="dt-roleplay-v1";
+var KEY="dt-roleplay-v2";
 var reduceMotion=false;
 try{reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){}
+
+/* 이미지가 없으면 깨진 아이콘 대신 숨김 */
+document.addEventListener("error",function(e){var t=e.target; if(t&&t.tagName==="IMG")t.classList.add("broken");},true);
+
+/* 미리 불러오기 */
+(function(){
+  var list=[IMG.teacher,IMG.kobiLove,IMG.kobi,IMG.trophy,IMG.medal,PPL+"taeo_sad.webp",PPL+"taeo_ok.webp"];
+  SCENES.forEach(function(s){list.push(kidImg(s.art,"sad"),kidImg(s.art,"ok"));});
+  list.forEach(function(src){var i=new Image(); i.src=src;});
+})();
 
 /* ---------- 저장 ---------- */
 var state={cleared:{}};
@@ -569,6 +706,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 /* ---------- 도우미 ---------- */
 function $(id){return document.getElementById(id);}
 function el(tag,cls,text){var e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e;}
+function img(src,cls,alt){var i=document.createElement("img"); i.src=src; if(cls)i.className=cls; i.alt=alt||""; i.decoding="async"; return i;}
 function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function starStr(n){return "★★★".slice(0,n)+"☆☆☆".slice(0,3-n);}
@@ -594,8 +732,16 @@ function toast(msg){
   setTimeout(function(){t.remove();},2200);
 }
 function show(name){
-  ["map","scene","summary"].forEach(function(s){$(s).hidden=(s!==name);});
+  ["intro","map","scene","summary"].forEach(function(s){$(s).hidden=(s!==name);});
   window.scrollTo(0,0);
+}
+
+/* ---------- 인트로 ---------- */
+function renderIntro(){
+  var f=$("faces"); f.textContent="";
+  SCENES.forEach(function(s){f.appendChild(img(kidImg(s.art,state.cleared[s.id]?"ok":"sad"),null,s.name));});
+  var n=validIds().length;
+  $("startBtn").textContent = n===0 ? "🚨 출동 시작" : (n===SCENES.length?"🏆 결과 다시 보기":"🚨 이어서 출동하기 ("+n+"/"+SCENES.length+")");
 }
 
 /* ---------- 지도 ---------- */
@@ -604,20 +750,20 @@ function renderMap(){
   SCENES.forEach(function(s,i){
     var c=state.cleared[s.id];
     var b=el("button","desk"+(c?" cleared":"")); b.type="button";
-    b.appendChild(el("span","seat","자리 "+(i+1)));
-    b.appendChild(el("div","ava",s.emoji));
-    var info=el("div","info");
-    var row=el("div","row"); row.appendChild(el("span","nm",s.name)); row.appendChild(el("span","grade",s.grade));
-    info.appendChild(row);
-    info.appendChild(el("div","sit",s.sit));
+    b.appendChild(el("span","seatno",String(i+1)));
+    var pic=el("div","pic"); pic.appendChild(img(kidImg(s.art,c?"ok":"sad"),null,"")); b.appendChild(pic);
+    b.appendChild(el("div","tabletop"));
+    var bd=el("div","bd");
+    var nb=el("span","nameb",s.name); nb.appendChild(el("small",null,s.grade)); bd.appendChild(nb);
+    bd.appendChild(el("div","hook",s.hook));
     var meta=el("div","meta");
-    meta.appendChild(el("span","tagp",s.lesson+" · "+s.topic));
-    meta.appendChild(el("span","diff","난이도 "+starStr(s.diff)));
-    info.appendChild(meta);
-    info.appendChild(el("span","go",c?"다시 출동하기 ↻":"출동! →"));
-    b.appendChild(info);
-    if(c)b.appendChild(el("span","stamp","출동 완료 "+starStr(c.stars)));
-    b.setAttribute("aria-label",s.grade+" "+s.name+": "+s.sit+(c?" (출동 완료, 별 "+c.stars+"개)":""));
+    meta.appendChild(el("span","chap",s.lesson+" · "+s.topic));
+    meta.appendChild(el("span","diff",starStr(s.diff)));
+    bd.appendChild(meta);
+    bd.appendChild(el("span","go",c?"다시 출동 ↻":"출동! →"));
+    b.appendChild(bd);
+    if(c){var st=el("span","stamp"); st.appendChild(el("b",null,starStr(c.stars))); st.appendChild(document.createTextNode("완료")); b.appendChild(st);}
+    b.setAttribute("aria-label",s.grade+" "+s.name+": "+s.sit+" 난이도 "+s.diff+(c?" (출동 완료, 별 "+c.stars+"개)":""));
     b.addEventListener("click",function(){startScene(s.id);});
     box.appendChild(b);
   });
@@ -631,42 +777,53 @@ function renderMap(){
 /* ---------- 장면 ---------- */
 var cur=null, run=0;
 
-function updateRd(){
+function setMood(m,animate){
+  if(!cur)return;
+  cur.mood=m;
+  var p=$("pImg");
+  var src=kidImg(cur.s.art,m);
+  if(p.getAttribute("src")!==src){
+    p.classList.remove("broken");
+    p.src=src; p.alt=cur.s.name+(m==="ok"?" (기분 좋은 얼굴)":" (속상한 얼굴)");
+    if(animate){p.classList.remove("bounce"); void p.offsetWidth; p.classList.add("bounce");}
+  }
+  var md=$("pMood");
+  md.textContent=m==="ok"?"😊 마음이 풀렸어요":"😢 도움이 필요해요";
+  md.className="mood"+(m==="ok"?" ok":"");
+}
+function updatePanel(){
   if(!cur)return;
   var dots=$("rd").querySelectorAll("i");
-  for(var i=0;i<dots.length;i++){
-    dots[i].className=cur.picks[i]?cur.picks[i]:(i===cur.round?"on":"");
-  }
-  $("rdTxt").textContent="상황 "+(cur.round+1)+"/3 · "+cur.score+"점";
+  for(var i=0;i<dots.length;i++){dots[i].className=cur.picks[i]?cur.picks[i]:(i===cur.round?"on":"");}
+  $("rdTxt").textContent="상황 "+Math.min(cur.round+1,3)+"/3 · "+cur.score+"점";
+  $("pGauge").style.width=Math.round(cur.score/9*100)+"%";
 }
 
 function speakerOf(l){
-  if(l.w==="k")return {name:cur.s.name,emo:cur.s.emoji,cls:"kid"};
-  if(l.w==="f")return {name:l.n,emo:l.e,cls:"kid friend"};
-  if(l.w==="t")return {name:"담임 선생님",emo:"👩‍🏫",cls:"teacher"};
-  return {name:"나 (튜터)",emo:"🧑‍🏫",cls:"me"};
+  if(l.w==="k")return {name:cur.s.name,src:kidImg(cur.s.art,cur.mood),cls:"kid"};
+  if(l.w==="f")return {name:l.n,src:kidImg(l.a,l.m),cls:"kid friend"};
+  if(l.w==="t")return {name:"김 담임 선생님",src:IMG.teacher,cls:"teacher"};
+  return {name:"나래 (튜터)",src:IMG.narae,cls:"me"};
+}
+function msgShell(sp,cls){
+  var m=el("div","msg "+sp.cls+(cls?" "+cls:""));
+  m.appendChild(img(sp.src,"av",""));
+  var body=el("div","body"); body.appendChild(el("div","who",sp.name));
+  var bub=el("div","bub"); body.appendChild(bub); m.appendChild(body);
+  return {m:m,bub:bub};
 }
 function addLine(l){
   var chat=$("chat");
   if(l.w==="n"){chat.appendChild(el("div","narr",l.t)); scrollDown(); return;}
-  var sp=speakerOf(l);
-  var m=el("div","msg "+sp.cls);
-  m.appendChild(el("div","av",sp.emo));
-  var body=el("div","body");
-  body.appendChild(el("div","who",sp.name));
-  var bub=el("div","bub"); renderText(bub,l.t);
-  body.appendChild(bub); m.appendChild(body);
-  chat.appendChild(m); scrollDown();
+  var sh=msgShell(speakerOf(l));
+  renderText(sh.bub,l.t);
+  chat.appendChild(sh.m); scrollDown();
 }
 function addTyping(l){
-  var sp=speakerOf(l);
-  var m=el("div","msg typing "+sp.cls); m.setAttribute("aria-hidden","true");
-  m.appendChild(el("div","av",sp.emo));
-  var body=el("div","body"); body.appendChild(el("div","who",sp.name));
-  var bub=el("div","bub"); bub.appendChild(el("i")); bub.appendChild(el("i")); bub.appendChild(el("i"));
-  body.appendChild(bub); m.appendChild(body);
-  $("chat").appendChild(m); scrollDown();
-  return m;
+  var sh=msgShell(speakerOf(l),"typing"); sh.m.setAttribute("aria-hidden","true");
+  sh.bub.appendChild(el("i")); sh.bub.appendChild(el("i")); sh.bub.appendChild(el("i"));
+  $("chat").appendChild(sh.m); scrollDown();
+  return sh.m;
 }
 async function speak(l,my){
   if(my!==run)return;
@@ -684,14 +841,15 @@ async function startScene(id){
   if(!s)return;
   var my=++run;
   closeModal();
-  cur={s:s,round:0,score:0,picks:[]};
-  $("sAva").textContent=s.emoji;
-  $("sName").textContent=s.name+" · "+s.grade;
-  $("sSit").textContent=s.sit;
+  cur={s:s,round:0,score:0,picks:[],mood:"sad"};
+  $("pName").textContent=s.name+" · "+s.grade;
+  $("pSit").textContent=s.sit;
+  $("pImg").removeAttribute("src");
+  setMood("sad",false);
   $("chat").textContent=""; $("act").textContent="";
-  updateRd();
+  updatePanel();
   show("scene");
-  addLine(N("🏃 "+s.name+" 자리로 출동!"));
+  addLine(N("🏃‍♀️ 튜터 나래, "+s.name+" 자리로 출동!"));
   await sleep(350);
   for(var k=0;k<s.intro.length;k++){if(my!==run)return; await speak(s.intro[k],my);}
   await playRound(my);
@@ -700,7 +858,7 @@ async function startScene(id){
 async function playRound(my){
   if(my!==run)return;
   var r=cur.s.rounds[cur.round];
-  updateRd();
+  updatePanel();
   if(cur.round>0){$("chat").appendChild(el("div","divider","상황 "+(cur.round+1)+" / 3")); scrollDown(); await sleep(300);}
   for(var i=0;i<r.lines.length;i++){if(my!==run)return; await speak(r.lines[i],my);}
   if(my!==run)return;
@@ -710,7 +868,8 @@ async function playRound(my){
 function renderChoices(r,my){
   var act=$("act"); act.textContent="";
   var box=el("div","choices");
-  box.appendChild(el("div","ask","🎙️ 튜터의 한마디를 골라 보세요"));
+  var ask=el("div","ask"); ask.appendChild(img(ART+"talk.webp",null,"")); ask.appendChild(document.createTextNode("튜터의 한마디를 골라 보세요"));
+  box.appendChild(ask);
   shuffle(r.c.slice()).forEach(function(c,i){
     var b=el("button","choice"); b.type="button";
     b.appendChild(el("b","key","ABC".charAt(i)));
@@ -728,25 +887,33 @@ async function pick(c,r,my,box){
   $("act").textContent="";
   addLine({w:"me",t:c.t});
   await sleep(380);
+  if(my!==run)return;
+  setMood(c.q==="best"?"ok":"sad",true);
   for(var k=0;k<c.r.length;k++){if(my!==run)return; await speak(c.r[k],my);}
   if(my!==run)return;
   cur.score+=PTS[c.q]; cur.picks.push(c.q);
-  updateRd();
+  updatePanel();
   showFeedback(c,r,my);
 }
 
 function showFeedback(c,r,my){
   var act=$("act"); act.textContent="";
   var card=el("div","fb "+c.q);
+  card.appendChild(img(QINFO[c.q].img,null,""));
+  var main=el("div");
   var hd=el("div","hd");
-  hd.appendChild(el("span",null,QINFO[c.q].e+" "+QINFO[c.q].l));
+  hd.appendChild(el("span",null,QINFO[c.q].l));
   hd.appendChild(el("span","pts","+"+PTS[c.q]+"점"));
-  card.appendChild(hd);
-  card.appendChild(el("span","chip","📌 "+r.tag));
-  card.appendChild(el("p",null,c.fb));
+  main.appendChild(hd);
+  main.appendChild(el("span","chip","📌 "+r.tag));
+  main.appendChild(el("p",null,c.fb));
+  if(r.rep){var rp=el("div","rep"); rp.appendChild(img(IMG.teacher,null,"")); rp.appendChild(el("span",null,r.rep)); main.appendChild(rp);}
   if(c.q!=="best"){
     var best=null; r.c.forEach(function(x){if(x.q==="best")best=x;});
-    if(best){var tip=el("div","tip"); tip.appendChild(el("b",null,"💡 이렇게 말해 볼 수도 있어요")); var sp=el("span"); renderText(sp,best.t); tip.appendChild(sp); card.appendChild(tip);}
+    if(best){
+      var tip=el("div","tip"); var tb=el("b"); tb.appendChild(img(IMG.narae,null,"")); tb.appendChild(document.createTextNode("이렇게 말해 볼 수도 있어요")); tip.appendChild(tb);
+      var sp=el("span"); renderText(sp,best.t); tip.appendChild(sp); main.appendChild(tip);
+    }
   }
   var last=cur.round>=cur.s.rounds.length-1;
   var nb=el("button","primary",last?"출동 결과 보기 ★":"다음 상황으로 →"); nb.type="button";
@@ -756,7 +923,8 @@ function showFeedback(c,r,my){
     if(!last){cur.round++; act.textContent=""; playRound(my);}
     else endScene();
   });
-  card.appendChild(nb);
+  main.appendChild(nb);
+  card.appendChild(main);
   act.appendChild(card); scrollDown();
   try{nb.focus({preventScroll:true});}catch(e){}
 }
@@ -770,6 +938,7 @@ function endScene(){
   var prev=state.cleared[s.id];
   var improved=!!prev&&score>(Number(prev.score)||0);
   if(!prev||improved){state.cleared[s.id]={score:score,stars:stars}; save();}
+  setMood(stars>=2?"ok":"sad",true);
   renderMap();
 
   closeModal();
@@ -788,16 +957,20 @@ function endScene(){
     }
     md.appendChild(cf);
   }
-  md.appendChild(el("div","bigava",s.emoji));
+  var prize=el("div","prize");
+  prize.appendChild(img(kidImg(s.art,stars>=2?"ok":"sad"),"kid",s.name));
+  prize.appendChild(img(stars===3?IMG.trophy:stars>=1?IMG.medal:IMG.stopwatch,"cup",""));
+  md.appendChild(prize);
   md.appendChild(el("h3",null,s.name+" 출동 완료!"));
   var st=el("div","starsbig"); st.setAttribute("aria-label","별 "+stars+"개");
   for(var j=0;j<3;j++)st.appendChild(el("span",j<stars?"on":"","★"));
   md.appendChild(st);
   md.appendChild(el("div","scoreline","이번 출동 "+score+" / 9점"));
-  md.appendChild(el("div","picks",picks.map(function(q){return QINFO[q].e;}).join(" ")));
+  var pk=el("div","picks"); picks.forEach(function(q){pk.appendChild(el("span",q,QINFO[q].s));}); md.appendChild(pk);
   if(improved)md.appendChild(el("span","newbest","최고 기록 갱신!"));
-  else if(prev&&!improved)md.appendChild(el("span","newbest","최고 기록 "+prev.score+"점 유지"));
-  var kl=el("div","keyline"); kl.appendChild(el("b",null,"✏️ 튜터 한 줄 정리")); kl.appendChild(el("span",null,s.key));
+  else if(prev)md.appendChild(el("span","newbest","최고 기록 "+prev.score+"점 유지"));
+  var kl=el("div","keyline"); kl.appendChild(img(IMG.narae,null,""));
+  var kt=el("div"); kt.appendChild(el("b",null,"튜터 한 줄 정리")); kt.appendChild(el("span",null,s.key)); kl.appendChild(kt);
   md.appendChild(kl);
   var btns=el("div","btns");
   var again=el("button","secondary","다시 해 보기"); again.type="button";
@@ -819,20 +992,20 @@ function leaveToMap(afterScene){
   else{renderMap(); show("map");}
 }
 
-/* ---------- 최종 요약 ---------- */
+/* ---------- 최종 결과 ---------- */
 function renderSummary(){
   var tot=totalScore(), max=SCENES.length*9, stars=totalStars();
-  var badge = tot>=45?{i:"🚀",n:"출동 마스터",d:"어떤 교실에 가도 든든하게 해결하는 베테랑 튜터예요!"}
-            : tot>=30?{i:"🛡️",n:"든든한 튜터",d:"원칙을 잘 알고 있어요. 아쉬운 장면만 다시 연습하면 출동 마스터!"}
-            :{i:"🌱",n:"새내기 튜터",d:"이제 막 출동을 시작했어요. 💡 모범 대응을 떠올리며 다시 도전해 보세요."};
-  $("badgeIco").textContent=badge.i;
+  var badge = tot>=45?{n:"출동 마스터",a:IMG.trophy,d:"어떤 교실에 가도 든든하게 해결하는 베테랑 튜터예요!"}
+            : tot>=30?{n:"든든한 튜터",a:IMG.medal,d:"원칙을 잘 알고 있어요. 아쉬운 장면만 다시 연습하면 출동 마스터!"}
+            :{n:"새내기 튜터",a:IMG.medal,d:"이제 막 출동을 시작했어요. 모범 대응을 떠올리며 다시 도전해 보세요."};
+  $("sumAward").src=badge.a;
   $("badgeName").textContent=badge.n;
   $("sumTotal").textContent="총점 "+tot+" / "+max+"점 · 별 "+stars+" / "+(SCENES.length*3)+"개";
   $("sumDesc").textContent=badge.d;
   var ol=$("klist"); ol.textContent="";
   SCENES.forEach(function(s){
     var c=state.cleared[s.id]; var li=el("li");
-    li.appendChild(el("div","av",s.emoji));
+    li.appendChild(img(kidImg(s.art,c&&c.stars>=2?"ok":"sad"),"av",""));
     var d=el("div");
     var nm=el("div","kn",s.grade+" "+s.name);
     nm.appendChild(el("span","ks",c?starStr(c.stars)+" ("+c.score+"점)":"미출동"));
@@ -849,7 +1022,7 @@ function doReset(){
   run++; closeModal(); cur=null;
   state={cleared:{}}; save();
   try{localStorage.removeItem(KEY);}catch(e){}
-  renderMap(); show("map");
+  renderMap(); renderIntro(); show("intro");
   toast("처음부터 다시 출동해요! 🚨");
 }
 $("resetBtn").addEventListener("click",function(){
@@ -859,6 +1032,11 @@ $("resetBtn").addEventListener("click",function(){
   }
   disarm(); doReset();
 });
+$("startBtn").addEventListener("click",function(){
+  if(allCleared()){renderSummary(); show("summary");}
+  else{renderMap(); show("map");}
+});
+$("brandBtn").addEventListener("click",function(){run++; closeModal(); cur=null; renderIntro(); show("intro");});
 $("sumReset").addEventListener("click",doReset);
 $("sumMap").addEventListener("click",function(){renderMap(); show("map");});
 $("toSummary").addEventListener("click",function(){renderSummary(); show("summary");});
@@ -866,8 +1044,9 @@ $("leaveBtn").addEventListener("click",function(){leaveToMap(false);});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&modalEl)leaveToMap(true);});
 
 load();
+renderIntro();
 renderMap();
-show("map");
+show("intro");
 })();
 </script>
 </body>

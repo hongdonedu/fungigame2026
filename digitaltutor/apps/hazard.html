@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>교실 위험 탐정 | 튜터 출동! 사고 지도 게임</title>
+<link rel="icon" href="../art/narae_face.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;700;900&display=swap">
+<style>
+:root{--cream:#FFF8EC;--navy:#1F2A6B;--navy2:#0E1440;--orange:#ED7D31;--oink:#C0500C;--yellow:#FFC94D;--mint:#CFF3E2;--sky:#D6ECFF;--peach:#FFE1CC;--line:#EADFCB;--text:#1d2340;--sub:#5b6280;
+--t1:#E8590C;--t2:#F2B705;--t3:#2B7FC4;--t4:#7B4DDB;--t5:#17845A;--t6:#D6336C}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--text);font-family:'Gowun Dodum','Noto Sans KR',system-ui,sans-serif;-webkit-text-size-adjust:100%}
+body{min-height:100vh;overflow-x:hidden}
+h1,h2,h3,.jua{font-family:'Jua','Noto Sans KR',sans-serif;font-weight:400;letter-spacing:-.2px}
+button{font:inherit;cursor:pointer;border:0}
+img{max-width:100%;display:block}
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));background:rgba(255,248,236,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top a.back{flex:none;text-decoration:none;color:var(--navy);font-weight:700;font-size:13px;border:2px solid var(--line);border-radius:12px;padding:6px 10px;background:#fff}
+.top .ttl{font-family:'Jua';font-size:clamp(16px,2.6vw,21px);color:var(--navy);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .ttl em{font-style:normal;color:var(--orange)}
+.pill{flex:none;background:var(--navy);color:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700}
+.wrap{max-width:1180px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
+[hidden]{display:none!important}
+
+/* intro */
+.hero{position:relative;border-radius:28px;overflow:hidden;min-height:420px;display:grid;align-items:end;box-shadow:0 18px 40px rgba(31,42,107,.18)}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,20,64,.92) 0%,rgba(14,20,64,.7) 42%,rgba(14,20,64,0) 75%)}
+.hero .copy{position:relative;padding:34px clamp(20px,4vw,44px);max-width:620px;color:#fff}
+.hero .tag{display:inline-block;background:#fff;color:var(--navy);border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px}
+.hero h1{font-size:clamp(32px,5.4vw,56px);margin:12px 0 8px;line-height:1.1}
+.hero h1 em{font-style:normal;color:var(--yellow)}
+.hero p{margin:0 0 18px;line-height:1.7;font-size:15.5px;color:#E6EAFF}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--navy2);font-family:'Jua';font-size:19px;padding:12px 22px;border-radius:16px;box-shadow:0 6px 0 #c99a1e;transition:transform .12s}
+.btn:active{transform:translateY(3px);box-shadow:0 3px 0 #c99a1e}
+.btn.ghost{background:rgba(255,255,255,.14);color:#fff;box-shadow:none;border:2px solid rgba(255,255,255,.5)}
+.btn.navy{background:var(--navy);color:#fff;box-shadow:0 6px 0 #0b1033}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
+.mode{display:flex;gap:14px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:22px;padding:16px;text-align:left;box-shadow:0 8px 20px rgba(31,42,107,.07);transition:transform .15s}
+.mode:hover{transform:translateY(-3px)}
+.mode img{width:74px;height:74px;object-fit:contain;flex:none}
+.mode b{display:block;font-family:'Jua';font-size:21px;color:var(--navy)}
+.mode span{color:var(--sub);font-size:14px;line-height:1.55}
+.mode .st{display:inline-block;margin-top:6px;font-size:13px;color:var(--oink);font-weight:700}
+.types{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:16px}
+.tchip{border-radius:14px;padding:10px 6px;text-align:center;color:#fff;font-weight:700;font-size:13.5px;line-height:1.3}
+.tchip i{display:block;font-style:normal;font-size:22px}
+
+/* find game */
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:12px}
+.bar .grow{flex:1;min-width:160px}
+.timer{height:12px;border-radius:99px;background:#efe5d2;overflow:hidden}
+.timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--orange),var(--yellow));transition:width .25s linear}
+.stat{background:#fff;border:2px solid var(--line);border-radius:14px;padding:6px 12px;font-weight:700;font-size:14px;color:var(--navy)}
+.stat b{color:var(--oink)}
+.hintbtn{background:#fff;border:2px solid var(--line);border-radius:14px;padding:5px 12px 5px 6px;display:flex;align-items:center;gap:6px;font-weight:700;color:var(--navy)}
+.hintbtn img{width:28px;height:28px;object-fit:contain}
+.scene{position:relative;border-radius:22px;overflow:hidden;box-shadow:0 14px 34px rgba(31,42,107,.18);background:#ddd;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.scene>img{width:100%;height:auto}
+.spot{position:absolute;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none}
+.spot.found{border:4px solid var(--yellow);box-shadow:0 0 0 4px rgba(14,20,64,.55),0 0 22px rgba(255,201,77,.9);animation:pop .4s ease}
+.spot.found b{position:absolute;left:50%;top:-14px;transform:translateX(-50%);background:var(--navy);color:#fff;border-radius:999px;font-size:12px;padding:2px 8px;white-space:nowrap;font-family:'Noto Sans KR';font-weight:700}
+.spot.hint{border:4px dashed #fff;animation:pulse 1s infinite}
+.miss{position:absolute;transform:translate(-50%,-50%);font-size:28px;pointer-events:none;animation:fade .7s forwards}
+@keyframes pop{0%{transform:translate(-50%,-50%) scale(.3)}70%{transform:translate(-50%,-50%) scale(1.15)}100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes pulse{50%{opacity:.35}}
+@keyframes fade{to{opacity:0;transform:translate(-50%,-110%)}}
+.foundlist{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.fl{background:#fff;border:2px dashed var(--line);border-radius:14px;padding:8px 10px;font-size:13px;color:#aaa;min-height:54px;display:flex;align-items:center;gap:8px}
+.fl.on{border-style:solid;color:var(--text)}
+.fl .dot{width:12px;height:12px;border-radius:50%;flex:none;background:#ddd}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:rgba(14,20,64,.55);padding:16px}
+.card{width:min(560px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:26px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.3);animation:rise .3s ease}
+@keyframes rise{from{transform:translateY(20px);opacity:0}}
+.card .head{display:flex;gap:12px;align-items:center}
+.card .head img{width:66px;height:66px;object-fit:contain;flex:none}
+.card h3{margin:0;font-size:23px;color:var(--navy)}
+.card p{line-height:1.7;margin:10px 0}
+.crop{position:relative;border-radius:16px;overflow:hidden;height:170px;border:3px solid var(--yellow);margin:12px 0;background:#eee}
+.tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tbtn{border-radius:14px;padding:12px 6px;color:#fff;font-weight:700;font-size:15px;line-height:1.25;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.tbtn i{display:block;font-style:normal;font-size:24px}
+.tbtn:disabled{opacity:.35}
+.tbtn.right{outline:4px solid var(--yellow);opacity:1}
+.fb{border-radius:16px;padding:12px 14px;margin-top:12px;line-height:1.65}
+.fb.ok{background:#E7F7EF;border:2px solid #9AD9B9}
+.fb.no{background:#FFF0EA;border:2px solid #F6B99E}
+.ment{background:var(--cream);border-radius:14px;padding:10px 12px;margin-top:10px;display:flex;gap:10px;align-items:flex-start}
+.ment img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:top;flex:none;border:2px solid var(--orange)}
+.ment span{font-size:14.5px;line-height:1.6}
+.ment b{color:var(--oink)}
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+
+/* speed quiz */
+.sq{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+.qcard{background:#fff;border:3px solid var(--line);border-radius:26px;padding:22px;min-height:250px;position:relative;box-shadow:0 12px 26px rgba(31,42,107,.1)}
+.qcard .num{font-family:'Jua';color:var(--orange);font-size:18px}
+.qcard .sit{font-size:clamp(19px,2.6vw,25px);line-height:1.5;margin:10px 0 0;font-family:'Jua';color:var(--navy)}
+.qcard .kid{position:absolute;right:12px;bottom:0;width:120px;height:140px;object-fit:contain;object-position:bottom}
+.qcard .kidline{display:inline-block;margin-top:12px;background:var(--sky);border-radius:16px 16px 16px 4px;padding:8px 12px;font-size:15px;max-width:calc(100% - 130px)}
+.combo{font-family:'Jua';font-size:20px;color:var(--oink)}
+.side{background:#fff;border:2px solid var(--line);border-radius:22px;padding:16px}
+.side h3{margin:0 0 8px;color:var(--navy)}
+.side ol{margin:0;padding-left:20px;line-height:1.8;font-size:14px}
+.sbins{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.flash{animation:flash .5s}
+@keyframes flash{30%{transform:scale(1.03)}}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+/* result */
+.result{display:grid;grid-template-columns:260px minmax(0,1fr);gap:22px;align-items:center;background:#fff;border-radius:28px;padding:24px;box-shadow:0 14px 34px rgba(31,42,107,.12)}
+.result .big{font-family:'Jua';font-size:48px;color:var(--navy);margin:0}
+.result .badge{display:inline-block;background:var(--yellow);color:var(--navy2);font-family:'Jua';font-size:20px;border-radius:999px;padding:6px 16px}
+.sumtable{width:100%;border-collapse:collapse;margin-top:16px;font-size:14px}
+.sumtable th,.sumtable td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.sumtable th{color:var(--sub);font-weight:700}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:fall 1.8s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+@media (max-width:900px){.types{grid-template-columns:repeat(3,minmax(0,1fr))}.sq{grid-template-columns:1fr}.foundlist{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.modes{grid-template-columns:1fr}.result{grid-template-columns:1fr}.hero{min-height:480px}.hero .shade{background:linear-gradient(0deg,rgba(14,20,64,.95) 0%,rgba(14,20,64,.75) 55%,rgba(14,20,64,.1) 100%)}.qcard .kid{width:84px;height:100px}.qcard .kidline{max-width:calc(100% - 90px)}.tgrid,.sbins{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="top"><a class="back" href="../index.html#s1">← 아카이브로</a><div class="ttl">튜터 출동! <em>교실 위험 탐정</em></div><span class="pill" id="scorePill">0점</span></div>
+<div class="wrap" id="app"></div>
+<div class="modal" id="modal" hidden><div class="card" id="mcard"></div></div>
+<script>
+const TYPES=[
+ {k:'body',name:'신체 안전',ico:'🦵',c:'var(--t1)',ex:'넘어짐 · 부딪힘'},
+ {k:'elec',name:'전기 안전',ico:'⚡',c:'var(--t2)',ex:'감전 · 화상 · 화재'},
+ {k:'dev',name:'기기 안전',ico:'📱',c:'var(--t3)',ex:'낙하 · 파손 · 끼임'},
+ {k:'net',name:'인프라 장애',ico:'📶',c:'var(--t4)',ex:'와이파이 · 접속 · 전원'},
+ {k:'asset',name:'자산 관리',ico:'🗂️',c:'var(--t5)',ex:'분실 · 바뀜 · 로그인 방치'},
+ {k:'health',name:'건강 · 집중',ico:'👀',c:'var(--t6)',ex:'눈 피로 · 자세 · 과몰입'}];
+const TBY=Object.fromEntries(TYPES.map(t=>[t.k,t]));
+/* 숨은 위험 — x,y,r은 그림 가로세로 대비 % */
+const SPOTS=[{"x": 45, "y": 81, "r": 8, "name": "통로 바닥의 충전선", "t": ["body", "elec"], "types": "🦵 신체 안전 (+⚡ 전기 안전)", "desc": "책상에서 늘어진 충전선이 통로 바닥을 길게 가로질러요.", "why": "발이 걸려 넘어지는 신체 안전사고가 먼저예요. 선이 밟히고 꺾이면 피복이 상해 전기 안전 문제로도 이어져요.", "hint": "걷다가 발에 걸리면 어떻게 될까요?", "ment": "“선은 책상 쪽으로! 바닥에 선이 보이면 넘지 말고 튜터 선생님을 불러요.”"}, {"x": 20, "y": 57, "r": 7, "name": "책상 끝에 걸친 태블릿", "t": ["dev"], "types": "📱 기기 안전", "desc": "태블릿이 책상 모서리 밖으로 반쯤 걸쳐 있어요.", "why": "팔꿈치만 스쳐도 떨어져 화면이 깨져요 — 기기 안전(낙하 · 파손). 깨진 유리에 손을 베일 수도 있어요.", "hint": "떨어지면 무엇이 망가질까요?", "ment": "“태블릿은 책상 가운데, 두 손바닥 안쪽에 쏙!”"}, {"x": 58, "y": 31, "r": 8, "name": "화면 보며 걷는 아이", "t": ["body"], "types": "🦵 신체 안전", "desc": "태블릿 화면만 보면서 통로를 걸어가요.", "why": "앞을 보지 않아 친구 · 책상 · 가방과 부딪히거나 넘어져요 — 신체 안전.", "hint": "앞을 안 보고 걸으면?", "ment": "“이동할 땐 화면은 가슴에 꼭, 눈은 앞을!”"}, {"x": 86, "y": 88, "r": 7, "name": "멀티탭 옆에 쏟아진 물", "t": ["elec"], "types": "⚡ 전기 안전", "desc": "책상 아래 멀티탭 바로 옆에서 물병이 쓰러져 물이 흘러요.", "why": "물과 전기가 만나면 감전 · 합선 · 화재 — 전기 안전이에요. 젖은 손으로 플러그를 만지는 것도 위험해요.", "hint": "물 + 콘센트 = ?", "ment": "“물병은 뚜껑 닫고 가방에! 멀티탭 근처엔 물을 두지 않아요.”"}, {"x": 10, "y": 28, "r": 6.5, "name": "충전함 위 부푼 태블릿", "t": ["elec", "dev"], "types": "⚡ 전기 안전 (+📱 기기 안전)", "desc": "충전함 위 태블릿 한 대가 베개처럼 볼록하게 부풀어 있어요.", "why": "부푼 리튬이온 배터리는 열폭주로 불이 날 수 있어요 — 전기 안전(화재). 기기도 바로 사용 중지예요.", "hint": "부푼 배터리는 무엇의 신호일까요?", "ment": "“볼록해진 기기는 만지지 말고 바로 알려 줘요! 튜터가 전원을 빼고 따로 둘게요.”"}, {"x": 57, "y": 4.5, "r": 5, "name": "천장 장비의 빨간 불", "t": ["net"], "types": "📶 인프라 장애", "desc": "천장 장비(공유기 · 프로젝터)에 빨간 불이 켜져 있어요.", "why": "장비의 빨간 불은 장애 신호 — 곧 접속 · 화면이 멈출 수 있어요(인프라 장애). 범위 · 유형 · 대안 · 정보로 보고해요.", "hint": "반 전체 수업이 멈출 수 있는 문제는?", "ment": "“접속이 안 되면 화면을 엎고 기다려요. 선생님이 다른 방법을 알려 줄게요.”"}, {"x": 64, "y": 70, "r": 7, "name": "통로 한가운데 책가방", "t": ["body"], "types": "🦵 신체 안전", "desc": "통로 한가운데 책가방이 놓여 있어요.", "why": "걸려 넘어지기 쉬워요 — 신체 안전. 기기를 들고 지나갈 때는 더 위험해요.", "hint": "지나가던 친구는?", "ment": "“가방은 의자 뒤 고리에 걸어요!”"}, {"x": 88, "y": 44, "r": 8, "name": "화면에 얼굴 붙인 아이", "t": ["health"], "types": "👀 건강 · 집중", "desc": "화면에 얼굴을 바짝 붙이고 구부정하게 엎드려 있어요.", "why": "눈 피로 · 목과 허리 불편 — 건강 · 집중 문제예요. 화면과 눈은 30cm 이상, 바른 자세로.", "hint": "오래 이렇게 보면 몸 어디가 힘들까요?", "ment": "“화면과 눈은 30cm, 등은 의자에 쭉! 20분마다 먼 곳 바라보기.”"}];
+const QUIZ=[
+ {s:'모둠 활동 시간, 지민이가 태블릿을 두 손으로 들고 화면을 보며 친구 자리로 걸어가요.',t:'body',kid:'minjun_sad',line:'잠깐만, 이거 보여 줄게!'},
+ {s:'수업이 끝났는데 3번 태블릿이 충전함에 없어요. 아무도 어디 뒀는지 몰라요.',t:'asset',kid:'jihu_sad',line:'저는 분명히 넣었는데요…?'},
+ {s:'젖은 손으로 콘센트에 충전기를 꽂으려는 학생이 있어요.',t:'elec',kid:'taeo_sad',line:'물 마시고 바로 꽂으면 돼요!'},
+ {s:'충전함 문을 닫다가 손가락이 끼일 뻔했어요.',t:'dev',kid:'seoa_sad',line:'으앗! 문이 갑자기 닫혔어요…'},
+ {s:'2교시 시작과 동시에 반 전체가 학습 플랫폼에 접속이 안 돼요.',t:'net',kid:'harin_sad',line:'계속 빙글빙글만 돌아요~'},
+ {s:'쉬는 시간 내내 화면에 얼굴을 바짝 대고 영상을 보는 학생이 있어요.',t:'health',kid:'doyun_sad',line:'이것만 다 보고요…'},
+ {s:'친구 태블릿과 바뀐 줄 모르고 다른 사람 계정으로 과제를 냈어요.',t:'asset',kid:'yuna_sad',line:'어? 이거 내 이름이 아닌데?'},
+ {s:'멀티탭 하나에 충전기 여러 개와 전기난로까지 꽂혀 있어요.',t:'elec',kid:'taeo_sad',line:'추워서 꽂았어요!'},
+ {s:'책상 끝에 둔 태블릿을 팔꿈치로 쳐서 바닥에 떨어뜨렸어요.',t:'dev',kid:'minjun_sad',line:'화면에 금 간 거 같아요ㅠㅠ'},
+ {s:'점심시간 정전 뒤 공유기가 켜지지 않아 오후 수업이 멈췄어요.',t:'net',kid:'jihu_sad',line:'와이파이 이름이 안 보여요!'},
+ {s:'책상 사이 좁은 통로에서 두 학생이 태블릿을 들고 부딪혔어요.',t:'body',kid:'doyun_sad',line:'아야! 내 무릎…'},
+ {s:'40분 내내 고개를 숙이고 구부정하게 화면을 보는 학생이 있어요.',t:'health',kid:'seoa_sad',line:'목이 좀 아파요…'}];
+const ART='../art/';
+let S={score:0,found:{},hints:3,time:120,timer:null,mode:null,qi:0,combo:0,best:0,qok:0,done:{find:false,speed:false}};
+try{const sv=JSON.parse(localStorage.getItem('dt-hazard-v1')||'null');if(sv&&sv.done)S.done=sv.done;}catch(e){}
+function save(){try{localStorage.setItem('dt-hazard-v1',JSON.stringify({done:S.done}))}catch(e){}}
+const $=s=>document.querySelector(s);
+function el(tag,attrs={},...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs)){if(k==='class')e.className=v;else if(k==='text')e.textContent=v;else if(k==='style')e.style.cssText=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v);}for(const c of kids){if(c==null)continue;e.append(c.nodeType?c:document.createTextNode(c));}return e;}
+function img(src,alt='',cls){const i=el('img',{src,alt});if(cls)i.className=cls;return i;}
+function setScore(d){S.score+=d;$('#scorePill').textContent=S.score+'점';}
+function confetti(){const c=el('div',{class:'confetti'});const cols=['#FFC94D','#ED7D31','#2B7FC4','#17845A','#D6336C','#7B4DDB'];for(let i=0;i<70;i++){const p=el('i');p.style.left=Math.random()*100+'%';p.style.background=cols[i%cols.length];p.style.animationDelay=(Math.random()*.6)+'s';p.style.animationDuration=(1.4+Math.random()*1.2)+'s';c.append(p);}document.body.append(c);setTimeout(()=>c.remove(),3200);}
+function openModal(nodes){const m=$('#mcard');m.replaceChildren(...nodes);$('#modal').hidden=false;}
+function closeModal(){$('#modal').hidden=true;}
+function typeChip(t){return el('div',{class:'tchip',style:'background:'+t.c},el('i',{text:t.ico}),t.name,el('div',{style:'font-weight:400;font-size:11.5px;opacity:.9',text:t.ex}));}
+
+/* ---------- intro ---------- */
+function intro(){
+ clearInterval(S.timer);
+ const app=$('#app');
+ const hero=el('section',{class:'hero'},img(ART+'games/hazard_scene.webp','숨은 위험이 있는 디지털 수업 교실 그림'),el('div',{class:'shade'}),
+  el('div',{class:'copy'},el('span',{class:'tag',text:'4차시 · 디지털 수업 안전사고 6유형'}),
+   el('h1',{},'교실 위험 ',el('em',{text:'탐정'})),
+   el('p',{text:'수업 전 3분, 튜터의 눈으로 교실을 훑어봐요. 그림 속 숨은 위험을 찾고 어떤 사고 유형인지 맞히면, 아이들에게 건넬 예방 멘트가 열려요.'}),
+   el('div',{style:'display:flex;gap:10px;flex-wrap:wrap'},el('button',{class:'btn',onclick:()=>startFind()},'🔍 숨은 위험 찾기'),el('button',{class:'btn ghost',onclick:()=>startSpeed()},'⚡ 유형 스피드 퀴즈'))));
+ const modes=el('div',{class:'modes'},
+  el('button',{class:'mode',onclick:()=>startFind()},img(ART+'magnifier.webp'),el('div',{},el('b',{text:'① 숨은 위험 찾기'}),el('span',{text:'교실 그림 속 위험 8곳을 눌러 찾고, 6유형 중 무엇인지 골라요. 제한 시간 2분 · 힌트 3번.'}),el('div',{class:'st',text:S.done.find?'⭐ 완료했어요':'도전 전'}))),
+  el('button',{class:'mode',onclick:()=>startSpeed()},img(ART+'stopwatch.webp'),el('div',{},el('b',{text:'② 유형 스피드 퀴즈'}),el('span',{text:'교실에서 실제로 생기는 12가지 상황 — 8초 안에 사고 유형을 골라요. 연속으로 맞히면 콤보!'}),el('div',{class:'st',text:S.done.speed?'⭐ 완료했어요':'도전 전'}))));
+ const types=el('div',{class:'types'},...TYPES.map(typeChip));
+ app.replaceChildren(hero,modes,el('h2',{style:'margin:26px 0 0;color:var(--navy)',text:'디지털 수업 안전사고 6유형'}),types);
+}
+
+/* ---------- find ---------- */
+function startFind(){
+ S.mode='find';S.found={};S.hints=3;S.time=120;clearInterval(S.timer);
+ const app=$('#app');
+ const sc=el('div',{class:'scene',id:'scene'},img(ART+'games/hazard_scene.webp','숨은 위험이 있는 교실'));
+ sc.addEventListener('click',onSceneClick);
+ const bar=el('div',{class:'bar'},
+  el('div',{class:'stat'},'찾은 위험 ',el('b',{id:'fcount',text:'0'}),' / '+SPOTS.length),
+  el('div',{class:'grow'},el('div',{class:'timer'},el('i',{id:'tbar'}))),
+  el('div',{class:'stat',id:'tleft',text:'2:00'}),
+  el('button',{class:'hintbtn',onclick:useHint},img(ART+'magnifier.webp'),el('span',{id:'hcount',text:'힌트 3'})));
+ const fl=el('div',{class:'foundlist',id:'flist'},...SPOTS.map((s,i)=>el('div',{class:'fl',id:'fl'+i},el('span',{class:'dot'}),el('span',{text:'?  숨은 위험 '+(i+1)}))));
+ app.replaceChildren(el('p',{style:'margin:0 0 10px;color:var(--sub)',text:'그림에서 위험해 보이는 곳을 눌러요. 찾으면 사고 유형을 골라요!'}),bar,sc,fl,el('div',{class:'row'},el('button',{class:'btn navy',onclick:()=>finishFind(false)},'그만하고 결과 보기')));
+ S.timer=setInterval(()=>{S.time--;const m=Math.floor(S.time/60),s=S.time%60;$('#tleft').textContent=m+':'+String(s).padStart(2,'0');$('#tbar').style.width=(S.time/120*100)+'%';if(S.time<=0){clearInterval(S.timer);finishFind(true);}},1000);
+}
+function scenePct(ev){const r=$('#scene').getBoundingClientRect();return{x:(ev.clientX-r.left)/r.width*100,y:(ev.clientY-r.top)/r.height*100,ar:r.width/r.height};}
+function onSceneClick(ev){
+ if(!$('#modal').hidden)return;
+ const p=scenePct(ev);let hit=-1,bestd=1e9;
+ SPOTS.forEach((s,i)=>{if(S.found[i])return;const dx=(p.x-s.x),dy=(p.y-s.y)/p.ar;const d=Math.hypot(dx,dy);if(d<s.r&&d<bestd){bestd=d;hit=i;}});
+ if(hit<0){const m=el('div',{class:'miss',text:'❔'});m.style.left=p.x+'%';m.style.top=p.y+'%';$('#scene').append(m);setTimeout(()=>m.remove(),800);return;}
+ askType(hit);
+}
+function markSpot(i,cls){const s=SPOTS[i];const sc=$('#scene');const old=sc.querySelector('[data-i="'+i+'"]');if(old)old.remove();const sz=s.r*2;const d=el('div',{class:'spot '+cls,'data-i':i});d.style.left=s.x+'%';d.style.top=s.y+'%';d.style.width=sz+'%';d.style.aspectRatio='1';if(cls==='found')d.append(el('b',{text:(i+1)+' '+s.name}));sc.append(d);}
+function useHint(){if(S.hints<=0)return;const left=SPOTS.map((s,i)=>i).filter(i=>!S.found[i]);if(!left.length)return;S.hints--;$('#hcount').textContent='힌트 '+S.hints;const i=left[Math.floor(Math.random()*left.length)];markSpot(i,'hint');setTimeout(()=>{if(!S.found[i]){const h=$('#scene').querySelector('[data-i="'+i+'"]');if(h)h.remove();}},2500);}
+function cropNode(s){const box=el('div',{class:'crop'});const i=img(ART+'games/hazard_scene.webp','');i.style.cssText='position:absolute;width:260%;max-width:none;left:50%;top:50%;transform:translate(-'+s.x+'%,-'+s.y+'%)';box.append(i);const ring=el('div',{style:'position:absolute;left:50%;top:50%;width:120px;height:120px;transform:translate(-50%,-50%);border:4px solid #FFC94D;border-radius:50%;box-shadow:0 0 0 999px rgba(14,20,64,.25)'});box.append(ring);return box;}
+function askType(i){
+ const s=SPOTS[i];let tries=0;
+ const grid=el('div',{class:'tgrid'});
+ const fbBox=el('div');
+ TYPES.forEach(t=>{const b=el('button',{class:'tbtn',style:'background:'+t.c},el('i',{text:t.ico}),t.name);b.addEventListener('click',()=>{
+   if(b.disabled)return;
+   const ok=s.t.includes(t.k);
+   if(ok){const pts=tries===0?100:50;setScore(pts);S.found[i]={pts,first:tries===0};b.classList.add('right');grid.querySelectorAll('button').forEach(x=>x.disabled=x!==b);
+     fbBox.replaceChildren(el('div',{class:'fb ok'},el('b',{text:(tries===0?'정확해요! +100':'좋아요! +50')+' — '+s.types}),el('div',{text:s.why})),
+      el('div',{class:'ment'},img(ART+'narae_face.webp','나래 튜터'),el('span',{},el('b',{text:'예방 멘트  '}),s.ment)),
+      el('div',{class:'row'},el('button',{class:'btn',onclick:()=>{closeModal();markSpot(i,'found');updFound();}},'계속 찾기 →')));
+   }else{tries++;b.disabled=true;b.classList.add('shake');fbBox.replaceChildren(el('div',{class:'fb no',text:'음… '+t.name+'보다 더 가까운 유형이 있어요. 위험 결과를 떠올려 봐요: '+s.hint}));}
+ });grid.append(b);});
+ openModal([el('div',{class:'head'},img(ART+'siren.webp'),el('div',{},el('div',{style:'color:var(--oink);font-weight:700',text:'숨은 위험 발견! #'+(i+1)}),el('h3',{text:s.name}))),
+  cropNode(s),el('p',{text:s.desc}),el('div',{style:'font-weight:700;color:var(--navy);margin-bottom:8px',text:'어떤 사고 유형일까요?'}),grid,fbBox]);
+}
+function updFound(){const n=Object.keys(S.found).length;$('#fcount').textContent=n;SPOTS.forEach((s,i)=>{if(S.found[i]){const f=$('#fl'+i);f.classList.add('on');f.firstChild.style.background=TBY[s.t[0]].c;f.lastChild.textContent=(i+1)+'. '+s.name;}});if(n===SPOTS.length){clearInterval(S.timer);setScore(S.time);confetti();setTimeout(()=>finishFind(false),900);}}
+function finishFind(timeout){
+ clearInterval(S.timer);closeModal();S.done.find=true;save();
+ const n=Object.keys(S.found).length;const first=Object.values(S.found).filter(v=>v.first).length;
+ const badge=n===SPOTS.length&&first>=6?'교실 위험 명탐정':n>=5?'꼼꼼한 탐정':'견습 탐정';
+ const rows=SPOTS.map((s,i)=>el('tr',{},el('td',{text:(S.found[i]?'✅ ':'⬜ ')+(i+1)+'. '+s.name}),el('td',{text:s.types}),el('td',{text:s.ment})));
+ $('#app').replaceChildren(el('div',{class:'result'},img(ART+(n>=5?'trophy.webp':'medal.webp'),'트로피'),
+  el('div',{},el('div',{style:'color:var(--sub)',text:timeout?'시간 종료!':'탐정 수첩'}),el('p',{class:'big',text:n+' / '+SPOTS.length+' 찾음'}),el('span',{class:'badge',text:badge}),
+   el('p',{text:'첫 시도에 유형까지 맞힌 위험 '+first+'곳 · 지금까지 '+S.score+'점'}),
+   el('div',{style:'display:flex;gap:10px;flex-wrap:wrap'},el('button',{class:'btn',onclick:()=>startFind()},'다시 찾기'),el('button',{class:'btn navy',onclick:()=>startSpeed()},'⚡ 스피드 퀴즈로'),el('button',{class:'btn navy',onclick:intro},'처음으로')))),
+  el('h2',{style:'margin:24px 0 6px;color:var(--navy)',text:'정답 지도 — 수업 전 3분 점검에 그대로 써요'}),
+  el('div',{style:'overflow-x:auto'},el('table',{class:'sumtable'},el('thead',{},el('tr',{},el('th',{text:'숨은 위험'}),el('th',{text:'유형'}),el('th',{text:'튜터 예방 멘트'}))),el('tbody',{},...rows))));
+ if(n>=5)confetti();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- speed quiz ---------- */
+let qOrder=[],qt=null,qleft=0;
+function startSpeed(){
+ clearInterval(S.timer);closeModal();S.mode='speed';S.qi=0;S.combo=0;S.best=0;S.qok=0;
+ qOrder=QUIZ.map((q,i)=>i).sort(()=>Math.random()-.5);
+ nextQ();
+}
+function nextQ(){
+ clearInterval(qt);
+ if(S.qi>=qOrder.length)return finishSpeed();
+ const q=QUIZ[qOrder[S.qi]];qleft=80;
+ const card=el('div',{class:'qcard',id:'qcard'},el('div',{class:'num',text:'상황 '+(S.qi+1)+' / '+QUIZ.length}),el('div',{class:'sit',text:q.s}),el('div',{class:'kidline',text:'“'+q.line+'”'}),img(ART+'people/'+q.kid+'.webp','',''));
+ card.lastChild.className='kid';
+ const bins=el('div',{class:'sbins'},...TYPES.map(t=>{const b=el('button',{class:'tbtn',style:'background:'+t.c},el('i',{text:t.ico}),t.name);b.addEventListener('click',()=>answer(t.k,b));return b;}));
+ const side=el('div',{class:'side'},el('h3',{text:'콤보 '+S.combo+(S.combo>=3?' 🔥':'')}),el('div',{class:'combo',text:'최고 콤보 '+S.best}),el('p',{style:'font-size:14px;color:var(--sub);line-height:1.6',text:'빨리 맞힐수록 점수가 커요(최대 +100). 3연속부터 콤보 보너스 +30!'}),img(ART+'narae_thumb.webp','나래 튜터','') );
+ side.lastChild.style.cssText='height:150px;object-fit:contain;margin:0 auto';
+ $('#app').replaceChildren(el('div',{class:'bar'},el('div',{class:'grow'},el('div',{class:'timer'},el('i',{id:'qbar'}))),el('div',{class:'stat',id:'qsec',text:'8초'})),
+  el('div',{class:'sq'},el('div',{},card,bins),side));
+ qt=setInterval(()=>{qleft--;$('#qbar').style.width=(qleft/80*100)+'%';$('#qsec').textContent=Math.ceil(qleft/10)+'초';if(qleft<=0){clearInterval(qt);answer(null,null);}},100);
+}
+function answer(k,btn){
+ clearInterval(qt);const q=QUIZ[qOrder[S.qi]];const ok=k===q.t;const t=TBY[q.t];
+ document.querySelectorAll('.sbins button').forEach(b=>b.disabled=true);
+ if(ok){S.combo++;S.qok++;S.best=Math.max(S.best,S.combo);const pts=50+Math.round(qleft/80*50)+(S.combo>=3?30:0);setScore(pts);btn.classList.add('right');btn.disabled=false;$('#qcard').classList.add('flash');const k2=$('#qcard .kid');if(k2)k2.src=ART+'people/'+q.kid.replace('_sad','_ok')+'.webp';}
+ else{S.combo=0;if(btn)btn.classList.add('shake');$('#qcard').classList.add('shake');}
+ const fb=el('div',{class:'fb '+(ok?'ok':'no')},el('b',{text:(ok?'정답! ':(k?'아쉬워요 — ':'시간 초과 — '))+t.ico+' '+t.name}),el('div',{text:'대표 위험: '+t.ex}));
+ const nx=el('div',{class:'row'},el('button',{class:'btn',onclick:()=>{S.qi++;nextQ();}},S.qi+1>=QUIZ.length?'결과 보기 →':'다음 상황 →'));
+ $('#qcard').parentNode.append(fb,nx);
+}
+function finishSpeed(){
+ S.done.speed=true;save();const n=S.qok;
+ const badge=n>=11?'유형 분류 마스터':n>=8?'든든한 안전 튜터':'새내기 안전 튜터';
+ $('#app').replaceChildren(el('div',{class:'result'},img(ART+(n>=8?'trophy.webp':'medal.webp')),
+  el('div',{},el('div',{style:'color:var(--sub)',text:'유형 스피드 퀴즈 결과'}),el('p',{class:'big',text:n+' / '+QUIZ.length+' 정답'}),el('span',{class:'badge',text:badge}),el('p',{text:'최고 콤보 '+S.best+' · 지금까지 '+S.score+'점'}),
+   el('div',{style:'display:flex;gap:10px;flex-wrap:wrap'},el('button',{class:'btn',onclick:startSpeed},'다시 도전'),el('button',{class:'btn navy',onclick:startFind},'🔍 숨은 위험 찾기'),el('button',{class:'btn navy',onclick:intro},'처음으로')))),
+  el('h2',{style:'margin:24px 0 8px;color:var(--navy)',text:'6유형 한눈에'}),el('div',{class:'types'},...TYPES.map(typeChip)));
+ if(n>=8)confetti();
+}
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal'&&S.mode!=='find')closeModal();});
+intro();
+</script>
+</body>
+</html>
