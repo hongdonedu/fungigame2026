@@ -1,0 +1,241 @@
+{
+ "wall_hashid": "7eJRv5mqQMrOvdWX",
+ "wall_id": 273202167,
+ "board": "board_7eJRv5mqQMrOvdWX",
+ "description": "에듀테크 심화과정 11. 20.(금) · 명진초 최일훈 · 황경애 — 아카이브: hongdonedu.github.io/fungigame2026/edutech2026/deep/ · 학생 이름 대신 번호로!",
+ "sections": [
+  [
+   400984152,
+   "📌 시작 — 아카이브 · 실습 자료 · 제1원칙"
+  ],
+  [
+   400984154,
+   "PART Ⅰ 모으기 🧺 STEP 0~2"
+  ],
+  [
+   400984153,
+   "PART Ⅱ 흐르게 📮 STEP 3~5"
+  ],
+  [
+   400984151,
+   "PART Ⅲ 돌려주기 💌 STEP 6~8"
+  ],
+  [
+   400984155,
+   "PART Ⅳ 나누기 🎁 STEP 9~11 · 후기"
+  ]
+ ],
+ "prompts": {
+  "A1": {
+   "title": "평가표 만들기",
+   "where": "새 스프레드시트 → 오른쪽 위 ✦",
+   "text": "학생 12명 '지층 탐구' 수행평가표를 만들어줘.\n열: 번호, 모둠, 관찰 기록(3점), 형성 순서 설명(3점), 모형 제작 계획(3점), 합계, AI 피드백.\n합계 열은 수식으로 계산되게 하고, 표 위에는 평가 인원 · 만점 · 학급 평균 · 최고 · 최저 요약을, 맨 아래에는 영역별 평균 행을 넣어줘.\n번호는 1~12, 모둠은 4명씩 1~3모둠, 점수는 1~3 사이 예시로 채우고 'AI 피드백' 열은 비워 둬."
+  },
+  "A2": {
+   "title": "기준표 — 지층 탐구 보고서 (그대로 옮겨 적기)",
+   "where": "과제 → 기준표 ＋",
+   "text": "관찰 기록 | 3점 지층의 특징(색 · 두께 · 순서)을 두 가지 이상 구체적으로 기록 | 2점 한 가지 기록 | 1점 특징이 드러나지 않음\n형성 순서 설명 | 3점 운반 → 퇴적 → 다져짐 · 굳어짐을 근거와 함께 설명 | 2점 순서만 맞음 | 1점 순서가 틀림\n모형 제작 계획 | 3점 재료와 쌓는 순서 · 누르는 과정까지 계획 | 2점 재료만 정함 | 1점 계획이 없음"
+  },
+  "A3": {
+   "title": "의견 은행 문장 — 수준별 10개",
+   "where": "gemini.google.com",
+   "text": "초등 6학년 과학 '지층 탐구 보고서' 루브릭(관찰 기록 · 형성 순서 설명 · 모형 제작 계획, 각 3/2/1점)에 맞춰 클래스룸 의견 은행에 넣어 둘 피드백 문장을 만들어줘.\n기준마다 3점용 · 2점용 · 1점용을 하나씩, 칭찬 + 다음 단계 제안이 함께 있는 한 문장으로, 학생 이름 없이."
+  },
+  "A4": {
+   "title": "루브릭 채점 — 4번 학생",
+   "where": "gemini.google.com 입력 칸",
+   "text": "너는 초등학교 6학년 담임교사야. 아래 루브릭으로 학생 답변을 채점해줘.\n\n[성취기준] 6과01-01 지층의 특징을 알고, 지층의 형성 과정을 모형으로 표현할 수 있다.\n[루브릭]\n- 관찰 기록: 3점 특징 2가지 이상 구체적 / 2점 1가지 / 1점 드러나지 않음\n- 형성 순서 설명: 3점 순서를 근거와 함께 / 2점 순서만 맞음 / 1점 순서가 틀림\n- 모형 제작 계획: 3점 재료와 과정까지 / 2점 재료만 / 1점 계획 없음\n\n먼저 '항목 | 점수 | 근거' 표로 정리하고, 그 아래 학생에게 보낼 피드백을 칭찬 1개 + 제안 1개, 세 문장 이내로 써줘.\n학생은 '4번 학생'처럼 번호로만 부르고, 따뜻한 말투로.\n\n[4번 학생 답변]\n태종대에서 지층을 봤다. 줄무늬가 있고 색깔이 다 달랐다. 모래가 쌓여서 지층이 된다. 컵에 모래를 넣어서 모형을 만들 것이다."
+  },
+  "A5": {
+   "title": "고쳐 달라고 할 때 — 한 마디",
+   "where": "답을 받은 바로 다음",
+   "text": "더 짧게, 초등 6학년이 한 번에 읽을 수 있게 두 문장으로 줄여줘.\n제안은 '다음 시간에 해 볼 행동' 하나만 구체적으로."
+  },
+  "A6": {
+   "title": "시트 일괄 피드백",
+   "where": "평가표 → 오른쪽 위 ✦",
+   "text": "H열 'AI 피드백'을 채워줘.\n각 학생의 관찰 기록 · 형성 순서 설명 · 모형 제작 계획 점수를 보고, 잘한 점 칭찬 1가지 + 다음에 해 볼 점 1가지를 초등 6학년에게 말하듯 따뜻하고 쉽게 두 문장으로 써줘.\n학생마다 내용이 달라야 해."
+  },
+  "A7": {
+   "title": "카드용으로 두 열 나누기",
+   "where": "같은 패널에 이어서",
+   "text": "H열 피드백을 '칭찬'과 '다음엔' 두 열(I, J)로 나눠줘. 각각 30자 안팎, '칭찬:' '다음엔:'으로 시작하게."
+  },
+  "A8": {
+   "title": "Gem 요청 사항 — 우리 반 과학 피드백 도우미",
+   "where": "새 Gem → 요청 사항",
+   "text": "역할: 너는 초등학교 6학년 과학 담임교사의 피드백 보조교사야.\n할 일: 내가 학생 답변을 붙여 넣으면 (1) 지식 파일의 루브릭으로 항목별 점수와 근거를 '평가 항목 | 점수 | 평가 근거' 표로 정리하고 (2) 칭찬 1가지 + 다음 단계 제안 1가지를 담은 피드백을 3문장 이내로 써.\n톤: 초등 6학년에게 말하듯 따뜻하고 쉽게, 학생 이름 대신 번호로 부르기.\n여러 명을 한 번에 붙이면 번호별로 나눠서 답해 줘.\n학생 이름이나 학교명이 보이면 답하지 말고, 지우고 다시 보내 달라고 알려 줘."
+  },
+  "A9": {
+   "title": "Gem에 붙여 넣는 것 — 답변만",
+   "where": "채팅 시작 → 입력 칸",
+   "text": "[7번] 지층은 줄무늬이고 색이 다르고 두께도 다르다. 아래가 먼저 쌓인 거다. 물이 모래와 진흙을 옮기고 쌓이고 눌려서 굳는다. 모형은 투명 컵에 흰 모래, 갈색 흙, 노란 모래 순서로 넣고 숟가락으로 누른다.\n[11번] 지층 봤다. 모래로 만든다. 컵에 넣는다."
+  },
+  "A10": {
+   "title": "오답 보기마다 다른 의견",
+   "where": "gemini.google.com",
+   "text": "초등 6학년 과학 퀴즈 문항이야.\n문제: 지층이 만들어지는 순서로 알맞은 것은?\n정답: 퇴적물 운반 - 퇴적 - 다져짐과 굳어짐 - 지층 형성\n오답 보기 3개를 고른 학생이 각각 무엇을 헷갈렸는지 한 줄로 짐작하고, 그 학생에게 보여 줄 피드백을 두 문장 이내로 써줘.\n설문의 '잘못된 답변' 의견 칸 하나에 넣을 수 있게, 세 경우를 아우르는 한 문단도 함께."
+  },
+  "A11": {
+   "title": "카드 한 장 디자인 주문",
+   "where": "Canva 홈 검색창 · 디자인 만들기",
+   "text": "초등학교 6학년 학생에게 나눠 줄 피드백 카드, 가로 엽서 크기. 파스텔 하늘색 · 연노랑, 작은 별과 구름 장식.\n맨 위 제목 '4번 친구에게', 가운데 '칭찬: …' 칸, 그 아래 '다음엔: …' 칸, 맨 아래 작은 글씨 '6학년 1반 과학 · 지층 탐구'. 글자 칸은 각각 따로 된 글상자로."
+  }
+ },
+ "posts": [
+  {
+   "match": "📌 오늘의 흐름",
+   "section": 400984152,
+   "subject": "📌 오늘의 흐름 — 피드백 파이프라인",
+   "body": "산출물을 모으고 → 클래스룸으로 흐르게 하고 → Gemini와 루브릭으로 돌려주고 → 나누기\n\nPART Ⅰ 모으기 — 0 피드백 파이프라인 · 1 화이트보드에 모으기 · 2 시트 평가표\nPART Ⅱ 흐르게 — 3 Classroom 수업 · 4 과제 · 기준표 · 5 댓글 · 의견 은행\nPART Ⅲ 돌려주기 — 6 Gemini 루브릭 채점 · 7 시트에서 한 번에 · 8 우리 반 피드백 Gem\nPART Ⅳ 나누기 — 9 제출 즉시 피드백 · 10 피드백 카드 30장 · 11 한 학기의 흐름",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/art/cover_deep.webp",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "🧭 연수",
+   "section": 400984152,
+   "subject": "🧭 연수 아카이브 — 실제 화면 · 프롬프트 복사",
+   "body": "단계마다 실제 화면에 빨강 · 초록 번호가 붙어 있어요.\n프롬프트 11개는 ‘복사하기’ 한 번, 휴대폰에서도 그대로.",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/deep/",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "⚠ 오늘의 제1원칙",
+   "section": 400984152,
+   "subject": "⚠ 오늘의 제1원칙 · STEP 0 준비",
+   "body": "학생 이름 · 학교명은 AI에 넣지 않습니다. 언제나 ‘4번 학생’처럼 번호로만.\n\n① 크롬 · 학교 계정 로그인, gemini.google.com 열어 두기\n② 실습 자료 ZIP 받기 — 평가표 · 루브릭 · 학생 답변 · Gem 설정 · 카드 데이터 · 프롬프트 카드\n③ 평가표(xlsx)는 드라이브에 올려 Google 시트로 열기\n④ PART Ⅳ 칸에 ‘내가 가장 많이 복붙하는 피드백 한 줄’",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/files/%EC%97%90%EB%93%80%ED%85%8C%ED%81%AC%EC%8B%AC%ED%99%94_%EC%8B%A4%EC%8A%B5%EC%9E%90%EB%A3%8C.zip",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "실습 1",
+   "section": 400984154,
+   "subject": "STEP 1 · 화이트보드에 모으기 — 산출물 한 화면에",
+   "body": "① Canva → 화이트보드 → ‘KWL 차트’, 모둠별 구역\n② 학생은 폰으로 찍어 바로 업로드\n③ [타이머] 5분 · [학습 세션]으로 학생 화면 모아 보기\n④ [다운로드] PDF → 드라이브 ‘학생 제출물 모음’\n\n아카이브 STEP 1\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s1",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_g16.jpg",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "실습 2",
+   "section": 400984154,
+   "subject": "STEP 2 · 시트 평가표 — Gemini에게 표를 시키기",
+   "body": "① 새 스프레드시트 → 오른쪽 위 ✦ Gemini\n② A1 붙여 넣기 → 계획 확인 → [승인]\n③ 표 · 수식 · 서식 확인 — ‘AI 피드백’ 열은 비워 두기\n④ 같은 표를 Canva 시트 Magic Insights로\n\n📊 평가표 12명: https://hongdonedu.github.io/fungigame2026/edutech2026/files/%EC%A7%80%EC%B8%B5%ED%83%90%EA%B5%AC_%ED%8F%89%EA%B0%80%ED%91%9C_12%EB%AA%85.xlsx\n📋 A1은 댓글에 · 아카이브 STEP 2\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s2",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_a5.jpg",
+   "prompts": [
+    "A1"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": "실습 3",
+   "section": 400984153,
+   "subject": "STEP 3 · Classroom 수업 만들기 · 학생 초대",
+   "body": "① classroom.google.com → ＋ → 수업 만들기\n② 수업 이름 · 부제 입력\n③ 게시판 ‘수업 코드’ ⛶ → 칠판에 크게\n④ 옆 선생님 수업에 학생으로 참여해 보기\n\n아카이브 STEP 3\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s3",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_a8.jpg",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "실습 4",
+   "section": 400984153,
+   "subject": "STEP 4 · 과제 — 학생별 사본 · 기준표(루브릭)",
+   "body": "① [수업 과제] → ＋ 만들기 → 과제\n② 보고서 문서 첨부 → ‘학생별로 사본 제공’\n③ 기준표 ＋ → 기준 · 3/2/1 등급 · 설명 (A2)\n④ 점수 · 기한 → [과제 만들기]\n\n📋 A2는 댓글에 · 루브릭: https://hongdonedu.github.io/fungigame2026/edutech2026/files/%EC%A7%80%EC%B8%B5%ED%83%90%EA%B5%AC_%EB%A3%A8%EB%B8%8C%EB%A6%AD.docx\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s4",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_a14.jpg",
+   "prompts": [
+    "A2"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": "실습 5",
+   "section": 400984153,
+   "subject": "STEP 5 · 돌려주기 — 문서 댓글 · 의견 은행 · 반환",
+   "body": "① [학생 과제물] → 제출물 열기\n② 문장 선택 → 💬 댓글: 칭찬 1 + 제안 1, 세 문장 이내\n③ 자주 쓰는 문장은 의견 은행에 — A3으로 수준별 문장\n④ 점수 → [돌려주기]\n\n📋 A3은 댓글에 · 아카이브 STEP 5\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s5",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_g3.jpg",
+   "prompts": [
+    "A3"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": "실습 6",
+   "section": 400984151,
+   "subject": "STEP 6 · Gemini 루브릭 채점 — 근거가 보이는 점수",
+   "body": "① gemini.google.com — 학교 계정\n② A4: 역할 · 루브릭 · 4번 학생 답변\n③ ‘항목 | 점수 | 근거’ 표 — 근거부터 검토\n④ 학생용 3문장 → A5 ‘더 짧게’ → 복사\n\n📋 A4 · A5는 댓글에 · 학생 답변 예시: https://hongdonedu.github.io/fungigame2026/edutech2026/files/%ED%95%99%EC%83%9D%EB%8B%B5%EB%B3%80_%EC%98%88%EC%8B%9C_%EB%B2%88%ED%98%B8%EB%A7%8C.txt\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s6",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_a17.jpg",
+   "prompts": [
+    "A4",
+    "A5"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": "실습 7",
+   "section": 400984151,
+   "subject": "STEP 7 · 시트에서 한 번에 — 열두 명, 열두 개의 다른 문장",
+   "body": "① STEP 2 평가표 — ‘AI 피드백’ 열이 비어 있죠\n② ✦ Gemini에 A6 한 문장\n③ 점수가 같아도 문장이 달라요 — 검토 · 수정\n④ A7로 ‘칭찬 · 다음엔’ 두 열 → 카드(STEP 10)로\n\n⚠ AI 피드백은 초안 — 한 줄이라도 선생님 말로\n📋 A6 · A7은 댓글에 · 아카이브 STEP 7\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s7",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_a20.jpg",
+   "prompts": [
+    "A6",
+    "A7"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": "실습 8",
+   "section": 400984151,
+   "subject": "STEP 8 · 우리 반 피드백 Gem — 한 번 가르치면 답변만",
+   "body": "① Gemini → Gem 관리자 → ＋ 새 Gem\n② 이름 · 설명 · 요청 사항(A8)\n③ 지식 ＋ → 루브릭 파일 → 저장\n④ 채팅 시작 → 답변만 붙여 넣기(A9) → 공유로 동학년과\n\n💎 Gem 설정 파일: https://hongdonedu.github.io/fungigame2026/edutech2026/files/Gem_%EC%9A%94%EC%B2%AD%EC%82%AC%ED%95%AD_%EC%9A%B0%EB%A6%AC%EB%B0%98%ED%94%BC%EB%93%9C%EB%B0%B1%EB%8F%84%EC%9A%B0%EB%AF%B8.txt\n📋 A8 · A9는 댓글에\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s8",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_a25.jpg",
+   "prompts": [
+    "A8",
+    "A9"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": null,
+   "section": 400984155,
+   "subject": "STEP 10 · 피드백 카드 서른 장 — Canva 대량 제작",
+   "body": "① Canva에서 카드 한 장 — 번호 · 칭찬 · 다음엔 글상자 따로 (A11)\n② STEP 7 시트의 세 열 복사 (또는 CSV)\n③ 왼쪽 ‘대량 제작’ → 데이터 수동 입력 / 업로드\n④ 글상자 우클릭 → 데이터 연결 → 디자인 생성 → 인쇄 · 클래스룸\n\n🗂 카드 데이터 12명: https://hongdonedu.github.io/fungigame2026/edutech2026/files/%ED%94%BC%EB%93%9C%EB%B0%B1%EC%B9%B4%EB%93%9C_%EB%8C%80%EB%9F%89%EC%A0%9C%EC%9E%91_%EB%8D%B0%EC%9D%B4%ED%84%B0.csv\n📋 A11은 댓글에\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s10",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/d10_canva_bulk.jpg",
+   "prompts": [
+    "A11"
+   ],
+   "sort_index": 93000000
+  },
+  {
+   "match": null,
+   "section": 400984155,
+   "subject": "STEP 9 · 제출하는 순간 — 설문 퀴즈의 답변별 의견",
+   "body": "① 설문 → 설정 → 퀴즈로 만들기 → 결과 ‘제출 후 바로’\n② 문항 ‘답안’ → 정답 · 점수\n③ 답변 관련 의견: 정답엔 한 걸음 더, 오답엔 다시 볼 곳 (A10)\n④ 학생이 되어 직접 풀어 보기 ↓\nhttps://docs.google.com/forms/d/e/1FAIpQLSe5pLuLvDSlgnVnSvnHD-AUd6wdUR_JpPna6tzwVDDJ5qhr5g/viewform\n📋 A10은 댓글에\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s9",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/b05_quiz_result.jpg",
+   "prompts": [
+    "A10"
+   ],
+   "sort_index": 93500000
+  },
+  {
+   "match": "✋ 숙제",
+   "section": 400984155,
+   "subject": "STEP 11 · 한 단원의 흐름으로 — 내일 아침, 피드백 한 줄부터",
+   "body": "단원 도입 — KWL 화이트보드\n탐구 활동 — 클래스룸 과제(학생별 사본) + 기준표\n형성 평가 — 설문 퀴즈 답변별 의견\n수행 평가 — 시트 평가표 → Gemini · Gem → 교사 검토\n돌려주기 — 클래스룸 댓글 · Canva 카드\n나누기 — Gem과 평가표 사본을 동학년과\n\n➕ 이 칸 ＋ 로 한 줄 후기 · 우리 반에 먼저 써 볼 것 하나\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/deep/#s11",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/art/d_part4.webp",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "🔒",
+   "section": 400984155,
+   "subject": "🔒 AI 피드백, 여섯 가지 약속",
+   "body": "① 이름 대신 번호로 — 학생 이름 · 학교명은 AI에 넣지 않기\n② 근거부터 읽기 — 점수보다 근거가 답변과 맞는지\n③ 마지막 한 줄은 선생님 말로 — AI 문장은 초안\n④ 같은 말 반복 점검 — 점수가 같은 학생끼리 비교\n⑤ 제출물 폴더는 비공개 — 공유는 Gem · 평가표 사본만\n⑥ 학생에게 알리기 — AI 도움을 받은 피드백임을 투명하게",
+   "attachment": null,
+   "prompts": [],
+   "sort_index": null
+  }
+ ]
+}

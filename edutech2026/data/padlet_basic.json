@@ -1,0 +1,235 @@
+{
+ "wall_hashid": "q8WbyNrEL2MWyPjd",
+ "wall_id": 273201953,
+ "board": "board_q8WbyNrEL2MWyPjd",
+ "description": "에듀테크 기본과정 11. 6.(금) · 명진초 최일훈 · 황경애 — 아카이브: hongdonedu.github.io/fungigame2026/edutech2026/basic/ · 질문 · 결과물 · 후기는 각 PART 칸 ＋ 로",
+ "sections": [
+  [
+   400983304,
+   "📌 시작 — 아카이브 · 실습 자료 · STEP 0"
+  ],
+  [
+   400983309,
+   "PART Ⅰ 함께 쓰기 ✏️ STEP 1~3"
+  ],
+  [
+   400983305,
+   "PART Ⅱ 모으기 📊 STEP 4~6"
+  ],
+  [
+   400983306,
+   "PART Ⅲ 정리하기 🗂 STEP 7~8"
+  ],
+  [
+   400983313,
+   "PART Ⅳ 나누기 🏠 STEP 9~10 · 후기"
+  ]
+ ],
+ "prompts": {
+  "B1": {
+   "title": "문서 탭 틀 — 모둠 탐구 보고서",
+   "where": "문서 탭 아래 ‘Gemini로 작성’ (또는 오른쪽 위 ✦)",
+   "text": "6학년 과학 '지층과 화석' 모둠 탐구 보고서 틀을 만들어줘.\n성취기준 [6과01-01] 지층의 특징을 알고, 지층의 형성 과정을 모형으로 표현할 수 있다.\n맨 위에 제목 · 날짜 · 모둠원 칸, 그 아래\n① 우리 모둠이 관찰한 것 ② 지층이 만들어진 순서 ③ 모형 만들기 계획 ④ 더 알고 싶은 점\n네 부분으로 나누고, 각 부분에 모둠원이 쓸 안내 문장을 한 줄씩 넣어줘."
+  },
+  "B2": {
+   "title": "댓글 문장 — 칭찬 1 + 제안 1",
+   "where": "문단을 선택하고 오른쪽 위 ✦",
+   "text": "선택한 문단을 쓴 학생에게 남길 댓글을 만들어줘.\n칭찬 1개 + 다음에 해 볼 제안 1개, 각각 한 문장.\n초등 6학년이 읽기 쉬운 다정한 말투로, 학생 이름은 쓰지 말고."
+  },
+  "B3": {
+   "title": "슬라이드 다시 디자인",
+   "where": "오른쪽 위 ✦ → 입력 칸",
+   "text": "이 슬라이드를 발표용으로 깔끔하게 다시 디자인해줘.\n제목은 크게, 사진 자리는 오른쪽, 글자 수는 절반으로 줄이고 핵심 낱말만 남겨줘."
+  },
+  "B4": {
+   "title": "지층 그림 만들기",
+   "where": "✦ → ‘이미지 만들기’ 또는 입력 칸",
+   "text": "초등 과학 수업용 그림: 바닷가 절벽에 색깔이 다른 지층 줄무늬가 층층이 보이는 모습, 밝고 깔끔한 일러스트, 글자 없이."
+  },
+  "B5": {
+   "title": "단원 자기평가 설문 5문항",
+   "where": "새 양식의 Gemini 창",
+   "text": "초등 6학년 과학 '지층과 화석' 단원 학습 후 학생 자기평가 설문 5문항을 만들어줘.\n① 모둠 번호(드롭다운 1~6모둠) ② 지층이 만들어지는 순서 확인 객관식 1개 ③ 지층 모형 만들기 활동 이해도 5점 척도 ④ 오늘 새로 알게 된 점(단답형) ⑤ 더 알고 싶은 점(장문형)\n①~③은 필수로 설정해줘."
+  },
+  "B6": {
+   "title": "오답 의견 — 다시 볼 곳까지",
+   "where": "문항 ‘답안’ → 답변 관련 의견 추가 → 잘못된 답변",
+   "text": "퇴적물이 운반되어 쌓이고(퇴적), 위에서 누르는 힘으로 다져지고 굳어져 지층이 돼요. 교과서 그림을 보며 순서를 다시 확인해 봐요!"
+  },
+  "B7": {
+   "title": "Gemini에게 오답별 의견 받기",
+   "where": "gemini.google.com",
+   "text": "초등 6학년 과학 퀴즈 문항이야.\n문제: 지층이 만들어지는 순서로 알맞은 것은?\n정답: 퇴적물 운반 - 퇴적 - 다져짐과 굳어짐 - 지층 형성\n오답 보기 3개 각각을 고른 학생이 무엇을 헷갈렸는지 한 줄로 짐작하고, 그 학생에게 보여 줄 피드백을 두 문장 이내로 써줘. 다시 볼 교과서 부분도 알려줘."
+  },
+  "B8": {
+   "title": "Magic Insights 질문 세 가지",
+   "where": "표 선택 → [작업] → Magic Insights",
+   "text": "모둠별 평균 점수를 비교해줘\n가장 어려워한 영역은 어디야?\n추가 지도가 필요한 학생 번호를 알려줘"
+  },
+  "B9": {
+   "title": "폴더 요약 · 빠진 자료 찾기",
+   "where": "폴더 안 [Gemini에게 물어보기] 또는 오른쪽 위 ✦",
+   "text": "이 폴더에 있는 자료를 종류별(문서 · 슬라이드 · 설문 · 시트)로 나눠 한눈에 보이게 요약해줘.\n단원 수업에 꼭 필요한데 빠진 자료가 있으면 알려줘."
+  },
+  "B10": {
+   "title": "학급 홈페이지 첫 화면 문구",
+   "where": "gemini.google.com 또는 문서 ✦",
+   "text": "초등 6학년 학급 홈페이지 첫 화면에 넣을 글을 써줘.\n① 우리 반 소개 한 줄 ② 이번 주 알림 3가지(과학 지층 탐구 보고서 금요일까지 · 단원 자기평가 · 모둠 발표) ③ 자료 바로가기 안내 한 줄\n학생과 학부모가 함께 읽는다고 생각하고, 짧고 따뜻하게. 학생 이름 · 연락처는 넣지 말 것."
+  }
+ },
+ "posts": [
+  {
+   "match": "📌 오늘의 흐름",
+   "section": 400983304,
+   "subject": "📌 오늘의 흐름 — 한 단원이 Google로 굴러가요",
+   "body": "6학년 과학 ‘지층과 화석’ 한 단원으로 따라가요.\n\nPART Ⅰ 함께 쓰기 — 0 준비 · 1 모둠 문서 · 2 빨간펜 대신 · 3 모둠별 1장 슬라이드\nPART Ⅱ 모으기 — 4 말로 만드는 설문 · 5 채점은 설문이 · 6 응답 → 한눈에\nPART Ⅲ 정리하기 — 7 화이트보드 · 8 드라이브 서랍장\nPART Ⅳ 나누기 — 9 우리 반 홈페이지 · 10 우리 교실로",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/art/cover_basic.webp",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "🧭 연수",
+   "section": 400983304,
+   "subject": "🧭 연수 아카이브 — 실제 화면 · 프롬프트 복사",
+   "body": "단계마다 실제 화면에 빨강 · 초록 번호가 붙어 있어요.\n프롬프트 10개는 ‘복사하기’ 한 번, 휴대폰에서도 그대로.",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/basic/",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "🧳 출발 준비",
+   "section": 400983304,
+   "subject": "STEP 0 · 준비 — 크롬 · 학교 계정 · 실습 자료",
+   "body": "① 크롬에서 학교(교육용) Google 계정 로그인\n② 오른쪽 위 점 아홉 개 = 문서 · 슬라이드 · 설문 · 시트 · 드라이브 · Sites\n③ 실습 자료 ZIP 받기 (보고서 틀 · 설문 문장 · 응답 예시 · 프롬프트 카드)\n④ PART Ⅳ 칸에 오늘 꼭 가져가고 싶은 것 한 줄",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/files/%EC%97%90%EB%93%80%ED%85%8C%ED%81%AC%EA%B8%B0%EB%B3%B8_%EC%8B%A4%EC%8A%B5%EC%9E%90%EB%A3%8C.zip",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "🔑 공유 권한",
+   "section": 400983304,
+   "subject": "🔑 공유 권한 세 단계 — 링크 보내기 전에",
+   "body": "👀 뷰어 = 보기만 — 안내문 · 완성 자료 · 홈페이지에 넣는 자료\n💬 댓글 작성자 = 의견만 — 동료 검토 · 학부모 안내문 초안\n✏️ 편집자 = 함께 쓰기 — 모둠 보고서 · 모둠별 1장 슬라이드\n\n‘링크가 있는 모든 사용자’ 전에: 학생 이름 · 사진 · 연락처 확인!\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s0",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_g2.jpg",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "STEP 1",
+   "section": 400983309,
+   "subject": "STEP 1 · 모둠 문서 — 문서 탭 · Gemini로 틀 · 링크 공유",
+   "body": "① 앱 런처 → 문서 → ＋ 빈 문서, 제목에 학년 · 과목 · 모둠\n② 왼쪽 ☰ 문서 탭 ＋ → 1모둠 · 2모둠 … 한 파일에 모둠 전체\n③ 새 탭의 ‘Gemini로 작성’에 B1 → 보고서 틀 완성\n④ [공유] → 링크가 있는 모든 사용자 · 편집자 → 링크 복사\n\n📋 B1은 댓글에 · 번호 붙은 화면은 아카이브 STEP 1\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s1",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/b01_doc_tabs_gemini.jpg",
+   "prompts": [
+    "B1"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": null,
+   "section": 400983309,
+   "subject": "STEP 2 · 빨간펜 대신 — 댓글 · 제안 모드 · 버전 기록",
+   "body": "① 낱말 드래그 → 💬＋ 댓글: 칭찬 하나 + 제안 하나\n② ✏ 수정 ▾ → ‘제안’ — 고친 글은 초록, 원래 글은 취소선\n③ 학생이 ✓ 수락 / ✕ 거절 — 고치는 판단은 학생에게\n④ 🕘 버전 기록 — 누가 무엇을, 필요하면 복원\n\n📋 B2(댓글 문장)는 댓글에 · 아카이브 STEP 2\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s2",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/b02_doc_suggest.jpg",
+   "prompts": [
+    "B2"
+   ],
+   "sort_index": 538000000
+  },
+  {
+   "match": "실습 2",
+   "section": 400983309,
+   "subject": "STEP 3 · 모둠별 1장 슬라이드 — 테마 · 복제 · Gemini 디자인",
+   "body": "① 빈 프레젠테이션 → [테마] 한 번\n② 1장 만들고 Ctrl+D로 모둠 수만큼 복제 → 공유(편집자)\n③ 모둠은 자기 장만 — 발표 순서 = 슬라이드 순서\n④ ✦ Gemini에게 B3 — 디자인은 맡기기 · B4로 지층 그림\n\n📋 B3 · B4는 댓글에 · 아카이브 STEP 3\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s3",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_g6.jpg",
+   "prompts": [
+    "B3",
+    "B4"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": "실습 3",
+   "section": 400983305,
+   "subject": "STEP 4 · 말로 만드는 설문 — Gemini가 문항까지",
+   "body": "① 설문 → ＋ 새 양식 — Gemini 창이 먼저 인사\n② B5 한 문장으로 주문 → [만들기]\n③ 미리보기 → [양식 만들기] (아니면 [다시 시도])\n④ 질문 유형 다듬기 · 필수 켜기\n\n📋 B5는 댓글에 · 아카이브 STEP 4\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s4",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_g9.jpg",
+   "prompts": [
+    "B5"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": null,
+   "section": 400983305,
+   "subject": "STEP 5 · 채점은 설문이 — 퀴즈 · 답변별 의견",
+   "body": "① 설정 → 퀴즈로 만들기 → 결과 ‘제출 후 바로’\n② 문항 ‘답안’ → 정답 · 점수\n③ 답변 관련 의견 — 틀린 학생에게는 다시 볼 곳까지 (B6)\n④ 미리보기 → [게시]\n\n🧑‍🎓 학생이 되어 직접 풀어 보기: https://docs.google.com/forms/d/e/1FAIpQLSe5pLuLvDSlgnVnSvnHD-AUd6wdUR_JpPna6tzwVDDJ5qhr5g/viewform\n📋 B6 · B7은 댓글에 · 아카이브 STEP 5\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s5",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/b05_quiz_result.jpg",
+   "prompts": [
+    "B6",
+    "B7"
+   ],
+   "sort_index": 536000000
+  },
+  {
+   "match": "실습 4",
+   "section": 400983305,
+   "subject": "STEP 6 · 응답 → 한눈에 — 시트 연결 · Magic Insights",
+   "body": "① [응답] 탭 → 요약 그래프\n② [Sheets에 연결] → 응답이 표로\n③ 표를 Canva 시트에 붙여 넣고 [작업] → Magic Insights\n④ B8 질문을 말로 — 판단은 선생님, 이름 대신 번호\n\n📊 응답 예시 24명: https://hongdonedu.github.io/fungigame2026/edutech2026/files/%EC%9E%90%EA%B8%B0%ED%8F%89%EA%B0%80_%EC%9D%91%EB%8B%B5_%EC%98%88%EC%8B%9C_24%EB%AA%85.xlsx\n📋 B8은 댓글에 · 아카이브 STEP 6\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s6",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_g15.jpg",
+   "prompts": [
+    "B8"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": "실습 5",
+   "section": 400983306,
+   "subject": "STEP 7 · 화이트보드 — KWL로 생각 모으기",
+   "body": "① Canva → 화이트보드 → 템플릿 ‘KWL 차트’\n② K · W · L 제목을 우리 단원으로\n③ 학생은 포스트잇 더블클릭 — 폰에서도\n④ [타이머] 5분 → [공유] → Google 클래스룸\n\n아카이브 STEP 7\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s7",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_g16.jpg",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "실습 6",
+   "section": 400983306,
+   "subject": "STEP 8 · 드라이브 서랍장 — 폴더 규칙 · 폴더째 공유",
+   "body": "① ＋ 신규 → 새 폴더: 연도 + 학년반 + 과목\n② 학급 폴더 ▸ 단원 폴더 · 학생 제출물 모음\n③ 오늘 만든 문서 · 슬라이드 · 설문 · 시트를 단원 폴더로\n④ 폴더 ▾ → 공유 → 동학년 편집자 · Gemini 요약(B9)\n\n📋 B9는 댓글에 · 아카이브 STEP 8\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s8",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/o_g22.jpg",
+   "prompts": [
+    "B9"
+   ],
+   "sort_index": null
+  },
+  {
+   "match": null,
+   "section": 400983313,
+   "subject": "STEP 9 · 우리 반 홈페이지 — Google Sites로 링크 하나",
+   "body": "① sites.google.com → 빈 사이트, 이름 · 페이지 제목\n② 텍스트 상자에 오늘의 알림 (B10으로 초안)\n③ 삽입 → URL 사용: 슬라이드 · 문서 / 버튼: 설문 링크\n④ 파일 권한 확인 → [게시]: 주소 · 볼 사람 · 검색 표시 안 함\n\n📋 B10은 댓글에 · 아카이브 STEP 9\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s9",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/cap/b09_sites_editor.jpg",
+   "prompts": [
+    "B10"
+   ],
+   "sort_index": 531000000
+  },
+  {
+   "match": "✋ 숙제",
+   "section": 400983313,
+   "subject": "STEP 10 · 우리 교실로 — 하나만 써 보고 한 줄 후기",
+   "body": "다음 주 수업에 오늘 만든 것 중 하나만!\n국어 — 문서 탭 이어쓰기 · 제안 모드\n사회 — 설문 → Magic Insights → 모둠별 1장\n과학 — 탐구 보고서 · 퀴즈 의견 · 홈페이지\n창체 — 화이트보드 KWL · 투표 스티커\n\n➕ 이 칸 오른쪽 위 ＋ 로 한 줄 후기를 남겨 주세요.\n심화과정(11. 20.)에서는 오늘 모은 응답과 보고서가 학생마다 다른 피드백으로 돌아갑니다.\nhttps://hongdonedu.github.io/fungigame2026/edutech2026/basic/#s10",
+   "attachment": "https://hongdonedu.github.io/fungigame2026/edutech2026/art/b_part4.webp",
+   "prompts": [],
+   "sort_index": null
+  },
+  {
+   "match": "🔒 클라우드",
+   "section": 400983313,
+   "subject": "🔒 클라우드 수업, 여섯 가지 약속",
+   "body": "① 이름 대신 번호 — AI · 공개 링크에 넣는 자료는 번호와 모둠으로\n② 공유 범위 두 번 확인 — ‘링크가 있는 모든 사용자’는 꼭 필요할 때만\n③ 학교 계정으로 — 수업 · 업무는 교육용 계정, 2단계 인증\n④ 버전 기록 알려 주기 — 지워져도 되돌릴 수 있어요\n⑤ 폴더 규칙 하나 — 연도 + 학년반 + 과목\n⑥ 홈페이지는 길잡이 — 자료는 드라이브에, 홈페이지는 링크로",
+   "attachment": null,
+   "prompts": [],
+   "sort_index": null
+  }
+ ]
+}
