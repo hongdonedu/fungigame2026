@@ -1,0 +1,818 @@
+{
+ "cats": [
+  [
+   "draw",
+   "🎨",
+   "그림·창작 AI",
+   "그리면 AI가 맞히고, 바꾸고, 말을 걸어요"
+  ],
+  [
+   "music",
+   "🎵",
+   "소리·음악 AI",
+   "노래하고 연주하고 들어 보는 AI"
+  ],
+  [
+   "teach",
+   "🤖",
+   "AI 가르치기",
+   "데이터를 모아 내가 직접 학습시켜요"
+  ],
+  [
+   "ethics",
+   "⚖️",
+   "AI 윤리·리터러시",
+   "판단하고, 의심하고, 토론해요"
+  ],
+  [
+   "data",
+   "🌍",
+   "데이터·지구 탐험",
+   "실시간 데이터와 지도로 세상을 봐요"
+  ],
+  [
+   "make",
+   "💻",
+   "코딩·만들기",
+   "블록 코딩·3D·플랫폼으로 직접 만들어요"
+  ],
+  [
+   "fun",
+   "🌀",
+   "신기한 웹 놀이",
+   "와! 소리가 나오는 웹 실험실"
+  ]
+ ],
+ "sites": [
+  {
+   "id": "quickdraw",
+   "name": "퀵, 드로우!",
+   "en": "Quick, Draw!",
+   "url": "https://quickdraw.withgoogle.com/",
+   "cat": "draw",
+   "pick": true,
+   "one": "20초 안에 제시어를 그리면 AI가 실시간으로 맞혀요.",
+   "how": "6개 그림을 마친 뒤 ‘AI가 본 다른 사람들의 그림’을 함께 보며 ‘AI는 많은 낙서 데이터로 배웠다’를 발견하게 해요.",
+   "unit": "5학년 1단원 · 인공지능 체험 (퀵 드로우)",
+   "tip": "제시어가 화면에 잠깐만 나와요. 놓친 학생에게는 ‘다음 판에 다시 나와요’라고 안심시키고, 소리를 켜면 AI가 말로 추측해요.",
+   "tags": [
+    "가입 없음",
+    "한국어",
+    "소리"
+   ],
+   "img": "sites/quickdraw.webp"
+  },
+  {
+   "id": "autodraw",
+   "name": "오토드로우",
+   "en": "AutoDraw",
+   "url": "https://www.autodraw.com/",
+   "cat": "draw",
+   "one": "대충 그린 낙서를 AI가 깔끔한 그림 아이콘으로 바꿔 줘요.",
+   "how": "학급 안내문·포스터 꾸미기에 연결해요. ‘AI가 추천한 그림 중 무엇을 고를지는 내가 결정한다’를 강조해요.",
+   "unit": "5학년 1단원 · 퀵 드로우와 함께",
+   "tip": "저장은 메뉴의 ‘Download’ → 기기 ‘다운로드’ 폴더예요. 학생이 파일을 못 찾으면 폴더 위치를 함께 확인해요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면"
+   ],
+   "img": "sites/autodraw.webp"
+  },
+  {
+   "id": "guesstheline",
+   "name": "게스 더 라인",
+   "en": "Guess the Line",
+   "url": "https://artsandculture.google.com/experiment/guess-the-line/ogH0ouxdq_sR6w?hl=ko",
+   "cat": "draw",
+   "one": "카드에 적힌 대로 그리면 머신러닝 로봇이 무엇인지 맞혀요.",
+   "how": "퀵 드로우 다음 단계 게임으로, 같은 제시어를 친구와 다르게 그려 보고 AI 반응을 비교해요.",
+   "unit": "5학년 1단원 · 이미지 인식",
+   "tip": "게임 시작 화면이 영어일 수 있어요. ‘Play’ 위치만 짚어 주면 진행은 그림이라 쉬워요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면"
+   ],
+   "img": "sites/guesstheline.webp"
+  },
+  {
+   "id": "doodleguide",
+   "name": "두들 가이드",
+   "en": "Doodle Guide",
+   "url": "https://artsandculture.google.com/experiment/doodle-guide/FQFug-9023UsLw?hl=ko",
+   "cat": "draw",
+   "one": "그림을 그리는 동안 AI가 목소리로 실시간 피드백을 줘요.",
+   "how": "‘AI 선생님의 말은 언제 도움이 되고 언제 틀릴까?’를 이야기 나누는 소재로 좋아요.",
+   "unit": "5학년 2단원 · 음성·이미지 인식",
+   "tip": "소리가 필수예요. 이어폰 준비, 시작 전에 교사 계정으로 먼저 체험해 보고 학생용 여부를 정해요.",
+   "tags": [
+    "영어 화면",
+    "소리",
+    "생성형 AI",
+    "교사 시연 권장"
+   ],
+   "img": "sites/doodleguide.webp"
+  },
+  {
+   "id": "saywhatyousee",
+   "name": "세이 왓 유 시",
+   "en": "Say What You See",
+   "url": "https://artsandculture.google.com/experiment/say-what-you-see/jwG3m7wQShZngw?hl=ko",
+   "cat": "draw",
+   "pick": true,
+   "one": "그림을 보고 설명을 쓰면 AI가 그대로 그려요 — 프롬프트 연습 게임.",
+   "how": "‘어떻게 말해야 AI가 내 생각대로 그릴까?’ 색·위치·분위기 단어를 모둠별로 모아 보고 결과를 비교해요.",
+   "unit": "5학년 2단원 · 이미지 인식 + 생성형 AI 맛보기",
+   "tip": "이미지 생성형 AI라 교사 화면으로 함께 진행하는 것을 권해요. 영어 문장이 더 잘 통해요.",
+   "tags": [
+    "영어 화면",
+    "생성형 AI",
+    "교사 시연 권장"
+   ],
+   "img": "sites/saywhatyousee.webp"
+  },
+  {
+   "id": "infinitecraft",
+   "name": "인피니트 크래프트",
+   "en": "Infinite Craft",
+   "url": "https://neal.fun/infinite-craft/",
+   "cat": "draw",
+   "one": "물·불·바람·흙을 끌어다 합치면 AI가 새로운 것을 끝없이 만들어 내요.",
+   "how": "‘물 + 불 = ?’ 예상하고 맞혀 보기 → AI 조합 결과가 왜 그렇게 나왔을지 설명해 보기.",
+   "unit": "창의적 체험활동 · 언어 모델 체험",
+   "tip": "광고가 함께 떠요. 결과가 예상 밖일 때가 있어 교사가 먼저 해 보고, 광고는 누르지 않도록 안내해요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면",
+    "광고 있음",
+    "생성형 AI",
+    "교사 시연 권장"
+   ],
+   "img": "sites/infinitecraft.webp"
+  },
+  {
+   "id": "blobopera",
+   "name": "블롭 오페라",
+   "en": "Blob Opera",
+   "url": "https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw",
+   "cat": "music",
+   "pick": true,
+   "one": "젤리 성악가 4명을 끌어 올리고 내리면 AI가 화음을 맞춰 노래해요.",
+   "how": "한 명만 지휘해도 나머지 셋이 화음을 맞추는 이유 — ‘실제 성악가 목소리를 학습했다’로 연결해요. 녹음 링크로 작품 공유.",
+   "unit": "5학년 2단원 · 음성 인식과 소리",
+   "tip": "소리가 갑자기 커요. 시작 전 볼륨을 절반으로, 모둠은 이어폰 한 개로 돌아가며.",
+   "tags": [
+    "가입 없음",
+    "소리"
+   ],
+   "img": "sites/blobopera.webp"
+  },
+  {
+   "id": "musiclab",
+   "name": "크롬 뮤직랩",
+   "en": "Chrome Music Lab",
+   "url": "https://musiclab.chromeexperiments.com/",
+   "cat": "music",
+   "pick": true,
+   "one": "송 메이커·리듬·스펙트로그램 등 손으로 만지는 음악 실험 모음.",
+   "how": "‘스펙트로그램’으로 내 목소리를 눈으로 보기 → 음성 인식이 소리를 어떻게 데이터로 바꾸는지 연결해요.",
+   "unit": "5학년 2단원 · 음성 인식",
+   "tip": "마이크 실험은 권한 허용 창이 떠요. ‘허용’ 위치를 미리 알려 주고, 송 메이커 저장은 링크 복사로.",
+   "tags": [
+    "가입 없음",
+    "한국어",
+    "소리",
+    "마이크"
+   ],
+   "img": "sites/musiclab.webp"
+  },
+  {
+   "id": "aiduet",
+   "name": "AI 듀엣",
+   "en": "A.I. Duet",
+   "url": "https://experiments.withgoogle.com/ai/ai-duet/view/",
+   "cat": "music",
+   "one": "건반 몇 개를 치면 AI가 이어서 연주로 대답해요.",
+   "how": "같은 멜로디를 두 번 쳐 보고 AI 대답이 매번 같은지 비교해요 — ‘AI는 확률로 고른다’.",
+   "unit": "5학년 2단원 · 소리 데이터",
+   "tip": "키보드 자판으로도 연주돼요. 소리가 안 나면 기기 음소거·탭 음소거를 먼저 확인해요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면",
+    "소리"
+   ],
+   "img": "sites/aiduet.webp"
+  },
+  {
+   "id": "drum",
+   "name": "무한 드럼 머신",
+   "en": "The Infinite Drum Machine",
+   "url": "https://experiments.withgoogle.com/ai/drum-machine/view/",
+   "cat": "music",
+   "one": "수천 개 일상 소리를 AI가 비슷한 소리끼리 지도로 모아 두었어요.",
+   "how": "소리 지도에서 가까운 소리끼리 왜 모였을지 추측해요 — ‘AI의 분류’ 개념.",
+   "unit": "5학년 2단원 · 소리 데이터",
+   "tip": "첫 화면 ‘Start Playing’만 누르면 바로 시작. 반복 소리가 커서 볼륨 관리가 필요해요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면",
+    "소리"
+   ],
+   "img": "sites/drum.webp"
+  },
+  {
+   "id": "bach",
+   "name": "바흐 두들",
+   "en": "Bach Google Doodle",
+   "url": "https://doodles.google/doodle/celebrating-johann-sebastian-bach/",
+   "cat": "music",
+   "one": "멜로디만 넣으면 AI가 바흐 스타일 4성부 화음을 붙여 줘요.",
+   "how": "음악 시간의 가락 짓기와 연결 — 내 가락에 AI가 붙인 화음을 듣고 느낌 말하기.",
+   "unit": "5학년 2단원 · 소리 데이터",
+   "tip": "두들 페이지에서 재생 버튼을 눌러 실행해요. 오래된 두들이라 기기에 따라 로딩이 느릴 수 있어요.",
+   "tags": [
+    "가입 없음",
+    "소리"
+   ],
+   "img": "sites/bach.webp"
+  },
+  {
+   "id": "kandinsky",
+   "name": "칸딘스키 연주하기",
+   "en": "Play a Kandinsky",
+   "url": "https://artsandculture.google.com/experiment/play-a-kandinsky/sgF5ivv105ukhA",
+   "cat": "music",
+   "one": "칸딘스키 그림 속 색과 모양을 누르면 소리가 나요 — 공감각 체험.",
+   "how": "미술 감상과 연결해 ‘이 색은 어떤 소리일까?’ 예상 → 들어 보기.",
+   "unit": "미술·음악 융합 · AI 예술",
+   "tip": "한국어 안내가 있어요. 소리 위주라 이어폰을 권해요.",
+   "tags": [
+    "가입 없음",
+    "한국어",
+    "소리"
+   ],
+   "img": "sites/kandinsky.webp"
+  },
+  {
+   "id": "instrument",
+   "name": "인스트루먼트 플레이그라운드",
+   "en": "Instrument Playground",
+   "url": "https://artsandculture.google.com/experiment/instrument-playground/8QFo2oQr2uT3pg?hl=ko",
+   "cat": "music",
+   "one": "세계 여러 악기를 고르고 분위기를 적으면 AI가 음악을 만들어요.",
+   "how": "‘해금 + 신나는’처럼 악기와 분위기 낱말을 바꿔 결과 비교하기.",
+   "unit": "5학년 2단원 · 생성형 AI 맛보기",
+   "tip": "생성형 음악이라 교사 시연으로 먼저. 영어 입력이 더 잘 통해요.",
+   "tags": [
+    "영어 화면",
+    "소리",
+    "생성형 AI",
+    "교사 시연 권장"
+   ],
+   "img": "sites/instrument.webp"
+  },
+  {
+   "id": "paintmusic",
+   "name": "페인트 위드 뮤직",
+   "en": "Paint With Music",
+   "url": "https://artsandculture.google.com/experiment/paint-with-music/YAGuJyDB-XbbWg?hl=ko",
+   "cat": "music",
+   "one": "붓질을 하면 그 모양이 악기 소리로 바뀌어요.",
+   "how": "하늘·바다·거리 캔버스를 골라 ‘장면에 어울리는 음악 그리기’.",
+   "unit": "미술·음악 융합 · AI 예술",
+   "tip": "소리가 핵심이에요. 터치 기기에서도 잘 되지만 붓 굵기 버튼이 작아요.",
+   "tags": [
+    "가입 없음",
+    "소리"
+   ],
+   "img": "sites/paintmusic.webp"
+  },
+  {
+   "id": "soundscape",
+   "name": "이매지너리 사운드스케이프",
+   "en": "Imaginary Soundscape",
+   "url": "https://www.imaginarysoundscape.net/",
+   "cat": "music",
+   "one": "거리 사진을 AI가 보고 그곳에 어울리는 소리를 들려줘요.",
+   "how": "우리 동네 사진을 올렸을 때 들릴 소리를 먼저 예상 → AI 결과와 비교 (이미지 → 소리).",
+   "unit": "5학년 2단원 · 이미지 인식 + 소리",
+   "tip": "사진 업로드 시 학생·친구 얼굴이 나온 사진은 쓰지 않아요. 지도 모드는 로딩이 느릴 수 있어요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면",
+    "소리"
+   ],
+   "img": "sites/soundscape.webp"
+  },
+  {
+   "id": "birdsounds",
+   "name": "새소리 지도",
+   "en": "Bird Sounds",
+   "url": "https://experiments.withgoogle.com/ai/bird-sounds/view/",
+   "cat": "music",
+   "one": "수천 개의 새소리를 AI가 비슷한 소리끼리 모아 지도로 보여줘요.",
+   "how": "과학 ‘동물의 생활’과 연결 — 비슷한 소리끼리 모인 지점을 찾아 듣기.",
+   "unit": "5학년 2단원 · 소리 데이터",
+   "tip": "‘Explore’를 누르면 시작. 마우스를 올리기만 해도 소리가 나서 터치 기기에서는 조금 어려워요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면",
+    "소리"
+   ],
+   "img": "sites/birdsounds.webp"
+  },
+  {
+   "id": "teachable",
+   "name": "티처블 머신",
+   "en": "Teachable Machine",
+   "url": "https://teachablemachine.withgoogle.com/",
+   "cat": "teach",
+   "pick": true,
+   "one": "이미지·소리·자세를 보여 주면 나만의 AI 분류 모델이 만들어져요.",
+   "how": "‘가위·바위·보 인식기’, ‘분리배출 도우미’처럼 클래스 2~3개로 시작 → 데이터가 적을 때와 많을 때 비교.",
+   "unit": "5학년 1단원 · 인공지능 체험 (티처블 머신)",
+   "tip": "카메라 권한 ‘허용’이 첫 고비예요. 친구 얼굴 대신 물건·손동작으로 학습시키고, 결과는 브라우저 안에만 있다는 것(새로고침하면 사라짐)을 미리 알려요.",
+   "tags": [
+    "가입 없음",
+    "한국어",
+    "카메라",
+    "마이크"
+   ],
+   "img": "sites/teachable.webp"
+  },
+  {
+   "id": "oceans",
+   "name": "AI for Oceans",
+   "en": "AI for Oceans · Code.org",
+   "url": "https://code.org/oceans",
+   "cat": "teach",
+   "pick": true,
+   "one": "물고기와 쓰레기를 AI에게 가르쳐 바다를 청소해요.",
+   "how": "‘물고기 / 물고기 아님’ → ‘화난 물고기?’처럼 기준이 애매한 단계에서 ‘데이터 편향’을 토론해요.",
+   "unit": "5학년 1단원 · 인공지능 체험 (AI for Oceans)",
+   "tip": "단계마다 짧은 영상이 나와요(자막). 진도 차이가 크게 나니 먼저 끝낸 학생에게는 ‘다른 기준으로 다시 학습시키기’ 과제를.",
+   "tags": [
+    "가입 없음",
+    "한국어"
+   ],
+   "img": "sites/oceans.webp"
+  },
+  {
+   "id": "mlkids",
+   "name": "머신러닝 포 키즈",
+   "en": "Machine Learning for Kids",
+   "url": "https://machinelearningforkids.co.uk/",
+   "cat": "teach",
+   "one": "글·그림·숫자를 학습시키고 그 모델로 스크래치 게임을 만들어요.",
+   "how": "‘칭찬/속상한 말 분류기’를 만들어 스크래치 캐릭터가 반응하게 — 학습 → 활용까지 한 흐름.",
+   "unit": "5학년 1단원 심화 · AI 모델 활용",
+   "tip": "수업용은 교사 계정으로 학급을 만들어요. ‘Try it now’는 가입 없이 되지만 저장되지 않아요. 영어 화면이 많아요.",
+   "tags": [
+    "영어 화면",
+    "계정 필요",
+    "심화"
+   ],
+   "img": "sites/mlkids.webp"
+  },
+  {
+   "id": "emoji",
+   "name": "이모지 스캐빈저 헌트",
+   "en": "Emoji Scavenger Hunt",
+   "url": "https://emojiscavengerhunt.withgoogle.com/",
+   "cat": "teach",
+   "one": "제시된 이모지와 같은 물건을 카메라로 찾아 보여 주는 시간 게임.",
+   "how": "AI가 잘 맞히는 물건과 못 맞히는 물건을 기록해 ‘왜?’를 토론해요.",
+   "unit": "5학년 2단원 · 이미지 인식",
+   "tip": "보관(archive) 페이지로 옮겨졌고 이용 연령 확인 문구가 있어요. 교사 기기로 시연하는 방식을 권해요.",
+   "tags": [
+    "카메라",
+    "영어 화면",
+    "교사 시연 권장"
+   ],
+   "img": "sites/emoji.webp"
+  },
+  {
+   "id": "semantris",
+   "name": "시맨트리스",
+   "en": "Semantris",
+   "url": "https://research.google.com/semantris/",
+   "cat": "teach",
+   "one": "단어를 연상해 입력하면 AI가 낱말 사이 관계를 이해해 블록을 터뜨려요.",
+   "how": "영어 시간 연계 — ‘ocean’과 가까운 단어는? AI의 ‘단어 거리’ 개념 맛보기.",
+   "unit": "영어 연계 · 언어 AI",
+   "tip": "영어로만 돼요. 고학년 영어 수업이나 교사 시연용으로.",
+   "tags": [
+    "가입 없음",
+    "영어 화면"
+   ],
+   "img": "sites/semantris.webp"
+  },
+  {
+   "id": "woolaroo",
+   "name": "울라루",
+   "en": "Woolaroo",
+   "url": "https://artsandculture.google.com/experiment/woolaroo/ZwE32qj5E_ls6w?hl=ko",
+   "cat": "teach",
+   "one": "카메라로 사물을 비추면 AI가 인식해 사라져 가는 언어로 알려줘요.",
+   "how": "이미지 인식 + 언어 다양성 — ‘AI로 지킬 수 있는 것’을 이야기해요.",
+   "unit": "5학년 2단원 · 이미지 인식",
+   "tip": "휴대폰·태블릿 카메라에 최적화돼 있어요. 사람 얼굴 대신 교실 물건을 비추게 해요.",
+   "tags": [
+    "가입 없음",
+    "카메라"
+   ],
+   "img": "sites/woolaroo.webp"
+  },
+  {
+   "id": "forest",
+   "name": "포레스트 리스너스",
+   "en": "Forest Listeners",
+   "url": "https://artsandculture.google.com/experiment/forest-listeners/jAHbryPWSLc1rA?hl=ko",
+   "cat": "teach",
+   "one": "열대우림 소리 속 동물 울음소리를 찾아 표시하면 과학자의 AI 학습을 도와요.",
+   "how": "‘AI를 가르치는 데이터는 누가 만들까?’ — 시민 과학자 역할 체험.",
+   "unit": "5학년 2단원 · 빅데이터·소리",
+   "tip": "소리 듣기가 핵심이라 이어폰 필수. 일부 기능은 로그인이 필요할 수 있어 교사가 먼저 확인해요.",
+   "tags": [
+    "소리",
+    "교사 시연 권장"
+   ],
+   "img": "sites/forest.webp"
+  },
+  {
+   "id": "corals",
+   "name": "콜링 인 아워 코랄",
+   "en": "Calling in Our Corals",
+   "url": "https://artsandculture.google.com/experiment/calling-in-our-corals/zgFx1tMqeIZyTw?hl=ko",
+   "cat": "teach",
+   "one": "산호초 녹음 속 물고기 소리를 찾아 표시해 해양 과학자를 도와요.",
+   "how": "AI for Oceans와 묶어 ‘바다를 지키는 AI 데이터’ 주제로.",
+   "unit": "5학년 1·2단원 · 데이터",
+   "tip": "3분 내외 짧은 활동. 소리 필수, 이어폰을 준비해요.",
+   "tags": [
+    "소리"
+   ],
+   "img": "sites/corals.webp"
+  },
+  {
+   "id": "tfplay",
+   "name": "텐서플로 플레이그라운드",
+   "en": "TensorFlow Playground",
+   "url": "https://playground.tensorflow.org/",
+   "cat": "teach",
+   "one": "신경망의 층과 뉴런을 직접 바꿔 가며 학습 과정을 눈으로 봐요.",
+   "how": "정보 영재·동아리 심화용 — ‘뉴런을 늘리면 더 잘 맞힐까?’ 실험.",
+   "unit": "심화 · 신경망 원리",
+   "tip": "초등에는 어려운 용어가 많아요. 재생 버튼과 점 색깔 변화만 보는 ‘관찰’ 활동으로 가볍게.",
+   "tags": [
+    "가입 없음",
+    "영어 화면",
+    "심화"
+   ],
+   "img": "sites/tfplay.webp"
+  },
+  {
+   "id": "tinysorter",
+   "name": "타이니 소터",
+   "en": "Tiny Sorter",
+   "url": "https://experiments.withgoogle.com/tiny-sorter",
+   "cat": "teach",
+   "one": "티처블 머신 + 아두이노로 물건을 자동 분류하는 장치를 만들어요.",
+   "how": "메이커 동아리용 — 티처블 머신 모델을 실제 기계 동작과 연결.",
+   "unit": "심화 · 피지컬 컴퓨팅",
+   "tip": "아두이노·서보모터 준비물이 필요해요. 일반 수업보다는 방과후·동아리용.",
+   "tags": [
+    "영어 화면",
+    "심화"
+   ],
+   "img": "sites/tinysorter.webp"
+  },
+  {
+   "id": "moral",
+   "name": "모럴 머신",
+   "en": "Moral Machine",
+   "url": "https://www.moralmachine.net/hl/kr",
+   "cat": "ethics",
+   "pick": true,
+   "one": "피할 수 없는 사고 앞의 자율주행차 — 나는 어떤 선택을 할까?",
+   "how": "13개 상황 판단 → 결과 화면의 ‘다른 사람들의 평균’과 비교 → ‘AI의 판단 기준은 누가 정해야 할까?’ 토론.",
+   "unit": "5학년 1단원 · 생활 속 AI와 윤리",
+   "tip": "사람·동물이 다치는 장면이 나와요. 정답이 없는 토론임을 먼저 말하고, 불편한 학생은 관찰자로 참여해도 돼요.",
+   "tags": [
+    "가입 없음",
+    "한국어"
+   ],
+   "img": "sites/moral.webp"
+  },
+  {
+   "id": "sotbf",
+   "name": "서바이벌 오브 더 베스트 핏",
+   "en": "Survival of the Best Fit",
+   "url": "https://www.survivalofthebestfit.com/",
+   "cat": "ethics",
+   "one": "내가 채용 담당자가 되어 AI에게 일을 맡기면 무슨 일이 생길까? 편향 체험 게임.",
+   "how": "‘한쪽으로 치우친 데이터로 배운 AI는 공정할까?’ — 데이터 편향을 이야기로 이해해요.",
+   "unit": "AI 윤리 · 데이터 편향",
+   "tip": "영어 텍스트가 많아요. 교사 화면으로 장면마다 멈춰 해설하며 함께 진행해요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면",
+    "교사 시연 권장"
+   ],
+   "img": "sites/sotbf.webp"
+  },
+  {
+   "id": "oddoneout",
+   "name": "오드 원 아웃",
+   "en": "Odd One Out",
+   "url": "https://artsandculture.google.com/experiment/odd-one-out/wAHNn4JsVTFOiw?hl=ko",
+   "cat": "ethics",
+   "pick": true,
+   "one": "진짜 미술 작품 사이에 숨은 ‘AI가 만든 가짜’를 찾아요.",
+   "how": "‘AI 그림을 알아보는 단서’를 모둠별로 정리 → 딥페이크·가짜 뉴스 판별로 확장.",
+   "unit": "AI 리터러시 · 생성형 AI 판별",
+   "tip": "정답률보다 ‘왜 그렇게 생각했는지’ 근거 말하기가 핵심이에요.",
+   "tags": [
+    "가입 없음"
+   ],
+   "img": "sites/oddoneout.webp"
+  },
+  {
+   "id": "quickdrawdata",
+   "name": "퀵 드로우 데이터",
+   "en": "Quick, Draw! The Data",
+   "url": "https://quickdraw.withgoogle.com/data",
+   "cat": "ethics",
+   "one": "전 세계 사람들이 그린 5천만 개 낙서 데이터를 직접 들여다봐요.",
+   "how": "‘신발’, ‘집’ 그림이 대부분 비슷한 모양이라면? — 데이터가 한쪽으로 치우치면 AI도 치우친다.",
+   "unit": "5학년 1단원 · 데이터와 AI",
+   "tip": "쿠키 안내창은 ‘OK’로 닫아요. 그림 하나를 눌러 수백 개 데이터를 보는 것까지만 해도 충분해요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면"
+   ],
+   "img": "sites/quickdrawdata.webp"
+  },
+  {
+   "id": "kosis",
+   "name": "KOSIS 통계놀이터",
+   "en": "KOSIS Kids",
+   "url": "https://kosis.kr/edu/",
+   "cat": "data",
+   "pick": true,
+   "one": "어린이 눈높이로 만든 통계 놀이터 — 인구·세계 통계를 그림으로 봐요.",
+   "how": "‘우리나라 인구 성장률’ 시각화 → 그래프에서 가장 크게 변한 해 찾기.",
+   "unit": "5학년 2단원 · 빅데이터 (KOSIS 통계놀이터)",
+   "tip": "교재에 직접 나오는 사이트예요. 메뉴가 많아 ‘비주얼 통계’ 한 곳만 정해서 들어가요.",
+   "tags": [
+    "가입 없음",
+    "한국어"
+   ],
+   "img": "sites/kosis.webp"
+  },
+  {
+   "id": "envbigdata",
+   "name": "환경 빅데이터 플랫폼",
+   "en": "Env Big Data",
+   "url": "https://www.bigdata-environment.kr/",
+   "cat": "data",
+   "one": "미세먼지·수질·기후 등 환경 데이터를 검색하고 내려받아요.",
+   "how": "‘#미세먼지’ 태그로 들어가 우리 지역 데이터를 찾아보는 미션.",
+   "unit": "5학년 2단원 · 빅데이터 (환경 빅데이터 플랫폼)",
+   "tip": "전문가용 사이트라 화면이 복잡해요. 검색어와 클릭 순서를 칠판에 미리 적어 두면 좋아요.",
+   "tags": [
+    "가입 없음",
+    "한국어",
+    "심화"
+   ],
+   "img": "sites/envbigdata.webp"
+  },
+  {
+   "id": "nullschool",
+   "name": "어스 널스쿨",
+   "en": "earth.nullschool.net",
+   "url": "https://earth.nullschool.net/",
+   "cat": "data",
+   "pick": true,
+   "one": "지금 이 순간 지구의 바람·해류·대기를 움직이는 지구본으로 봐요.",
+   "how": "태풍 소식이 있는 날 바람 소용돌이 찾기, 부산 앞바다 해류 방향 확인하기.",
+   "unit": "5학년 2단원 · 빅데이터",
+   "tip": "메뉴는 왼쪽 아래 ‘earth’ 글자를 눌러 열어요(영어). 지구본은 손가락으로 돌리고 벌려서 확대.",
+   "tags": [
+    "가입 없음",
+    "영어 화면"
+   ],
+   "img": "sites/nullschool.webp"
+  },
+  {
+   "id": "flightradar",
+   "name": "플라이트레이더24",
+   "en": "Flightradar24",
+   "url": "https://www.flightradar24.com/",
+   "cat": "data",
+   "one": "지금 하늘을 나는 비행기를 실시간 지도로 봐요.",
+   "how": "김해공항 주변 비행기 하나를 눌러 출발지·도착지·고도를 기록 — 실시간 데이터 읽기.",
+   "unit": "5학년 2단원 · 빅데이터",
+   "tip": "광고와 유료 기능 안내가 떠요. 무료 지도 화면만 사용하고 가입 버튼은 누르지 않아요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면",
+    "광고 있음"
+   ],
+   "img": "sites/flightradar.webp"
+  },
+  {
+   "id": "trends",
+   "name": "구글 트렌드",
+   "en": "Google Trends",
+   "url": "https://trends.google.co.kr/",
+   "cat": "data",
+   "one": "사람들이 무엇을 언제 많이 검색했는지 그래프로 비교해요.",
+   "how": "‘수박’ vs ‘눈사람’ 검색량 비교 → 계절 패턴 발견, ‘데이터로 사람들의 관심을 읽는다’.",
+   "unit": "5학년 2단원 · 빅데이터·데이터 검색",
+   "tip": "검색어 비교는 ‘+ 비교 추가’를 눌러요. 학생 개인 정보와 무관한 주제를 고르게 안내해요.",
+   "tags": [
+    "가입 없음",
+    "한국어"
+   ],
+   "img": "sites/trends.webp"
+  },
+  {
+   "id": "earth",
+   "name": "구글 어스",
+   "en": "Google Earth",
+   "url": "https://earth.google.com/web/",
+   "cat": "data",
+   "one": "3D 위성 지도로 우리 학교와 부산을 하늘에서 내려다봐요.",
+   "how": "학교 → 광안대교 → 해운대 ‘3D 비행 투어’ 만들기, 스트리트 뷰로 현장 들어가 보기.",
+   "unit": "5학년 2단원 · AR/VR 체험",
+   "tip": "그래픽이 무거워 오래된 기기는 느려요. 학생 주소·집 검색은 하지 않도록 미리 약속해요.",
+   "tags": [
+    "가입 없음",
+    "한국어"
+   ],
+   "img": "sites/earth.webp"
+  },
+  {
+   "id": "passagewater",
+   "name": "패시지 오브 워터",
+   "en": "Passage of Water",
+   "url": "https://artsandculture.google.com/experiment/passage-of-water/dAElpEyEjuE9XQ?hl=ko",
+   "cat": "data",
+   "one": "강이연 작가와 NASA가 만든 지구 물 이야기 — 물 부족 해결책을 찾아요.",
+   "how": "과학·사회 ‘물 자원’ 단원과 연결해 데이터 시각화 감상.",
+   "unit": "5학년 2단원 · 빅데이터·환경",
+   "tip": "화면 전환이 영화처럼 길어요. 소리를 켜고 교사 화면으로 함께 보는 것도 좋아요.",
+   "tags": [
+    "가입 없음",
+    "소리"
+   ],
+   "img": "sites/passagewater.webp"
+  },
+  {
+   "id": "rewild",
+   "name": "리와일드 더 월드",
+   "en": "Rewild The World",
+   "url": "https://artsandculture.google.com/experiment/rewild-the-world/IQFqhSColyB_Ng?hl=ko",
+   "cat": "data",
+   "one": "멸종 위기 동물 4종의 서식지를 탐험하고 복원을 도와요.",
+   "how": "환경 교육과 연결 — 동물별 위협 요인 데이터 찾기.",
+   "unit": "5학년 2단원 · 환경 데이터",
+   "tip": "게임처럼 진행돼 몰입도가 높아요. 시간 제한을 정해 주세요.",
+   "tags": [
+    "가입 없음"
+   ],
+   "img": "sites/rewild.webp"
+  },
+  {
+   "id": "botanic",
+   "name": "보태닉 아틀라스",
+   "en": "Botanic Atlas",
+   "url": "https://artsandculture.google.com/experiment/botanic-atlas/xwFwFQ2goojMUw?hl=ko",
+   "cat": "data",
+   "one": "3만 종이 넘는 식물을 세계 지도 위에서 탐험해요.",
+   "how": "‘우리나라에서 볼 수 있는 식물’ 찾기 → 과학 식물 단원 연계.",
+   "unit": "5학년 2단원 · 데이터 검색",
+   "tip": "지도를 확대·이동하는 조작이 많아요. 확대 버튼 위치를 먼저 안내해요.",
+   "tags": [
+    "가입 없음"
+   ],
+   "img": "sites/botanic.webp"
+  },
+  {
+   "id": "entry",
+   "name": "엔트리",
+   "en": "Entry",
+   "url": "https://playentry.org/",
+   "cat": "make",
+   "pick": true,
+   "one": "블록 코딩 + AI 블록(음성 인식·번역·비디오 감지·모델 학습)까지.",
+   "how": "‘손을 들면 캐릭터가 점프’ 같은 비디오 감지 프로젝트로 5학년 AI 체험을 코딩으로 확장.",
+   "unit": "5학년 1·2단원 · 생활 속 SW + AI",
+   "tip": "저장하려면 학급 계정이 필요해요(만 14세 미만은 보호자 동의 절차). 수업 전 학생 계정 상태를 담임 선생님과 확인해요.",
+   "tags": [
+    "한국어",
+    "계정 필요",
+    "카메라"
+   ],
+   "img": "sites/entry.webp"
+  },
+  {
+   "id": "dance",
+   "name": "댄스 파티",
+   "en": "Dance Party · Code.org",
+   "url": "https://code.org/dance",
+   "cat": "make",
+   "one": "블록 코딩으로 좋아하는 노래에 맞춰 캐릭터 춤을 짜요.",
+   "how": "반복·이벤트 블록 연습 → ‘AI 에디션’에서는 AI가 분위기에 맞는 춤을 추천해요.",
+   "unit": "5학년 1단원 · 생활 속 SW",
+   "tip": "노래 소리가 핵심이라 이어폰 필수. 곡 목록에 유명 가수 곡이 있어 고르는 데 시간이 오래 걸리니 곡을 미리 정해 줘요.",
+   "tags": [
+    "가입 없음",
+    "한국어",
+    "소리"
+   ],
+   "img": "sites/dance.webp"
+  },
+  {
+   "id": "cospaces",
+   "name": "딜라이텍스 에듀",
+   "en": "구 CoSpaces Edu",
+   "url": "https://www.delightex.com/edu",
+   "cat": "make",
+   "one": "3D·VR·AR 장면을 만들고 블록 코딩으로 움직여요.",
+   "how": "‘우리 학교 소개 VR 갤러리’ 만들기 → 5학년 AR/VR 체험을 ‘만드는’ 활동으로.",
+   "unit": "5학년 2단원 · AR/VR",
+   "tip": "교사가 학급을 만들고 학생은 학급 코드로 들어가요. 일부 기능은 유료 — 무료 범위를 먼저 확인해요.",
+   "tags": [
+    "계정 필요",
+    "영어 화면"
+   ],
+   "img": "sites/cospaces.webp"
+  },
+  {
+   "id": "ebssw",
+   "name": "EBS 이솦",
+   "en": "EBS SW·AI",
+   "url": "https://www.ebssw.kr/",
+   "cat": "make",
+   "one": "EBS의 소프트웨어·인공지능 학습 플랫폼 — 강좌와 실습이 한곳에.",
+   "how": "‘AI로 문제 해결하기’ 같은 프로젝트형 강좌를 방과후·동아리 심화 경로로 안내.",
+   "unit": "5학년 1·2단원 · 심화 학습",
+   "tip": "회원가입이 필요해요(만 14세 미만 보호자 동의). 수업 중 가입보다 미리 준비된 계정으로.",
+   "tags": [
+    "한국어",
+    "계정 필요"
+   ],
+   "img": "sites/ebssw.webp"
+  },
+  {
+   "id": "perfectcircle",
+   "name": "완벽한 원 그리기",
+   "en": "Draw a Perfect Circle",
+   "url": "https://neal.fun/perfect-circle/",
+   "cat": "fun",
+   "one": "원을 그리면 컴퓨터가 몇 % 완벽한지 바로 계산해 줘요.",
+   "how": "수학 ‘원’ 단원 도입 — ‘컴퓨터는 무엇을 기준으로 점수를 매길까?’ 추측하기.",
+   "unit": "수학 연계 · 컴퓨터의 계산",
+   "tip": "광고가 아래에 떠요. 승부욕이 커서 시간을 정해 주세요.",
+   "tags": [
+    "가입 없음",
+    "영어 화면",
+    "광고 있음"
+   ],
+   "img": "sites/perfectcircle.webp"
+  },
+  {
+   "id": "deepsea",
+   "name": "딥 씨",
+   "en": "The Deep Sea",
+   "url": "https://neal.fun/deep-sea/",
+   "cat": "fun",
+   "one": "스크롤을 내리면 바다 속 1만 미터까지 깊이별 생물을 만나요.",
+   "how": "과학 ‘생물과 환경’ 연계 — 깊이별로 만난 생물 3가지 기록하기.",
+   "unit": "과학 연계 · 웹 탐험",
+   "tip": "한국어 보기 안내가 떠요. 끝까지 내리면 오래 걸리니 목표 깊이를 정해 줘요.",
+   "tags": [
+    "가입 없음",
+    "한국어"
+   ],
+   "img": "sites/deepsea.webp"
+  },
+  {
+   "id": "acplay",
+   "name": "구글 아트 앤 컬처 플레이",
+   "en": "Google Arts & Culture Play",
+   "url": "https://artsandculture.google.com/play?hl=ko",
+   "cat": "fun",
+   "one": "퍼즐·색칠·AI 실험 등 예술 게임 100여 개가 모여 있는 놀이터.",
+   "how": "이 갤러리에 없는 새 실험을 학생이 직접 찾아 ‘추천 카드’로 소개하기.",
+   "unit": "미술 연계 · AI 예술",
+   "tip": "Gemini 기반 실험은 연령·로그인 조건이 다를 수 있어요. 학생 활동 전 교사 계정으로 먼저 열어 봐요.",
+   "tags": [
+    "가입 없음",
+    "한국어"
+   ],
+   "img": "sites/acplay.webp"
+  }
+ ]
+}
