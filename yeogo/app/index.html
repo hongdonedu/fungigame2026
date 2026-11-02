@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>루비와 별 3개 — 내 평가 돌아보기</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#effaf3;--card:#fff;--ink:#23324a;--sub:#5d6b80;--ruby:#e5384f;--ruby2:#ff6b81;--mint:#34b37a;--mint2:#dff6ea;--gold:#ffbf2e;--line:#d8eee2}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:'Noto Sans KR',sans-serif;background:radial-gradient(circle at 15% 10%,#fff7e6 0,transparent 40%),radial-gradient(circle at 90% 90%,#ffe3e8 0,transparent 40%),var(--bg);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.card{width:100%;max-width:440px;background:var(--card);border-radius:28px;box-shadow:0 18px 50px rgba(35,50,74,.14);overflow:hidden;border:3px solid #c9f0d9}
+.hd{background:linear-gradient(135deg,#dff6ea,#fff3f5);padding:14px 18px;display:flex;align-items:center;gap:10px}
+.hd img{width:52px;height:52px}
+.hd h1{font-family:Jua;font-size:22px;margin:0;color:#14684a}.hd p{margin:0;font-size:12px;color:var(--sub)}
+.dots{display:flex;gap:6px;justify-content:center;padding:10px 0 0}.dots i{width:8px;height:8px;border-radius:9px;background:#d9e7df}.dots i.on{background:var(--ruby);width:22px}
+.bd{padding:16px 20px 20px}
+.step{display:none;animation:up .35s ease}.step.on{display:block}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+h2{font-family:Jua;font-size:24px;text-align:center;margin:6px 0 4px}.desc{text-align:center;color:var(--sub);font-size:13.5px;margin:0 0 14px}
+.hero{display:block;margin:0 auto 6px;width:120px;height:120px}
+input[type=number],input[type=text]{width:100%;font:inherit;font-size:16px;border:2px solid var(--line);border-radius:14px;padding:12px 14px;outline:none;background:#fbfffd}
+input:focus{border-color:var(--mint)}
+.num{max-width:160px;margin:0 auto 6px;display:block;text-align:center;font-family:Jua;font-size:26px!important}
+.area{border-radius:18px;padding:12px 14px;margin:10px 0}
+.a1{background:#eef4ff}.a2{background:#fff3e8}.a3{background:#eafaf1}
+.area b{font-family:Jua;font-size:17px;font-weight:400}
+.stars{display:flex;gap:10px;justify-content:center;margin-top:6px}
+.stars button{border:0;background:none;font-size:34px;line-height:1;cursor:pointer;color:#d3dbe4;transition:transform .15s}
+.stars button.on{color:var(--gold);text-shadow:0 2px 8px rgba(255,191,46,.5)}
+.stars button:active{transform:scale(1.25)}
+.crit{border:2px solid var(--line);border-radius:16px;padding:10px 12px;margin:8px 0;font-size:13.5px;line-height:1.55}
+.crit h3{margin:0 0 4px;font-family:Jua;font-weight:400;font-size:17px}
+.crit div{display:flex;gap:6px}.crit span{flex:0 0 46px;color:var(--gold);letter-spacing:-1px}
+label.q{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
+.row{display:flex;gap:10px;margin-top:16px}
+.btn{flex:1;border:0;border-radius:16px;padding:14px;font-family:Jua;font-size:18px;cursor:pointer}
+.go{background:linear-gradient(135deg,var(--ruby2),var(--ruby));color:#fff;box-shadow:0 6px 16px rgba(229,56,79,.3)}
+.back{flex:0 0 90px;background:#eef1f4;color:#4b586b}
+.green{background:linear-gradient(135deg,#3cc489,#1f9a63);color:#fff}
+.mini{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:14px;margin:6px 0}
+.mini .stars{margin:0;gap:4px}.mini .stars button{font-size:26px}
+.chart{border:2px solid var(--line);border-radius:18px;padding:12px 10px 8px;margin:6px 0 10px;background:#fcfffd}
+.chart .t{text-align:center;font-weight:700;font-size:14px;margin-bottom:4px}
+.legend{display:flex;gap:14px;justify-content:center;font-size:12px;color:var(--sub);margin-bottom:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+svg text{font-family:'Noto Sans KR';font-size:11px;fill:#5d6b80}
+.msg{background:var(--mint2);border-radius:16px;padding:12px 14px;font-size:14px;line-height:1.6;display:flex;gap:10px;align-items:flex-start}
+.msg img{width:54px;height:54px;flex:0 0 54px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#23324a;color:#fff;padding:10px 18px;border-radius:30px;font-size:14px;opacity:0;transition:.3s;pointer-events:none}.toast.on{opacity:1}
+.foot{text-align:center;font-size:11px;color:#8b97a8;margin-top:10px}
+</style></head><body>
+<div class="card">
+ <div class="hd"><img src="../art/ruby_wave.webp" alt=""><div><h1>루비와 별 3개</h1><p>내 평가 돌아보기 · 4학년 수학 「막대그래프」</p></div></div>
+ <div class="dots" id="dots"></div>
+ <div class="bd">
+  <section class="step on" data-s="0">
+   <img class="hero" src="../art/ruby_heart.webp" alt="">
+   <h2>안녕! 넌 몇 번이니?</h2><p class="desc">이름은 쓰지 않아도 괜찮아. 번호만 적고 시작해 보자!</p>
+   <input class="num" id="num" type="number" min="1" max="40" placeholder="번호">
+   <div class="row"><button class="btn go" onclick="go(1)">시작하기 ✨</button></div>
+  </section>
+  <section class="step" data-s="1">
+   <h2>나의 예상 별점</h2><p class="desc">평가를 시작하기 전, 나는 얼마나 잘할 수 있을까?</p>
+   <div id="pred"></div>
+   <div class="row"><button class="btn back" onclick="go(0)">이전</button><button class="btn go" onclick="go(2)">기준 보기 👉</button></div>
+  </section>
+  <section class="step" data-s="2">
+   <h2>이렇게 하면 별 3개!</h2><p class="desc">선생님의 평가 기준을 미리 확인해요</p>
+   <div id="crit"></div>
+   <div class="row"><button class="btn back" onclick="go(1)">이전</button><button class="btn go" onclick="go(3)">결과 입력하기 📝</button></div>
+  </section>
+  <section class="step" data-s="3">
+   <h2>나의 실제 결과는?</h2><p class="desc">선생님께 받은 별을 눌러 주세요</p>
+   <div id="act"></div>
+   <label class="q">😥 가장 어려웠던 순간은?</label><input id="hard" type="text" placeholder="예: 눈금 한 칸을 몇 명으로 할지 정할 때">
+   <label class="q">🌱 다음에 바꿀 한 가지는?</label><input id="next" type="text" placeholder="예: 그래프 제목을 먼저 쓰고 시작하기">
+   <div class="row"><button class="btn back" onclick="go(2)">이전</button><button class="btn go" onclick="go(4)">결과 보기 🎁</button></div>
+  </section>
+  <section class="step" data-s="4">
+   <h2>수고했어, 캠페인 기획자!</h2>
+   <div class="chart"><div class="t">예상 별과 실제 별 비교</div>
+    <div class="legend"><span><i style="background:#b8c3d1"></i>예상 별</span><span><i style="background:#ff6b81"></i>실제 별</span></div>
+    <svg id="svg" viewBox="0 0 360 200" width="100%"></svg></div>
+   <div class="msg"><img id="rimg" src="../art/ruby_stars.webp" alt=""><div id="msg"></div></div>
+   <div class="row"><button class="btn green" onclick="copyRes()">📋 결과 복사하기</button></div>
+   <div class="row" style="margin-top:8px"><button class="btn back" style="flex:1" onclick="reset()">처음으로</button></div>
+  </section>
+  <div class="foot">입력한 내용은 이 기기 화면에만 있어요 · 저장하거나 보내지 않아요</div>
+ </div>
+</div>
+<div class="toast" id="toast">복사했어요! 선생님이 알려 준 곳에 붙여 넣어요</div>
+<script>
+const A=[{k:'알아요',e:'📘',c:'a1',sub:'막대그래프의 제목·가로·세로·눈금',r:['제목, 가로, 세로, 눈금을 빠짐없이 완벽하게 적었어요!','필요한 것 중 한두 가지를 깜빡하고 빠뜨렸어요.','가로, 세로, 제목, 눈금을 어떻게 써야 할지 잘 모르겠어요.']},
+{k:'할 수 있어요',e:'🛠',c:'a2',sub:'조사 → 표 → 막대그래프 → 사실 2가지',r:['조사한 결과를 표와 그래프로 정확히 그리고, 알게 된 사실도 2가지 잘 찾았어요!','표나 그래프 그리기에 조금 실수가 있거나, 알게 된 사실을 1가지만 찾았어요.','조사한 내용을 표와 그래프로 나타내고 사실을 찾기가 어려워요.']},
+{k:'소중히 여겨요',e:'💚',c:'a3',sub:'그래프를 근거로 캠페인 제안',r:['그래프의 숫자와 결과를 비교해서 우리 반에 딱 맞는 캠페인을 제안했어요!','그래프 결과와 캠페인을 연결하긴 했지만, 설명이 조금 부족해요.','그래프 결과를 보지 않고, 내가 하고 싶은 캠페인만 제안했어요.']}];
+const S={p:[0,0,0],a:[0,0,0]};let cur=0;
+function stars(id,arr,i,small){return `<div class="stars">${[1,2,3].map(n=>`<button aria-label="별 ${n}개" class="${arr[i]>=n?'on':''}" onclick="setS('${id}',${i},${n})">★</button>`).join('')}</div>`}
+function setS(id,i,n){(id==='p'?S.p:S.a)[i]=n;render()}
+function render(){
+ document.getElementById('pred').innerHTML=A.map((a,i)=>`<div class="area ${a.c}"><b>${a.e} ${a.k}</b> <small style="color:#5d6b80">${a.sub}</small>${stars('p',S.p,i)}</div>`).join('');
+ document.getElementById('crit').innerHTML=A.map(a=>`<div class="crit"><h3>${a.e} ${a.k}</h3>${a.r.map((t,j)=>`<div><span>${'★'.repeat(3-j)}${'☆'.repeat(j)}</span>${t}</div>`).join('')}</div>`).join('');
+ document.getElementById('act').innerHTML=A.map((a,i)=>`<div class="mini ${a.c}"><b style="font-family:Jua;font-weight:400">${a.e} ${a.k}</b>${stars('a',S.a,i)}</div>`).join('');
+ document.getElementById('dots').innerHTML=[0,1,2,3,4].map(n=>`<i class="${n===cur?'on':''}"></i>`).join('');
+}
+function go(n){
+ if(n===1&&!document.getElementById('num').value){toast('번호를 먼저 적어 주세요');return}
+ if(n===2&&S.p.includes(0)){toast('세 영역 모두 별을 골라 주세요');return}
+ if(n===4&&S.a.includes(0)){toast('받은 별을 모두 눌러 주세요');return}
+ cur=n;document.querySelectorAll('.step').forEach(s=>s.classList.toggle('on',+s.dataset.s===n));if(n===4)result();render();window.scrollTo(0,0)}
+function result(){
+ const W=360,H=200,x0=40,y0=20,ch=140,gw=(W-x0-10)/3;let g='';
+ for(let t=0;t<=3;t++){const y=y0+ch-ch*t/3;g+=`<line x1="${x0}" x2="${W-6}" y1="${y}" y2="${y}" stroke="#e3ece7" stroke-dasharray="${t?'3 3':''}"/><text x="${x0-8}" y="${y+4}" text-anchor="end">${t}</text>`}
+ g+=`<text x="10" y="12" font-weight="700">(별)</text>`;
+ A.forEach((a,i)=>{const cx=x0+gw*i+gw/2,bw=22;[[S.p[i],'#b8c3d1',-bw-3],[S.a[i],'#ff6b81',3]].forEach(([v,c,dx])=>{const h=ch*v/3;g+=`<rect x="${cx+dx}" y="${y0+ch-h}" width="${bw}" height="${h}" rx="5" fill="${c}"/><text x="${cx+dx+bw/2}" y="${y0+ch-h-4}" text-anchor="middle" font-weight="700">${v}</text>`});g+=`<text x="${cx}" y="${y0+ch+18}" text-anchor="middle" font-weight="700">${a.e} ${a.k}</text>`});
+ g+=`<line x1="${x0}" x2="${x0}" y1="${y0}" y2="${y0+ch}" stroke="#9fb3a8"/><line x1="${x0}" x2="${W-6}" y1="${y0+ch}" y2="${y0+ch}" stroke="#9fb3a8"/><text x="${W-6}" y="${H-2}" text-anchor="end">(영역)</text>`;
+ document.getElementById('svg').innerHTML=g;
+ const d=S.a.map((v,i)=>v-S.p[i]);const up=d.filter(x=>x>0).length,dn=d.filter(x=>x<0).length;
+ let m,img;
+ if(up&&!dn){m='예상보다 훨씬 잘해냈어! 스스로를 조금 더 믿어도 돼.';img='ruby_stars'}
+ else if(dn&&!up){m='생각보다 어려웠구나. 어디서 별이 줄었는지 기준표를 다시 보면 다음엔 꼭 올라갈 거야.';img='ruby_magnifier'}
+ else if(!up&&!dn){m='내 실력을 정확히 알고 있었네! 그게 바로 메타인지야.';img='ruby_thumbs'}
+ else{m='올라간 영역도, 내려간 영역도 있어. 잘한 점은 이어 가고 아쉬운 점은 한 가지만 바꿔 보자.';img='ruby_idea'}
+ const best=A[S.a.indexOf(Math.max(...S.a))];
+ document.getElementById('rimg').src='../art/'+img+'.webp';
+ document.getElementById('msg').innerHTML=`<b>${document.getElementById('num').value}번 친구,</b> ${m}<br>가장 빛난 영역은 <b>${best.e} ${best.k}</b>!${document.getElementById('next').value?`<br>다음 다짐: “${esc(document.getElementById('next').value)}”`:''}`;
+}
+function esc(s){return s.replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}
+function copyRes(){const t=`[루비와 별 3개] ${document.getElementById('num').value}번\n`+A.map((a,i)=>`${a.k}: 예상 ${S.p[i]} → 실제 ${S.a[i]}`).join('\n')+`\n어려웠던 순간: ${document.getElementById('hard').value}\n다음에 바꿀 한 가지: ${document.getElementById('next').value}`;
+ (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('복사했어요! 선생님이 알려 준 곳에 붙여 넣어요')).catch(()=>{prompt('아래 내용을 복사하세요',t)})}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1800)}
+function reset(){S.p=[0,0,0];S.a=[0,0,0];['num','hard','next'].forEach(i=>document.getElementById(i).value='');go(0)}
+render();
+</script></body></html>
