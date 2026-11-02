@@ -326,7 +326,7 @@ window.STEPS = [
  share:"모둠 8명 1인 2분 공유 → 단기 계획 한 줄을 패들렛 ‘모듈 5’ 칸에",
  tips:["계획은 ‘무엇을, 언제까지, 누구와’가 보이면 실천으로 이어지기 쉬워요."]},
 
-{id:"s19", part:5, num:19, short:"한 문장과 사후 역량 측정", time:"17:30", title:"AX 시대의 교사 전문성은 ___ 이다", img:"redi_heart",
+{id:"s19", part:5, num:19, short:"한 문장과 사후 역량 측정", time:"17:30", title:"AX 시대의 교사 전문성은 ___ 이다", img:"end",
  lead:"오늘의 마지막 한 문장을 남기고, 사후 역량 측정으로 연수를 마칩니다.",
  blocks:[{k:"html", h:`<div class="grid g2"><div class="card pad"><b style="font-size:18px">한 문장 남기기</b><p style="color:var(--sub);margin:6px 0 0">W8 마지막 칸을 채워 패들렛에 올려요.</p></div><div class="card pad"><b style="font-size:18px">사후 역량 측정</b><p style="color:var(--sub);margin:6px 0 0">역량 코드는 연수마다 달라요. 당일 화면의 안내를 따라 주세요.</p></div></div>
  <div class="quote" style="text-align:center">끝까지 함께해 주셔서 고맙습니다. 18:00에 마칩니다.</div>`}]}
