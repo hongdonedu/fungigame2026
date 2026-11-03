@@ -73,7 +73,7 @@ function home(){
    <div class="tx"><span class="pill">2026 AIEDAP 마스터교원 신규연수 · 경남 초등 1회차 · AI 기반 창작</span>
    <h1>여섯 렌즈로 보고,<br><em>다시 짓는 내 수업</em></h1>
    <p>모듈 4 · 나의 AI 융합수업 Re-design 하기</p><p>모듈 5 · 마스터교원 역량 개발을 위한 지속적 전문성 개발</p>
-   <p style="color:#b9c6f2;font-size:14px;margin-top:10px">11월 8일(일) 11:00 – 18:00 · 해운대 센트럴 호텔 메인홀 · 8명씩 10모둠</p>
+   <p style="color:#b9c6f2;font-size:14px;margin-top:10px">11월 8일(일) 11:00 – 18:00 · 해운대 센트럴 호텔 3층 대연회장 · 원탁 11개(7~8명씩)</p>
    <div class="btns"><a class="b y" href="#s1">1차시부터 시작하기 →</a><a class="b g" href="#sheets">📝 내 활동지</a><a class="b g" href="#timer">⏱️ 공유 타이머</a></div></div></section>
 
   <h2 class="sec">오늘의 흐름<small>평가 → 성찰 → 재설계 → 환류, 그리고 성장</small></h2>
@@ -220,8 +220,9 @@ function caseP(){
 /* ── 공유 타이머 ── */
 const PRESETS={
   share7:{n:'4차시 공유 · 7분 × 4명',seq:[].concat(...[1,2,3,4].map(p=>[[p+'번 설명',180],[p+'번 피드백',180],[p+'번 기록',60]]))},
-  m5:{n:'모듈 5 · 2분 × 8명',seq:[1,2,3,4,5,6,7,8].map(p=>[p+'번 발표',120])},
-  one:{n:'2차시 · 1분 × 8명',seq:[1,2,3,4,5,6,7,8].map(p=>[p+'번 핵심 문제',60])},
+  share3:{n:'4차시 공유 · 7분 × 3명',seq:[].concat(...[1,2,3].map(p=>[[p+'번 설명',180],[p+'번 피드백',180],[p+'번 기록',60]]))},
+  m5:{n:'모듈 5 · 2분씩 (최대 8명)',seq:[1,2,3,4,5,6,7,8].map(p=>[p+'번 발표',120])},
+  one:{n:'2차시 · 1분씩 (최대 8명)',seq:[1,2,3,4,5,6,7,8].map(p=>[p+'번 핵심 문제',60])},
   t2:{n:'2분',seq:[['2분',120]]},t5:{n:'5분',seq:[['5분',300]]},t10:{n:'10분',seq:[['10분',600]]},t25:{n:'25분 · 지도안 작성',seq:[['AIEDAP 지도안 작성',1500]]}
 };
 const T={key:'share7',i:0,left:180,run:false,iv:null};
@@ -271,12 +272,12 @@ function board(){
 
 /* ── 보조강사 진행 안내 ── */
 function helper(){
-  $('#main').innerHTML=`<div class="card pad"><div class="badge"><b>보조강사 선생님께</b><span>모듈 4 · 1~4차시</span></div><h1 style="font-size:28px;margin:12px 0 6px">함께 돌아 주실 곳</h1><p style="color:var(--sub);margin:0">10모둠(8명씩)을 보조강사 1명당 2모둠씩 맡아 주세요. 모듈 5(16:00~18:00)는 보조 배정이 없습니다.</p></div>
+  $('#main').innerHTML=`<div class="card pad"><div class="badge"><b>보조강사 선생님께</b><span>모듈 4 · 1~4차시</span></div><h1 style="font-size:28px;margin:12px 0 6px">함께 돌아 주실 곳</h1><p style="color:var(--sub);margin:0">원탁 11모둠(7~8명씩)을 보조강사 다섯 분이 2~3모둠씩 맡아 주세요. 출석 서명은 2차시마다 운영진이 진행합니다. 모듈 5(16:00~18:00)는 보조 배정이 없습니다.</p></div>
   <div class="scroll" style="margin-top:16px"><table class="t"><tr><th>시간</th><th>활동</th><th>도와주실 일</th></tr>
    <tr><td class="k">11:00</td><td>1차시 · 준비, 학생 A/B</td><td>AIEDAP 로그인과 내 지도안·성찰 보고서 열기, 패들렛 접속 확인</td></tr>
    <tr><td class="k">11:30</td><td>1차시 · W1 작성</td><td>“평가하고 싶은 학습이 학습목표와 바로 이어지나요?” 질문하며 순회</td></tr>
    <tr><td class="k">12:00</td><td>2차시 · 성찰표</td><td>‘좋았다·아쉬웠다’ 대신 장면으로 쓰도록 안내, 렌즈를 모두 같은 양으로 채우지 않아도 됨</td></tr>
-   <tr><td class="k">12:35</td><td>2차시 · 1인 1분</td><td>모둠 공유 시간 관리 (타이머 ‘1분 × 8명’)</td></tr>
+   <tr><td class="k">12:35</td><td>2차시 · 1인 1분</td><td>모둠 공유 시간 관리 (타이머 ‘1분씩’)</td></tr>
    <tr><td class="k">14:25</td><td>3차시 · AIEDAP 지도안 25분</td><td>가장 바쁜 시간. 지도안 불러오기·저장 오류 해결, ‘도구 바꾸기’에 머물면 핵심 문제로 되돌리는 질문</td></tr>
    <tr><td class="k">15:00</td><td>4차시 · 4+4 공유</td><td>팀 나누기, 7분 타이머(설명 3·피드백 3·기록 1), 피드백이 근거와 함께인지 확인</td></tr>
    <tr><td class="k">15:35</td><td>4차시 · 반영·저장</td><td>AIEDAP 최종 저장 확인, 한 문장 패들렛 공유 확인</td></tr></table></div>
