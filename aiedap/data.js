@@ -1,7 +1,7 @@
 /* 모듈 4·5 아카이브 데이터 — 내용을 고칠 때는 이 파일만 고치면 됩니다. */
 window.CFG = {
   // 운영진이 회차 패들렛 주소를 알려 주면 따옴표 안에 붙여 넣으세요. 비어 있으면 '운영진 안내 패들렛'으로만 표시됩니다.
-  padlet: "",
+  padlet: "https://padlet.com/oneteacher/ai-4-5-s0255959i70cs9rx93rp",
   storeKey: "aiedap-m45-gn1-v1"
 };
 
