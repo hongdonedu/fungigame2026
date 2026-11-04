@@ -269,9 +269,9 @@ window.STEPS = [
 
 {id:"s14", part:4, num:14, short:"반영하고 한 문장으로", time:"15:35 · 15분", title:"골라서 반영하고, 한 문장으로 정리하기", img:"part4",
  lead:"받은 피드백을 모두 반영할 필요는 없어요. 내 학습목표와 학생, 교실 환경에 맞는 것을 골라 AIEDAP 지도안을 고치고, 나의 Re-design을 한 문장으로 남깁니다.",
- how:["반영할 피드백 고르기 (W6)","AIEDAP 지도안 수정·최종 저장","한 문장 완성 (W7)","패들렛 ‘4차시’ 칸에 한 문장 공유"],
+ how:["반영할 피드백 고르기 (W6)","AIEDAP 지도안 수정·최종 저장","수료 제출: 공유마당 공유 + 대시보드 제출","한 문장 완성 (W7) → 패들렛 ‘4차시’ 칸"],
  sheet:"W7",
- blocks:[{k:"case", t:"강사의 한 문장", h:`<p>기존에는 <b>실천을 다짐하고 끝나는</b> 수업이었지만, 학생이 <b>자신의 실천을 기록하고 그 기록으로 챗봇을 다시 가르칠</b> 수 있도록 <b>‘실천 기록이 AI의 자료가 되는 흐름’</b>을 중심으로 다시 설계하였습니다.</p>`},
+ blocks:[{k:"html", h:`<div class="tip" style="border-color:var(--gold);background:var(--goldS)"><b>수료 제출</b>다시 설계한 지도안을 <b>두 곳 모두</b> 올려야 수료로 인정돼요. ① AIEDAP 공유마당에 공유 ② 나의 역량 분석 대시보드 › 수료 제출물 제출 › 「AI융합수업설계지도안 제출」</div>`},{k:"case", t:"강사의 한 문장", h:`<p>기존에는 <b>실천을 다짐하고 끝나는</b> 수업이었지만, 학생이 <b>자신의 실천을 기록하고 그 기록으로 챗봇을 다시 가르칠</b> 수 있도록 <b>‘실천 기록이 AI의 자료가 되는 흐름’</b>을 중심으로 다시 설계하였습니다.</p>`},
   {k:"html", h:`<div class="quote" style="text-align:center;font-size:17px"><b>평가 → 성찰 → 재설계 → 환류</b><br>오늘 한 바퀴가 다음 수업의 출발점이 됩니다.</div>`}],
  share:"나의 Re-design 한 문장 → 패들렛 ‘4차시’ 칸",
  tips:["기술 활용 자체가 아니라 ‘학생에게 기대하는 변화’와 ‘핵심 설계 변화’가 문장 안에서 이어지게 써요."]},
@@ -280,7 +280,7 @@ window.STEPS = [
 {id:"s15", part:5, num:15, short:"왜 전문성 개발인가", time:"16:00", title:"AX 시대, 교사가 계속 자라야 하는 이유", img:"part5",
  lead:"연수의 마지막 모듈이에요. 마스터교원으로서 앞으로 어떻게 성장할지 계획을 세우고 모둠에서 나눕니다.",
  blocks:[
-  {k:"html", h:`<div class="tip" style="border-color:var(--gold);background:var(--goldS)"><b>먼저 확인</b>모듈 5 산출물 제출 방법은 시작할 때 운영진 공지대로 안내합니다.</div>
+  {k:"html", h:`<div class="tip" style="border-color:var(--gold);background:var(--goldS)"><b>먼저 확인</b>수료 제출물 — 모듈 4에서 다시 설계한 지도안을 ① 공유마당에 공유하고 ② 나의 역량 분석 대시보드 › 수료 제출물 제출 › 「AI융합수업설계지도안 제출」에 올렸나요? 두 곳 모두 해야 수료로 인정돼요.</div>
   <div class="quote" style="font-size:18px">“AI 시대의 교육혁신은 교사의 역량에 달려있다”<br><small style="color:var(--sub)">「대한민국 인공지능 행동계획」(2026. 2. 25., 국가인공지능전략위원회)</small></div>
   <h2 class="sec">교원 AI·디지털 교육역량체계의 3대 핵심가치</h2><div class="grid g3">
    <div class="card pad"><b>인간의 존엄성을 위한 교육</b><p style="margin:6px 0 0;color:var(--sub);font-size:14.5px">Ⓐ AI·디지털 기반 교육 이해 · Ⓑ 윤리적 실천</p></div>
