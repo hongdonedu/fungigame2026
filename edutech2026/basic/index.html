@@ -3,26 +3,76 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="에듀테크 활용 기본과정 2026. 11. 6.(금) — 잔소리 대신 클릭 한 번, Google로 굴러가는 우리 반: 실제 화면에 번호를 붙인 따라 하기, 복사해서 쓰는 프롬프트, 실습 자료">
-<meta property="og:title" content="잔소리 대신 클릭 한 번, Google로 굴러가는 우리 반 — 연수 아카이브">
-<meta property="og:image" content="https://hongdonedu.github.io/fungigame2026/edutech2026/art/cover_basic.webp">
-<meta name="theme-color" content="#0d2142">
-<title>잔소리 대신 클릭 한 번, Google로 굴러가는 우리 반 | 에듀테크 활용 기본과정 아카이브</title>
-<link rel="icon" href="../art/gu_wave_i.png">
+<meta name="description" content="2026 교원 에듀테크 활용 직무연수 기본과정(2026.11.6.) — 잔소리 대신 클릭 한 번, Google로 굴러가는 우리 반: 실제 화면 캡처, 복사해서 쓰는 프롬프트, 실습 자료, 역량 진단·만족도 조사">
+<meta property="og:title" content="Google로 굴러가는 우리 반 · 에듀테크 기본과정 아카이브">
+<meta property="og:image" content="https://hongdonedu.github.io/fungigame2026/edutech2026/basic/art/cover.webp">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}.nb em{display:flex;flex-wrap:wrap;gap:6px 16px}.nb em a{color:var(--ink2);text-decoration:none}.nb em a:hover{text-decoration:underline}.nbnote{margin:10px 2px 0;font-size:13px;color:var(--muted)}
+
+/* ---------- 역량 진단 · 만족도 조사 ---------- */
+.survey{display:flex;align-items:center;gap:12px;width:100%;margin:18px 0 0;padding:12px 12px;border:0;border-radius:16px;text-align:left;color:#13235b;
+  background:linear-gradient(135deg,#ffd75e 0%,#ffc531 55%,#ffb21f 100%);box-shadow:0 8px 20px rgba(0,0,0,.28),inset 0 -3px 0 rgba(0,0,0,.08);transition:transform .15s}
+.survey:hover{transform:translateY(-2px)}
+.sv-ic{display:grid;grid-template-columns:repeat(2,9px);gap:3px;padding:7px;background:#fff;border-radius:9px;flex:none}
+.sv-ic i{width:9px;height:9px;border-radius:2px;background:#13235b}
+.sv-ic i:nth-child(2){background:#2f5bd8}.sv-ic i:nth-child(3){background:#2f5bd8}
+.sv-tx{display:grid;gap:1px;min-width:0}
+.sv-tx b{font-size:14.5px;font-weight:900;line-height:1.25}
+.sv-tx small{font-size:11.5px;color:#3b3418}
+.sv-go{margin-left:auto;font-size:22px;font-weight:900;line-height:1}
+.svwrap{display:grid;gap:14px}
+.svhead{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;justify-content:space-between}
+.svhead small{color:var(--muted);font-size:12.5px}
+.svgroup{display:grid;gap:10px}
+.svgroup>h3{font-family:var(--fDisplay);font-weight:400;font-size:20px;color:var(--ink)}
+.svgroup>h3 em{font-style:normal;font-size:13px;font-family:var(--fBody);color:var(--muted);margin-left:6px}
+.svcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.svcard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:8px;justify-items:center;text-align:center;box-shadow:var(--shadow)}
+.svcard .tg{justify-self:start;font-size:11.5px;font-weight:900;letter-spacing:.06em;color:#fff;background:var(--ink2);padding:3px 10px;border-radius:99px}
+.svcard.pre .tg{background:#e5484d}
+.svcard b{font-size:16px;font-weight:900;color:var(--text)}
+.svcard .d{font-size:13px;color:var(--muted);line-height:1.45}
+.svcard img{width:150px;height:150px;object-fit:contain;background:#fff;border-radius:12px;padding:6px;border:1px solid var(--line)}
+.svcard .who{font-size:12px;font-weight:700;color:var(--ink2)}
+.svnote{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:14px;background:var(--chip);color:var(--chipText);font-size:13.5px;font-weight:700}
+.svsec .svcards{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.svcards>.svcard:only-child{max-width:360px;width:100%}
+.lb .in .svwrap{background:var(--paper);padding:18px;border-radius:20px;max-width:980px;margin:auto}
+@media (max-width:640px){.svcard img{width:130px;height:130px}}
+</style>
+<title>Google로 굴러가는 우리 반 · 에듀테크 기본과정</title>
+<link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
-/* Layout: 노트북LM의 '출처 패널'처럼 왼쪽 세로 시간표(단계·목표) + 오른쪽 노트 페이지 */
+/* Layout: 왼쪽 세로 단계 목록 + 오른쪽 노트 페이지 */
 :root{
-  --ink:#0f3266; --ink2:#1a73e8; --sun:#fbbc04; --mint:#1e8e3e; --coral:#ea4335;
-  --paper:#f5f7fb; --card:#ffffff; --line:#dfe5ef; --text:#17223a; --muted:#5d6a80; --chip:#e9effa; --chipText:#1a73e8; --promptBg:#f2f6fd;
-  --side:#0d2142; --sideText:#eef2f9; --sideMuted:#aab7cc; --sideActive:#1b3c72; --deep:#0d2142; --deepRGB:13,33,66;
-  --shadow:0 8px 26px rgba(var(--deepRGB),.10);
-  --fDisplay:'Jua','Noto Sans KR',sans-serif; --fBody:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif; --fSoft:'Gowun Dodum','Noto Sans KR',system-ui,sans-serif;
+  --ink:#13235b;          /* 남색 — 사이드바·제목 */
+  --ink2:#2f5bd8;         /* 파랑 — 강조 */
+  --sun:#ffc531;          /* 노랑 — 하이라이트 */
+  --mint:#14b8a6;         /* 청록 — 완료·초록 표시 */
+  --coral:#ef4444;        /* 빨강 — 캡처 번호 */
+  --paper:#f4f7fd;        /* 페이지 바탕 */
+  --card:#ffffff;
+  --line:#dfe6f3;
+  --text:#0f1a3a;
+  --muted:#5b6785;
+  --chip:#e7eefc;
+  --chipText:#2f5bd8;
+  --promptBg:#f1f5ff;
+  --side:#0f1a44; --sideText:#e8eeff; --sideMuted:#a9b6e0; --sideActive:#2a4bb8;
+  --shadow:0 6px 22px rgba(30,60,150,.10);
+  --fDisplay:'Jua','Noto Sans KR',system-ui,sans-serif;
+  --fBody:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+  --fSoft:'Gowun Dodum','Noto Sans KR',system-ui,sans-serif;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#0d1424; --card:#141e33; --line:#26344f; --text:#e8edf6; --muted:#9aa8c0; --chip:#1c2a45; --chipText:#8ab4f8; --promptBg:#17233b; --shadow:0 6px 22px rgba(0,0,0,.35); --ink:#ffd45e; --ink2:#8ab4f8; color-scheme:dark}}
-:root[data-theme="dark"]{--paper:#0d1424; --card:#141e33; --line:#26344f; --text:#e8edf6; --muted:#9aa8c0; --chip:#1c2a45; --chipText:#8ab4f8; --promptBg:#17233b; --shadow:0 6px 22px rgba(0,0,0,.35); --ink:#ffd45e; --ink2:#8ab4f8; color-scheme:dark}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0d1328; --card:#151d3a; --line:#26315a; --text:#e8edfb; --muted:#9aa6c8; --chip:#1f2a52; --chipText:#a9c1ff;
+  --promptBg:#18224a; --side:#070b1c; --sideActive:#22389a; --shadow:0 6px 22px rgba(0,0,0,.35); --ink:#cfdcff; --ink2:#8fb0ff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0d1328; --card:#151d3a; --line:#26315a; --text:#e8edfb; --muted:#9aa6c8; --chip:#1f2a52; --chipText:#a9c1ff;
+  --promptBg:#18224a; --side:#070b1c; --sideActive:#22389a; --shadow:0 6px 22px rgba(0,0,0,.35); --ink:#cfdcff; --ink2:#8fb0ff; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{background:var(--paper);color:var(--text);font-family:var(--fBody);font-size:15.5px;line-height:1.65;word-break:keep-all}
@@ -35,7 +85,7 @@ button{font:inherit;cursor:pointer}
 .side{background:var(--side);color:var(--sideText);position:sticky;top:env(safe-area-inset-top,0px);height:calc(100vh - env(safe-area-inset-top,0px));overflow-y:auto;padding-block:20px 28px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:16px;scrollbar-width:thin}
 .brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:inherit;padding:4px 6px 14px}
 .brand img{width:52px;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
-.brand b{font-family:var(--fDisplay);font-weight:900;font-size:19px;line-height:1.15;display:block}
+.brand b{font-family:var(--fDisplay);font-weight:400;font-size:21px;line-height:1.15;display:block}
 .brand small{color:var(--sideMuted);font-size:12.5px}
 .navhome{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:12px;color:var(--sideText);text-decoration:none;font-weight:700;font-size:14.5px}
 .navhome[aria-current="page"],.navhome:hover{background:var(--sideActive)}
@@ -59,7 +109,7 @@ button{font:inherit;cursor:pointer}
 main{min-width:0;padding-block:28px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .wrap{max-width:1060px;margin:0 auto}
 h1,h2,h3{text-wrap:balance;line-height:1.3;margin:0}
-h2{font-family:var(--fDisplay);font-weight:900;font-size:25px;color:var(--ink);letter-spacing:-.01em}
+h2{font-family:var(--fDisplay);font-weight:400;font-size:26px;color:var(--ink)}
 h3{font-size:17px;font-weight:900}
 .eyebrow{font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--ink2)}
 .sec{margin-top:34px;display:grid;gap:14px}
@@ -68,19 +118,19 @@ h3{font-size:17px;font-weight:900}
 .cite{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--chipText);background:var(--chip);border-radius:999px;padding:2px 10px;white-space:nowrap}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{font-size:12.5px;font-weight:700;border-radius:999px;padding:3px 11px;background:var(--chip);color:var(--chipText)}
-.chip.sun{background:var(--sun);color:#2a1d00}
+.chip.sun{background:var(--sun);color:#3a2a00}
 /* hero */
-.hero{position:relative;border-radius:26px;overflow:hidden;background:var(--deep);color:#fff;box-shadow:var(--shadow);aspect-ratio:16/8.2;max-width:100%}
-.hero img{position:absolute;top:0;right:0;bottom:0;left:auto;width:64%;height:100%;object-fit:cover;object-position:28% center}
-.hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,var(--deep) 0%,var(--deep) 36%,rgba(var(--deepRGB),.55) 46%,rgba(var(--deepRGB),0) 60%)}
+.hero{position:relative;border-radius:26px;overflow:hidden;background:#13235b;color:#fff;box-shadow:var(--shadow);aspect-ratio:16/8.2;max-width:100%}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,16,48,.88) 0%,rgba(9,16,48,.55) 38%,rgba(9,16,48,0) 60%)}
 .hero .hcopy{position:relative;padding:clamp(20px,4vw,48px);max-width:560px;display:grid;gap:14px;height:100%;align-content:center}
-.hero .tag{justify-self:start;background:#fff;color:var(--deep);font-weight:900;font-size:13px;border-radius:999px;padding:5px 14px}
-.hero h1{font-family:var(--fDisplay);font-weight:900;font-size:clamp(28px,4.2vw,48px);line-height:1.22;letter-spacing:-.01em;text-shadow:0 4px 18px rgba(0,0,0,.35)}
+.hero .tag{justify-self:start;background:#fff;color:#13235b;font-weight:900;font-size:13px;border-radius:999px;padding:5px 14px}
+.hero h1{font-family:var(--fDisplay);font-weight:400;font-size:clamp(28px,4.4vw,50px);line-height:1.18;text-shadow:0 4px 18px rgba(0,0,0,.35)}
 .hero h1 em{font-style:normal;color:var(--sun)}
-.hero p{margin:0;color:#dfe6f3;font-size:15px}
+.hero p{margin:0;color:#dbe6ff;font-size:15px}
 .hero .who{font-weight:700;color:#fff}
 .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:10px 18px;font-weight:900;font-size:14.5px;text-decoration:none;background:var(--sun);color:#2a1d00}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:10px 18px;font-weight:900;font-size:14.5px;text-decoration:none;background:var(--sun);color:#3a2a00}
 .btn.ghost{background:rgba(255,255,255,.14);color:#fff;border:1.5px solid rgba(255,255,255,.4)}
 .btn.line{background:var(--card);color:var(--ink2);border:1.5px solid var(--line)}
 .btn.small{padding:6px 13px;font-size:13px}
@@ -93,18 +143,18 @@ h3{font-size:17px;font-weight:900}
 /* part cards */
 .parts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .part{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
-.part .pic{aspect-ratio:16/9;background:var(--deep);overflow:hidden}
+.part .pic{aspect-ratio:16/9;background:#13235b;overflow:hidden}
 .part .pic img{width:100%;height:100%;object-fit:cover;object-position:68% 50%}
 .part .body{padding:14px 16px 16px;display:grid;gap:8px;align-content:start}
-.part .num{font-family:var(--fDisplay);font-weight:700;font-size:13px;color:var(--ink2);letter-spacing:.06em}
+.part .num{font-family:var(--fDisplay);font-size:14px;color:var(--ink2)}
 .part h3{font-size:16px}
 .part ol{margin:0;padding:0;list-style:none;display:grid;gap:4px}
 .part li a{display:flex;gap:8px;text-decoration:none;color:var(--text);font-size:13.5px;align-items:baseline}
-.part li a b{font-family:var(--fDisplay);font-weight:900;color:var(--ink2);min-width:20px}
+.part li a b{font-family:var(--fDisplay);font-weight:400;color:var(--ink2);min-width:20px}
 /* three panels */
 .panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:6px}
-.panel b{font-family:var(--fDisplay);font-weight:900;font-size:18px;color:var(--ink)}
+.panel b{font-family:var(--fDisplay);font-weight:400;font-size:19px;color:var(--ink)}
 .panel p{margin:0;font-size:14px;color:var(--muted)}
 .panel .where{font-size:12px;font-weight:700;color:var(--chipText)}
 .bookbox{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
@@ -113,15 +163,15 @@ h3{font-size:17px;font-weight:900}
 /* step header */
 .stephead{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:0;background:var(--card);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
 .stephead .l{padding:24px 26px;display:grid;gap:12px;align-content:center}
-.stephead .r{position:relative;background:var(--deep);min-height:200px}
+.stephead .r{position:relative;background:#13235b;min-height:200px}
 .stephead .r img.art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%;opacity:.95}
 .stephead .r img.ico{position:absolute;right:14px;bottom:10px;width:110px;filter:drop-shadow(0 10px 16px rgba(0,0,0,.35))}
 .snum{display:flex;align-items:center;gap:12px}
-.snum b{font-family:var(--fDisplay);font-weight:900;font-size:14px;color:#fff;background:var(--ink2);border-radius:999px;padding:4px 14px}
+.snum b{font-family:var(--fDisplay);font-weight:400;font-size:15px;color:#fff;background:var(--ink2);border-radius:999px;padding:4px 14px}
 .snum span{color:var(--muted);font-size:13px;font-weight:700}
-.stephead h1{font-family:var(--fDisplay);font-weight:900;font-size:clamp(22px,2.7vw,31px);color:var(--ink);letter-spacing:-.01em}
+.stephead h1{font-family:var(--fDisplay);font-weight:400;font-size:clamp(24px,3vw,34px);color:var(--ink)}
 .goal{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;background:var(--promptBg);border-radius:14px;padding:12px 14px}
-.goal i{font-style:normal;font-weight:900;color:#2a1d00;background:var(--sun);border-radius:8px;padding:2px 8px;font-size:12.5px;white-space:nowrap}
+.goal i{font-style:normal;font-weight:900;color:#3a2a00;background:var(--sun);border-radius:8px;padding:2px 8px;font-size:12.5px;white-space:nowrap}
 .goal p{margin:0;font-weight:700}
 .intro{margin:0;max-width:72ch;font-family:var(--fSoft);font-size:16.5px;line-height:1.8}
 /* files */
@@ -129,7 +179,7 @@ h3{font-size:17px;font-weight:900}
 .file{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-decoration:none;color:var(--text)}
 .file:hover{border-color:var(--ink2)}
 .file .k{width:44px;height:52px;border-radius:8px;display:grid;place-items:center;font-size:11px;font-weight:900;color:#fff;background:var(--coral)}
-.file .k.png{background:var(--mint)} .file .k.txt{background:#7a7598} .file .k.hwp,.file .k.hwpx{background:#2b8fd6} .file .k.jpg{background:#d99a00} .file .k.xlsx{background:#1f8a4c}
+.file .k.png{background:var(--mint)} .file .k.txt{background:#7a7598} .file .k.hwp,.file .k.hwpx{background:#2b8fd6} .file .k.jpg{background:#d99a00}
 .file b{display:block;font-size:14px;line-height:1.35}
 .file small{color:var(--muted);font-size:12px}
 .filebig{grid-template-columns:52px minmax(0,1fr) auto}
@@ -137,7 +187,7 @@ h3{font-size:17px;font-weight:900}
 /* todo */
 .todo{counter-reset:t;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
 .todo li{counter-increment:t;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px 12px 48px;position:relative;font-weight:700;font-size:14px;line-height:1.45}
-.todo li::before{content:counter(t);position:absolute;left:12px;top:11px;width:26px;height:26px;border-radius:50%;background:var(--ink2);color:#fff;display:grid;place-items:center;font-family:var(--fBody);font-weight:900;font-size:13px}
+.todo li::before{content:counter(t);position:absolute;left:12px;top:11px;width:26px;height:26px;border-radius:50%;background:var(--ink2);color:#fff;display:grid;place-items:center;font-family:var(--fDisplay);font-weight:400;font-size:15px}
 /* captures */
 .caps{display:grid;gap:18px}
 .cap{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);gap:16px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}
@@ -156,14 +206,14 @@ h3{font-size:17px;font-weight:900}
 /* formula */
 .formula{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .fx{border-radius:16px;padding:14px 16px;display:grid;gap:4px;background:var(--card);border:1px solid var(--line);border-top:6px solid var(--c)}
-.fx b{font-family:var(--fDisplay);font-weight:900;font-size:20px;color:var(--c)}
+.fx b{font-family:var(--fDisplay);font-weight:400;font-size:21px;color:var(--c)}
 .fx span{font-size:13px;color:var(--muted)}
 .fx em{font-style:normal;font-size:13.5px;font-weight:700}
 /* prompts */
 .prompts{display:grid;gap:14px}
 .prompt{background:var(--promptBg);border:1.5px solid color-mix(in srgb,var(--ink2) 35%,transparent);border-radius:18px;padding:16px 18px;display:grid;gap:10px}
 .phead{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
-.pid{font-family:var(--fBody);font-weight:900;font-size:13px;color:#fff;background:var(--ink2);border-radius:8px;padding:2px 9px}
+.pid{font-family:var(--fDisplay);font-size:15px;color:#fff;background:var(--ink2);border-radius:8px;padding:1px 9px}
 .phead h3{font-size:15.5px;flex:1 1 220px;min-width:0}
 .pwhere{font-size:13px;color:var(--muted)}
 .pwhere b{color:var(--text)}
@@ -180,10 +230,10 @@ h3{font-size:17px;font-weight:900}
 /* tips */
 .tips{display:grid;gap:8px}
 .tip{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;background:var(--card);border:1px dashed color-mix(in srgb,var(--ink2) 45%,transparent);border-radius:14px;padding:12px 14px;font-size:14px}
-.tip b{font-family:var(--fDisplay);font-weight:900;color:var(--ink2);font-size:14px}
-.challenge{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center;background:linear-gradient(120deg,var(--deep),var(--ink2));color:#fff;border-radius:18px;padding:14px 18px}
+.tip b{font-family:var(--fDisplay);font-weight:400;color:var(--ink2);font-size:15px}
+.challenge{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center;background:linear-gradient(120deg,#13235b,#2f5bd8);color:#fff;border-radius:18px;padding:14px 18px}
 .challenge img{width:72px}
-.challenge b{font-family:var(--fDisplay);font-weight:900;font-size:17px;color:var(--sun);display:block}
+.challenge b{font-family:var(--fDisplay);font-weight:400;font-size:18px;color:var(--sun);display:block}
 .challenge p{margin:0;font-size:14.5px}
 /* checks */
 .checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -210,7 +260,7 @@ h3{font-size:17px;font-weight:900}
 .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
 .fl{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;display:flex;flex-direction:column}
 .fl:not(:last-child)::after{content:'→';position:absolute;right:-16px;top:70px;font-family:var(--fDisplay);font-size:22px;color:var(--ink2);z-index:2}
-.fl .pic{aspect-ratio:1/1;background:#fff8e6;border-radius:18px 18px 0 0;display:grid;place-items:center;overflow:hidden;cursor:zoom-in}
+.fl .pic{aspect-ratio:1/1;background:#eef3ff;border-radius:18px 18px 0 0;display:grid;place-items:center;overflow:hidden;cursor:zoom-in}
 .fl .pic{position:relative}
 .fl .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
 .fl .pic.cover img{width:100%;height:100%;object-fit:cover}
@@ -224,7 +274,7 @@ h3{font-size:17px;font-weight:900}
 .fl .pin[open] summary::after{content:'▴'}
 .cutter{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}
 .cutter img{width:100%;border-radius:12px;display:block}
-.cutter b{font-family:var(--fDisplay);font-weight:900;font-size:19px;color:var(--ink)}
+.cutter b{font-family:var(--fDisplay);font-weight:400;font-size:19px;color:var(--ink)}
 .cutter p{margin:4px 0 10px;font-size:14px;color:var(--muted)}
 @media (max-width:900px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.fl:nth-child(2)::after{display:none}.cutter{grid-template-columns:1fr}}
 /* inline prompt under a capture step */
@@ -241,7 +291,7 @@ h3{font-size:17px;font-weight:900}
 /* live links to NotebookLM */
 .livebox{background:var(--promptBg);border:1.5px solid color-mix(in srgb,var(--ink2) 30%,transparent);border-radius:18px;padding:14px 16px;display:grid;gap:10px}
 .livebox .lh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
-.livebox .lh b{font-family:var(--fDisplay);font-weight:900;font-size:17px;color:var(--ink)}
+.livebox .lh b{font-family:var(--fDisplay);font-weight:400;font-size:18px;color:var(--ink)}
 .livebox .lh span{font-size:12.5px;color:var(--muted)}
 .live{display:flex;flex-wrap:wrap;gap:8px}
 .lv{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:8px 15px;background:var(--card);border:1.5px solid color-mix(in srgb,var(--ink2) 40%,transparent);color:var(--ink2);font-weight:900;font-size:14px;text-decoration:none}
@@ -253,189 +303,121 @@ h3{font-size:17px;font-weight:900}
 .nb span{font-size:13px;color:var(--muted)}
 .nb em{font-style:normal;font-size:13px;font-weight:900;color:var(--ink2)}
 .res figcaption a.go{display:inline-block;margin-top:4px;font-weight:900;text-decoration:none}
-/* trend keywords */
-.trend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.tr{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:start;background:var(--card);border:1px solid var(--line);border-top:5px solid var(--sun);border-radius:18px;padding:16px}
-.tr img{width:76px;height:auto}
-.trn{font-size:11.5px;font-weight:900;letter-spacing:.08em;color:var(--ink2)}
-.tr h3{font-family:var(--fDisplay);font-weight:900;font-size:19px;color:var(--ink);margin:2px 0 8px}
-.tr h3 small{display:block;font-family:var(--fBody);font-size:12px;font-weight:700;color:var(--muted)}
-.tr p{margin:0 0 6px;font-size:13.5px;line-height:1.55}
-.tr p b{display:block;font-size:11.5px;color:var(--mint);font-weight:900}
-.tline{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
-.tline li{padding:12px 14px;display:grid;gap:2px;position:relative;border-left:1px solid var(--line)}
-.tline li:first-child{border-left:0}
-.tline li:last-child{background:linear-gradient(135deg,var(--deep),var(--ink2));color:#fff}
-.tline .ty{font-size:12px;font-weight:900;color:var(--sun);font-variant-numeric:tabular-nums}
-.tline b{font-size:14.5px}
-.tline span:not(.ty){font-size:12.5px;color:var(--muted)}
-.tline li:last-child span:not(.ty){color:#dce5f3}
-/* three faces */
-.faces{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.face{background:linear-gradient(160deg,var(--deep),var(--sideActive));color:#fff;border-radius:20px;padding:18px;display:grid;gap:6px;justify-items:start;position:relative;overflow:hidden}
-.face img{width:84px;height:auto;filter:drop-shadow(0 8px 12px rgba(0,0,0,.35))}
-.face .fn{font-size:11.5px;font-weight:900;letter-spacing:.08em;color:var(--sun)}
-.face b{font-family:var(--fDisplay);font-weight:900;font-size:19px}
-.face p{margin:0;font-size:13.5px;color:#d9e2f1;line-height:1.6}
-/* scenarios */
-.scen{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.sc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:6px;position:relative}
-.sc img{position:absolute;right:10px;top:8px;width:58px}
-.sc .sck{font-family:var(--fDisplay);font-weight:900;color:#fff;background:var(--ink2);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px}
-.sc b{font-size:16px;padding-right:56px}
-.sc p{margin:0;font-size:13.5px;color:var(--muted)}
-.sc .scp{display:grid;gap:6px;margin-top:auto;padding-top:6px}
-.sc .pin{grid-column:auto;margin:0}
-/* duty (교감이 챙기는 연수) */
-.duty{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.dt{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--sun);border-radius:16px;padding:14px 14px 12px;display:grid;gap:5px;align-content:start}
-.dt .dk{font-size:13px;color:var(--muted);font-weight:700}
-.dt b{font-family:var(--fDisplay);font-weight:900;font-size:19px;line-height:1.25;color:var(--ink)}
-.dt p{margin:0;font-size:13.5px;line-height:1.55}
-.dt small{color:var(--ink2);font-size:11.5px;font-weight:700}
-.dutynote{margin:10px 0 0;font-size:13px;color:var(--muted)}
-@media (max-width:900px){.duty{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.duty{grid-template-columns:1fr}}
-/* review (typo check) */
-.review{background:var(--card);border:1.5px dashed var(--coral);border-radius:18px;padding:16px 18px;display:grid;gap:10px}
-.review p{margin:0;font-size:14px}
-.review ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.review li{display:flex;align-items:center;gap:6px;background:var(--promptBg);border-radius:999px;padding:5px 12px;font-size:13.5px}
-.review s{color:var(--coral);text-decoration-thickness:2px}
-.review li span{color:var(--muted)}
-.review li b{color:var(--mint)}
-/* discussion */
-.closing{position:relative;border-radius:22px;overflow:hidden;box-shadow:var(--shadow);background:var(--deep)}
-.closing img{width:100%;display:block}
-.closing .ccap{position:absolute;left:0;right:0;bottom:0;padding:18px 22px 20px;background:linear-gradient(180deg,rgba(var(--deepRGB),0),rgba(var(--deepRGB),.82) 32%);color:#fff;text-align:center;display:grid;gap:6px}
-.closing .ccap p{margin:0;font-weight:700;font-size:clamp(13px,1.6vw,17px);color:#e6ecf7}
-.closing .ccap b{font-family:var(--fDisplay);font-weight:900;font-size:clamp(17px,2.4vw,27px);line-height:1.35;color:#fff}
-@media (max-width:560px){.closing .ccap{position:static;background:var(--deep)}}
-.discuss{background:linear-gradient(120deg,var(--deep),var(--ink2));color:#fff;border-radius:20px;padding:20px 22px;display:grid;gap:10px}
-.discuss .dl{justify-self:start;background:var(--sun);color:#2a1d00;font-weight:900;font-size:12.5px;border-radius:999px;padding:3px 12px}
-.discuss p{margin:0;font-family:var(--fDisplay);font-weight:700;font-size:clamp(17px,2vw,21px);line-height:1.55}
-.refs{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px;display:grid;gap:3px}
-.results.info2{grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);align-items:start}
-.nbs.two{grid-template-columns:repeat(2,minmax(0,1fr))}
-@media (max-width:900px){.trend,.faces,.scen{grid-template-columns:1fr}.tline{grid-template-columns:repeat(2,minmax(0,1fr))}.tline li:nth-child(3){border-left:0}.results.info2{grid-template-columns:1fr}}
-@media (max-width:560px){.nbs.two{grid-template-columns:1fr}.tline{grid-template-columns:1fr}.tline li{border-left:0;border-top:1px solid var(--line)}}
 /* lightbox */
-.lb{position:fixed;inset:0;z-index:80;background:rgba(8,14,28,.9);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb{position:fixed;inset:0;z-index:80;background:rgba(6,10,28,.88);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .lb .in{position:relative;max-width:min(1400px,100%);max-height:100%;overflow:auto}
 .lb img{display:block;max-width:100%;height:auto;border-radius:10px}
-.lb .x{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));border:0;border-radius:999px;background:#fff;color:var(--deep);font-weight:900;padding:8px 14px}
+.lb .x{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));border:0;border-radius:999px;background:#fff;color:#13235b;font-weight:900;padding:8px 14px}
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink2);color:#fff;font-weight:700;border-radius:999px;padding:10px 18px;z-index:90;box-shadow:var(--shadow)}
 @media (max-width:1100px){.parts{grid-template-columns:repeat(2,minmax(0,1fr))}.results{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:900px){
   .app{grid-template-columns:1fr}
   .side{position:fixed;inset:0 auto 0 0;width:min(320px,88vw);height:100%;z-index:70;transform:translateX(-102%);transition:transform .25s;padding-top:calc(20px + env(safe-area-inset-top,0px))}
-  .side.open{transform:none;box-shadow:0 0 0 100vmax rgba(6,10,22,.55)}
+  .side.open{transform:none;box-shadow:0 0 0 100vmax rgba(5,9,25,.55)}
   .top{display:flex;align-items:center;gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--side);color:#fff;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
   .top button{border:0;background:rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:6px 12px;font-weight:900}
-  .top b{font-family:var(--fDisplay);font-weight:900;font-size:16px}
+  .top b{font-family:var(--fDisplay);font-weight:400;font-size:18px}
   .top img{width:30px}
   .cap{grid-template-columns:1fr}
   .stephead{grid-template-columns:1fr}.stephead .r{min-height:150px;order:-1}
   .panels,.formula{grid-template-columns:1fr}
-  .hero{aspect-ratio:auto}.hero img{width:100%;object-position:62% center}.hero .shade{background:linear-gradient(180deg,rgba(var(--deepRGB),.35),rgba(var(--deepRGB),.94) 62%)}.hero .hcopy{padding-top:180px}
+  .hero{aspect-ratio:auto}.hero .shade{background:linear-gradient(180deg,rgba(9,16,48,.55),rgba(9,16,48,.92) 70%)}.hero .hcopy{padding-top:180px}
 }
 @media (max-width:560px){.parts,.checks,.nbs{grid-template-columns:1fr}.results{grid-template-columns:repeat(2,minmax(0,1fr))}body{font-size:15px}}
+
+/* ---------- 4판 추가 ---------- */
+.file .k.docx{background:#2b5797}.file .k.xlsx,.file .k.csv{background:#1d7a45}.file .k.txt{background:#64748b}.file .k.pdf{background:var(--coral)}
+.nbs{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.nb b .ic{font-size:20px;margin-right:6px}
+.exbox{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 20px;box-shadow:var(--shadow)}
+.exbox h3{font-family:var(--fDisplay);font-weight:400;font-size:21px;color:var(--ink)}
+.exbox ul{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.exbox li{font-size:13.5px;color:var(--muted);line-height:1.55;padding-left:14px;position:relative}
+.exbox li::before{content:'';position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--ink2)}
+.exbox .live{align-content:start}
+.exbox .lab{font-size:12px;font-weight:900;letter-spacing:.08em;color:var(--ink2);margin-bottom:6px}
+.sidelinks .sub{font-size:11.5px;letter-spacing:.08em;color:var(--sideMuted);padding:10px 10px 2px;font-weight:700}
+.hero .place{font-size:13.5px;color:#c9d6ff}
+.penzbtn{display:flex;align-items:center;gap:12px;width:100%;margin:16px 0 0;padding:11px 12px;border:0;border-radius:16px;text-align:left;color:#3a1608;
+  background:linear-gradient(135deg,#fff3ea 0%,#ffe0cc 100%);box-shadow:0 8px 20px rgba(0,0,0,.28),inset 0 -3px 0 rgba(0,0,0,.06);transition:transform .15s}
+.penzbtn:hover{transform:translateY(-2px)}
+.penzbtn .sv-tx small{color:#7a3a1c}
+.pz-logo{display:flex;align-items:baseline;background:#fff;border-radius:10px;padding:5px 7px;font-weight:900;font-size:16px;line-height:1;letter-spacing:-.02em;flex:none;font-family:var(--fBody)}
+.pz-logo i{font-style:normal}.pz-logo i:nth-child(1){color:#e8473b}.pz-logo i:nth-child(2){color:#f39a1e}.pz-logo i:nth-child(3){color:#2fa84f}.pz-logo i:nth-child(4){color:#2f6fd8}
+.pz-mini{width:28px;height:28px;border-radius:8px;background:#fff;color:#e8473b;font-weight:900;font-size:12px;display:grid;place-items:center;flex:none}
+.pzwrap{background:var(--paper);padding:20px;border-radius:20px;max-width:1000px;margin:auto;display:grid;gap:16px}
+.pzhead{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:18px;align-items:center}
+.pzhead img{width:100%;border-radius:14px;border:1px solid var(--line);display:block}
+.pzhead h2{font-size:24px}
+.pzhead p{margin:8px 0 0;font-size:14.5px;color:var(--muted)}
+.pztoday{display:flex;gap:10px;align-items:flex-start;background:#fff3ea;color:#5a2410;border-radius:14px;padding:12px 14px;font-weight:700;font-size:14px}
+.pzsteps{counter-reset:pz;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.pzsteps li{counter-increment:pz;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:38px 12px 12px;position:relative;font-size:13px;color:var(--muted);line-height:1.5}
+.pzsteps li::before{content:counter(pz);position:absolute;left:12px;top:10px;width:22px;height:22px;border-radius:50%;background:#e8473b;color:#fff;font-weight:900;font-size:12px;display:grid;place-items:center}
+.pzsteps b{display:block;color:var(--text);font-size:14px;margin-bottom:3px}
+.pzcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.pzcol{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.pzcol h3{font-size:14.5px;margin-bottom:6px}
+.pzcol ul{margin:0;padding-left:18px;font-size:13px;color:var(--muted);display:grid;gap:3px}
+.pzfoot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+@media (max-width:760px){.pzhead,.pzcols{grid-template-columns:1fr}}
+@media (max-width:900px){.exbox{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-
-
-body{font-synthesis:none}
-h2,.stephead h1,.hero h1,.brand b,.part h3,.panel b,.fx b,.closing .ccap b,.discuss p,.challenge b,.tip b,.top b,.ap b,.pp b{font-weight:400}
-.hero h1{font-size:clamp(30px,4.4vw,52px);line-height:1.2}
-.hero .hcopy{max-width:600px}
-.brand img{width:60px}
-.stephead .r img.ico{width:120px}
-.sidelinks img{width:30px;height:30px}
-/* roles */
-.roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.role{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:4px;border-top:5px solid var(--c)}
-.role .em{font-size:30px;line-height:1}
-.role b{font-family:var(--fDisplay);font-weight:400;font-size:21px;color:var(--ink)}
-.role i{font-style:normal;font-size:12.5px;font-weight:900;color:var(--c)}
-.role p{margin:0;font-size:13.5px;color:var(--muted)}
-/* pipeline */
-.pipe{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;counter-reset:pp}
-.pp{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 16px 14px;display:grid;gap:4px;counter-increment:pp}
-.pp::before{content:counter(pp);position:absolute;right:14px;top:10px;font-family:var(--fDisplay);font-size:34px;color:color-mix(in srgb,var(--ink2) 22%,transparent)}
-.pp:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--ink2);z-index:2}
-.pp b{font-family:var(--fDisplay);font-size:22px;color:var(--ink)}
-.pp i{font-style:normal;font-size:12.5px;font-weight:900;color:var(--ink2)}
-.pp p{margin:0;font-size:13.5px;color:var(--muted)}
-/* warn */
-.warn{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;background:color-mix(in srgb,var(--coral) 9%,var(--card));border:2px solid color-mix(in srgb,var(--coral) 55%,transparent);border-radius:16px;padding:14px 16px;font-weight:700}
-.warn span{font-size:24px}
-/* apply */
-.apply{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
-.ap{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:6px;align-content:start}
-.ap .bd{justify-self:start;font-family:var(--fDisplay);font-size:15px;color:#fff;background:var(--ink2);border-radius:10px;padding:2px 10px}
-.ap b{font-family:var(--fDisplay);font-size:19px;color:var(--ink)}
-.ap p{margin:0;font-size:13.5px;color:var(--muted)}
-/* formula 4 */
-.formula.f4{grid-template-columns:repeat(4,minmax(0,1fr))}
-/* home extras */
-.other{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:16px;align-items:center;background:linear-gradient(120deg,var(--deep),var(--ink2));color:#fff;border-radius:20px;padding:16px 20px;text-decoration:none}
-.other img{width:120px;border-radius:12px}
-.other b{font-family:var(--fDisplay);font-weight:400;font-size:20px;display:block}
-.other span{font-size:13.5px;color:#e3e9f6}
-.other em{font-style:normal;font-weight:900;background:var(--sun);color:#2a1d00;border-radius:999px;padding:8px 14px;white-space:nowrap}
-.mascot{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:6px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px}
-.mascot img{width:100%;height:auto}
-.hello{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 18px}
-.hello img{width:110px}
-.hello p{margin:0;font-family:var(--fSoft);font-size:16px;line-height:1.75}
-.hello b{color:var(--ink2)}
-.livebox .lh b{font-weight:400}
-.lv.file{border-style:dashed}
-.results .res img{aspect-ratio:16/10;object-fit:cover;object-position:left top}
-.results.wide .res img{aspect-ratio:16/10}
-@media (max-width:900px){.roles,.pipe,.formula.f4{grid-template-columns:repeat(2,minmax(0,1fr))}.pp:nth-child(2)::after{display:none}.other{grid-template-columns:1fr}.other img{display:none}.mascot{grid-template-columns:repeat(5,minmax(0,1fr))}}
-@media (max-width:560px){.roles,.pipe,.formula.f4{grid-template-columns:1fr}.pp::after{display:none}.hello{grid-template-columns:72px minmax(0,1fr)}.hello img{width:72px}}
 </style>
+
 </head>
 <body>
 <div class="app">
-  <div class="top"><button id="menuBtn" aria-label="단계 목록 열기">☰ 단계</button><img src="../art/gu_wave.webp" alt=""><b>Google로 굴러가는 우리 반</b></div>
+  <div class="top"><button id="menuBtn" aria-label="단계 목록 열기">☰ 단계</button><img src="img/gu_wave_i.png" alt=""><b>Google로 굴러가는 우리 반</b></div>
   <aside class="side" id="side" aria-label="연수 단계">
-    <a class="brand" href="#home"><img src="../art/gu_wave.webp" alt="마스코트 구르미"><span><b>Google로 굴러가는<br>우리 반</b><small>에듀테크 기본과정 · 2026. 11. 6.</small></span></a>
+    <a class="brand" href="#home"><img src="img/gu_wave.png" alt="마스코트 구르미"><span><b>Google로 굴러가는<br>우리 반</b><small>에듀테크 기본과정 · 2026. 11. 6.</small></span></a>
     <a class="navhome" href="#home" data-view="home">🏠 처음 화면</a>
     <nav id="stepNav"></nav>
     <div class="sidelinks">
-      <a href="#files" data-view="files"><img src="../art/gu_check.webp" alt="">실습 자료 내려받기</a>
-      <a href="#prompts" data-view="prompts"><img src="../art/gu_letter.webp" alt="">프롬프트 모음</a>
-      <a href="#gallery" data-view="gallery"><img src="../art/gu_thumbs.webp" alt="">결과물 갤러리</a>
-      <a id="padletLink" href="#" target="_blank" rel="noopener"><img src="../art/gu_cheer.webp" alt="">연수 패들렛 열기 ↗</a>
-      <a href="https://docs.google.com/document/" target="_blank" rel="noopener"><img src="../art/gu_laptop.webp" alt="">Google 문서 열기 ↗</a><a href="https://docs.google.com/forms/" target="_blank" rel="noopener"><img src="../art/gu_check.webp" alt="">Google 설문 열기 ↗</a><a href="https://sites.google.com/new" target="_blank" rel="noopener"><img src="../art/gu_point.webp" alt="">Google Sites 열기 ↗</a>
-      <a href="../deep/"><img src="../art/gu_point.webp" alt="">심화과정 (11. 20.) — 학생마다 다른 AI 피드백 ↗</a>
+      <a href="#files" data-view="files"><img src="img/gu_laptop_i.png" alt="">실습 자료 내려받기</a>
+      <a href="#prompts" data-view="prompts"><img src="img/gu_letter_i.png" alt="">프롬프트 모음</a>
+      <a href="#gallery" data-view="gallery"><img src="img/gu_cheer_i.png" alt="">결과물 갤러리</a>
+      <span class="sub">바로 가기</span>
+      <a href="https://drive.google.com/" target="_blank" rel="noopener"><img src="img/gu_check_i.png" alt="">Google 드라이브 ↗</a>
+      <a href="https://www.canva.com/" target="_blank" rel="noopener"><img src="img/gu_idea_i.png" alt="">Canva ↗</a>
+      <a href="https://app.briskteaching.com/get-extension" target="_blank" rel="noopener"><img src="img/gu_magnifier_i.png" alt="">Brisk Teaching 설치 ↗</a>
+      <a href="https://penz.kr" target="_blank" rel="noopener"><span class="pz-mini" aria-hidden="true">pz</span>penz(펜즈) 통합 로그인 ↗</a>
+      <a href="../deep/"><img src="img/gu_thumbs_i.png" alt="">심화과정(11. 20.) 아카이브 →</a>
     </div>
-    <div class="prog"><span id="progText">완료 0 / 11단계</span><div class="bar"><i id="progBar"></i></div></div>
+    <button class="penzbtn" id="penzBtn" type="button" aria-haspopup="dialog">
+      <span class="pz-logo" aria-hidden="true"><i>p</i><i>e</i><i>n</i><i>z</i></span>
+      <span class="sv-tx"><b>펜즈 안내</b><small>원패스 하나로 Google · Canva · M365</small></span>
+      <span class="sv-go" aria-hidden="true">›</span>
+    </button>
+    <button class="survey" id="surveyBtn" type="button" aria-haspopup="dialog">
+      <span class="sv-ic" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="sv-tx"><b>역량 진단 · 만족도 조사</b><small>사전 1 · 사후 2 — QR · 바로가기</small></span>
+      <span class="sv-go" aria-hidden="true">›</span>
+    </button>
+    <div class="prog"><span id="progText">완료 0 / 12단계</span><div class="bar"><i id="progBar"></i></div></div>
   </aside>
   <main id="main"><div class="wrap" id="view"></div></main>
 </div>
-<script type="application/json" id="course">{"key": "basic", "meta": {"date": "2026. 11. 6.(금)", "time": "15:30~18:00", "place": "교육연구정보원 4층 403호", "target": "에듀테크 활용 기본과정", "title": "잔소리 대신 클릭 한 번, Google로 굴러가는 우리 반", "lecturer": "명진초등학교 교사 최일훈"}, "theme": {"ink": "#0f3266", "ink2": "#1a73e8", "sun": "#fbbc04", "mint": "#1e8e3e", "coral": "#ea4335", "side": "#0d2142", "sideActive": "#1b3c72", "deep": "#0d2142", "inkDark": "#ffd45e", "ink2Dark": "#8ab4f8"}, "brand": {"line1": "Google로 굴러가는", "line2": "우리 반", "sub": "에듀테크 기본과정 · 2026. 11. 6."}, "cover": "../art/cover_basic.webp", "hero": {"h1": "잔소리 대신 클릭 한 번,<br><em>Google로 굴러가는 우리 반</em>", "lead": "파일을 보내고, 받고, 다시 모으던 일은 오늘까지. 링크 하나로 함께 쓰고 · 설문이 채점까지 하고 · 응답은 그래프로 · 자료는 학급 서랍장에 · 모든 걸 한 페이지 홈페이지로."}, "padlet": "https://padlet.com/oneteacher/1106-google-s024z9aodxw5bmyagk8i", "other": {"label": "심화과정 (11. 20.) — 학생마다 다른 AI 피드백 ↗", "href": "../deep/"}, "sidelinks": [["https://docs.google.com/document/", "gu_laptop", "Google 문서 열기 ↗"], ["https://docs.google.com/forms/", "gu_check", "Google 설문 열기 ↗"], ["https://sites.google.com/new", "gu_point", "Google Sites 열기 ↗"]], "pipeline": [["함께 쓰기", "문서 · 슬라이드", "한 문서에 모둠 전체가. 고치는 건 댓글 · 제안, 사고는 버전 기록이 해결"], ["모으기", "설문 · 퀴즈 · 시트", "말로 만드는 설문, 제출 즉시 점수와 의견, 응답은 그래프로"], ["정리하기", "화이트보드 · 드라이브", "생각은 보드에, 자료는 연도·학년반·과목 폴더에"], ["나누기", "Google Sites", "오늘 만든 것을 한 페이지에 모아 링크 하나로"]], "parts": [{"id": "p1", "num": "Ⅰ", "title": "함께 쓰기 — 문서 · 슬라이드", "sub": "링크 하나로 모둠이 한 문서에. 빨간펜 대신 댓글과 제안, 지워져도 버전 기록", "art": "../art/b_part1.webp", "steps": ["s0", "s1", "s2", "s3"]}, {"id": "p2", "num": "Ⅱ", "title": "모으기 — 설문 · 퀴즈 · 시트", "sub": "말로 만드는 설문, 제출하자마자 돌아가는 점수와 의견, 응답은 그래프로", "art": "../art/b_part2.webp", "steps": ["s4", "s5", "s6"]}, {"id": "p3", "num": "Ⅲ", "title": "정리하기 — 화이트보드 · 드라이브", "sub": "생각은 보드에, 자료는 학급 서랍장(폴더)에 — 한 번 만들면 한 학기가 편해요", "art": "../art/b_part3.webp", "steps": ["s7", "s8"]}, {"id": "p4", "num": "Ⅳ", "title": "나누기 — 우리 반 홈페이지", "sub": "오늘 만든 것을 한 페이지에 모아 링크 하나로. 그리고 우리 교실로", "art": "../art/b_part4.webp", "steps": ["s9", "s10"]}], "files": {"report": {"name": "지층탐구_모둠보고서_틀.docx", "label": "지층 탐구 모둠 보고서 틀 (Word)", "kind": "DOCX", "size": "36KB", "use": "STEP 1 · 2 문서 실습", "desc": "네 칸(관찰 · 형성 순서 · 모형 계획 · 더 알고 싶은 점)과 안내 문장 — 드라이브에 올려 ‘Google 문서로 열기’"}, "formtxt": {"name": "자기평가_설문_문항과_의견.txt", "label": "자기평가 설문 문장 · 퀴즈 정답 · 의견", "kind": "TXT", "size": "1KB", "use": "STEP 4 · 5 설문 실습", "desc": "설문 Gemini에게 붙여 넣을 문장, 퀴즈 정답과 정답/오답 의견 예시"}, "resp": {"name": "자기평가_응답_예시_24명.xlsx", "label": "설문 응답 예시 24명 (번호만)", "kind": "XLSX", "size": "6KB", "use": "STEP 6 시트 · Magic Insights", "desc": "번호 · 모둠 · 점수 · 이해도 · 알게 된 점 — Canva 시트에 붙여 넣어 Magic Insights로 묻기 (연수용 가상 자료)"}}, "zip": "에듀테크기본_실습자료.zip", "card": "에듀테크기본_프롬프트카드.pdf", "steps": [{"id": "s0", "part": "p1", "num": 0, "short": "준비", "title": "준비 — 크롬 · 학교 계정 · 공유 3단계", "icon": "gu_wave", "todo": ["크롬에서 학교(교육용) Google 계정으로 로그인 — 개인 계정과는 크롬 프로필을 나눠 두기", "오른쪽 위 점 아홉 개(앱 런처) → 문서 · 슬라이드 · 설문 · 시트 · 드라이브 · Sites가 전부 여기", "아카이브 ‘실습 자료’에서 보고서 틀 · 설문 문장 · 응답 예시 받기", "패들렛 PART Ⅳ 칸에 오늘 꼭 가져가고 싶은 것 한 줄"], "roles": [["👀", "뷰어", "보기만", "안내문 · 완성 자료 · 학급 홈페이지에 넣는 자료"], ["💬", "댓글 작성자", "의견만", "동료 검토 · 학부모 안내문 초안 돌려 보기"], ["✏️", "편집자", "함께 쓰기", "모둠 보고서 · 모둠별 1장 슬라이드 · 업무 취합"]], "caps": [], "prompts": [], "tips": ["‘링크가 있는 모든 사용자’로 바꾸기 전에 — 학생 이름 · 사진 · 연락처가 들어 있지 않은지 한 번 더.", "오늘 실습은 ‘6학년 과학 · 지층과 화석’ 한 단원으로 이어집니다. 쓰고 → 모으고 → 정리하고 → 나누는 한 흐름이에요."]}, {"id": "s1", "part": "p1", "num": 1, "short": "모둠 문서", "title": "모둠 문서 — 문서 탭 · Gemini로 틀 · 링크 공유", "icon": "gu_laptop", "todo": ["앱 런처 → 문서 → ＋ 빈 문서, 제목에 학년 · 과목 · 모둠", "왼쪽 ☰ 문서 탭 ＋ 로 1모둠 · 2모둠 … 탭 만들기 — 한 파일에 모둠 전체", "새 탭의 ‘Gemini로 작성’에 B1 → 보고서 틀 완성", "[공유] → 링크가 있는 모든 사용자 · 편집자 → 링크 복사"], "caps": [{"img": "../cap/o_g1.jpg", "w": 1568, "h": 698, "title": "새 문서 — 제목에 학년 · 과목 · 모둠", "marks": [[44, 5, 272, 26, 1, "red"], [440, 222, 560, 26, 2, "red"], [440, 258, 640, 225, 3, "green"]], "steps": ["제목: 6학년 과학 · 지층 탐구 모둠 보고서 (1모둠) — 드라이브 검색이 쉬워져요", "맨 위에 성취기준 한 줄", "① 관찰 ② 형성 순서 ③ 모형 계획 ④ 더 알고 싶은 점 — 이름을 달고 번갈아 쓰기"]}, {"img": "../cap/b01_doc_tabs_gemini.jpg", "title": "문서 탭 + Gemini로 작성 — 모둠별 칸이 한 문서에", "marks": [[2, 128, 318, 156, 1, "red"], [734, 146, 506, 388, 2, "green"], [1124, 781, 58, 29, 3, "red"]], "steps": ["왼쪽 ☰ → 문서 탭 ＋ 로 탭 추가, 두 번 눌러 이름을 1모둠 · 2모둠…으로", "새 탭 아래 ‘Gemini로 작성’에 B1 프롬프트 → 제목 · 날짜 · 모둠원 칩까지 틀 완성", "마음에 들면 ‘수락’"], "pr": [[2, "B1"]], "w": 1287, "h": 854}, {"img": "../cap/o_g2.jpg", "w": 1568, "h": 698, "title": "공유 — 링크 하나로 모둠 문서", "marks": [[1385, 8, 92, 34, 1, "red"], [588, 410, 180, 48, 2, "red"], [588, 476, 112, 40, 3, "red"]], "steps": ["오른쪽 위 파란 [공유]", "일반 액세스 ‘제한됨’ → 링크가 있는 모든 사용자 · 편집자", "[링크 복사] → 클래스룸 · 메신저에 붙여 넣기"]}], "prompts": [{"id": "B1", "title": "문서 탭 틀 — 모둠 탐구 보고서", "tool": "Gemini로 작성", "where": "문서 탭 아래 ‘Gemini로 작성’ (또는 오른쪽 위 ✦)", "text": "6학년 과학 '지층과 화석' 모둠 탐구 보고서 틀을 만들어줘.\n성취기준 [6과01-01] 지층의 특징을 알고, 지층의 형성 과정을 모형으로 표현할 수 있다.\n맨 위에 제목 · 날짜 · 모둠원 칸, 그 아래\n① 우리 모둠이 관찰한 것 ② 지층이 만들어진 순서 ③ 모형 만들기 계획 ④ 더 알고 싶은 점\n네 부분으로 나누고, 각 부분에 모둠원이 쓸 안내 문장을 한 줄씩 넣어줘."}], "tips": ["문서 탭은 모둠마다 파일을 따로 만들 필요를 없애 줍니다. 링크 하나 = 우리 반 모둠 전체.", "Gemini가 쓴 틀은 초안이에요. 우리 반 말투로 한두 줄 고쳐서 쓰세요."], "live": [["📄", "지층 탐구 보고서 틀 받기 (Word)", "files:report"]]}, {"id": "s2", "part": "p1", "num": 2, "short": "빨간펜 대신", "title": "빨간펜 대신 — 댓글 · 제안 모드 · 버전 기록", "icon": "gu_magnifier", "todo": ["낱말 드래그 → 💬＋ 댓글: 칭찬 하나 + 제안 하나", "오른쪽 위 ✏ 수정 ▾ → ‘제안’ — 고친 글이 초록, 원래 글은 취소선", "학생은 ✓ 수락 / ✕ 거절 — 고치는 판단은 학생에게", "🕘 버전 기록에서 ‘누가 무엇을’ 확인, 필요하면 복원"], "caps": [{"img": "../cap/o_g3.jpg", "w": 1568, "h": 698, "title": "댓글 — 글을 지우지 않고 말 걸기", "marks": [[476, 280, 52, 28, 1, "red"], [1318, 286, 236, 170, 2, "green"]], "steps": ["낱말 · 문장을 드래그 → 툴바 💬＋", "칭찬 하나 + 제안 하나로 짧게 — @학생이름 을 쓰면 그 학생에게만 알림"], "pr": [[2, "B2"]]}, {"img": "../cap/b02_doc_suggest.jpg", "title": "제안 모드 — 지우지 않고 빨간펜처럼", "marks": [[1120, 36, 128, 30, 1, "red"], [236, 210, 74, 28, 2, "red"], [1070, 220, 214, 74, 3, "green"]], "steps": ["오른쪽 위 ✏ 수정 ▾ → ‘제안’으로 바꾸기", "글을 고치면 원래 글은 취소선, 새 글은 초록으로 남아요", "오른쪽 카드에서 학생이 ✓ 수락하거나 ✕ 거절"], "w": 1287, "h": 420}, {"img": "../cap/o_g4.jpg", "w": 1568, "h": 698, "title": "버전 기록 — ‘누가 다 지웠어요!’의 해결책", "marks": [[1316, 108, 240, 78, 1, "red"], [322, 140, 650, 340, 2, "green"], [1322, 652, 170, 32, 3, "red"]], "steps": ["오른쪽 목록에서 시간대별 버전 고르기 (⋮ → 이 버전 복원)", "색깔 = 누가 무엇을 바꿨는지", "‘변경사항 강조 표시’ 켜기"]}], "prompts": [{"id": "B2", "title": "댓글 문장 — 칭찬 1 + 제안 1", "tool": "문서 속 Gemini", "where": "문단을 선택하고 오른쪽 위 ✦", "text": "선택한 문단을 쓴 학생에게 남길 댓글을 만들어줘.\n칭찬 1개 + 다음에 해 볼 제안 1개, 각각 한 문장.\n초등 6학년이 읽기 쉬운 다정한 말투로, 학생 이름은 쓰지 말고."}], "tips": ["댓글 해결(✓)은 학생이 직접 — 읽고 고쳤다는 표시가 됩니다.", "제안 모드는 학생 글을 지우지 않아요. 고친 이유를 댓글로 한 줄 남기면 더 좋아요."]}, {"id": "s3", "part": "p1", "num": 3, "short": "모둠별 1장 슬라이드", "title": "모둠별 1장 슬라이드 — 테마 · 복제 · Gemini 디자인", "icon": "gu_point", "todo": ["빈 프레젠테이션 → [테마] 한 번 클릭", "1장 만들고 Ctrl+D로 모둠 수만큼 복제 → 공유(편집자)", "모둠은 자기 장만 꾸미기 — 발표 순서 = 슬라이드 순서", "✦ Gemini에게 B3 — 디자인은 맡기기"], "caps": [{"img": "../cap/o_g5.jpg", "w": 1568, "h": 698, "title": "테마 → 1장 만들고 복제 → 바로 발표", "marks": [[674, 56, 38, 26, 1, "red"], [30, 104, 134, 330, 2, "red"], [1268, 8, 85, 34, 3, "red"]], "steps": ["툴바 [테마] — 한 번 클릭으로 전체 디자인", "1장 만들고 Ctrl+D로 모둠 수만큼 복제", "[슬라이드쇼] — 끝나면 바로 발표"]}, {"img": "../cap/o_g6.jpg", "w": 1568, "h": 698, "title": "슬라이드 속 Gemini — 디자인은 맡기기", "marks": [[1484, 6, 36, 36, 1, "red"], [1230, 562, 314, 80, 2, "red"], [1230, 455, 314, 98, 3, "green"]], "steps": ["오른쪽 위 ✦ 로 Gemini 패널", "입력 칸에 B3", "추천 작업을 눌러도 돼요 — 마음에 들면 [삽입]"], "pr": [[2, "B3"]]}], "prompts": [{"id": "B3", "title": "슬라이드 다시 디자인", "tool": "슬라이드 속 Gemini", "where": "오른쪽 위 ✦ → 입력 칸", "text": "이 슬라이드를 발표용으로 깔끔하게 다시 디자인해줘.\n제목은 크게, 사진 자리는 오른쪽, 글자 수는 절반으로 줄이고 핵심 낱말만 남겨줘."}, {"id": "B4", "title": "지층 그림 만들기", "tool": "슬라이드 속 Gemini", "where": "✦ → ‘이미지 만들기’ 또는 입력 칸", "text": "초등 과학 수업용 그림: 바닷가 절벽에 색깔이 다른 지층 줄무늬가 층층이 보이는 모습, 밝고 깔끔한 일러스트, 글자 없이."}], "tips": ["왼쪽 썸네일을 끌어 순서를 바꾸면 발표 순서도 그대로 바뀝니다.", "학생 사진 대신 Gemini 그림이나 실험 사진(얼굴 없는)을 쓰면 공유가 편해요."]}, {"id": "s4", "part": "p2", "num": 4, "short": "말로 만드는 설문", "title": "말로 만드는 설문 — Gemini가 문항까지", "icon": "gu_idea", "todo": ["설문 → ＋ 새 양식 — Gemini 창이 먼저 인사", "B5 한 문장으로 주문 → [만들기]", "미리보기 확인 → [양식 만들기] (아니면 [다시 시도])", "유형 다듬기 · 필수 켜기"], "caps": [{"img": "../cap/o_g7.jpg", "w": 1568, "h": 698, "title": "새 설문 → Gemini가 먼저 인사", "marks": [[407, 140, 370, 90, 1, "red"], [414, 512, 740, 54, 2, "red"]], "steps": ["＋ 새 양식을 열면 Gemini 창이 떠요", "만들고 싶은 설문을 한 문장으로"]}, {"img": "../cap/o_g8.jpg", "w": 1568, "h": 698, "title": "한 문장으로 설문 주문", "marks": [[414, 512, 740, 54, 1, "green"], [1066, 516, 84, 44, 2, "red"]], "steps": ["학년 · 단원 · 문항 수 · 유형까지 넣은 B5", "[만들기]"], "pr": [[1, "B5"]]}, {"img": "../cap/o_g9.jpg", "w": 1568, "h": 698, "title": "미리보기 → 양식 만들기", "marks": [[470, 182, 612, 380, 1, "green"], [1072, 566, 106, 44, 2, "red"], [1022, 102, 94, 42, 3, "red"]], "steps": ["생성된 문항 훑어보기", "[양식 만들기]", "마음에 안 들면 [다시 시도]"]}, {"img": "../cap/o_g10.jpg", "w": 1568, "h": 698, "title": "편집 화면 — 바로 고치기", "marks": [[462, 92, 632, 154, 1, "green"], [462, 250, 632, 305, 2, "red"], [1098, 104, 42, 208, 3, "red"]], "steps": ["제목 · 설명", "문항 · 보기 바로 수정", "오른쪽 도구 — 질문 추가 · 가져오기 · 이미지 · 섹션"]}, {"img": "../cap/o_g11.jpg", "w": 1568, "h": 698, "title": "질문 유형 고르기 — 상황별 추천", "marks": [[903, 238, 170, 116, 1, "red"], [903, 422, 170, 38, 2, "red"], [903, 146, 170, 74, 3, "red"]], "steps": ["객관식 · 체크박스 · 드롭다운 — 개념 확인 · 모둠 번호", "선형 배율 — 이해도 · 만족도 1~5", "단답형 · 장문형 — 알게 된 점 · 궁금한 점"]}], "prompts": [{"id": "B5", "title": "단원 자기평가 설문 5문항", "tool": "설문 속 Gemini", "where": "새 양식의 Gemini 창", "text": "초등 6학년 과학 '지층과 화석' 단원 학습 후 학생 자기평가 설문 5문항을 만들어줘.\n① 모둠 번호(드롭다운 1~6모둠) ② 지층이 만들어지는 순서 확인 객관식 1개 ③ 지층 모형 만들기 활동 이해도 5점 척도 ④ 오늘 새로 알게 된 점(단답형) ⑤ 더 알고 싶은 점(장문형)\n①~③은 필수로 설정해줘."}], "tips": ["프롬프트에 ‘학년 · 단원 · 문항 수 · 유형 · 필수’를 넣을수록 손볼 곳이 줄어요.", "학생 이름 대신 번호 · 모둠을 묻는 습관 — 응답 표를 AI에 넣을 때도 안전합니다."], "live": [["📝", "설문 문장 · 의견 예시 받기", "files:formtxt"]]}, {"id": "s5", "part": "p2", "num": 5, "short": "채점은 설문이", "title": "채점은 설문이 — 퀴즈 · 정답 · 답변별 의견", "icon": "gu_check", "todo": ["설정 → 퀴즈로 만들기 → 결과 공개 ‘제출 후 바로’", "문항 아래 ‘답안’ → 정답 · 점수", "‘답변 관련 의견 추가’ → 잘못된 답변 탭에 다시 볼 곳까지 (B6)", "미리보기로 학생 화면 확인 → [게시]", "아래 ‘직접 풀어 보기’로 학생이 되어 제출해 보기"], "caps": [{"img": "../cap/b05_quiz_settings.jpg", "title": "설정 → 퀴즈로 만들기", "marks": [[455, 30, 44, 30, 1, "red"], [176, 140, 528, 52, 2, "red"], [196, 200, 510, 290, 3, "green"]], "steps": ["설문 위쪽 ‘설정’ 탭", "‘퀴즈로 만들기’ 켜기 — 점수 · 정답 · 자동 의견", "결과 공개 ‘제출 후 바로’ + 틀린 문제 · 정답 · 점수 보이기"], "w": 1299, "h": 602}, {"img": "../cap/b05_quiz_answerkey.jpg", "title": "답안 — 정답 · 점수 · 정답/오답별 의견", "marks": [[514, 292, 78, 32, 1, "red"], [40, 324, 548, 38, 2, "red"], [40, 464, 548, 178, 3, "green"], [524, 654, 64, 34, 4, "red"]], "steps": ["문항 카드 아래 ‘답안’ → 점수 1", "정답 보기 클릭 → 초록 ✓", "‘답변 관련 의견 추가’ — 정답에는 칭찬, 오답에는 다시 볼 곳", "완료 — 이제 제출하면 자동 채점"], "w": 650, "h": 705}, {"img": "../cap/b05_quiz_feedback.jpg", "title": "답변 관련 의견 — 틀린 학생에게만 가는 피드백", "marks": [[92, 64, 74, 32, 1, "red"], [98, 110, 422, 66, 2, "green"], [104, 192, 70, 32, 3, "red"], [456, 190, 64, 34, 4, "red"]], "steps": ["‘잘못된 답변’ 탭 (정답 탭에는 칭찬)", "틀린 학생에게 보일 설명 — 다시 볼 곳까지", "링크 · 유튜브 영상도 붙일 수 있어요", "저장"], "pr": [[2, "B6"]], "w": 620, "h": 280}, {"img": "../cap/o_g12.jpg", "w": 1568, "h": 698, "title": "미리보기 — 학생이 볼 화면", "marks": [[515, 110, 525, 105, 1, "green"], [18, 46, 215, 32, 2, "red"], [1282, 10, 112, 30, 3, "red"]], "steps": ["학생 화면 그대로 (모바일도 같아요)", "노란 띠 ‘응답을 받지 않습니다’ = 아직 게시 전", "[게시]해야 응답을 받아요"]}, {"img": "../cap/b05_quiz_publish.jpg", "title": "게시 — 링크가 있는 모든 사용자", "marks": [[46, 80, 350, 60, 1, "red"], [330, 216, 64, 34, 2, "red"]], "steps": ["오른쪽 위 ‘게시’ → 응답자 범위 확인 (학교 계정이면 학교 안으로 제한 가능)", "게시 — 이제 링크 · QR로 학생에게"], "w": 450, "h": 280}, {"img": "../cap/b05_quiz_result.jpg", "title": "학생 화면 — 제출하자마자 점수와 의견", "marks": [[482, 20, 40, 32, 1, "red"], [92, 244, 446, 30, 2, "red"], [92, 434, 448, 102, 3, "green"]], "steps": ["제출 즉시 총점", "틀린 문항은 빨간 ✕", "선생님이 미리 써 둔 ‘잘못된 답변’ 의견이 그 학생에게만"], "w": 575, "h": 552}], "prompts": [{"id": "B6", "title": "오답 의견 — 다시 볼 곳까지", "tool": "설문 → 답변 관련 의견", "where": "문항 ‘답안’ → 답변 관련 의견 추가 → 잘못된 답변", "text": "퇴적물이 운반되어 쌓이고(퇴적), 위에서 누르는 힘으로 다져지고 굳어져 지층이 돼요. 교과서 그림을 보며 순서를 다시 확인해 봐요!"}, {"id": "B7", "title": "Gemini에게 오답별 의견 받기", "tool": "Gemini", "where": "gemini.google.com", "text": "초등 6학년 과학 퀴즈 문항이야.\n문제: 지층이 만들어지는 순서로 알맞은 것은?\n정답: 퇴적물 운반 - 퇴적 - 다져짐과 굳어짐 - 지층 형성\n오답 보기 3개 각각을 고른 학생이 무엇을 헷갈렸는지 한 줄로 짐작하고, 그 학생에게 보여 줄 피드백을 두 문장 이내로 써줘. 다시 볼 교과서 부분도 알려줘."}], "tips": ["정답 의견에는 칭찬과 ‘한 걸음 더’를, 오답 의견에는 다시 볼 곳을 — 학생은 제출하는 순간 피드백을 받습니다.", "점수가 목적이 아니라 의견이 목적이에요. 배점은 1점이면 충분해요."], "live": [["🧑‍🎓", "학생이 되어 직접 풀어 보기 (연수 예시 설문)", "https://docs.google.com/forms/d/e/1FAIpQLSe5pLuLvDSlgnVnSvnHD-AUd6wdUR_JpPna6tzwVDDJ5qhr5g/viewform"]]}, {"id": "s6", "part": "p2", "num": 6, "short": "응답 → 한눈에", "title": "응답 → 한눈에 — 시트 연결 · Canva Magic Insights", "icon": "gu_magnifier", "todo": ["[응답] 탭 → 요약 그래프 확인", "[Sheets에 연결] → 응답이 표로 쌓여요", "표를 Canva 시트에 붙여 넣고 [작업] → Magic Insights", "B8 질문을 말로 — 차트는 디자인에 바로 추가"], "caps": [{"img": "../cap/o_g13.jpg", "w": 1568, "h": 698, "title": "응답 탭 → Sheets에 연결", "marks": [[766, 58, 40, 28, 1, "red"], [932, 112, 118, 36, 2, "red"]], "steps": ["[응답] 탭 — 요약 그래프 자동", "[Sheets에 연결] — 응답이 표로 쌓여요"]}, {"img": "../cap/o_g14.jpg", "w": 1568, "h": 698, "title": "Canva 시트 — Magic Insights에 말로 묻기", "marks": [[386, 152, 590, 428, 1, "red"], [556, 54, 60, 32, 2, "red"], [70, 90, 262, 112, 3, "red"], [70, 308, 262, 254, 4, "green"]], "steps": ["응답 표 붙여 넣기 (이름 대신 번호)", "[작업] → Magic Insights", "질문을 말로 — B8", "차트가 바로"], "pr": [[3, "B8"]]}, {"img": "../cap/o_g15.jpg", "w": 1568, "h": 698, "title": "가장 어려워한 영역 · 더 살펴볼 학생", "marks": [[70, 160, 262, 252, 1, "green"], [70, 420, 262, 275, 2, "green"]], "steps": ["영역별 평균 비교 — 어디를 다시 가르칠까", "학생별 합계 순위 — 판단은 선생님"]}], "prompts": [{"id": "B8", "title": "Magic Insights 질문 세 가지", "tool": "Canva 시트 → Magic Insights", "where": "표 선택 → [작업] → Magic Insights", "text": "모둠별 평균 점수를 비교해줘\n가장 어려워한 영역은 어디야?\n추가 지도가 필요한 학생 번호를 알려줘"}], "tips": ["숫자를 읽어 주는 건 AI, 판단은 선생님. 이름 대신 번호(비식별 자료)로 넣는 습관!", "차트 ⋯ → 디자인에 추가 — 같은 데이터로 학부모 안내 자료까지."], "live": [["📊", "응답 예시 24명 받기 (xlsx)", "files:resp"]]}, {"id": "s7", "part": "p3", "num": 7, "short": "화이트보드", "title": "화이트보드 — KWL로 생각 모으기", "icon": "gu_idea", "todo": ["Canva → 화이트보드 → 템플릿 ‘KWL 차트’", "K · W · L 제목을 우리 단원으로", "학생은 포스트잇 더블클릭으로 입력 — 폰에서도", "아래 [타이머] 5분 → [공유] → Google 클래스룸"], "caps": [{"img": "../cap/o_g16.jpg", "w": 1568, "h": 698, "title": "KWL 화이트보드 — 생각 모으기", "marks": [[450, 108, 452, 492, 1, "red"], [480, 182, 396, 206, 2, "green"], [916, 108, 454, 268, 3, "red"]], "steps": ["템플릿 ‘KWL 차트’", "K · W · L 칸 — 포스트잇 더블클릭으로 입력", "옆 칸 마인드맵 · 생각해 보기는 단원 마무리에"]}, {"img": "../cap/o_g17.jpg", "w": 1568, "h": 698, "title": "타이머 — 5분 생각 모으기", "marks": [[452, 664, 64, 30, 1, "red"], [370, 436, 182, 218, 2, "green"], [404, 442, 94, 36, 3, "red"]], "steps": ["아래 [타이머]", "시간 설정 · 시작", "음악도 함께"]}, {"img": "../cap/o_g18.jpg", "w": 1568, "h": 698, "title": "공유 → 클래스룸으로 바로", "marks": [[1458, 6, 54, 36, 1, "red"], [1388, 455, 90, 78, 2, "red"], [1236, 375, 82, 78, 3, "red"]], "steps": ["오른쪽 위 [공유]", "Google 클래스룸 — 수업 골라 배포", "[학습 세션] — 학생 화면을 모아 보며 진행"]}], "prompts": [], "tips": ["투표 스티커를 쓰면 학급 회의 안건 정하기가 금방 끝나요.", "보드는 ‘무엇이 모였나’를 보는 곳 — 정리는 다음 단계 드라이브에서."]}, {"id": "s8", "part": "p3", "num": 8, "short": "드라이브 서랍장", "title": "드라이브 서랍장 — 폴더 규칙 · 폴더째 공유 · Gemini 요약", "icon": "gu_thumbs", "todo": ["＋ 신규 → 새 폴더: 연도 + 학년반 + 과목", "학급 폴더 ▸ 단원 폴더 · 학생 제출물 모음", "오늘 만든 문서 · 슬라이드 · 설문 · 시트를 단원 폴더로", "폴더 ▾ → 공유 → 동학년을 편집자로, Gemini에게 요약(B9)"], "caps": [{"img": "../cap/o_g19.jpg", "w": 655, "h": 336, "title": "＋ 신규 → 새 폴더", "marks": [[6, 58, 96, 26, 1, "red"]], "steps": ["＋ 신규 → 새 폴더 (Alt+C 다음 F)"]}, {"img": "../cap/o_g20.jpg", "w": 633, "h": 315, "title": "폴더 이름 규칙 — 연도 + 학년반 + 과목", "marks": [[252, 154, 130, 28, 1, "green"], [334, 182, 48, 24, 2, "red"]], "steps": ["예) 2026 6학년 1반 과학", "만들기"]}, {"img": "../cap/o_g21.jpg", "w": 1568, "h": 698, "title": "학급 폴더 ▸ 단원 · 제출물 폴더", "marks": [[222, 62, 336, 34, 1, "red"], [225, 182, 1284, 118, 2, "green"], [225, 104, 162, 38, 3, "red"]], "steps": ["경로: 내 드라이브 › 2026 6학년 1반 과학", "단원별 폴더 + 학생 제출물 모음", "Gemini에게 물어보기 — 폴더 요약"], "pr": [[3, "B9"]]}, {"img": "../cap/o_g22.jpg", "w": 1568, "h": 698, "title": "단원 폴더 = 오늘 만든 네 가지 한 세트", "marks": [[222, 62, 522, 34, 1, "red"], [225, 180, 852, 208, 2, "green"]], "steps": ["경로: … › 1단원 지층과 화석", "보고서 · 발표 · 설문 · 평가표가 한곳에"]}, {"img": "../cap/o_g23.jpg", "w": 1568, "h": 698, "title": "폴더째 공유 — 나중에 넣는 파일도 자동", "marks": [[560, 74, 276, 42, 1, "red"], [566, 244, 262, 32, 2, "red"], [566, 204, 262, 32, 3, "red"]], "steps": ["폴더 이름 ▾", "[공유] → 동학년 선생님을 편집자로", "[Gemini에게 물어보기] — 폴더 속 자료 요약"]}], "prompts": [{"id": "B9", "title": "폴더 요약 · 빠진 자료 찾기", "tool": "드라이브 속 Gemini", "where": "폴더 안 [Gemini에게 물어보기] 또는 오른쪽 위 ✦", "text": "이 폴더에 있는 자료를 종류별(문서 · 슬라이드 · 설문 · 시트)로 나눠 한눈에 보이게 요약해줘.\n단원 수업에 꼭 필요한데 빠진 자료가 있으면 알려줘."}], "tips": ["학년 · 부서 단위라면 [공유 드라이브] — 담당자가 바뀌어도 자료가 학교에 남아요.", "학생 제출물 폴더는 공유하지 않기. 동학년과 나누는 건 단원 폴더만."]}, {"id": "s9", "part": "p4", "num": 9, "short": "우리 반 홈페이지", "title": "우리 반 홈페이지 — Google Sites로 링크 하나", "icon": "gu_cheer", "todo": ["sites.google.com → 빈 사이트, 사이트 이름 · 페이지 제목", "텍스트 상자에 오늘의 알림 (B10으로 초안)", "삽입 → URL 사용: 슬라이드 · 문서 붙여 넣기 / 버튼: 설문 링크", "파일 권한 확인 → [게시]: 주소 · 볼 사람 · 검색 표시 안 함"], "caps": [{"img": "../cap/b09_sites_new.jpg", "title": "sites.google.com → 빈 사이트", "marks": [[14, 38, 148, 140, 1, "red"], [778, 2, 104, 32, 2, "red"]], "steps": ["‘빈 사이트’로 시작 — 학급 홈페이지는 단순할수록 좋아요", "템플릿 갤러리 ▾ 를 펼치면 학교 · 수업용 템플릿도 있어요"], "w": 950, "h": 180}, {"img": "../cap/b09_sites_editor.jpg", "title": "오늘 만든 것을 한 페이지에 — 텍스트 · 버튼 · 슬라이드", "marks": [[1366, 100, 190, 130, 1, "red"], [206, 368, 530, 28, 2, "red"], [204, 440, 136, 34, 3, "green"], [204, 514, 460, 231, 4, "green"], [1458, 8, 54, 36, 5, "red"]], "steps": ["오른쪽 ‘삽입’ 탭 — 텍스트 상자 · 삽입(URL) · Drive", "텍스트 상자에 오늘의 알림 한 줄", "버튼 = 설문 · 문서로 가는 큰 링크", "슬라이드는 페이지 안에서 바로 넘겨 봐요", "다 됐으면 ‘게시’"], "w": 1562, "h": 745}, {"img": "../cap/b09_sites_embed.jpg", "title": "삽입 → URL 사용 — 링크만 붙이면 미리보기까지", "marks": [[24, 62, 74, 40, 1, "red"], [24, 122, 502, 56, 2, "red"], [122, 214, 306, 206, 3, "green"], [448, 450, 70, 40, 4, "red"]], "steps": ["‘URL 사용’ 탭", "슬라이드 · 문서 · 시트 · 유튜브 주소 붙여 넣기", "미리보기가 뜨면 성공", "삽입"], "w": 551, "h": 507}, {"img": "../cap/b09_sites_share.jpg", "title": "파일 권한 확인 창 — 학생이 볼 수 있게 할지", "marks": [[552, 124, 356, 84, 1, "red"], [552, 262, 118, 80, 2, "red"], [724, 344, 184, 62, 3, "green"]], "steps": ["사이트를 보는 사람이 이 파일은 못 본다는 알림", "‘링크가 있는 모든 사용자 · 뷰어’로 열어 줄지 선택", "개인정보 없는 자료면 ‘공유’, 아니면 ‘공유 안 함’"], "w": 930, "h": 502}, {"img": "../cap/b09_sites_button.jpg", "title": "버튼 — 설문 · 과제로 가는 큰 문", "marks": [[32, 74, 486, 58, 1, "red"], [32, 158, 486, 60, 2, "red"], [438, 246, 80, 42, 3, "green"]], "steps": ["버튼 이름 (이모지도 돼요)", "설문 · 문서 · 클래스룸 링크 붙여 넣기", "삽입"], "w": 551, "h": 306}, {"img": "../cap/b09_sites_publish.jpg", "title": "웹에 게시 — 주소 정하고 볼 사람 고르기", "marks": [[22, 70, 756, 60, 1, "red"], [20, 396, 192, 50, 2, "red"], [22, 476, 470, 62, 3, "green"], [684, 578, 94, 42, 4, "red"]], "steps": ["웹 주소: 영문 · 숫자 (아래에 실제 주소 미리보기)", "볼 수 있는 사용자 ‘관리’ — 학교 계정이면 우리 학교로 좁히기", "학급 홈페이지는 ‘검색엔진에 표시 안 함’ 체크 추천", "게시 — 고칠 때마다 다시 ‘게시’"], "w": 798, "h": 634}], "prompts": [{"id": "B10", "title": "학급 홈페이지 첫 화면 문구", "tool": "Gemini", "where": "gemini.google.com 또는 문서 ✦", "text": "초등 6학년 학급 홈페이지 첫 화면에 넣을 글을 써줘.\n① 우리 반 소개 한 줄 ② 이번 주 알림 3가지(과학 지층 탐구 보고서 금요일까지 · 단원 자기평가 · 모둠 발표) ③ 자료 바로가기 안내 한 줄\n학생과 학부모가 함께 읽는다고 생각하고, 짧고 따뜻하게. 학생 이름 · 연락처는 넣지 말 것."}], "tips": ["사이트는 고칠 때마다 다시 ‘게시’를 눌러야 학생 화면에 반영돼요.", "학교 계정이면 ‘볼 수 있는 사용자’를 우리 학교로 좁힐 수 있어요. 학생 이름 · 얼굴 사진은 올리지 않기."], "challenge": "새 페이지(페이지 탭 → ＋)로 ‘과학 · 국어 · 학급 회의’ 메뉴를 나누고, 각 페이지에 오늘 만든 설문 · 보드 · 폴더를 버튼으로 연결해 보세요."}, {"id": "s10", "part": "p4", "num": 10, "short": "우리 교실로", "title": "우리 교실로 — 약속 점검 · 교과별 적용", "icon": "gu_cheer", "apply": [["국어", "모둠 이어쓰기", "문서 탭 한 파일에 모둠별 한 문단, 제안 모드로 서로 고쳐 주기"], ["사회", "조사 결과 한 장", "설문으로 조사 → Magic Insights 그래프 → 모둠별 1장 슬라이드"], ["과학", "탐구 보고서", "관찰은 문서, 확인은 퀴즈 의견, 결과는 홈페이지에"], ["창체", "학급 회의", "화이트보드 KWL · 투표 스티커 → 결정은 홈페이지 알림으로"]], "checks": [["이름 대신 번호", "AI · 공개 링크에 넣는 자료는 번호와 모둠으로"], ["공유 범위 두 번 확인", "‘링크가 있는 모든 사용자’는 꼭 필요한 문서에만"], ["학교 계정으로", "수업 · 업무는 교육용 계정, 2단계 인증 켜기"], ["버전 기록 알려 주기", "지워져도 되돌릴 수 있다는 걸 학생에게도"], ["폴더 규칙 하나", "연도 + 학년반 + 과목 — 한 학기 검색이 편해요"], ["홈페이지는 링크만", "자료는 드라이브에, 홈페이지는 길잡이로"]], "closing": {"img": "../art/b_part4.webp", "lead": "쓰고 → 모으고 → 정리하고 → 나누는 네 번의 클릭", "msg": "다음 주 수업에 하나만 — 패들렛에 한 줄 후기를 남겨 주세요"}, "caps": [], "prompts": [], "tips": ["심화과정(11. 20.)에서는 오늘 모은 응답과 보고서가 AI를 거쳐 학생 한 명 한 명에게 다른 피드백으로 돌아갑니다."]}], "gallery": [{"img": "../cap/b01_doc_tabs_gemini.jpg", "title": "문서 탭 + Gemini로 작성 — 모둠별 칸이 한 문서에", "tool": "Google 문서", "step": "s1"}, {"img": "../cap/b02_doc_suggest.jpg", "title": "제안 모드 — 빨간펜 대신 초록 글씨", "tool": "Google 문서", "step": "s2"}, {"img": "../cap/o_g5.jpg", "title": "모둠별 1장 슬라이드", "tool": "Google 슬라이드", "step": "s3"}, {"img": "../cap/o_g10.jpg", "title": "Gemini가 만든 자기평가 설문", "tool": "Google 설문", "step": "s4"}, {"img": "../cap/b05_quiz_result.jpg", "title": "제출하자마자 점수와 오답 의견", "tool": "Google 설문 퀴즈", "step": "s5", "url": "https://docs.google.com/forms/d/e/1FAIpQLSe5pLuLvDSlgnVnSvnHD-AUd6wdUR_JpPna6tzwVDDJ5qhr5g/viewform"}, {"img": "../cap/o_g15.jpg", "title": "Magic Insights — 영역별 · 학생별 차트", "tool": "Canva 시트", "step": "s6"}, {"img": "../cap/o_g16.jpg", "title": "KWL 화이트보드", "tool": "Canva 화이트보드", "step": "s7"}, {"img": "../cap/o_g22.jpg", "title": "단원 폴더 한 세트", "tool": "Google 드라이브", "step": "s8"}, {"img": "../cap/b09_sites_editor.jpg", "title": "6학년 1반 우리 반 홈페이지", "tool": "Google Sites", "step": "s9"}]}</script>
 
+<script id="course" type="application/json">{"meta": {"school": "부산광역시교육청교육연구정보원", "date": "2026. 11. 6.(금)", "title": "잔소리 대신 클릭 한 번, Google로 굴러가는 우리 반", "subtitle": "Google 문서·슬라이드·설문·드라이브와 Canva, Brisk로 모둠 협업부터 피드백까지 — 5학년 과학 ‘지층과 화석’ 한 단원으로 따라 해요", "lecturer": "명진초등학교 교사 최일훈", "course": "2026 교원 에듀테크 활용 직무연수(2차) · 기본과정", "place": "교육연구정보원 4층 403호"}, "site": "https://hongdonedu.github.io/fungigame2026/edutech2026/basic/", "padlet": "https://padlet.com/oneteacher/1106-google-s024z9aodxw5bmyagk8i", "files": {"report": {"name": "지층탐구_모둠보고서_틀.docx", "label": "지층 탐구 모둠 보고서 틀", "kind": "DOCX", "size": "37KB", "use": "STEP 1~2 모둠 문서 · 댓글 · 제안 모드", "desc": "1~4모둠 칸과 역할 표, 성취기준 [6과01-01]이 들어간 틀 — 드라이브에 올린 뒤 ‘Google 문서로 열기’"}, "quiz": {"name": "형성평가_퀴즈_만들기_문장.txt", "label": "형성평가 퀴즈 — Gemini 문장 · 정답 · 답변별 의견", "kind": "TXT", "size": "2KB", "use": "STEP 4 말로 만드는 퀴즈", "desc": "설문 Gemini에 붙여 넣을 문장, 문항별 정답과 배점, 맞았을 때·틀렸을 때 보여 줄 의견 문장"}, "resp": {"name": "자기평가_응답_예시_24명.xlsx", "label": "단원 자기평가 응답 예시 24명", "kind": "XLSX", "size": "6KB", "use": "STEP 5 시트 연결 · Gemini 분석", "desc": "모둠 · 형성 순서 정답 여부 · 이해도 · 새로 알게 된 점 · 더 알고 싶은 점 (번호만, 연수용 가상 응답)"}, "eval": {"name": "Canva시트_지층탐구_평가표_12명.csv", "label": "지층 탐구 평가표 12명 (Canva 시트용)", "kind": "CSV", "size": "1KB", "use": "STEP 6 Canva 시트 · Magic Insights", "desc": "번호 · 모둠 · 관찰 기록 · 형성 순서 설명 · 모형 제작 · 합계 — 복사해서 Canva 시트 A1에 붙여 넣기"}, "kwl": {"name": "KWL_포스트잇_예시_W칸.txt", "label": "KWL ‘궁금한 것(W)’ 포스트잇 예시 20개", "kind": "TXT", "size": "1KB", "use": "STEP 7 화이트보드 · 프롬프트 B10", "desc": "학생들이 W칸에 붙일 법한 질문 20개 — 화이트보드 연습용, AI로 묶어 보기 연습용"}, "obs": {"name": "학생글_지층관찰기록문_번호만.docx", "label": "학생 글 예시 — 지층 관찰 기록문 4편 (번호만)", "kind": "DOCX", "size": "37KB", "use": "STEP 9 Brisk 피드백 · 글쓰기 검사 · 레벨 변경", "desc": "수준이 다른 4·7·11·15번 학생의 관찰 기록문 (연수용 가상 글) — Google 문서로 열고 Brisk 버튼 누르기"}, "rubric": {"name": "지층탐구_루브릭.docx", "label": "지층 탐구 보고서 루브릭 (9점 만점)", "kind": "DOCX", "size": "37KB", "use": "STEP 9 Brisk ‘루브릭 기준’ 피드백", "desc": "관찰 기록 · 형성 순서 설명 · 모형 제작 계획 3영역 × 3단계 기준표"}}, "zip": "에듀테크기본_실습자료.zip", "card": "에듀테크기본_프롬프트카드.pdf", "parts": [{"id": "p1", "num": "Ⅰ", "title": "함께 쓰기", "sub": "문서 · 슬라이드 하나에 모둠이 동시에", "art": "art/part1.webp", "steps": ["s0", "s1", "s2", "s3"]}, {"id": "p2", "num": "Ⅱ", "title": "모으기", "sub": "설문으로 받고, 시트와 Canva로 한눈에", "art": "art/part2.webp", "steps": ["s4", "s5", "s6"]}, {"id": "p3", "num": "Ⅲ", "title": "정리하기", "sub": "화이트보드로 생각을, 드라이브로 자료를", "art": "art/part3.webp", "steps": ["s7", "s8"]}, {"id": "p4", "num": "Ⅳ", "title": "AI 조수 · 교실로", "sub": "Brisk로 피드백 돌려주고, 우리 반으로", "art": "art/part4.webp", "steps": ["s9", "s9p", "s10"]}], "steps": [{"id": "s0", "part": "p1", "num": 0, "title": "준비 — 사전 역량평가 · 로그인 · 공유 권한", "short": "준비", "icon": "img/gu_wave.png", "survey": "pre", "files": ["report", "quiz", "resp", "eval", "kwl", "obs", "rubric"], "todo": ["사전 역량평가 QR 찍고 응답 — Q2-2 운영기관은 ‘부산교육연구정보원’", "penz.kr(펜즈) → 가져온 인증서(USB)로 교육디지털원패스 로그인 → Google(@penz.kr)로 들어가기", "크롬 오른쪽 위 앱 런처(점 9개) — 문서 · 슬라이드 · 설문 · 드라이브가 다 여기에", "이 아카이브를 열어 두고 실습 자료 ZIP 받기"], "caps": [{"img": "cap/b0_share.jpg", "w": 1568, "h": 705, "title": "공유 창 — 이 네 곳만 알면 됩니다", "marks": [[608, 226, 352, 46, 1, "red"], [884, 346, 68, 30, 2, "red"], [608, 420, 236, 46, 3, "red"], [608, 480, 100, 32, 4, "green"]], "steps": ["사용자 추가 — 모둠원 · 동료 선생님 이메일 입력", "역할 — 뷰어 · 댓글 작성자 · 편집자 중 고르기", "일반 액세스 — ‘제한됨’ ↔ ‘링크가 있는 모든 사용자’", "[링크 복사] → 클래스룸 · 메신저에 붙이기"]}], "prompts": [], "tips": ["학생 이름 · 연락처가 들어 있는 파일은 ‘링크가 있는 모든 사용자’로 열지 마세요. 우리 반만 볼 자료는 ‘제한됨’ + 사용자 추가가 안전합니다.", "학교 계정과 개인 계정이 한 크롬에 섞이면 공유가 꼬여요. 크롬 오른쪽 위 프로필을 계정별로 나눠 두면 실수가 줄어듭니다.", "펜즈(penz) 구글 계정은 교육용 Workspace예요 — Gemini · NotebookLM까지 들어 있어요. 가입 방법은 왼쪽 아래 ‘펜즈 안내’에서."]}, {"id": "s1", "part": "p1", "num": 1, "title": "모둠 문서 하나로 — 문서 탭 · 사본 링크 · Gemini 초안", "short": "모둠 문서", "icon": "img/gu_laptop.png", "files": ["report"], "todo": ["실습 자료 ‘모둠 보고서 틀’을 드라이브에 올리고 Google 문서로 열기", "왼쪽 [문서 탭]에서 1모둠~4모둠 탭 만들기", "주소 끝 edit → copy 로 바꿔 ‘사본 만들기’ 링크 만들기", "✦ Gemini에게 보고서 틀을 말로 부탁하기 (B1)"], "caps": [{"img": "cap/b1_doc_tabs.jpg", "w": 1568, "h": 705, "title": "문서 탭 — 한 파일 안에 모둠별 쪽", "marks": [[10, 172, 316, 118, 1, "red"], [289, 138, 30, 30, 2, "red"], [289, 174, 30, 28, 3, "green"]], "steps": ["왼쪽 ‘문서 탭’ — 1모둠~4모둠. 모둠은 자기 탭에서만 씁니다", "[+] 탭 추가 — 탭 아래 하위 탭도 만들 수 있어요", "⋮ 탭 옵션 — 이름 바꾸기 · 복제 · 탭 링크 복사"]}, {"img": "cap/b1_copy_link.jpg", "w": 710, "h": 349, "title": "주소 한 단어로 ‘사본 만들기’ 링크", "marks": [[410, 10, 66, 38, 1, "red"], [66, 282, 74, 32, 2, "red"]], "steps": ["주소 끝의 edit 를 copy 로 바꿔서 보내기", "받은 사람은 [사본 만들기] — 각자 자기 파일이 생기고 원본은 그대로"]}, {"img": "cap/b1_doc_gemini.jpg", "w": 1568, "h": 705, "title": "Gemini에게 말로 보고서 틀 부탁하기", "marks": [[1487, 4, 38, 38, 1, "red"], [1362, 90, 186, 94, 2, "red"], [1262, 228, 288, 48, 3, "red"], [1262, 586, 284, 74, 4, "green"]], "steps": ["오른쪽 위 ✦ Gemini 버튼 → 옆 패널 열기", "만들 문서를 문장으로 입력 (프롬프트 B1)", "Gemini가 보고서 틀을 새 문서로 만들어 줘요", "더 고칠 점은 아래 ‘Gemini에게 물어보기’ 칸에 이어서"], "pr": [[2, "B1"]]}, {"img": "cap/b1_gemini_doc.jpg", "w": 1568, "h": 705, "title": "완성된 틀 — 스마트칩까지 알아서", "marks": [[678, 160, 390, 36, 1, "red"], [848, 200, 58, 30, 2, "red"], [680, 300, 520, 360, 3, "red"], [14, 204, 300, 180, 4, "green"]], "steps": ["제목 · 성취기준이 들어간 ‘모둠 탐구 보고서’", "Date · Person 스마트칩 — 눌러서 날짜와 모둠원 고르기", "역할 나누기 표: 이끔이 · 기록이 · 발표이 · 자료이", "왼쪽 문서 개요 — 보고서 순서가 한눈에"]}], "prompts": [{"id": "B1", "title": "모둠 탐구 보고서 틀 만들기", "tool": "Google 문서 · Gemini", "where": "문서 오른쪽 위 ✦ → Gemini 패널 입력칸", "text": "5학년 과학 ‘지층과 화석’ 단원 모둠 탐구 보고서 틀을 만들어 줘.\n- 성취기준: [6과01-01] 지층의 특징을 알고, 지층의 형성 과정을 모형으로 표현할 수 있다.\n- 맨 위: 모둠명, 탐구 일자(날짜 칩), 모둠원 역할 표(이끔이·기록이·발표이·자료이, 이름 칸은 사람 칩)\n- 본문 네 칸: ① 우리 모둠이 관찰한 지층 ② 지층이 만들어지는 순서 ③ 모형 만들기 계획 ④ 더 알고 싶은 점\n- 칸마다 5학년이 이해할 수 있는 안내 문장 1줄과 예시 1줄을 넣어 줘."}], "tips": ["@ 를 치면 스마트칩 메뉴가 떠요. ‘드롭다운’ 칩으로 [진행 중 · 완료]를 넣어 두면 모둠 진행판이 됩니다 — 잔소리 대신 색깔로 확인!", "주소 끝만 바꾸면 되는 링크 세 가지: copy(사본 만들기), template/preview(템플릿 미리보기), export?format=pdf(바로 PDF 받기)."], "challenge": "보고서 틀 주소를 copy 로 바꿔 옆 선생님께 보내 보세요. 받은 선생님이 [사본 만들기]를 누르면 내 드라이브에 저장되는지 확인!", "live": [{"t": "Gemini가 만든 보고서 틀 — 사본 만들기", "i": "📄", "u": "https://docs.google.com/document/d/1ug7XvnXvPtBx7AFQgCEra2nb-o-P-Atl8f_3IfCaOTk/copy"}, {"t": "모둠 보고서 — 문서 탭 1~4모둠 (보기)", "i": "🗂️", "u": "https://docs.google.com/document/d/179_Y-eK8nW4RkV5jdozrUPF0D7Moca00X7WIqq6QSpw/edit?usp=sharing"}]}, {"id": "s2", "part": "p1", "num": 2, "title": "빨간펜 대신 — 댓글 · 제안 모드 · 버전 기록", "short": "빨간펜 대신", "icon": "img/gu_letter.png", "files": ["report"], "todo": ["고칠 낱말을 드래그 → 댓글로 칭찬 한 줄", "오른쪽 위 [수정 ▾] → [제안]으로 바꾸고 고쳐 쓰기", "학생 자리에서 제안 ✓ 수락 / ✕ 거절 해 보기", "버전 기록에서 예전 모습으로 되돌려 보기"], "caps": [{"img": "cap/b2_comment.jpg", "w": 1568, "h": 705, "title": "댓글 — 글을 지우지 않고 말 걸기", "marks": [[914, 362, 164, 22, 1, "red"], [666, 50, 28, 26, 2, "red"], [1354, 412, 190, 58, 3, "red"], [1494, 474, 48, 30, 4, "red"], [1346, 266, 206, 92, 5, "green"]], "steps": ["의견을 남길 글자를 드래그해서 고르기", "도구 모음 [댓글 추가] 버튼 (오른쪽 여백의 💬+ 도 같아요)", "칭찬 + 다음에 할 일 한 줄 — ‘준비물을 빠짐없이 적었어요 👍 …’", "[댓글] — @이메일을 넣으면 그 사람에게 알림이 가요", "학생은 답글을 달거나 ✓ 해결로 닫아요"]}, {"img": "cap/b2_suggest_mode.jpg", "w": 1568, "h": 705, "title": "제안 모드 — 고친 흔적이 그대로 남아요", "marks": [[1398, 50, 120, 26, 1, "red"], [1400, 114, 160, 34, 2, "red"], [646, 254, 84, 22, 3, "red"], [1346, 192, 206, 58, 4, "green"]], "steps": ["오른쪽 위 [수정 ▾] 열기", "[제안] 고르기 — 이제부터 쓰는 글은 모두 ‘제안’", "지운 글자는 취소선, 새로 쓴 글자는 색으로 표시", "오른쪽 제안 카드 — 학생이 ✓ 수락 / ✕ 거절"]}, {"img": "cap/b2_version.jpg", "w": 1568, "h": 705, "title": "버전 기록 — 지워도 괜찮아요", "marks": [[1340, 104, 222, 262, 1, "red"], [158, 6, 116, 36, 2, "red"], [1348, 668, 124, 24, 3, "red"], [1366, 196, 156, 24, 4, "green"]], "steps": ["오른쪽 ‘버전 기록’ 목록 — 시간 · 사람별로 저장", "[이 버전 복원하기] — 그때 모습으로 되돌리기", "‘변경사항 강조 표시’ — 누가 어디를 썼는지 색으로", "⋮ → 버전 이름 지정 (예: 1차 제출본)"]}], "prompts": [{"id": "B2", "title": "칭찬 + 질문 댓글 초안", "tool": "Google 문서 · Gemini", "where": "모둠 문서 ✦ Gemini 패널", "text": "이 문서의 1모둠 보고서를 읽고, 5학년 학생에게 남길 댓글 3개를 만들어 줘.\n- 각 댓글은 ‘잘한 점 1가지 + 다음에 생각해 볼 질문 1가지’, 두 문장 이내\n- 친절한 존댓말, 학생 이름 대신 번호\n- 정답을 바로 알려 주지 말고 스스로 생각하게 하는 질문으로 끝내기"}], "tips": ["제안 모드는 ‘댓글 작성자’ 권한으로도 쓸 수 있어요. 학생 글을 직접 바꾸지 않고 제안만 남기고 싶다면 서로를 댓글 작성자로 공유하세요.", "“누가 다 지웠어요!” 사고는 버전 기록 한 번이면 끝. 누가 언제 썼는지도 보여서 모둠 기여도 확인에도 좋아요."]}, {"id": "s3", "part": "p1", "num": 3, "title": "모둠별 1장 슬라이드 — 동시 편집 · Gemini 이미지", "short": "모둠별 1장 슬라이드", "icon": "img/gu_point.png", "todo": ["새 프레젠테이션 → 1장 만들고 Ctrl+D로 모둠 수만큼 복제", "슬라이드 제목에 ‘1모둠 · 탐구 주제’ — 모둠은 자기 장만", "편집자로 공유 → 모둠이 동시에 꾸미기", "오른쪽 [이미지]에서 장면 그림 만들어 넣기 (B3) → 슬라이드쇼"], "caps": [{"img": "cap/b3_slides_groups.jpg", "w": 1568, "h": 751, "title": "한 파일에 모둠별 1장", "marks": [[28, 96, 120, 296, 1, "red"], [92, 48, 34, 28, 2, "red"], [606, 48, 40, 28, 3, "red"], [1298, 5, 102, 34, 4, "red"], [1188, 446, 48, 88, 5, "green"]], "steps": ["왼쪽 필름스트립 1~4 — 모둠마다 한 장씩", "[+] 새 슬라이드 · Ctrl+D 복제", "[테마] — 한 번 고르면 전체 디자인 통일", "[슬라이드쇼] — 모둠 순서대로 바로 발표", "오른쪽 레일 [녹화] — 발표를 영상으로 남기기"]}, {"img": "cap/b3_slides_image.jpg", "w": 1568, "h": 751, "title": "Gemini로 탐구 장면 그림 만들기", "marks": [[1512, 312, 48, 40, 1, "red"], [1276, 114, 216, 34, 2, "red"], [1278, 148, 212, 210, 3, "red"], [846, 638, 74, 34, 4, "red"], [1342, 596, 76, 26, 5, "green"]], "steps": ["오른쪽 레일 [이미지] → 이미지 생성 도우미", "장면을 문장으로 (프롬프트 B3) — 수채화 · 3D 같은 스타일도 말로", "미리보기에서 마음에 드는 그림 고르기", "[삽입] — 슬라이드에 바로 들어가요", "옆 탭 [인포그래픽] — 도식 · 정리 그림도 만들 수 있어요"], "pr": [[2, "B3"]]}], "prompts": [{"id": "B3", "title": "탐구 장면 그림", "tool": "Google 슬라이드 · 이미지 생성", "where": "오른쪽 레일 [이미지] → 입력칸", "text": "바닷가 절벽에 가로 줄무늬로 쌓인 여러 색의 지층을 관찰하는 초등학생 네 명, 밝은 수채화 느낌, 글자 없이"}, {"id": "B4", "title": "모둠 발표 슬라이드 다듬기", "tool": "Google 슬라이드 · Gemini", "where": "슬라이드 오른쪽 위 ✦ → Gemini 패널", "text": "지금 슬라이드 내용을 5학년 모둠 발표용으로 다듬어 줘.\n- 제목 한 줄, 핵심 내용 3줄(각 20자 이내)\n- 발표자 노트에 1분 발표 대본(모둠원 4명이 한 문장씩)\n- 어려운 낱말은 쉬운 말로 바꾸기"}], "tips": ["동시에 편집하면 누가 어느 장에 있는지 썸네일 옆 프로필로 보여요. 남의 장을 실수로 지웠다면 Ctrl+Z 또는 버전 기록으로.", "AI 그림은 ‘자료 사진’이 아니에요. 실제 지층은 교과서 · 실물 사진으로, AI 그림은 장면을 상상하는 용도로만 쓰세요."], "live": [{"t": "지층 탐구 발표 · 모둠별 1장 (보기)", "i": "🖼️", "u": "https://docs.google.com/presentation/d/1fmTSnYTkd-YTkoI_IzSkQwNbZ6GonTMebTyFBHD08Is/edit?usp=sharing"}]}, {"id": "s4", "part": "p2", "num": 4, "title": "말로 만드는 퀴즈 — Gemini 설문 · 정답 · 답변별 의견", "short": "말로 만드는 퀴즈", "icon": "img/gu_idea.png", "files": ["quiz"], "todo": ["forms.google.com → 새 설문 → ✦ Gemini 창에 할 일을 문장으로 (B5)", "@ 로 드라이브 자료(모둠 보고서)를 소스로 붙이기", "미리보기 확인 → [퀴즈 만들기]", "정답 · 배점 · 답변별 의견 넣고 설정에서 결과 공개 → [게시]"], "caps": [{"img": "cap/b4_form_gemini.jpg", "w": 1568, "h": 751, "title": "Gemini에게 설문을 말로 부탁하기", "marks": [[454, 506, 584, 64, 1, "red"], [454, 336, 586, 166, 2, "red"], [1040, 512, 72, 36, 3, "red"], [960, 158, 132, 26, 4, "green"]], "steps": ["만들 설문을 문장으로 (프롬프트 B5)", "@ 입력 → 드라이브 파일을 소스로 고르기", "[만들기]", "‘미리보기’를 켜 두면 만들기 전에 먼저 확인"], "pr": [[1, "B5"]]}, {"img": "cap/b4_form_preview.jpg", "w": 1568, "h": 751, "title": "미리보기 — 마음에 들면 그대로", "marks": [[504, 230, 548, 92, 1, "red"], [1004, 390, 30, 28, 2, "red"], [438, 576, 82, 26, 3, "red"], [1046, 572, 92, 34, 4, "red"], [1000, 154, 82, 34, 5, "green"]], "steps": ["제목 · 설명까지 자동 — ‘5학년 과학 지층과 화석 단원 형성평가’", "정답 ✓ 과 배점이 미리 들어가 있어요", "[답안 표시] — 정답을 숨기고 학생 눈으로 보기", "[퀴즈 만들기] — 설문지로 저장", "마음에 안 들면 [다시 시도] 또는 문장을 고쳐서"]}, {"img": "cap/b4_quiz_feedback.jpg", "w": 1568, "h": 751, "title": "정답 · 답변별 의견 — 틀린 학생에게 힌트", "marks": [[512, 298, 534, 34, 1, "red"], [984, 266, 64, 26, 2, "red"], [574, 80, 68, 28, 3, "red"], [580, 128, 408, 62, 4, "red"], [586, 208, 58, 30, 5, "green"]], "steps": ["[정답] → 정답 보기 클릭 (✓)", "오른쪽 위 배점 입력", "[답변 관련 의견 추가] → ‘오답’ 탭", "틀린 학생에게 보여 줄 힌트 문장 (프롬프트 B6)", "링크 · 영상도 붙일 수 있어요 — 교과서 실험 영상 등"], "pr": [[4, "B6"]]}, {"img": "cap/b4_quiz_settings.jpg", "w": 1568, "h": 751, "title": "설정 — 퀴즈로 만들기 · 결과 공개", "marks": [[530, 160, 500, 40, 1, "red"], [552, 250, 200, 74, 2, "red"], [552, 360, 480, 136, 3, "red"], [1426, 6, 62, 34, 4, "red"], [530, 618, 500, 44, 5, "green"]], "steps": ["[설정] 탭 → 퀴즈로 만들기 켜기", "결과 공개 — 제출 후 바로 / 직접 검토 후", "응답자 설정 — 틀린 문제 · 정답 · 점수 보이기", "[게시] — 게시해야 학생이 응답할 수 있어요", "[응답] — 이메일 수집 · 응답 1회로 제한"]}], "prompts": [{"id": "B5", "title": "형성평가 퀴즈 만들기", "tool": "Google 설문지 · Gemini", "where": "새 설문 → ✦ Gemini 입력칸", "text": "5학년 과학 ‘지층과 화석’ 단원 형성평가 퀴즈를 만들어 줘. 모둠 번호(드롭다운 1~6모둠), 지층이 만들어지는 순서 객관식 3문항(정답 포함), 오늘 알게 된 점 단답 1문항, 이해도 5점 척도 1문항. 초등학생 눈높이의 쉽고 짧은 문장으로. 참고 자료: @5학년 과학 · 지층 탐구 모둠 보고서"}, {"id": "B6", "title": "답변별 의견 — 오답 힌트", "tool": "Gemini · ChatGPT", "where": "아무 AI 창 → 결과를 ‘답변 관련 의견’에 붙여 넣기", "text": "5학년 과학 퀴즈 ‘지층이 만들어질 때 가장 먼저 일어나는 일은?’(정답: 물에 실려 온 자갈과 모래가 쌓인다)에서 틀린 학생에게 보여 줄 힌트를 2문장으로 써 줘. 정답을 바로 말하지 말고, 모둠에서 만든 색모래 모형을 떠올리게 하는 질문으로 끝내 줘."}, {"id": "B7", "title": "단원 자기평가 설문", "tool": "Google 설문지 · Gemini", "where": "새 설문 → ✦ Gemini 입력칸", "text": "5학년 과학 ‘지층과 화석’ 단원을 마친 학생 자기평가 설문 5문항을 만들어 줘.\n① 모둠 번호(드롭다운 1~6모둠) ② 지층이 만들어지는 순서 객관식 1개 ③ 지층 모형 만들기 활동 이해도 5점 척도 ④ 오늘 새로 알게 된 점(단답형) ⑤ 더 알고 싶은 점(장문형)\n①~③은 필수로 해 줘."}], "tips": ["✦ Gemini 버튼은 계정 · 요금제에 따라 안 보일 수 있어요. 그럴 땐 B5를 gemini.google.com에 넣고 나온 문항을 복사해 설문에 붙여 넣으면 됩니다.", "‘직접 검토 후 공개’로 두면 서술형까지 채점한 뒤 [점수 공개]로 한꺼번에 돌려줄 수 있어요."], "live": [{"t": "학생 화면으로 자기평가 설문 응답해 보기", "i": "📝", "u": "https://docs.google.com/forms/d/e/1FAIpQLSe5pLuLvDSlgnVnSvnHD-AUd6wdUR_JpPna6tzwVDDJ5qhr5g/viewform"}]}, {"id": "s5", "part": "p2", "num": 5, "title": "응답이 그래프로 — 요약 · 시트 연결 · Gemini 분석", "short": "응답 → 그래프 · 시트", "icon": "img/gu_magnifier.png", "files": ["resp"], "todo": ["설문 [응답] 탭 → 요약 그래프 보기", "차트 오른쪽 위 [차트 복사] → 슬라이드 · 문서에 붙이기", "[Sheets에 연결] → 응답이 저절로 쌓이는 시트 만들기", "시트 ✦ Gemini에게 분석 부탁하기 (B8)"], "caps": [{"img": "cap/b5_responses.jpg", "w": 1568, "h": 705, "title": "응답 탭 — 제출과 동시에 집계", "marks": [[754, 52, 62, 24, 1, "red"], [506, 100, 110, 34, 2, "red"], [910, 102, 106, 30, 3, "red"], [512, 256, 532, 256, 4, "green"]], "steps": ["[응답] 탭 — 숫자 배지가 응답 수", "응답 24개 — 요약 · 질문 · 개별 보기", "[Sheets에 연결] — 시트로 보내기", "퀴즈 통계 — 평균 · 중앙값 · 범위 · 점수 분포"]}, {"img": "cap/b5_charts.jpg", "w": 1568, "h": 705, "title": "문항별 차트 — 복사해서 바로 쓰기", "marks": [[506, 198, 548, 222, 1, "red"], [506, 440, 548, 250, 2, "red"], [972, 198, 74, 26, 3, "green"]], "steps": ["모둠별 원그래프 — 몇 명씩 냈는지", "문항별 막대그래프 — 23명 중 15명 정답(65.2%), 오답이 어디에 몰렸는지", "[차트 복사] → 슬라이드 · 문서에 Ctrl+V"]}, {"img": "cap/b5_sheet.jpg", "w": 1568, "h": 705, "title": "연결된 시트 + Gemini", "marks": [[34, 122, 922, 40, 1, "red"], [146, 166, 112, 500, 2, "red"], [1436, 82, 126, 22, 3, "red"], [954, 646, 152, 26, 4, "green"]], "steps": ["응답 시트 ‘Form_Responses’ — 표로 자동 정리", "점수 열 — 0/1 · 1/1로 정답 여부", "오른쪽 위 [✦ 이 데이터 요약]", "아래 [이 데이터를 분석해 줘] — 차트 · 피벗을 알아서"], "pr": [[4, "B8"]]}], "prompts": [{"id": "B8", "title": "응답 분석 — 다시 가르칠 내용 찾기", "tool": "Google 시트 · Gemini", "where": "응답 시트 ✦ Gemini 패널", "text": "이 응답 시트를 분석해 줘.\n① 모둠별 정답률 표\n② 가장 많이 고른 오답과, 그 답을 고른 까닭으로 보이는 오개념\n③ ‘더 알고 싶은 점’을 비슷한 주제끼리 3묶음\n④ 다음 차시 시작 5분에 다시 짚을 내용 3줄\n학생은 번호로만 써 줘."}], "tips": ["설문을 고쳐도 시트 연결은 그대로예요. 새 문항은 시트 오른쪽에 새 열로 붙습니다.", "시트에서 응답을 고치거나 지워도 설문 [응답] 탭 요약은 바뀌지 않아요. 원본은 설문, 분석은 시트에서."], "live": [{"t": "응답 시트 24명 (보기)", "i": "📊", "u": "https://docs.google.com/spreadsheets/d/1oNqlTEvYPNKlpH426DHdDYFDHoY6Rkl4Hbzrgt7_u7Q/edit?usp=sharing"}]}, {"id": "s6", "part": "p2", "num": 6, "title": "Canva 시트 — 붙여 넣으면 Magic Insights", "short": "Canva 시트 인사이트", "icon": "img/gu_thumbs.png", "files": ["eval"], "todo": ["canva.com → 만들기 → 시트(Sheets)", "실습 자료 ‘평가표 12명’을 복사 → A1 칸에 붙여 넣기", "도구 모음 [작업] → Magic Insights", "궁금한 것을 문장으로 (B9) → 차트와 해설 → 디자인에 추가"], "caps": [{"img": "cap/c5_canva_actions.jpg", "w": 1568, "h": 751, "title": "Canva 시트 — [작업] 메뉴", "marks": [[94, 156, 488, 422, 1, "red"], [412, 56, 58, 28, 2, "red"], [416, 240, 250, 30, 3, "red"], [416, 206, 250, 30, 4, "green"]], "steps": ["평가표 12명 — 번호 · 모둠 · 세 영역 점수", "도구 모음 [작업]", "Magic Insights — 물어보면 차트 + 해설", "Magic Charts — 데이터에 맞는 차트 추천"]}, {"img": "cap/c5_magic_insights.jpg", "w": 1568, "h": 751, "title": "Magic Insights — 데이터가 말을 겁니다", "marks": [[70, 98, 260, 116, 1, "red"], [70, 342, 260, 266, 2, "red"], [68, 618, 266, 38, 3, "red"], [388, 156, 488, 424, 4, "green"]], "steps": ["질문 입력 (프롬프트 B9)", "‘모둠별 평가 항목 비교’ 차트가 바로", "‘추가 지도가 필요한 번호’까지 문장으로 — 그런데 ‘11.0번’? 원본과 꼭 대조", "분석한 데이터 범위 — 시트 원본"], "pr": [[1, "B9"]]}], "prompts": [{"id": "B9", "title": "Magic Insights 질문", "tool": "Canva 시트 · Magic Insights", "where": "[작업] → Magic Insights 입력칸", "text": "모둠별로 관찰 기록·형성 순서 설명·모형 제작 평균을 비교하고, 추가 지도가 필요한 번호를 알려줘"}], "tips": ["숫자를 읽어 주는 건 AI, 판단은 선생님. 이 화면의 AI는 ‘11.0번’이라고 답했어요 — 번호 열을 숫자로 읽은 실수입니다. 번호를 ‘1번’처럼 글자로 넣으면 줄어요.", "차트는 [디자인에 추가]로 Canva 프레젠테이션 · 학급 안내장에 그대로 옮길 수 있어요."]}, {"id": "s7", "part": "p3", "num": 7, "title": "Canva 화이트보드 — KWL · 타이머 · 학습 세션", "short": "Canva 화이트보드", "icon": "img/gu_cheer.png", "files": ["kwl"], "todo": ["canva.com → 화이트보드 → 템플릿 ‘KWL 차트’ 검색", "K(아는 것) · W(궁금한 것)는 수업 전, L(배운 것)은 수업 후 포스트잇", "아래 [타이머] 5분 + 음악으로 생각 모으기", "[학습 세션] QR로 참여 / [공유] → Google 클래스룸"], "caps": [{"img": "cap/c6_whiteboard.jpg", "w": 1568, "h": 751, "title": "KWL 차트 + 마인드맵을 한 판에", "marks": [[398, 174, 488, 248, 1, "red"], [60, 206, 46, 360, 2, "red"], [76, 496, 162, 196, 3, "red"], [1382, 6, 92, 34, 4, "red"], [942, 80, 560, 328, 5, "green"]], "steps": ["KWL 차트 — 칸마다 포스트잇 붙이기", "왼쪽 도구 — 펜 · 도형 · 포스트잇 · 표", "타이머 05:00 — 음악 켜고 생각 모으기", "오른쪽 위 [학습 세션]", "옆 칸에 지식 마인드맵 — 화이트보드는 끝없이 넓어요"]}, {"img": "cap/c6_session_qr.jpg", "w": 1568, "h": 751, "title": "학습 세션 — QR · 코드로 바로 참여", "marks": [[706, 166, 156, 156, 1, "red"], [626, 368, 316, 60, 2, "red"], [652, 496, 264, 46, 3, "red"], [716, 590, 136, 36, 4, "red"], [960, 124, 36, 36, 5, "green"]], "steps": ["QR 코드 — 태블릿 카메라로 찍기", "또는 canva.com/abc 로 들어가서", "코드 입력 (코드는 시간이 지나면 새로 바뀌어요)", "[링크 및 코드 복사] — 클래스룸 · 패들렛에 붙이기", "↗ 크게 보기 — 교실 TV에 띄우기"]}, {"img": "cap/c6_share.jpg", "w": 1568, "h": 751, "title": "공유 — 모둠 편집 · 클래스룸 배포", "marks": [[1234, 122, 316, 34, 1, "red"], [1234, 224, 316, 36, 2, "red"], [1234, 274, 316, 34, 3, "red"], [1388, 462, 90, 66, 4, "red"], [1238, 380, 72, 66, 5, "green"]], "steps": ["사용자 추가 — 이메일 · 우리 반 그룹", "액세스 레벨 — 링크가 있는 사용자 + 편집 가능", "[링크 복사]", "Google 클래스룸 — 과제로 바로 보내기", "학습 세션 — 공유 창에서도 열 수 있어요"]}], "prompts": [{"id": "B10", "title": "포스트잇 묶기 — 다음 차시 탐구 질문", "tool": "Gemini · ChatGPT", "where": "포스트잇 글을 복사해 AI 창에", "text": "아래는 5학년 학생들이 KWL 차트 ‘W(궁금한 것)’ 칸에 붙인 포스트잇입니다. 비슷한 질문끼리 3~4묶음으로 나누고, 묶음마다 다음 차시 탐구 질문 1개와 교실에서 할 수 있는 간단한 활동 1개를 제안해 줘. 표로 정리해 줘.\n[포스트잇 붙여 넣기]"}], "tips": ["화이트보드는 끝이 없는 판이에요. 모둠마다 구역을 나눠 이름표를 붙여 두면 서른 명이 써도 섞이지 않아요.", "학습 세션 코드는 일정 시간이 지나면 새로 바뀝니다. 수업 때마다 그 자리에서 띄워 주세요."]}, {"id": "s8", "part": "p3", "num": 8, "title": "드라이브 서랍장 — 단원 폴더 · Gemini에게 물어보기", "short": "드라이브 서랍장", "icon": "img/gu_check.png", "todo": ["[+ 신규] → 새 폴더 ‘2026 5학년 1반 과학’ → 안에 ‘1단원 지층과 화석’", "오늘 만든 문서 · 슬라이드 · 설문 · 시트를 단원 폴더로 옮기기", "폴더째 공유 — 나중에 넣는 파일도 저절로 공유", "폴더 위 [Gemini에게 물어보기] — 폴더 전체를 소스로 질문 (B11)"], "caps": [{"img": "cap/c7_drive_folder.jpg", "w": 1568, "h": 751, "title": "학년 › 교과 › 단원 서랍", "marks": [[222, 62, 526, 38, 1, "red"], [226, 182, 1006, 198, 2, "red"], [12, 60, 84, 44, 3, "red"], [726, 64, 26, 32, 4, "red"], [228, 108, 154, 32, 5, "green"]], "steps": ["경로 — 내 드라이브 › 2026 5학년 1반 과학 › 1단원 지층과 화석", "단원 폴더 안에 오늘 만든 다섯 파일", "[+ 신규] — 폴더 · 문서 · 파일 업로드", "폴더 이름 ▾ — 공유 · 정리 · 폴더 색 바꾸기", "[Gemini에게 물어보기] — 이 폴더를 통째로 소스로"]}, {"img": "cap/c7_drive_gemini.jpg", "w": 1568, "h": 751, "title": "드라이브 Gemini — 폴더에게 묻기", "marks": [[96, 192, 248, 34, 1, "red"], [880, 104, 332, 92, 2, "red"], [656, 248, 556, 68, 3, "red"], [656, 414, 556, 92, 4, "red"], [1322, 64, 138, 30, 5, "green"]], "steps": ["소스 — ‘1단원 지층과 화석’ 폴더", "질문 (프롬프트 B11)", "응답 시트를 직접 읽고 분석", "‘24명 중 16명 정답(66.7%), 8명 오답’ — 숫자는 시트와 대조", "[프로젝트로 저장] — 다음에 이어서 묻기"], "pr": [[2, "B11"]]}], "prompts": [{"id": "B11", "title": "단원 폴더에게 묻기", "tool": "Google 드라이브 · Gemini", "where": "폴더 → [Gemini에게 물어보기]", "text": "자기평가 응답에서 오답이 많았던 문항과 학생들이 가장 많이 궁금해한 점을 정리하고, 다음 차시 수업 준비 체크리스트를 만들어 줘."}], "tips": ["폴더 이름 규칙 하나만 정해 두세요 — ‘연도 학년반 교과 › 단원’. 1년 뒤에도 바로 찾고, 폴더째 복사하면 다음 학년도에 그대로 다시 씁니다.", "학생 제출물 폴더는 ‘링크가 있는 모든 사용자’로 열지 마세요. 동학년 공유는 사용자 추가로."]}, {"id": "s9", "part": "p4", "num": 9, "title": "Brisk Teaching ① — 설치 · 학생 글 맞춤 피드백", "short": "Brisk ① 피드백", "icon": "img/gu_magnifier.png", "files": ["obs", "rubric"], "todo": ["크롬 웹 스토어에서 Brisk Teaching 설치 → Google 계정으로 시작(교육자 무료)", "실습 자료 ‘학생 글 예시’를 Google 문서로 열기 → 오른쪽 아래 Brisk 버튼", "[피드백 제공] → 장점 및 개선점 → 한국어 · 5학년 · 프롬프트(B12)", "[Brisk It] → 결과를 고쳐서 [삽입] 또는 댓글로"], "caps": [{"img": "cap/d8_brisk_plan.jpg", "w": 1568, "h": 751, "title": "교육자 무료 플랜으로 충분해요", "marks": [[856, 182, 216, 184, 1, "green"], [856, 384, 216, 186, 2, "red"]], "steps": ["교육자 무료 플랜 — 20개 넘는 도구", "프로 · 학교 플랜 — 필요할 때만"]}, {"img": "cap/d8_brisk_menu.jpg", "w": 1568, "h": 751, "title": "문서 오른쪽 아래 Brisk 버튼", "marks": [[1466, 686, 34, 34, 1, "red"], [1098, 498, 174, 32, 2, "red"], [1272, 498, 176, 32, 3, "red"], [1098, 535, 174, 32, 4, "red"], [1272, 535, 176, 32, 5, "red"], [1098, 572, 174, 32, 6, "green"]], "steps": ["Brisk 버튼", "만들기 — 퀴즈 · 슬라이드 · 루브릭 …", "피드백 제공 — 학생 글에 맞춤 피드백", "글쓰기 검사 — 쓰는 과정 다시 보기", "레벨 변경 — 읽기 수준 바꾸기", "Boost 학생 활동 — 학생용 AI 활동"]}, {"img": "cap/d8_brisk_feedback_styles.jpg", "w": 1568, "h": 751, "title": "피드백 방식 고르기", "marks": [[1466, 686, 34, 34, 1, "red"], [1120, 436, 314, 52, 2, "red"], [1120, 580, 314, 52, 3, "red"], [1120, 638, 314, 52, 4, "red"], [680, 128, 512, 76, 5, "green"]], "steps": ["Brisk 버튼", "일괄 피드백 — 여러 학생 과제를 한 번에", "장점 및 개선점 — 강점 · 성장 영역 · 생각 질문", "루브릭 기준 — 내 기준표대로", "학생 글 — 지층 관찰 기록문(7번)"]}, {"img": "cap/d8_brisk_feedback_setup.jpg", "w": 1568, "h": 751, "title": "조건 맞추고 Brisk It", "marks": [[1120, 494, 326, 34, 1, "red"], [1120, 550, 326, 116, 2, "red"], [1120, 672, 68, 32, 3, "red"], [1390, 672, 58, 32, 4, "red"], [1180, 640, 48, 24, 5, "green"]], "steps": ["장점 및 개선점 · 한국어 · AI 모델", "프롬프트 — 성취기준 · 말투 · 개수 (B12)", "5학년", "[Brisk It]", "[루브릭] — 실습 자료 루브릭을 붙이면 기준대로"], "pr": [[2, "B12"]]}, {"img": "cap/d8_brisk_feedback_result.jpg", "w": 1568, "h": 751, "title": "Glow · Grow · Wondering", "marks": [[1170, 230, 280, 128, 1, "red"], [1170, 394, 280, 144, 2, "red"], [1170, 576, 280, 64, 3, "red"], [1322, 176, 126, 36, 4, "red"], [1170, 668, 280, 40, 5, "green"]], "steps": ["Glow — 잘한 점을 학생 문장을 인용해서", "Grow — 다음에 고칠 점 한두 가지", "Wondering — 생각을 여는 질문", "[삽입] · [모두 복사] — 문서나 댓글로", "변경 요청 — ‘더 짧게’ · ‘더 쉽게’ (B13)"], "pr": [[5, "B13"]]}], "prompts": [{"id": "B12", "title": "장점 & 개선점 피드백", "tool": "Brisk · 피드백 제공", "where": "Brisk → 피드백 제공 → 장점 및 개선점 → 프롬프트 칸", "settings": ["장점 및 개선점", "한국어", "5학년"], "text": "성취기준 [6과01-01] 지층의 특징과 형성 과정 설명에 초점을 두고, 5학년 학생이 이해할 수 있는 따뜻한 말투로 장점 2가지와 개선점 1가지, 생각을 열어 주는 질문 1개를 써 줘."}, {"id": "B13", "title": "피드백 다듬기 (변경 요청)", "tool": "Brisk · 결과 화면", "where": "결과 아래 ‘변경할 사항이 있나요?’ 칸", "text": "Grow를 한 문장으로 줄이고, 다음 시간에 직접 해 볼 행동 하나로 바꿔 줘. 어려운 낱말은 5학년이 아는 말로."}], "tips": ["Brisk는 외부 서비스예요. 학생 이름 · 개인정보가 든 문서 말고, 번호만 남긴 글에서 쓰세요.", "피드백은 초안입니다. 학생 문장을 인용했는지, 성취기준에서 벗어나지 않았는지 읽고 한 줄이라도 내 말로 바꿔서 돌려주세요."]}, {"id": "s9p", "part": "p4", "num": "9+", "title": "Brisk Teaching ② — 글쓰기 검사 · 레벨 변경 · 퀴즈 만들기", "short": "Brisk ② 검사 · 레벨 · 만들기", "icon": "img/gu_idea.png", "files": ["obs"], "todo": ["Brisk → [글쓰기 검사] — 붙여넣기 · 수정 횟수 · 쓰는 과정 재생", "Brisk → [레벨 변경] — 같은 글을 학년 수준별로", "Brisk → [만들기] → 퀴즈 — 문서 내용으로 Google 설문 퀴즈", "유튜브 · 웹 기사 위에서도 Brisk 버튼 눌러 보기"], "caps": [{"img": "cap/d8_brisk_inspect.jpg", "w": 1568, "h": 751, "title": "글쓰기 검사 — 쓰는 과정을 다시 보기", "marks": [[966, 101, 100, 28, 1, "red"], [1068, 101, 64, 28, 2, "red"], [694, 222, 484, 52, 3, "green"], [648, 708, 584, 36, 4, "red"]], "steps": ["붙여넣기 횟수 — 이 글은 1번", "수정 횟수 · 쓰는 데 걸린 시간", "노란색 = 붙여 넣은 부분", "타임라인 ▶ — 글이 써진 과정을 영상처럼 재생"]}, {"img": "cap/d8_brisk_level.jpg", "w": 1568, "h": 751, "title": "레벨 변경 — 같은 글, 다른 읽기 수준", "marks": [[1200, 594, 214, 34, 1, "red"], [1200, 636, 72, 32, 2, "red"], [1274, 636, 100, 32, 3, "red"], [1356, 672, 92, 32, 4, "red"], [680, 128, 512, 76, 5, "green"]], "steps": ["평가된 읽기 레벨 — 지금 글은 3학년 수준", "바꿀 학년 고르기", "언어 — 한국어 (영어와 함께도)", "[읽기 레벨 변경]", "원문 — 이 글을 바탕으로 수준을 바꿔요"]}, {"img": "cap/d8_brisk_create.jpg", "w": 1568, "h": 751, "title": "만들기 — 문서 하나로 수업 자료", "marks": [[1106, 408, 330, 38, 1, "red"], [1106, 480, 164, 38, 2, "red"], [1106, 521, 164, 38, 3, "red"], [1272, 480, 164, 38, 4, "green"], [1106, 640, 330, 78, 5, "green"]], "steps": ["무엇이든 만들기 — 원하는 자료를 말로", "프레젠테이션", "퀴즈 — Google 설문 · Kahoot! 등", "팟캐스트 — 듣는 자료", "교육과정 — Boost 활동 · 평가 기준표 · 강의 계획서"]}, {"img": "cap/d8_brisk_quiz_setup.jpg", "w": 1568, "h": 751, "title": "퀴즈 만들기 설정", "marks": [[1120, 426, 180, 32, 1, "red"], [1120, 480, 328, 120, 2, "red"], [1120, 604, 240, 32, 3, "red"], [1386, 674, 62, 32, 4, "green"]], "steps": ["퀴즈 · 한국어 · 설문지(보라 아이콘)", "프롬프트 — 다룰 개념과 오답 선지 조건 (B14)", "5학년 · 객관식 · 5개의 질문", "[Brisk It]"], "pr": [[2, "B14"]]}], "prompts": [{"id": "B14", "title": "Brisk 퀴즈 — 오개념 오답 선지", "tool": "Brisk · 만들기 → 퀴즈", "where": "Brisk → 만들기 → 퀴즈 → 프롬프트 칸", "settings": ["퀴즈", "한국어", "5학년", "객관식", "5개의 질문"], "text": "5학년 과학 ‘지층과 화석’ 단원. 지층이 만들어지는 과정(운반-퇴적-굳음), 아래층이 먼저 쌓인다는 점, 퇴적암 구분을 확인하는 문제. 학생이 헷갈리기 쉬운 오개념을 오답 선지로 넣어 주세요."}], "tips": ["글쓰기 검사는 ‘의심’이 아니라 ‘대화’의 시작이에요. 붙여 넣은 부분이 있으면 어디서 가져왔는지, 내 말로 바꿀 곳은 어디인지 함께 이야기해요.", "레벨 변경은 느린 학습자 · 다문화 학생용 읽기 자료에 특히 좋아요. 같은 내용을 두세 수준으로 만들어 골라 읽게 해 보세요."], "challenge": "유튜브 과학 영상을 하나 열고 오른쪽 아래 Brisk 버튼 → 퀴즈 만들기를 눌러 보세요. 영상 내용으로 바로 문제가 만들어집니다."}, {"id": "s10", "part": "p4", "num": 10, "title": "우리 반으로 — 한 단원의 흐름 · 네 가지 약속 · 사후 설문", "short": "교실로 · 사후 설문", "icon": "img/gu_cheer.png", "survey": "post", "flowTitle": "한 단원이 이렇게 굴러가요", "flowSub": "5학년 과학 ‘지층과 화석’ 예시", "flow": [{"img": "art/part1.webp", "t": "함께 쓰기", "d": "모둠 문서 탭 · 댓글 · 제안 모드 → 모둠별 1장 슬라이드로 발표"}, {"img": "art/part2.webp", "t": "모으기", "d": "말로 만든 퀴즈 → 응답 그래프 · 시트 → Canva Magic Insights"}, {"img": "art/part3.webp", "t": "정리하기", "d": "KWL 화이트보드로 생각 모으고, 단원 폴더에 차곡차곡"}, {"img": "art/part4.webp", "t": "돌려주기", "d": "Brisk로 학생 글마다 장점 · 개선점 · 질문을 — 확인은 선생님이"}], "checks": [{"k": "개인정보는 최소로", "d": "이름 대신 번호. 연락처 · 사진 · 성적은 올리지 않기"}, {"k": "공유 범위 확인", "d": "‘링크가 있는 모든 사용자’는 꼭 필요한 파일에만"}, {"k": "AI 결과는 초안", "d": "숫자 · 사실은 원본과 대조, 판단은 선생님"}, {"k": "학교 계정 · 학교 지침", "d": "학생용 AI 도구는 학교 계정 정책과 나이 기준 확인"}], "prompts": [], "tips": ["다음 주 수업에 딱 하나만 골라 써 보세요. 오늘 만든 파일은 모두 내 드라이브에 남아 있어요.", "심화과정(11. 20.)에서는 오늘 모은 응답과 학생 글을 ‘학생마다 다른 AI 피드백’으로 되돌려 드립니다."]}], "gallery": [{"img": "gal/g1_gemini_doc.jpg", "title": "Gemini가 만든 모둠 탐구 보고서 틀", "tool": "Google 문서 · Gemini", "step": "s1", "url": "https://docs.google.com/document/d/1ug7XvnXvPtBx7AFQgCEra2nb-o-P-Atl8f_3IfCaOTk/copy", "go": "사본 만들기 ↗"}, {"img": "gal/g2_slides_image.jpg", "title": "슬라이드 안에서 만든 탐구 장면 그림", "tool": "Google 슬라이드 · 이미지 생성", "step": "s3", "url": "https://docs.google.com/presentation/d/1fmTSnYTkd-YTkoI_IzSkQwNbZ6GonTMebTyFBHD08Is/edit?usp=sharing", "go": "슬라이드 보기 ↗"}, {"img": "gal/g3_quiz.jpg", "title": "말로 만든 형성평가 퀴즈", "tool": "Google 설문지 · Gemini", "step": "s4", "url": "https://docs.google.com/forms/d/e/1FAIpQLSe5pLuLvDSlgnVnSvnHD-AUd6wdUR_JpPna6tzwVDDJ5qhr5g/viewform", "go": "설문 응답해 보기 ↗"}, {"img": "gal/g4_charts.jpg", "title": "응답 24개 — 모둠별 · 문항별 그래프", "tool": "Google 설문지 응답", "step": "s5", "url": "https://docs.google.com/spreadsheets/d/1oNqlTEvYPNKlpH426DHdDYFDHoY6Rkl4Hbzrgt7_u7Q/edit?usp=sharing", "go": "응답 시트 보기 ↗"}, {"img": "gal/g5_insights.jpg", "title": "Magic Insights — 모둠별 평가 비교", "tool": "Canva 시트", "step": "s6"}, {"img": "gal/g6_whiteboard.jpg", "title": "KWL 차트 + 마인드맵 화이트보드", "tool": "Canva 화이트보드", "step": "s7"}, {"img": "gal/g7_drive_gemini.jpg", "title": "단원 폴더에게 물어본 오답 분석", "tool": "Google 드라이브 · Gemini", "step": "s8"}, {"img": "gal/g8_brisk.jpg", "title": "학생 글 7번에 대한 Glow · Grow · Wondering", "tool": "Brisk Teaching", "step": "s9"}], "survey": {"course": "2026년 교원 에듀테크 활용 기본 심화 직무연수(2차)", "q22": "Q2-2 운영기관 → 부산교육연구정보원 (검색어: 에듀테크)", "pre": [{"tag": "강의 전", "t": "사전 역량평가", "d": "교육부 주관 연수 효과성 분석", "who": "Q2-2 운영기관: 부산교육연구정보원", "u": "https://www.survey.co.kr/?ACCESS_KEY=f0ea4615740c4784ad32&grpid=&UID=", "qr": "img/qr_pre.png"}], "post": [{"tag": "STEP 1", "t": "사후 역량평가", "d": "교육부 주관 연수 효과성 분석", "who": "Q2-2 운영기관: 부산교육연구정보원", "u": "https://www.survey.co.kr/?ACCESS_KEY=cb785ef52f5844b0ae52&grpid=&UID=", "qr": "img/qr_post1.png"}, {"tag": "STEP 2", "t": "연수 만족도 조사", "d": "에듀테크 활용 기본·심화 직무연수 만족도", "who": "부산교육연구정보원 실시", "u": "https://m.site.naver.com/2ilM6", "qr": "img/qr_post2.png"}]}, "home": {"tools": [["📄", "Google 문서", "문서 탭 · 스마트칩 · 댓글 · 제안 모드 · 버전 기록 · Gemini 초안", "#s1", "https://docs.google.com/document/u/0/"], ["🖼️", "Google 슬라이드", "모둠별 1장 동시 편집 · 이미지 생성 · 녹화", "#s3", "https://docs.google.com/presentation/u/0/"], ["📝", "Google 설문지", "말로 만드는 퀴즈 · 정답 · 답변별 의견 · 시트 연결", "#s4", "https://docs.google.com/forms/u/0/"], ["📊", "Canva 시트", "붙여 넣고 Magic Insights · Magic Charts", "#s6", "https://www.canva.com/"], ["🧠", "Canva 화이트보드", "KWL 템플릿 · 타이머 · 학습 세션 QR", "#s7", "https://www.canva.com/"], ["🗄️", "Google 드라이브", "단원 폴더 · 폴더째 공유 · Gemini에게 물어보기", "#s8", "https://drive.google.com/"], ["🧩", "Brisk Teaching", "학생 글 맞춤 피드백 · 글쓰기 검사 · 레벨 변경 · 퀴즈", "#s9", "https://app.briskteaching.com/get-extension"]], "standards": ["[6과01-01] 지층의 특징을 알고, 지층의 형성 과정을 모형으로 표현할 수 있다.", "[6과01-02] 지층이 퇴적암으로 이루어짐을 알고, 퇴적암을 알갱이의 크기에 따라 분류할 수 있다.", "[6과01-03] 화석의 생성 과정을 모형으로 설명하고, 지구의 과거 생물과 환경을 추리하는 활동을 통해 화석의 가치를 인식할 수 있다."], "share": [["👀", "뷰어", "보기만 — 안내문 · 완성 자료 · 가정통신문"], ["💬", "댓글 작성자", "댓글 · 제안만 — 동료 검토, 학생 글 피드백"], ["✏️", "편집자", "함께 쓰기 — 모둠 문서 · 취합 문서"]]}, "penz": {"url": "https://penz.kr", "poster": "img/penz_poster.webp", "lead": "부산광역시교육청 소속 학생·교직원이 교육디지털원패스 하나로 Google · Microsoft 365 · Adobe · Canva 교육용 계정에 들어가는 통합 로그인 시스템입니다. 2026. 9. 1. 개통.", "today": "오늘 연수: 정보원 PC에서 가져온 인증서(USB)로 교육디지털원패스 로그인 → penz.kr → Google(@penz.kr) 계정으로 실습하면 내 자료가 그대로 내 계정에 남아요.", "steps": [["교육디지털원패스 로그인", "penz.kr 접속 → [교육디지털원패스 로그인]. 인증서·간편인증으로 로그인해요. (원패스가 없으면 [회원가입]부터)"], ["penz 회원가입", "약관 동의 → 가입 유형(교직원) → 본인인증 → 회원정보는 원패스에서 자동으로 채워져요."], ["교육용 클라우드 가입", "메인 ‘교육용 클라우드’ → [가입하기] → 약관 동의(개인정보 · 국외 이전) → 비밀번호 정하기."], ["아이디는 ‘포털아이디@penz.kr’", "클라우드 아이디가 자동으로 만들어져요. 구글에 가입하면 Canva · Adobe(교직원)도 같은 계정으로 함께 가입됩니다."], ["메인에서 바로 이동", "로그인 후 메인의 Google · MS · Adobe · Canva 버튼으로 이동. 자주 쓰는 사이트는 ‘나의 즐겨찾는 교육용서비스’에 모아 두세요."]], "staff": ["Google (Drive · Classroom · Meet · Gemini · NotebookLM · Docs · Sheets · Slides)", "Microsoft 365 (OneDrive · Teams · Copilot · PowerPoint · Excel …)", "Adobe (Photoshop · Premiere · Firefly · Express …)", "Canva (Canva for Education · Magic Studio)", "Snokl · Redmenta (6개월 무료)"], "student": ["Google EduPlus", "Microsoft 365 A3", "Canva AI"], "notes": ["penz가 생겨도 기존 학교 구글 계정은 그대로 계속 쓸 수 있어요.", "M365는 기존 학교 테넌트도 사용 가능 — 단, MS 계정은 중복 보유가 안 되니 둘 중 하나만.", "Adobe는 교직원 계정만 제공돼요.", "14세 미만 학생은 가입·이용 때 보호자 동의(법정대리인 휴대폰 인증)가 필요해요 — 가정통신문으로 보호자와 함께 진행.", "학생 AI 이용 범위: Canva AI · Google AI는 교육용 기준으로 전체 이용, Microsoft AI는 13세 이상.", "원패스 없이 가입한 회원은 관리자 승인 뒤 사용 · 오래 안 쓰면 휴면 잠금(원패스 로그인으로 해제)."], "contact": "문의: 부산광역시교육청교육연구정보원 교육지원부 051-860-6154"}}</script>
 <script>
 const C=JSON.parse(document.getElementById('course').textContent);
-const PADLET_URL=C.padlet;
-const FILE_BASE='../files/';
-const K='et26-'+C.key;
+const PADLET_URL=C.padlet||"";
+const FILE_BASE='files/';
+const COLORS=['#2f5bd8','#3f6ee8','#5b8def','#e2558b','#f08a24','#2fae86','#2b8fd6','#e5484d'];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const stepById=Object.fromEntries(C.steps.map(s=>[s.id,s]));
 const partById=Object.fromEntries(C.parts.map(p=>[p.id,p]));
-const ICO=n=>'../art/'+n+'.webp';
-let done={};try{done=JSON.parse(localStorage.getItem(K+'-done')||'{}')}catch(e){done={}}
-const saveDone=()=>{try{localStorage.setItem(K+'-done',JSON.stringify(done))}catch(e){}};
-let checks={};try{checks=JSON.parse(localStorage.getItem(K+'-checks')||'{}')}catch(e){checks={}}
+let done={};try{done=JSON.parse(localStorage.getItem('et1106-done')||'{}')}catch(e){done={}}
+const saveDone=()=>{try{localStorage.setItem('et1106-done',JSON.stringify(done))}catch(e){}};
+let checks={};try{checks=JSON.parse(localStorage.getItem('et1106-checks')||'{}')}catch(e){checks={}}
+
 function fileUrl(k){return FILE_BASE+encodeURIComponent(C.files[k].name)}
-function linkOf(u){return u.startsWith('files:')?{href:fileUrl(u.slice(6)),file:true}:{href:u,file:false}}
 function renderNav(){
   let h='';
   C.parts.forEach(p=>{
-    h+=`<div class="partlab">PART ${p.num} · ${esc(p.title.split(' — ')[0])}</div>`;
+    h+=`<div class="partlab">PART ${p.num} · ${esc(p.title)}</div>`;
     p.steps.forEach(id=>{const s=stepById[id];
       h+=`<a class="stepnav${done[id]?' done':''}" href="#${id}" data-view="${id}"><span class="t">${s.num}. ${esc(s.short)}</span><span class="n">✓</span></a>`;});
   });
@@ -446,11 +428,11 @@ function renderNav(){
 }
 function shot(c,cls=''){
   const mk=(c.marks||[]).map(m=>`<span class="mk ${m[5]==='green'?'green':''}" style="left:${m[0]/c.w*100}%;top:${m[1]/c.h*100}%;width:${m[2]/c.w*100}%;height:${m[3]/c.h*100}%"><b>${m[4]}</b></span>`).join('');
-  return `<div class="shot ${cls}" data-zoom="${esc(c.img)}" role="button" tabindex="0" aria-label="${esc(c.title)} 크게 보기"><img src="${esc(c.img)}" alt="${esc(c.title)}" loading="lazy" width="${c.w}" height="${c.h}">${mk}</div>`;
+  return `<div class="shot ${cls}" data-zoom="${esc(c.img)}" role="button" tabindex="0" aria-label="${esc(c.title)} 크게 보기"><img src="${esc(c.img)}" alt="${esc(c.title)}" loading="lazy">${mk}</div>`;
 }
 const PBY={};C.steps.forEach(s=>s.prompts.forEach(p=>PBY[p.id]=p));
 function pin(pid,cls=''){const p=PBY[pid];if(!p)return '';
-  return `<details class="pin ${cls}"><summary><span class="pid">${p.id}</span>${cls.includes('mini')?'📋 프롬프트':'📋 붙여 넣을 프롬프트'}</summary><pre class="ptext">${esc(p.text)}</pre><div class="pfoot"><button class="copy" data-copy="${p.id}">복사하기</button></div></details>`;}
+  return `<details class="pin ${cls}"><summary><span class="pid">${p.id}</span>${cls.includes('mini')?'📋 프롬프트':'📋 붙여 넣을 프롬프트'}</summary>${p.settings&&p.settings.length?`<div class="pset">설정: ${esc(p.settings.join(' · '))}</div>`:''}<pre class="ptext">${esc(p.text)}</pre><div class="pfoot"><button class="copy" data-copy="${p.id}">복사하기</button></div></details>`;}
 function capCard(c){
   const colorOf=n=>{const m=(c.marks||[]).find(x=>x[4]===n);return m&&m[5]==='green'?'green':''};
   const at=n=>(c.pr||[]).filter(x=>x[0]===n).map(x=>pin(x[1])).join('');
@@ -459,49 +441,56 @@ function capCard(c){
   return `<div class="cap">${shot(c)}<div class="capinfo"><h3>${esc(c.title)}</h3>${li?`<ol>${li}</ol>`:''}${solo}</div></div>`;
 }
 function promptCard(p){
+  const set=(p.settings||[]).map(x=>`<span class="chip">${esc(x)}</span>`).join('');
   return `<article class="prompt" id="${p.id}"><div class="phead"><span class="pid">${p.id}</span><h3>${esc(p.title)}</h3><span class="chip sun">${esc(p.tool)}</span></div>
-  <div class="pwhere">붙여 넣을 곳 · <b>${esc(p.where)}</b></div>
+  <div class="pwhere">붙여 넣을 곳 · <b>${esc(p.where)}</b></div>${set?`<div class="chips">${set}</div>`:''}
   <pre class="ptext">${esc(p.text)}</pre>
   <div class="pfoot"><span></span><button class="copy" data-copy="${p.id}">복사하기</button></div></article>`;
 }
 function fileChip(k){const f=C.files[k];const kk=f.kind.toLowerCase();
   return `<a class="file" href="${fileUrl(k)}" target="_blank" rel="noopener" download><span class="k ${kk}">${f.kind}</span><span><b>${esc(f.label)}</b><small>${esc(f.use)} · ${f.size}</small></span></a>`;}
+
 function liveBox(list){
   if(!list||!list.length) return '';
-  return `<section class="sec"><div class="livebox"><div class="lh"><b>바로 열기 · 바로 받기</b><span>누르면 새 탭에서 열리거나 내려받아져요</span></div><div class="live">${list.map(([i,t,u])=>{const L=linkOf(u);return `<a class="lv${L.file?' file':''}" href="${esc(L.href)}" target="_blank" rel="noopener"${L.file?' download':''}>${i} ${esc(t)}${L.file?' ↓':' ↗'}</a>`}).join('')}</div></div></section>`;
+  return `<section class="sec"><div class="livebox"><div class="lh"><b>실제 예시 파일 열어 보기</b><span>새 탭에서 열려요 · 보기 전용 — ‘사본 만들기’는 내 드라이브로 복사돼요</span></div><div class="live">${list.map(l=>`<a class="lv" href="${esc(l.u)}" target="_blank" rel="noopener">${l.i} ${esc(l.t)} ↗</a>`).join('')}</div></div></section>`;
 }
 function viewHome(){
-  const parts=C.parts.map(p=>`<article class="part"><div class="pic"><img src="${p.art.replace('.webp','_s.webp')}" alt="${esc(p.title)} 그림" loading="lazy"></div><div class="body"><span class="num">PART ${p.num}</span><h3>${esc(p.title)}</h3><ol>${p.steps.map(id=>{const s=stepById[id];return `<li><a href="#${id}"><b>${s.num}.</b><span>${esc(s.short)}</span></a></li>`}).join('')}</ol></div></article>`).join('');
-  const pipe=C.pipeline.map(([b,i,p])=>`<div class="pp"><i>${esc(i)}</i><b>${esc(b)}</b><p>${esc(p)}</p></div>`).join('');
-  const gal=C.gallery.slice(0,4).map(g=>`<figure class="res" data-zoom="${g.img}" role="button" tabindex="0" style="margin:0"><img src="${g.img}" alt="${esc(g.title)}" loading="lazy"><figcaption><b style="color:var(--text)">${esc(g.title)}</b><br>${esc(g.tool)} · <a href="#${g.step}">STEP ${stepById[g.step].num}</a></figcaption></figure>`).join('');
-  return `<section class="hero"><img src="${C.cover}" alt="선생님들과 마스코트 구르미가 반짝이는 디지털 카드에 둘러싸여 함께 웃는 교실 그림"><div class="shade"></div>
-   <div class="hcopy"><span class="tag">${esc(C.meta.target)} · ${C.meta.date} ${C.meta.time}</span><h1>${C.hero.h1}</h1>
-   <p>${esc(C.hero.lead)}</p><p class="who">${esc(C.meta.lecturer)} · ${esc(C.meta.place)}</p>
-   <div class="btns"><a class="btn" href="#s0">STEP 0부터 따라 하기</a><a class="btn ghost" href="#files">실습 자료 받기</a><a class="btn ghost" href="${PADLET_URL}" target="_blank" rel="noopener">연수 패들렛 ↗</a></div></div></section>
-  <section class="sec"><div class="hello"><img src="${ICO('gu_wave')}" alt="마스코트 구르미"><p>안녕하세요, 저는 <b>구르미</b>예요! 오늘은 <b>6학년 과학 ‘지층과 화석’ 한 단원</b>을 처음부터 끝까지 따라가요. 단계마다 <b>실제 화면에 번호</b>가 붙어 있고, 프롬프트는 <b>복사하기</b> 한 번이면 돼요. 화면을 누르면 크게 보여요.</p></div></section>
-  <section class="sec"><div class="sechead"><h2>오늘의 흐름</h2><p>한 단원이 이렇게 굴러가요</p></div><div class="pipe">${pipe}</div></section>
+  const H=C.home;
+  const parts=C.parts.map(p=>`<article class="part"><div class="pic"><img src="${p.art}" alt="${esc(p.title)} 그림" loading="lazy"></div><div class="body"><span class="num">PART ${p.num}</span><h3>${esc(p.title)}</h3><ol>${p.steps.map(id=>{const s=stepById[id];return `<li><a href="#${id}"><b>${s.num}.</b><span>${esc(s.short)}</span></a></li>`}).join('')}</ol></div></article>`).join('');
+  const lives=[];C.steps.forEach(s=>(s.live||[]).forEach(l=>lives.push(l)));
+  return `<section class="hero"><img src="art/cover.webp" alt="밤하늘처럼 어두운 남색 배경에서 구름 마스코트 구르미가 노트북 옆에서 손을 흔들고, 문서·슬라이드·설문·차트·폴더 아이콘이 둥글게 떠 있는 그림"><div class="shade"></div>
+   <div class="hcopy"><span class="tag">2026 교원 에듀테크 활용 직무연수 · 기본과정</span><h1>잔소리 대신 클릭 한 번,<br><em>Google로 굴러가는 우리 반</em></h1>
+   <p>${esc(C.meta.subtitle)}</p><p class="who">${esc(C.meta.lecturer)}</p><p class="place">${C.meta.date} 15:30~18:00 · ${esc(C.meta.place)}</p>
+   <div class="btns"><a class="btn" href="#s0">STEP 0부터 따라 하기</a><button class="btn ghost" type="button" data-survey="1">📋 역량 진단 · 만족도</button><button class="btn ghost" type="button" data-penz="1">🔑 펜즈 안내</button><a class="btn ghost" href="#files">실습 자료 받기</a>${PADLET_URL.startsWith("http")?`<a class="btn ghost" href="${PADLET_URL}" target="_blank" rel="noopener">연수 패들렛 ↗</a>`:""}</div></div></section>
   <section class="sec"><div class="parts">${parts}</div></section>
-  <section class="sec"><div class="sechead"><h2>실제로 만든 결과물</h2><p>누르면 크게 · <a href="#gallery">전체 갤러리 →</a></p></div><div class="results">${gal}</div></section>
-  <section class="sec"><div class="sechead"><h2>실습 자료</h2><p>내려받아 바로 쓰는 파일 · 프롬프트 ${Object.keys(PBY).length}개</p></div><div class="files">${Object.keys(C.files).map(fileChip).join('')}</div>
-   <div class="btns"><a class="btn" href="${FILE_BASE+encodeURIComponent(C.zip)}" download>📦 한꺼번에 받기 (ZIP)</a><a class="btn line" href="${FILE_BASE+encodeURIComponent(C.card)}" target="_blank" rel="noopener">🧾 프롬프트 카드 PDF</a><a class="btn line" href="#prompts">📋 프롬프트 모음</a></div></section>
-  <section class="sec"><a class="other" href="${C.other.href}"><img src="${C.key==='basic'?'../art/cover_deep_s.webp':'../art/cover_basic_s.webp'}" alt=""><span><b>${esc(C.other.label)}</b><span>${C.key==='basic'?'오늘 모은 응답과 보고서가, 학생마다 다른 피드백으로 돌아가는 다음 이야기':'설문 · 문서 · 시트 · 드라이브 · Sites — 피드백의 재료를 모으는 기본기'}</span></span><em>열기</em></a></section>`;
+  <section class="sec"><div class="sechead"><h2>오늘 쓰는 도구 일곱 가지</h2><p>도구보다 흐름 — 쓰고 → 모으고 → 정리하고 → 돌려주기</p></div>
+   <div class="nbs">${H.tools.map(([i,t,d,u,x])=>`<div class="nb"><b><span class="ic">${i}</span>${esc(t)}</b><span>${esc(d)}</span><em><a href="${u}">따라 하기 →</a><a href="${x}" target="_blank" rel="noopener">열기 ↗</a></em></div>`).join('')}</div></section>
+  <section class="sec"><div class="sechead"><h2>오늘의 예시 수업</h2><p>모든 실습을 한 단원으로 이어서 해요</p></div>
+   <div class="exbox"><div><div class="lab">5학년 과학 · 1. 지층과 화석</div><h3>지층을 관찰하고, 모형으로 표현하고, 서로 피드백하기</h3><ul>${H.standards.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>
+   <div><div class="lab">실제로 만든 예시 파일</div><div class="live">${lives.map(l=>`<a class="lv" href="${esc(l.u)}" target="_blank" rel="noopener">${l.i} ${esc(l.t)} ↗</a>`).join('')}</div></div></div></section>
+  <section class="sec"><div class="sechead"><h2>공유 권한, 세 가지만 기억하세요</h2></div>
+   <div class="panels">${H.share.map(([i,t,d])=>`<div class="panel"><span class="where">${i}</span><b>${esc(t)}</b><p>${esc(d)}</p></div>`).join('')}</div>
+   ${capCard(C.steps[0].caps[0])}
+  </section>`;
 }
 function viewStep(s){
   const p=partById[s.part];const i=C.steps.indexOf(s);const prev=C.steps[i-1],next=C.steps[i+1];
   let h=`<header class="stephead"><div class="l"><div class="snum"><b>STEP ${s.num}</b><span>PART ${p.num} · ${esc(p.title)}</span></div>
-   <h1>${esc(s.title)}</h1><div class="chips">${s.caps.length?`<span class="chip">실제 화면 ${s.caps.length}장</span>`:''}${s.prompts.length?`<span class="chip">프롬프트 ${s.prompts.length}개</span>`:''}</div></div>
-   <div class="r"><img class="art" src="${p.art.replace('.webp','_s.webp')}" alt="" loading="lazy"><img class="ico" src="${ICO(s.icon)}" alt=""></div></header>`;
-  if(s.warn) h+=`<section class="sec"><div class="warn"><span>⚠️</span><div>${esc(s.warn)}</div></div></section>`;
-  h+=liveBox(s.live);
+   <h1>${esc(s.title)}</h1>${s.prompts.length?`<div class="chips"><span class="chip">프롬프트 ${s.prompts.length}개</span></div>`:''}</div>
+   <div class="r"><img class="art" src="${p.art}" alt="" loading="lazy"><img class="ico" src="${s.icon}" alt=""></div></header>${liveBox(s.live)}`;
+  if(s.survey) h+=surveySection(s.survey);
+  if(s.files&&s.files.length) h+=`<section class="sec"><div class="sechead"><h2>준비 자료</h2></div><div class="files">${s.files.map(fileChip).join('')}</div>${s.id==='s0'?`<div class="btns"><a class="btn" href="${FILE_BASE+encodeURIComponent(C.zip)}" target="_blank" rel="noopener" download>📦 실습 자료 한꺼번에 받기 (ZIP)</a><a class="btn line" href="${FILE_BASE+encodeURIComponent(C.card)}" target="_blank" rel="noopener" download>🧾 프롬프트 카드 PDF</a></div>`:''}</section>`;
   if(s.todo) h+=`<section class="sec"><div class="sechead"><h2>이렇게 따라 해요</h2></div><ol class="todo">${s.todo.map(t=>`<li>${esc(t)}</li>`).join('')}</ol></section>`;
-  if(s.roles) h+=`<section class="sec"><div class="sechead"><h2>공유 권한 세 단계</h2><p>링크를 보내기 전에 하나만 고르기</p></div><div class="roles">${s.roles.map((r,k)=>`<div class="role" style="--c:${['#1a73e8','#f29900','#1e8e3e'][k]}"><span class="em">${r[0]}</span><b>${esc(r[1])}</b><i>${esc(r[2])}</i><p>${esc(r[3])}</p></div>`).join('')}</div></section>`;
-  if(s.formula) h+=`<section class="sec"><div class="sechead"><h2>프롬프트 레시피 — 네 가지만</h2><p>한 번 적어 두면 답변만 바꿔 붙이면 돼요</p></div><div class="formula f4">${s.formula.map((f,k)=>`<div class="fx" style="--c:${['#e5484d','#2b8fd6','#2fae86','#e8a43c'][k]}"><b>${esc(f[0])}</b><em>예) ${esc(f[1])}</em><span>${esc(f[2])}</span></div>`).join('')}</div></section>`;
-  if(s.caps&&s.caps.length) h+=`<section class="sec"><div class="sechead"><h2>실제 화면으로 보기</h2><p>번호 순서대로 · 누르면 크게 보여요</p></div><div class="caps">${s.caps.map(capCard).join('')}</div></section>`;
+  if(s.flow) h+=`<section class="sec"><div class="sechead"><h2>${esc(s.flowTitle||'이렇게 만들어요')}</h2><p>${esc(s.flowSub||'')}</p></div><div class="flow">${s.flow.map((f,k)=>`<div class="fl"><div class="pic${f.img.startsWith('art/')?' cover':''}" data-zoom="${esc(f.img)}" role="button" tabindex="0"><img src="${esc(f.img)}" alt="${esc(f.t)}" loading="lazy"></div><div class="b"><i>${k+1}</i><b>${esc(f.t)}</b><span>${esc(f.d)}</span>${f.dl?`<a class="btn small line" style="justify-self:start" href="${fileUrl(f.dl)}" target="_blank" rel="noopener" download>⬇ ${esc(C.files[f.dl].kind)} 받기</a>`:''}${f.p?pin(f.p,'mini'):''}</div></div>`).join('')}</div></section>`;
+  if(s.formula) h+=`<section class="sec"><div class="sechead"><h2>3단계 질문 공식</h2></div><div class="formula">${s.formula.map((f,k)=>`<div class="fx" style="--c:${['#e5484d','#2b8fd6','#2fae86'][k]}"><b>${esc(f.k)}</b><span>${esc(f.d)}</span><em>예) ${esc(f.e)}</em></div>`).join('')}</div></section>`;
+  if(s.caps&&s.caps.length) h+=`<section class="sec"><div class="sechead"><h2>실제 화면으로 보기</h2><p>누르면 크게 보여요</p></div><div class="caps">${s.caps.map(capCard).join('')}</div></section>`;
   if(s.prompts.length) h+=`<section class="sec"><div class="sechead"><h2>복사해서 쓰는 프롬프트</h2></div><div class="prompts">${s.prompts.map(promptCard).join('')}</div></section>`;
-  if(s.apply) h+=`<section class="sec"><div class="sechead"><h2>${C.key==='basic'?'우리 교실에 바로 — 교과별 한 가지':'한 단원이 이렇게 흐릅니다'}</h2></div><div class="apply">${s.apply.map(a=>`<div class="ap"><span class="bd">${esc(a[0])}</span><b>${esc(a[1])}</b><p>${esc(a[2])}</p></div>`).join('')}</div></section>`;
-  if(s.checks) h+=`<section class="sec"><div class="sechead"><h2>${C.key==='basic'?'클라우드 수업, 여섯 가지 약속':'AI 피드백, 여섯 가지 약속'}</h2><p>눌러서 우리 반 점검 표시</p></div><div class="checks">${s.checks.map((c,k)=>`<button class="check${checks[k]?' on':''}" data-check="${k}"><span class="box">${checks[k]?'✓':''}</span><span><b>${esc(c[0])}</b><span>${esc(c[1])}</span></span></button>`).join('')}</div></section>`;
-  if(s.closing){const c=s.closing;h+=`<section class="sec"><div class="closing"><img src="${esc(c.img)}" alt="선생님들과 구르미가 함께 웃는 마무리 그림" loading="lazy"><div class="ccap"><p>${esc(c.lead)}</p><b>${esc(c.msg)}</b></div></div><div class="btns" style="justify-content:center"><a class="btn" href="${PADLET_URL}" target="_blank" rel="noopener">패들렛에 한 줄 후기 남기기 ↗</a><a class="btn line" href="#gallery">결과물 갤러리 보기</a></div></section>`;}
-  if(s.tips||s.challenge) h+=`<section class="sec"><div class="tips">${(s.tips||[]).map(t=>`<div class="tip"><b>TIP</b><span>${esc(t)}</span></div>`).join('')}</div>${s.challenge?`<div class="challenge"><img src="${ICO('gu_idea')}" alt=""><div><b>더 해 보기</b><p>${esc(s.challenge)}</p></div></div>`:''}</section>`;
+  if(s.results) h+=`<section class="sec"><div class="sechead"><h2>결과 예시</h2></div><div class="results${(s.id==='s3'||s.id==='s3p')?'':' wide'}">${s.results.map((r,k)=>`<figure class="res" data-zoom="${r}" role="button" tabindex="0" style="margin:0"><img src="${r}" alt="결과물 ${k+1}" loading="lazy"></figure>`).join('')}</div></section>`;
+  if(s.cutter){const c=s.cutter;h+=`<section class="sec"><div class="sechead"><h2>더 해 보기</h2></div><div class="cutter"><img src="${esc(c.img)}" alt="닭핑 9포즈" loading="lazy"><div><b>${esc(c.t)}</b><p>${esc(c.d)}</p><a class="btn small" href="${esc(c.url)}" target="_blank" rel="noopener">포즈 시트 가위 열기 ↗</a></div></div></section>`;}
+  if(s.science){const sc=s.science;h+=`<section class="sec"><div class="sechead"><h2>${esc(sc.title)}</h2></div><div class="caps">${capCard(sc.caps[0])}</div><div class="results wide">${sc.results.map(r=>`<figure class="res" data-zoom="${r}" role="button" tabindex="0" style="margin:0"><img src="${r}" alt="수학 인포그래픽" loading="lazy"><figcaption>프롬프트 P15 · 클레이 스타일</figcaption></figure>`).join('')}</div>${pin('P15')}</section>`;}
+  if(s.checks) h+=`<section class="sec"><div class="sechead"><h2>교실에 가져가기 전, 네 가지 약속</h2></div><div class="checks">${s.checks.map((c,k)=>`<button class="check${checks[k]?' on':''}" data-check="${k}"><span class="box">${checks[k]?'✓':''}</span><span><b>${esc(c.k)}</b><span>${esc(c.d)}</span></span></button>`).join('')}</div>
+   <div class="challenge"><img src="img/gu_point.png" alt=""><div><b>우리 반에 가져가기</b><p>오늘 해 본 것 하나를 골라, 다음 주 어느 수업에서 어떻게 쓸지 한 줄로 적어 보세요. 단원만 바꾸면 같은 흐름 · 같은 프롬프트로 그대로 굴러갑니다.</p><div class="btns"><a class="btn small" href="#prompts">프롬프트 모음 보기</a><a class="btn small line" href="#files">실습 자료 받기</a></div></div></div></section>`;
+  if(s.tips||s.challenge) h+=`<section class="sec"><div class="tips">${(s.tips||[]).map(t=>`<div class="tip"><b>TIP</b><span>${esc(t)}</span></div>`).join('')}</div>${s.challenge?`<div class="challenge"><img src="img/gu_idea.png" alt=""><div><b>더 해 보기</b><p>${esc(s.challenge)}</p></div></div>`:''}</section>`;
   h+=`<div class="pager">${prev?`<a href="#${prev.id}"><small>← 이전</small><b>STEP ${prev.num} · ${esc(prev.short)}</b></a>`:`<a href="#home"><small>← 처음</small><b>처음 화면</b></a>`}
    <button class="donebtn${done[s.id]?' on':''}" data-done="${s.id}">${done[s.id]?'✓ 완료했어요':'이 단계 완료 표시'}</button>
    ${next?`<a class="next" href="#${next.id}"><small>다음 →</small><b>STEP ${next.num} · ${esc(next.short)}</b></a>`:`<a class="next" href="#gallery"><small>다음 →</small><b>결과물 갤러리</b></a>`}</div>`;
@@ -509,8 +498,8 @@ function viewStep(s){
 }
 function viewFiles(){
   const keys=Object.keys(C.files);
-  return `<section class="sec" style="margin-top:0"><div class="eyebrow">MATERIALS</div><h2>실습 자료 내려받기</h2><p class="intro">연수용 가상 자료입니다. 학생 이름 대신 번호만 들어 있어요. Word · 엑셀 파일은 드라이브에 올린 뒤 ‘Google 문서/시트로 열기’ 하면 오늘 실습 그대로 이어집니다.</p>
-   <div class="btns"><a class="btn" href="${FILE_BASE+encodeURIComponent(C.zip)}" download>📦 한꺼번에 받기 (ZIP)</a><a class="btn line" href="${FILE_BASE+encodeURIComponent(C.card)}" target="_blank" rel="noopener">🧾 프롬프트 카드 PDF (${Object.keys(PBY).length}개)</a></div>
+  return `<section class="sec" style="margin-top:0"><div class="eyebrow">MATERIALS</div><h2>실습 자료 내려받기</h2><p class="intro">응답 · 평가표 · 학생 글은 이름 없이 번호만 넣은 연수용 가상 자료입니다. Word(.docx)는 드라이브에 올린 뒤 ‘Google 문서로 열기’, CSV는 열어서 복사해 Canva 시트 A1 칸에 붙여 넣으세요.</p>
+   <div class="btns"><a class="btn" href="${FILE_BASE+encodeURIComponent(C.zip)}" target="_blank" rel="noopener" download>📦 한꺼번에 받기 (ZIP)</a><a class="btn line" href="${FILE_BASE+encodeURIComponent(C.card)}" target="_blank" rel="noopener" download>🧾 프롬프트 카드 PDF (${Object.keys(PBY).length}개)</a></div>
    <div class="files" style="grid-template-columns:1fr">${keys.map(k=>{const f=C.files[k];return `<a class="file filebig" href="${fileUrl(k)}" target="_blank" rel="noopener" download><span class="k ${f.kind.toLowerCase()}">${f.kind}</span><span><b>${esc(f.label)}</b><small>${esc(f.desc)}<br>쓰는 곳: ${esc(f.use)} · ${f.size}</small></span><span class="dl">받기 ↓</span></a>`}).join('')}</div></section>`;
 }
 let pf='all',pq='';
@@ -519,32 +508,51 @@ function viewPrompts(){
   const fl=all.filter(p=>(pf==='all'||p.step.id===pf)&&(!pq||(p.title+p.text+p.tool).includes(pq)));
   const btn=(id,lab)=>`<button class="filter" data-filter="${id}" aria-pressed="${pf===id}">${lab}</button>`;
   return `<section class="sec" style="margin-top:0"><div class="eyebrow">PROMPTS</div><h2>프롬프트 모음 · ${all.length}개</h2>
-   <div class="search"><input id="pq" type="search" placeholder="찾을 말 (예: 루브릭, 설문, 홈페이지)" value="${esc(pq)}" aria-label="프롬프트 검색"></div>
+   <div class="search"><input id="pq" type="search" placeholder="찾을 말 (예: 퀴즈, 피드백, Brisk, 시트)" value="${esc(pq)}" aria-label="프롬프트 검색"></div>
    <div class="chips">${btn('all','전체')}${C.steps.filter(s=>s.prompts.length).map(s=>btn(s.id,`STEP ${s.num} ${s.short}`)).join('')}</div>
    <div class="prompts" id="plist">${fl.length?fl.map(p=>promptCard(p).replace('<h3>',`<h3><a href="#${p.step.id}" style="color:inherit;text-decoration:none">STEP ${p.step.num} · </a>`)).join(''):'<p class="empty">찾는 프롬프트가 없어요. 다른 말로 찾아보세요.</p>'}</div></section>`;
 }
 function viewGallery(){
-  return `<section class="sec" style="margin-top:0"><div class="eyebrow">GALLERY</div><h2>결과물 갤러리</h2><p class="intro">오늘 실습 흐름 그대로 실제로 만든 화면입니다. 누르면 크게 보이고, 단계 이름을 누르면 만드는 방법으로 갑니다.</p>
-   <div class="results wide">${C.gallery.map(g=>`<figure class="res" data-zoom="${g.img}" role="button" tabindex="0" style="margin:0"><img src="${g.img}" alt="${esc(g.title)}" loading="lazy"><figcaption><b style="color:var(--text)">${esc(g.title)}</b><br>${esc(g.tool)} · <a href="#${g.step}">STEP ${stepById[g.step].num} ${esc(stepById[g.step].short)}</a>${g.url?`<br><a class="go" href="${esc(g.url)}" target="_blank" rel="noopener">직접 풀어 보기 ↗</a>`:''}</figcaption></figure>`).join('')}</div>
-   <div class="sechead" style="margin-top:20px"><h2>마스코트 구르미</h2><p>ChatGPT로 그린 연수 마스코트 — 자유롭게 써도 돼요</p></div>
-   <div class="mascot">${['gu_wave','gu_point','gu_laptop','gu_check','gu_magnifier','gu_letter','gu_thumbs','gu_idea','gu_cheer'].map(n=>`<img src="${ICO(n)}" alt="구르미 ${n.slice(3)}" loading="lazy">`).join('')}</div></section>`;
+  return `<section class="sec" style="margin-top:0"><div class="eyebrow">GALLERY</div><h2>결과물 갤러리</h2><p class="intro">5학년 과학 ‘지층과 화석’ 한 단원으로 오늘 실제로 만든 결과물입니다. 그림을 누르면 크게 보여요.</p>
+   <div class="results wide">${C.gallery.map(g=>`<figure class="res" data-zoom="${g.img}" role="button" tabindex="0" style="margin:0"><img src="${g.img}" alt="${esc(g.title)}" loading="lazy"><figcaption><b style="color:var(--text)">${esc(g.title)}</b><br>${esc(g.tool)} · <a href="#${g.step}">STEP ${stepById[g.step].num}</a>${g.url?`<br><a class="go" href="${esc(g.url)}" target="_blank" rel="noopener">${esc(g.go||'열어 보기 ↗')}</a>`:''}</figcaption></figure>`).join('')}</div></section>`;
 }
+
+function svCard(x,pre){return `<div class="svcard${pre?' pre':''}"><span class="tg">${esc(x.tag)}</span><b>${esc(x.t)}</b><span class="d">${esc(x.d)}</span><a href="${esc(x.u)}" target="_blank" rel="noopener" title="${esc(x.t)} 열기"><img src="${esc(x.qr)}" alt="${esc(x.t)} QR 코드" loading="lazy"></a><span class="who">${esc(x.who)}</span><a class="btn small" href="${esc(x.u)}" target="_blank" rel="noopener">설문 열기 ↗</a></div>`}
+function surveyBody(which){const S=C.survey;
+  const pre=`<div class="svgroup"><h3>연수 시작 전 <em>사전 1개</em></h3><div class="svcards">${S.pre.map(x=>svCard(x,1)).join('')}</div></div>`;
+  const post=`<div class="svgroup"><h3>연수 마친 뒤 <em>사후 ${S.post.length}개 · ${S.post.map(x=>x.tag).join(' → ')} 순서로</em></h3><div class="svcards">${S.post.map(x=>svCard(x,0)).join('')}</div></div>`;
+  return (which==='pre'?pre:which==='post'?post:pre+post)+`<div class="svnote">💡 ${esc(S.q22)} — 역량평가 Q2-2 문항에서 고르세요</div>`}
+function surveySection(which){return `<section class="sec svsec"><div class="sechead"><h2>${which==='pre'?'먼저 — 사전 역량평가':`마지막으로 — 사후 설문 ${C.survey.post.length}개`}</h2><p>QR을 찍거나 눌러서 바로 참여</p></div><div class="svwrap">${surveyBody(which)}</div></section>`}
+function openSurvey(){const S=C.survey;const lb=document.createElement('div');lb.className='lb';lb.setAttribute('role','dialog');lb.setAttribute('aria-label','역량 진단 및 만족도 조사');
+  lb.innerHTML=`<div class="in"><div class="svwrap"><div class="svhead"><h2>역량 진단 · 만족도 조사</h2><small>${esc(S.course)}</small></div>${surveyBody('all')}</div></div><button class="x">닫기 ✕</button>`;
+  lb.addEventListener('click',e=>{if(e.target===lb||e.target.classList.contains('x'))lb.remove()});
+  document.addEventListener('keydown',function k(e){if(e.key==='Escape'){lb.remove();document.removeEventListener('keydown',k)}});
+  document.body.appendChild(lb);}
+function openPenz(){const P=C.penz;const lb=document.createElement('div');lb.className='lb';lb.setAttribute('role','dialog');lb.setAttribute('aria-label','펜즈 안내');
+  lb.innerHTML=`<div class="in"><div class="pzwrap"><div class="pzhead"><a href="${P.url}" target="_blank" rel="noopener"><img src="${P.poster}" alt="penz 교육용 클라우드 & AI 서비스 통합 로그인 시스템 포스터 — penz.kr"></a><div><div class="eyebrow">PENZ · 통합 로그인</div><h2>penz(펜즈) — 원패스 하나로 Google · M365 · Adobe · Canva</h2><p>${esc(P.lead)}</p><div class="btns" style="margin-top:12px"><a class="btn" href="${P.url}" target="_blank" rel="noopener">penz.kr 바로 가기 ↗</a></div></div></div>
+   <div class="pztoday"><span>🔑</span><span>${esc(P.today)}</span></div>
+   <h3 style="font-size:16px">처음 쓰는 순서</h3><ol class="pzsteps">${P.steps.map(([t,d])=>`<li><b>${esc(t)}</b>${esc(d)}</li>`).join('')}</ol>
+   <div class="pzcols"><div class="pzcol"><h3>교직원이 쓰는 서비스</h3><ul>${P.staff.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="pzcol"><h3>학생이 쓰는 서비스</h3><ul>${P.student.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="pzcol"><h3>알아 둘 점</h3><ul>${P.notes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>
+   <div class="pzfoot"><span>${esc(P.contact)}</span><span>출처: 교육연구정보원 공문(교육지원부-1092, 2026. 8. 31.) · 사용자 매뉴얼 · 가정통신문 예시</span></div></div></div><button class="x">닫기 ✕</button>`;
+  lb.addEventListener('click',e=>{if(e.target===lb||e.target.classList.contains('x'))lb.remove()});
+  document.addEventListener('keydown',function k(e){if(e.key==='Escape'){lb.remove();document.removeEventListener('keydown',k)}});
+  document.body.appendChild(lb);}
 function route(){
   let v=(location.hash||'#home').slice(1);
-  if(!(v==='home'||v==='files'||v==='prompts'||v==='gallery'||stepById[v]||/^[AB]\d+$/.test(v))) v='home';
+  if(!(v==='home'||v==='files'||v==='prompts'||v==='gallery'||stepById[v]||/^P\d+$/.test(v))) v='home';
   let target=null;
-  if(/^[AB]\d+$/.test(v)){const s=C.steps.find(s=>s.prompts.some(p=>p.id===v));target=v;v=s?s.id:'home';}
+  if(/^P\d+$/.test(v)){const s=C.steps.find(s=>s.prompts.some(p=>p.id===v));target=v;v=s?s.id:'home';}
   const html=v==='home'?viewHome():v==='files'?viewFiles():v==='prompts'?viewPrompts():v==='gallery'?viewGallery():viewStep(stepById[v]);
   $('#view').innerHTML=html;
   document.querySelectorAll('[data-view]').forEach(a=>{if(a.dataset.view===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
   $('#side').classList.remove('open');
   if(target){const el=document.getElementById(target);if(el)el.scrollIntoView({block:'start'});}else window.scrollTo(0,0);
-  const t={home:C.meta.title,files:'실습 자료',prompts:'프롬프트 모음',gallery:'결과물 갤러리'}[v]||('STEP '+stepById[v].num+' · '+stepById[v].short);
-  document.title=t+' | '+C.meta.target+' 아카이브';
+  const t={home:'Google로 굴러가는 우리 반',files:'실습 자료',prompts:'프롬프트 모음',gallery:'결과물 갤러리'}[v]||('STEP '+stepById[v].num+' · '+stepById[v].short);
+  document.title=t+' | 에듀테크 기본과정 아카이브';
 }
 function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),1600)}
 function copyText(txt,btn){
-  const ok=()=>{btn.classList.add('ok');btn.textContent='복사됨 ✓';toast('복사했어요 — 붙여 넣으세요');setTimeout(()=>{btn.classList.remove('ok');btn.textContent='복사하기'},1800)};
+  const ok=()=>{btn.classList.add('ok');btn.textContent='복사됨 ✓';toast('복사했어요 — 붙여 넣을 곳에 Ctrl+V');setTimeout(()=>{btn.classList.remove('ok');btn.textContent='복사하기'},1800)};
   const fb=()=>{const pre=btn.closest('.prompt, .pin').querySelector('.ptext');const r=document.createRange();r.selectNodeContents(pre);const sel=getSelection();sel.removeAllRanges();sel.addRange(r);toast('글자가 선택됐어요 — Ctrl+C로 복사하세요')};
   try{navigator.clipboard.writeText(txt).then(ok,fb)}catch(e){fb()}
 }
@@ -558,17 +566,20 @@ function openLB(src){
   document.body.appendChild(lb);
 }
 document.addEventListener('click',e=>{
-  const c=e.target.closest('[data-copy]');if(c){const p=PBY[c.dataset.copy];copyText(p.text,c);return}
+  const c=e.target.closest('[data-copy]');if(c){const all=[];C.steps.forEach(s=>s.prompts.forEach(p=>all.push(p)));const p=all.find(x=>x.id===c.dataset.copy);copyText(p.text,c);return}
   const z=e.target.closest('[data-zoom]');if(z&&!e.target.closest('.lb')&&!e.target.closest('a')){openLB(z.dataset.zoom);return}
   const d=e.target.closest('[data-done]');if(d){const id=d.dataset.done;done[id]=!done[id];saveDone();renderNav();d.classList.toggle('on',!!done[id]);d.textContent=done[id]?'✓ 완료했어요':'이 단계 완료 표시';if(done[id])toast('STEP '+stepById[id].num+' 완료!');return}
-  const ck=e.target.closest('[data-check]');if(ck){const k=ck.dataset.check;checks[k]=!checks[k];try{localStorage.setItem(K+'-checks',JSON.stringify(checks))}catch(_){}ck.classList.toggle('on',!!checks[k]);ck.querySelector('.box').textContent=checks[k]?'✓':'';return}
+  const ck=e.target.closest('[data-check]');if(ck){const k=ck.dataset.check;checks[k]=!checks[k];try{localStorage.setItem('et1106-checks',JSON.stringify(checks))}catch(_){}ck.classList.toggle('on',!!checks[k]);ck.querySelector('.box').textContent=checks[k]?'✓':'';return}
   const f=e.target.closest('[data-filter]');if(f){pf=f.dataset.filter;route();return}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Enter'){const z=e.target.closest&&e.target.closest('[data-zoom]');if(z)openLB(z.dataset.zoom)}});
 document.addEventListener('input',e=>{if(e.target.id==='pq'){pq=e.target.value.trim();const pos=e.target.selectionStart;route();const i=$('#pq');i.focus();i.setSelectionRange(pos,pos)}});
 $('#menuBtn').addEventListener('click',()=>$('#side').classList.toggle('open'));
 $('#main').addEventListener('click',()=>$('#side').classList.remove('open'));
-$('#padletLink').href=PADLET_URL;
+$('#surveyBtn').addEventListener('click',()=>{$('#side').classList.remove('open');openSurvey()});
+$('#penzBtn').addEventListener('click',()=>{$('#side').classList.remove('open');openPenz()});
+document.addEventListener('click',e=>{if(e.target.closest('[data-penz]'))openPenz()});
+document.addEventListener('click',e=>{if(e.target.closest('[data-survey]'))openSurvey()});
 window.addEventListener('hashchange',route);
 renderNav();route();
 </script>
