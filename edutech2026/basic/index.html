@@ -125,7 +125,7 @@ h3{font-size:17px;font-weight:900}
 .hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,16,48,.88) 0%,rgba(9,16,48,.55) 38%,rgba(9,16,48,0) 60%)}
 .hero .hcopy{position:relative;padding:clamp(20px,4vw,48px);max-width:560px;display:grid;gap:14px;height:100%;align-content:center}
 .hero .tag{justify-self:start;background:#fff;color:#13235b;font-weight:900;font-size:13px;border-radius:999px;padding:5px 14px}
-.hero h1{font-family:var(--fDisplay);font-weight:400;font-size:clamp(28px,4.4vw,50px);line-height:1.18;text-shadow:0 4px 18px rgba(0,0,0,.35)}
+.hero h1{font-family:var(--fDisplay);font-weight:400;font-size:clamp(26px,3.7vw,46px);line-height:1.18;text-shadow:0 4px 18px rgba(0,0,0,.35)}
 .hero h1 em{font-style:normal;color:var(--sun)}
 .hero p{margin:0;color:#dbe6ff;font-size:15px}
 .hero .who{font-weight:700;color:#fff}
@@ -459,7 +459,7 @@ function viewHome(){
   const parts=C.parts.map(p=>`<article class="part"><div class="pic"><img src="${p.art}" alt="${esc(p.title)} 그림" loading="lazy"></div><div class="body"><span class="num">PART ${p.num}</span><h3>${esc(p.title)}</h3><ol>${p.steps.map(id=>{const s=stepById[id];return `<li><a href="#${id}"><b>${s.num}.</b><span>${esc(s.short)}</span></a></li>`}).join('')}</ol></div></article>`).join('');
   const lives=[];C.steps.forEach(s=>(s.live||[]).forEach(l=>lives.push(l)));
   return `<section class="hero"><img src="art/cover.webp" alt="밤하늘처럼 어두운 남색 배경에서 구름 마스코트 구르미가 노트북 옆에서 손을 흔들고, 문서·슬라이드·설문·차트·폴더 아이콘이 둥글게 떠 있는 그림"><div class="shade"></div>
-   <div class="hcopy"><span class="tag">2026 교원 에듀테크 활용 직무연수 · 기본과정</span><h1>잔소리 대신 클릭 한 번,<br><em>Google로 굴러가는 우리 반</em></h1>
+   <div class="hcopy"><span class="tag">2026 교원 에듀테크 활용 직무연수 · 기본과정</span><h1>잔소리 대신 클릭 한 번,<br><em>Google로 굴러가는 우리&nbsp;반</em></h1>
    <p>${esc(C.meta.subtitle)}</p><p class="who">${esc(C.meta.lecturer)}</p><p class="place">${C.meta.date} 15:30~18:00 · ${esc(C.meta.place)}</p>
    <div class="btns"><a class="btn" href="#s0">STEP 0부터 따라 하기</a><button class="btn ghost" type="button" data-survey="1">📋 역량 진단 · 만족도</button><button class="btn ghost" type="button" data-penz="1">🔑 펜즈 안내</button><a class="btn ghost" href="#files">실습 자료 받기</a>${PADLET_URL.startsWith("http")?`<a class="btn ghost" href="${PADLET_URL}" target="_blank" rel="noopener">연수 패들렛 ↗</a>`:""}</div></div></section>
   <section class="sec"><div class="parts">${parts}</div></section>
