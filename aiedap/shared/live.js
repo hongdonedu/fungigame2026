@@ -312,7 +312,7 @@ function spinCard(){
 function block(b){
   if(b.k==='html') return b.h;
   if(b.k==='cmp') return `${b.t?`<h2 class="sec">${esc(b.t)}</h2>`:''}<div class="cmp"><div class="a"><h4>${b.a[0]}</h4><ul>${b.a.slice(1).map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="bb"><h4>${b.b[0]}</h4><ul>${b.b.slice(1).map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`;
-  if(b.k==='case') return `<div class="case"><div class="h"><img src="${art('redi_magnifier')}" alt="">🌿 ${esc(b.t)} <a href="#case" style="margin-left:auto;font-size:13px;color:var(--mint)">사례 전체 보기 →</a></div>${b.h}</div>`;
+  if(b.k==='case') return `<div class="case"><div class="h"><img src="${art('redi_magnifier')}" alt="">🌿 ${esc(b.t)} ${b.nolink?'':'<a href="#case" style="margin-left:auto;font-size:13px;color:var(--mint)">사례 전체 보기 →</a>'}</div>${b.h}</div>`;
   if(b.k==='lenses') return `<div class="lenses">${L.map(l=>`<div class="lens" style="--c:${l.c}"><h5>${l.n}</h5><p>${esc(l.q)}</p></div>`).join('')}</div>`;
   if(b.k==='xo') return `<h2 class="sec">${esc(b.t)}</h2><div class="xo"><div class="x"><b>✕ 이렇게 쓰기보다</b>${b.x.map(esc).join('<br>')}</div><div class="o"><b>○ 이렇게 장면으로</b>${b.o.map(esc).join('<br><br>')}</div></div>`;
   if(b.k==='gamecall') return `<a class="warm" href="#game"><img src="${art('game_lens')}" alt="" onerror="this.src='${art('redi_magnifier')}'"><div><b>🔍 3분 몸풀기 · 렌즈 탐정 게임</b><p>어제 배운 여섯 렌즈, 아직 손에 붙어 있나요? 수업 장면 카드를 보고 어느 렌즈인지 빠르게 맞혀 보세요. 모둠 점수는 큰 화면에 모여요.</p><span class="b y sm">게임 시작 →</span></div></a>`;
@@ -577,7 +577,7 @@ function mountMemory(box){
   destroyGame();
   if(!(window.AG&&AG.games&&AG.games.evidenceMemory))return noGames(box);
   box.innerHTML='';
-  gameInst=AG.games.evidenceMemory(box,{onFinish:r=>{postScore('memory',r.score,r.ms,`${r.level}단계 · ${r.flips}번 뒤집기${r.bonus?' · 보너스':''}`);}});
+  gameInst=AG.games.evidenceMemory(box,{onFinish:r=>{postScore('memory',r.score,r.ms,`${r.flips}번 뒤집기${r.bonus?' · 보너스':''}`);}});
 }
 function memoryPage(){
   $('#main').innerHTML=`${head('증거 짝 맞추기','체험 게임 · 1차시','결과물 말고, 학습은 어디에 남을까?','창작 과정 카드와 학습의 증거 카드를 짝지어 뒤집어요. 적게 뒤집고 빨리 끝낼수록 점수가 올라가고, 점수는 모둠 대항으로 모여요.','redi_magnifier')}

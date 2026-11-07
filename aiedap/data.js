@@ -105,7 +105,7 @@ window.STEPS = [
  tips:["결과물의 좋고 나쁨보다 ‘학생의 학습을 확인하는 데 무엇이 더 필요한가’에 초점을 맞춥니다."]},
 
 {id:"s3", part:1, num:3, short:"창작 과정의 학습의 증거", time:"11:15 · 15분", title:"창작 과정마다 남는 학습의 증거", img:"redi_magnifier",
- lead:"결과물은 AI가 대신 만들어 줄 수 있어요. 그럼 학생의 학습은 어디에 남을까요? 카드를 뒤집어 창작 과정과 학습의 증거를 짝지어 보세요. 1단계는 어느 수업에나, 2단계는 강사 수업 ‘우리 동네 생물 탐정’ 편이에요.",
+ lead:"결과물은 AI가 대신 만들어 줄 수 있어요. 그럼 학생의 학습은 어디에 남을까요? 카드를 뒤집어 창작 과정과 학습의 증거를 짝지어 보세요.",
  blocks:[
   {k:"memory"},
   {k:"html", h:`<details class="fold"><summary>📋 정리표로 한눈에 보기</summary><div class="scroll"><table class="t"><tr><th>창작 과정</th><th>학습의 증거</th></tr>
@@ -122,13 +122,13 @@ window.STEPS = [
   <tr><td>다양한 표현을 비교하여 적절한 것을 선택한다</td><td>생성 결과 비교, 선택 및 미선택의 이유</td></tr>
   <tr><td>자신의 의도에 맞게 표현을 수정한다</td><td>수정 전과 후 비교, 수정 이유</td></tr>
   <tr><td>자신의 창작 과정을 설명하고 성찰한다</td><td>최종 작품, 창작 성찰 기록</td></tr></table></div>`},
-  {k:"case", t:"강사 수업에 남은 학습의 증거", h:`<div class="scroll"><table class="t"><tr><th>창작 과정</th><th>‘우리 동네 생물 탐정’에 남은 증거</th></tr>
-  <tr><td class="k">의도 · 발상</td><td>패들렛 관찰 기록(사진·장소·특징), 생물 정보 카드</td></tr>
-  <tr><td class="k">AI와 상호작용</td><td>모둠 질문 목록, 챗봇의 답변과 인용 번호</td></tr>
-  <tr><td class="k">선택 및 판단</td><td>활동지 검증표 (○·△·×)</td></tr>
-  <tr><td class="k">수정 및 재구성</td><td>보완 전과 후의 정보 카드</td></tr>
-  <tr><td class="k">완성</td><td>모둠 챗봇, 챗봇 소개 카드, 홍보 포스터</td></tr>
-  <tr><td class="k">성찰</td><td>동료 평가, 자기 평가, 활동 소감, 실천 다짐</td></tr></table></div>`},
+  {k:"case", nolink:1, t:"강사 수업에 남은 학습의 증거 · AI 네이처 멘토 (초3 생체모방 발명교실)", h:`<p style="margin:0 0 10px;color:var(--sub)">관찰 → 연결 → 발명 → 소감 단계마다 학생이 쓴 것이 앱 기록에 그대로 남았어요. AI 멘토는 답을 주지 않고 되묻고, 고르는 일은 학생 몫으로 남겼어요.</p><div class="scroll"><table class="t"><tr><th>창작 과정</th><th>AI 네이처 멘토 수업에 남은 증거</th></tr>
+  <tr><td class="k">의도 · 발상</td><td>생물 관찰 ‘비밀 카드’(무엇이 · 어떻게 · 왜), 생활 속 문제 한 줄</td></tr>
+  <tr><td class="k">AI와 상호작용</td><td>AI 멘토의 칭찬 · 되묻는 질문 2개와 학생의 답 (대화 기록)</td></tr>
+  <tr><td class="k">선택 및 판단</td><td>AI가 내민 생물 후보 3개 중 고른 생물과 고른 이유</td></tr>
+  <tr><td class="k">수정 및 재구성</td><td>내 그림과 AI 그림 비교 메모 <small style="color:var(--sub)">“AI 그림에는 발이 없어요. 그래서 저는 발을 그렸어요.”</small></td></tr>
+  <tr><td class="k">완성</td><td>발명품 이름 · 설명 · 그림 (발명 갤러리)</td></tr>
+  <tr><td class="k">성찰</td><td>친구 댓글 · 좋아요, 소감 ‘자연은 나에게 ○○이다’, 생물 지킴이 약속</td></tr></table></div>`},
   {k:"html", h:`<h2 class="sec">평가 기준을 다시 써 보면</h2><div class="scroll"><table class="t"><tr><th>전</th><th>후</th></tr>
   <tr><td>주제에 맞는 이미지를 완성도 있게 만들었다.</td><td>자신의 창작 의도에 따라 AI가 생성한 여러 표현을 비교하고, 적절한 결과를 선택 및 수정하여 작품에 반영하였다.</td></tr>
   <tr><td>AI를 활용하여 이야기를 제작하였다.</td><td>자신의 아이디어를 바탕으로 AI의 결과를 검토하고 선택 및 수정하여 이야기를 구체화하였다.</td></tr>
