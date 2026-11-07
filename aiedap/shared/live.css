@@ -209,3 +209,17 @@ details.fold[open]>summary::after{content:'접기 ▴'}
 details.fold>.scroll{padding:0 12px 12px}
 
 .emcard .gamebox{min-height:0}
+/* 설계안 PDF로 초안 채우기 */
+.fillbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:2px 0 10px;padding:10px 12px;border:1.5px dashed color-mix(in srgb,var(--blue) 40%,var(--line));border-radius:14px;background:var(--blueS)}
+.fillbar span{font-size:13px;color:var(--sub);flex:1;min-width:200px;word-break:keep-all}
+.fillst{display:none;margin:-4px 0 10px;padding:9px 12px;border-radius:12px;font-size:14px;line-height:1.5;word-break:keep-all}
+.fillst.on{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fillst.busy{background:var(--goldS);color:var(--ink)}
+.fillst.busy::before{content:'';width:14px;height:14px;border-radius:50%;border:2.5px solid var(--gold);border-top-color:transparent;animation:fillspin .8s linear infinite;flex:none}
+.fillst.ok{background:var(--mintS);color:var(--ink)}
+.fillst.err{background:var(--roseS);color:var(--ink)}
+@keyframes fillspin{to{transform:rotate(360deg)}}
+.ws textarea.aifill{background:#fff8dc;border-color:#f0c34a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ws textarea.aifill{background:#3a3218;border-color:#a8862a}}
+:root[data-theme="dark"] .ws textarea.aifill{background:#3a3218;border-color:#a8862a}
+

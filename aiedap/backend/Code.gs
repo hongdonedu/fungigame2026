@@ -339,8 +339,24 @@ const TASKS = {
   feedback: '[모듈4 4차시 · 동료 피드백] 이 Re-design을 여섯 관점(정합성: 목표–활동–AI–평가 연결 / 기술의 역할: AI를 써야 하는 이유 / 주도성: 학생이 생각·선택·판단하는 지점 / 증거: 학습 확인 증거 / 성찰: 학생이 창작과 AI 활용을 돌아보는가 / 실행 가능성)으로 보고, 관점별로 "강점 → 근거 → 제안" 순서의 피드백 문장을 쓰세요. 문장 틀: "○○ 장면이 잘 작동할 것 같아요. ○○ 관점에서 보면 ○○를 더해 보면 어떨까요?" 마지막에 발표자에게 던질 질문 2개.',
   sentence: '[모듈4 4차시 · 한 문장] "기존에는 ___ 한 수업이었지만, 학생이 ___ 할 수 있도록 ___ 을/를 중심으로 다시 설계하였습니다." 형식으로 이 수업의 Re-design 한 문장을 서로 다른 강조점으로 3가지 쓰세요. 기술 활용 자체가 아니라 학생에게 기대하는 변화와 핵심 설계 변화가 이어지게.',
   plan: '[모듈5 · 성장 계획 코치] 교사가 적은 현재 수준·강점·보완 역량·목표를 바탕으로, G역량(G1 전문성 영역 이해 / G2 전문성 계획 수립 / G3 실천 기반 성찰과 협력적 성장)과 연결해 단기(6개월 이내)·장기(1년 이상) 실행 계획을 "무엇을 | 언제까지 | 누구와 | 어떤 증거로" 표로 제안하세요. AIEDAP 활용(역량분석 대시보드 자기 진단, 맞춤형 연수·활동 추천, 우수 AI 융합 수업 사례 콘텐츠, e-포트폴리오)을 자연스럽게 넣고, 마지막에 "AX 시대의 교사 전문성은 ___ 이다" 문장 예시 2개.',
-  free: '[자유 질문] 교사의 질문에 연수 맥락(모듈 4: 평가→성찰→재설계→환류 / 모듈 5: 지속적 전문성 개발)에 맞게 답하세요.'
+  free: '[자유 질문] 교사의 질문에 연수 맥락(모듈 4: 평가→성찰→재설계→환류 / 모듈 5: 지속적 전문성 개발)에 맞게 답하세요.',
+  fill_w1: '[모듈4 1차시 · W1 초안 채우기] 교사가 올린 AI 융합수업 설계안(지도안)을 읽고 W1 활동지 초안을 만드세요. ' +
+    '"평가하고 싶은 학습"은 설계안의 성취기준·학습목표에서 출발해 학생이 하는 수행을 "~한다" 문장으로 2~4개(예: 자신의 창작 의도를 구체화한다 / 다양한 표현을 비교하여 적절한 것을 선택한다 / 자신의 의도에 맞게 표현을 수정한다 / 자신의 창작 과정을 설명하고 성찰한다). ' +
+    '"그 학습의 증거"는 그 수업 활동에서 실제로 남는 구체물(활동지 칸, 대화·프롬프트 기록, 비교표, 수정 전·후, 발표·성찰 기록 등). 설계안에 없는 활동은 지어내지 말고, 설계안에 남지 않는 증거는 끝에 "(추가 제안)"이라고 붙이세요. ' +
+    '반드시 JSON 객체 하나만 출력: {"my":"학년 · 교과 · 수업 주제 한 줄","g1":"","e1":"","g2":"","e2":"","g3":"","e3":"","g4":"","e4":"","now":"설계안에 이미 남는 증거(쉼표로)","more":"더 확인하고 싶은 증거 한 가지(한 줄)"}. 값마다 90자 이내, 해당 없으면 빈 문자열.',
+  fill_w2: '[모듈4 2차시 · W2 초안 채우기] 교사가 올린 AI 융합수업 설계안을 2022 개정 교육과정 총론(아래 요약)과 [별책2 성취기준 원문]에 비추어 읽고 W2 활동지 초안을 쓰세요. ' +
+    'codes: 설계안이 다루는 성취기준 코드 배열(설계안에 코드가 없으면 별책2에서 가장 가까운 코드를 추정). std: 그 성취기준 원문(별책2 문장 그대로, 추정한 것은 끝에 "(추정)"). ' +
+    'core: 학습 목표에 비추어 학생이 실제로 해야 하는 핵심 수행을 4~6단계로 "→"로 이어 쓰기. sup: AI가 학습을 넓혀 주는 구체적인 장면 1~2개("(지원)"으로 시작). ' +
+    'warn: AI가 학생의 수행을 대신하거나 오류·과의존이 생길 수 있는 지점 1~2개와 확인 방법("(주의)"로 시작). 총론의 "결과만이 아니라 결과에 이르는 학습 과정 확인", "깊이 있는 학습", "언어·수리·디지털 기초소양"을 근거로 하세요. ' +
+    '반드시 JSON 객체 하나만 출력: {"codes":[""],"std":"","core":"","sup":"","warn":""}. 값마다 220자 이내.'
 };
+const CURRIC = [
+  '[2022 개정 교육과정 총론 핵심 — 별책2 초등학교 교육과정 Ⅰ·Ⅱ장]',
+  '· 구성의 중점: 디지털 전환·기후·생태환경 변화에 능동적으로 대응하는 주도성, 언어·수리·디지털 기초소양, 깊이 있는 학습(교과 간 연계와 통합, 삶과 연계된 학습, 학습에 대한 성찰), 학생 참여형 수업, 문제 해결 및 사고의 과정을 중시하는 평가.',
+  '· 핵심역량: 자기관리 · 지식정보처리 · 창의적 사고 · 심미적 감성 · 협력적 소통 · 공동체.',
+  '· 교수·학습: 단편적 지식 암기를 지양하고 교과의 핵심 아이디어를 중심으로 지식·이해, 과정·기능, 가치·태도를 연계 / 실생활 맥락에서 이해·적용 / 자신의 학습 과정과 전략을 점검·개선하는 자기주도 학습 / 실험·관찰·조사 등 탐구 활동 / 개별 학습과 소집단 협동 학습 / 지능정보기술을 활용한 학생 맞춤형 학습.',
+  '· 평가: 성취기준에 근거해 교수·학습과 평가를 일관되게 / 학습의 결과만이 아니라 결과에 이르기까지의 학습 과정을 확인하고 환류 / 인지적·정의적 측면 균형, 학생 스스로 평가할 기회 / 배울 기회를 주지 않은 내용과 기능은 평가하지 않음 / 수행평가 내실화 / 지능정보기술을 활용한 맞춤형 평가.'
+].join('\n');
 
 function ai_(b) {
   const key = PROPS.getProperty('GEMINI_API_KEY');
@@ -352,19 +368,22 @@ function ai_(b) {
   CACHE.put(ck, String(cnt + 1), 600);
 
   const task = TASKS[b.task] ? b.task : 'free';
-  const text = clip_(b.text, 30000);
+  const text = clip_(b.text, 45000);
+  const fill = /^fill_/.test(task);
   const files = (b.images || []).slice(0, 4).filter(x => x && x.data && /^(image\/(png|jpeg|webp|heic|heif)|application\/pdf)$/.test(x.mime || ''));
   if (!text.trim() && !files.length) return { ok: false, error: '분석할 내용(글, 캡처 이미지, PDF)을 넣어 주세요.' };
 
-  const parts = [{ text: TASKS[task] + (b.extra ? '\n\n[교사의 요청] ' + clip_(b.extra, 600) : '') + '\n\n--- 교사가 제공한 자료 ---\n' + (text || '(글 없음 · 첨부 파일 참고)') }];
+  const parts = [{ text: TASKS[task] + (b.extra ? '\n\n[교사의 요청] ' + clip_(b.extra, 600) : '') +
+    (fill ? '\n\n' + CURRIC : '') + (b.std ? '\n\n[별책2 성취기준 원문 — 설계안에서 찾은 코드]\n' + clip_(b.std, 6000) : '') +
+    '\n\n--- 교사가 제공한 자료 ---\n' + (text || '(글 없음 · 첨부 파일 참고)') }];
   files.forEach(x => parts.push({ inline_data: { mime_type: x.mime, data: x.data } }));
   const payload = JSON.stringify({
     system_instruction: { parts: [{ text: SYS + '\n[여섯 렌즈 = 모듈 1에서 배운 성찰 관점] ' + LENS + '\n[여섯 설계 요소 = 3차시 Re-design에서 바꾸는 것] 학습 목표 · 학습 활동 · 기술의 역할 · 학생의 사고 · 교사의 지원 · 학습의 증거 (렌즈와 혼동하지 말 것)' }] },
     contents: [{ role: 'user', parts: parts }],
-    generationConfig: { temperature: 0.4, maxOutputTokens: 4096 }
+    generationConfig: fill ? { temperature: 0.3, maxOutputTokens: 12288, responseMimeType: 'application/json' } : { temperature: 0.4, maxOutputTokens: 16384 }
   });
   const models = [PROPS.getProperty('MODEL')].concat(MODELS).filter((m, i, a) => m && a.indexOf(m) === i);
-  let answer = '', used = '', lastErr = '';
+  let answer = '', used = '', lastErr = '', finish = '';
   for (let i = 0; i < models.length && !answer; i++) {
     try {
       const res = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/' + models[i] + ':generateContent', {
@@ -376,8 +395,10 @@ function ai_(b) {
       try { j = JSON.parse(res.getContentText() || '{}'); } catch (e) {}
       if (code === 200) {
         const c = (j.candidates || [])[0];
-        answer = c && c.content && c.content.parts ? c.content.parts.map(p => p.text || '').join('').trim() : '';
-        used = models[i];
+        answer = c && c.content && c.content.parts ? c.content.parts.filter(p => !p.thought).map(p => p.text || '').join('').trim() : '';
+        used = models[i]; finish = (c && c.finishReason) || '';
+        /* 생각(thinking)에 토큰을 다 써서 답이 잘리면 다음 모델로 다시 시도 */
+        if (finish === 'MAX_TOKENS' && (fill || answer.length < 200)) { lastErr = '답이 길이 제한에 걸림'; answer = ''; continue; }
         if (!answer) lastErr = '빈 응답 (' + ((c && c.finishReason) || '이유 없음') + ')';
       } else {
         lastErr = models[i] + ' ' + code + ' ' + clip_((j.error && j.error.message) || res.getContentText(), 160);
@@ -389,7 +410,7 @@ function ai_(b) {
     sheet_('ai').appendRow([now_(), b.module || '', task, String(b.group || ''), clip_(b.name, 30), dev,
       clip_(text, 300), files.length, used, clip_(answer || ('오류: ' + lastErr), 40000)]);
   } catch (e) {}
-  if (answer) return { ok: true, text: answer, model: used };
+  if (answer) return { ok: true, text: answer + (finish === 'MAX_TOKENS' ? '\n\n> (답이 길어 끝부분이 잘렸어요. 자료를 나눠서 다시 물어봐 주세요.)' : ''), model: used, finish: finish };
   const busy = /429|RESOURCE_EXHAUSTED|quota/i.test(lastErr);
   return { ok: false, error: busy ? '지금 질문이 몰려 있어요. 30초 뒤 다시 눌러 주세요.' : 'AI 응답을 받지 못했어요. (' + lastErr + ')' };
 }

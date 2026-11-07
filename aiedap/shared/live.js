@@ -74,7 +74,7 @@ const byId=id=>S.find(s=>s.id===id);
   const o={
    s1:{how:['AIEDAP에 로그인해 내 지도안과 성찰 보고서를 열어 둡니다','오른쪽 위 ‘🪑 모둠·이름’을 눌러 원탁 번호(1~17)와 이름을 적어요','활동지는 이 기기에 자동 저장되고, ‘📤 보드에 올리기’를 누르면 모둠과 나눠요','막히면 ‘🤖 리디에게 묻기’ — 내 지도안을 붙여 넣거나 캡처해서 물어봐요']},
    s2:{lead:'같은 과제, 다른 과정. 두 학생 중 누구에게 더 높은 점수를 주시겠어요? 아래 보드에서 투표하고 이유를 한 줄 남겨 주세요.',share:null},
-   s4:{how:['AIEDAP에 올린 내 지도안을 옆에 띄워요','평가하고 싶은 학습을 2~3개만 고릅니다','각 학습의 증거를 짝지어 적어요','‘더 확인하고 싶은 증거 한 가지’를 아래 보드에 올려요'],share:null},
+   s4:{how:['AIEDAP에 올린 내 지도안을 옆에 띄워요','평가하고 싶은 학습을 2~4개 고릅니다 (칸마다 예시 있음)','각 학습의 증거를 짝지어 적어요','‘더 확인하고 싶은 증거 한 가지’를 아래 보드에 올려요'],share:null},
    s7:{share:null},
    s14:{how:['반영할 피드백 고르기 (W6)','AIEDAP 지도안 수정·최종 저장','수료 제출: 공유마당 공유 + 대시보드 제출','한 문장 완성 (W7) → 아래 보드에 올리기'],share:null},
    s15:{share:null,time:'16:00 · 10분'},
@@ -84,7 +84,7 @@ const byId=id=>S.find(s=>s.id===id);
    s19:{time:'17:30 · 30분',blocks:[]}
   };
   S.forEach(s=>{if(o[s.id])Object.assign(s,o[s.id]);});
-  const s5=byId('s5'); if(s5) s5.blocks=[{k:'gamecall'}].concat(s5.blocks||[]);
+  const s6=byId('s6'); if(s6) s6.blocks=[{k:'gamecall'}].concat(s6.blocks||[]);
   const s12=byId('s12'); if(s12) s12.blocks=(s12.blocks||[]).concat([{k:'spincall',t:'팀 나누기 · 발표 순서 정하기'}]);
   if(MID==='m5'){
     const i=S.findIndex(s=>s.id==='s16');
@@ -336,10 +336,98 @@ function sheetHTML(id){
     body=`<div class="sentence">${s.parts[0]} `+s.keys.map((k,i)=>`<input data-k="${id}.${k}" value="${esc(v(id+'.'+k))}" placeholder="${['예) 결과물 완성에 집중','예) 수정 이유를 설명','예) 선택·수정 기록'][i]}"> ${s.parts[i+1]}`).join(' ')+`</div>`;
   }
   const sent=store.sent[id];
-  return `<div class="card ws" data-sheet="${id}"><div class="top"><b class="wid">${id}</b><h4>${esc(s.t)}</h4><span class="sv" id="sv-${id}">${store.t[id]?'저장됨 '+store.t[id]:'적으면 자동 저장'}</span></div>${body}
+  const fb=FILLABLE[id]?`<div class="fillbar"><button type="button" class="b y sm" onclick="pdfFill('${id}')">📄 내 설계안 PDF 올려 초안 채우기</button><span>AIEDAP 지도안 PDF를 올리면 리디가 ${esc(FILLABLE[id].label)}을(를) 빈 칸에 먼저 적어 줘요. 바로 적으셔도 돼요.</span><input type="file" accept="application/pdf,.pdf" id="pf-${id}" hidden></div><div class="fillst" id="fs-${id}"></div>`:'';
+  return `<div class="card ws" data-sheet="${id}"><div class="top"><b class="wid">${id}</b><h4>${esc(s.t)}</h4><span class="sv" id="sv-${id}">${store.t[id]?'저장됨 '+store.t[id]:'적으면 자동 저장'}</span></div>${fb}${body}
   <div class="acts"><button class="b r sm" onclick="sendSheet('${id}')">📤 보드에 올리기${sent?` <small>(${sent} 올림 · 다시 올리면 바뀜)</small>`:''}</button><button class="b w sm" onclick="peer('${id}',this)">👀 우리 모둠 ${id} 보기</button><button class="b w sm" onclick="copySheet('${id}')">📋 복사</button></div>
   <div class="peer" id="peer-${id}"></div></div>`;
 }
+/* ───────── 설계안 PDF로 활동지 초안 채우기 (W1 · W2) ───────── */
+const FILLABLE={W1:{task:'fill_w1',label:'평가하고 싶은 학습과 그 증거'},W2:{task:'fill_w2',label:'성취기준과 핵심 학습 과정'}};
+const PDFJS_V='3.11.174';
+let STD=null;const UNDO={},SUGG={};
+function loadScript(src){return new Promise((res,rej)=>{const x=document.createElement('script');x.src=src;x.onload=res;x.onerror=rej;document.head.appendChild(x);});}
+async function stdMap(){if(STD)return STD;try{STD=await (await fetch('../data/std.json')).json();}catch(e){STD={};}return STD;}
+async function pdfText(file){
+  if(!window.pdfjsLib)await loadScript(`https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_V}/pdf.min.js`);
+  pdfjsLib.GlobalWorkerOptions.workerSrc=`https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_V}/pdf.worker.min.js`;
+  const doc=await pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+  let out='';
+  for(let i=1;i<=Math.min(doc.numPages,40);i++){
+    const tc=await (await doc.getPage(i)).getTextContent();
+    let line='',ly=null,rx=null;
+    for(const it of tc.items){
+      const x=it.transform[4],y=it.transform[5];
+      if(ly!==null&&Math.abs(y-ly)>3){out+=line.trim()+'\n';line='';rx=null;}
+      if(rx!==null&&x-rx>2&&!/\s$/.test(line))line+=' ';
+      line+=it.str;ly=y;rx=x+(it.width||0);
+    }
+    out+=line.trim()+'\n\n';
+    if(out.length>60000)break;
+  }
+  return {text:out.replace(/[ \t]+/g,' ').replace(/\n{3,}/g,'\n\n').trim(),pages:doc.numPages};
+}
+function parseLoose(t){
+  t=String(t||'').replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'');
+  const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<a)return null;
+  try{return JSON.parse(t.slice(a,b+1));}catch(e){return null;}
+}
+window.pdfFill=function(id){const inp=$('#pf-'+id);if(!inp)return;inp.value='';inp.onchange=()=>{const f=inp.files&&inp.files[0];if(f)runFill(id,f);};inp.click();};
+async function runFill(id,file){
+  const st=$('#fs-'+id);
+  const say=(h,cls)=>{if(st){st.className='fillst on '+(cls||'');st.innerHTML=h;}};
+  if(!/\.pdf$/i.test(file.name)&&file.type!=='application/pdf'){say('PDF 파일만 올릴 수 있어요.','err');return;}
+  if(file.size>20e6){say('PDF가 너무 커요 (20MB 이하로 올려 주세요).','err');return;}
+  if(document.body.dataset.filling){toast('리디가 앞의 PDF를 읽는 중이에요');return;}
+  document.body.dataset.filling='1';
+  try{
+    say('📄 PDF를 읽고 있어요…','busy');
+    let txt='',pages=0;
+    try{const r=await pdfText(file);txt=r.text;pages=r.pages;}catch(e){txt='';}
+    const map=await stdMap();
+    const codes=[...new Set((txt.match(/\d[가-힣]{1,3}\d{2}-\d{2}/g)||[]).filter(c=>map[c]))];
+    const m=me()||{};
+    const body={action:'ai',task:FILLABLE[id].task,module:MID,group:m.g||'',name:m.n||'',device:store.dev,text:txt.slice(0,45000),std:codes.map(c=>`[${c}] ${map[c]}`).join('\n')};
+    if(txt.replace(/\s/g,'').length<150){
+      if(file.size>9e6){say('이 PDF는 글자를 읽을 수 없어요(그림으로 된 PDF). 지도안 내용을 복사해 칸에 직접 붙여 주세요.','err');return;}
+      body.text='';body.images=[{mime:'application/pdf',data:await readAsB64(file)}];
+    }
+    say(`🤖 리디가 ${pages?pages+'쪽짜리 ':''}설계안을 읽고 ${esc(FILLABLE[id].label)} 초안을 쓰고 있어요… <small>(보통 20~40초)</small>`,'busy');
+    let j;
+    if(!ONLINE){say('체험 모드에서는 PDF 분석을 쓸 수 없어요. 연수 당일 주소에서 해 주세요.','err');return;}
+    for(let k=0;k<2;k++){
+      try{j=await apiPost(body);}catch(e){j={ok:false,error:'연결이 잠깐 끊겼어요.'};}
+      if(j.ok&&parseLoose(j.text))break;
+      if(k===0)await new Promise(r=>setTimeout(r,1200));
+    }
+    if(!j.ok){say(esc(j.error||'분석하지 못했어요.')+' 다시 눌러 주세요.','err');return;}
+    const o=parseLoose(j.text);
+    if(!o){say('리디의 답을 칸에 넣지 못했어요. 한 번 더 눌러 주세요.','err');return;}
+    if(id==='W2'){
+      const cs=[...new Set(codes.concat((o.codes||[]).map(x=>String(x).replace(/[\[\]\s]/g,''))))].filter(c=>map[c]);
+      if(cs.length)o.std=cs.map(c=>`[${c}] ${map[c]}`).join('\n');
+      else if(o.std)o.std=String(o.std)+' (교육과정 원문 확인 필요)';
+    }
+    applyFill(id,o,false);
+  }finally{delete document.body.dataset.filling;}
+}
+function setField(k,val){
+  store.v[k]=val;const el=document.querySelector(`[data-k="${k}"]`);
+  if(el){el.value=val;el.classList.add('aifill');}
+}
+function applyFill(id,o,force){
+  const rows=(W[id]&&W[id].rows)||[];const prev={};let n=0,kept=0;
+  rows.forEach(r=>{const k=id+'.'+r[0];const val=String(o[r[0]]==null?'':o[r[0]]).trim();if(!val)return;
+    if(v(k).trim()&&!force){kept++;return;}
+    prev[k]=v(k);setField(k,val);n++;});
+  UNDO[id]=prev;SUGG[id]=o;
+  store.t[id]=stamp();save();const sv=$('#sv-'+id);if(sv)sv.textContent='저장됨 '+store.t[id];
+  const st=$('#fs-'+id);
+  if(st){st.className='fillst on ok';st.innerHTML=`✨ ${n?`${n}칸에 리디의 초안을 넣었어요. 노란 칸은 꼭 내 수업에 맞게 고쳐 주세요.`:'이미 모든 칸을 적으셨네요.'}
+    ${n?`<button type="button" class="b w sm" onclick="undoFill('${id}')">↩ 되돌리기</button>`:''}${kept?`<button type="button" class="b w sm" onclick="forceFill('${id}')">이미 적은 ${kept}칸도 리디 초안으로 바꾸기</button>`:''}`;}
+  toast(n?`📄 ${id} 초안 ${n}칸을 채웠어요`:'바꿀 빈 칸이 없어요');
+}
+window.undoFill=function(id){const p=UNDO[id]||{};Object.keys(p).forEach(k=>{store.v[k]=p[k];const el=document.querySelector(`[data-k="${k}"]`);if(el){el.value=p[k];el.classList.remove('aifill');}});save();const st=$('#fs-'+id);if(st){st.className='fillst on';st.innerHTML='↩ 되돌렸어요.';}};
+window.forceFill=function(id){if(SUGG[id])applyFill(id,SUGG[id],true);};
 function sheetText(id,noHead){
   const s=W[id]; let t=noHead?'':`[${id}] ${s.t}\n`;
   if(s.type==='rows') s.rows.forEach(r=>{const x=v(id+'.'+r[0]);if(x||!noHead)t+=`- ${r[1]}: ${x}\n`;});
@@ -569,7 +657,7 @@ function lensGamePage(){
    ${me()?'':'<div class="notice"><b>🪑 점수를 모둠에 보태려면</b><button class="b y sm" onclick="joinModal()">모둠·이름 등록</button></div>'}
    <div class="card"><div id="gBox" class="gamebox"></div></div>
    <h2 class="sec">명예의 전당<small>한 사람의 최고 점수만 · 모둠 평균</small></h2><div data-live="scores" data-game="lens"></div>
-   <div class="navbtm"><a class="b w" href="#s5">← 2차시로 돌아가기</a><a class="b r" href="#s6">여섯 렌즈 성찰표 쓰러 가기 →</a></div>`;
+   <div class="navbtm"><a class="b w" href="#s5">← 5. 교육과정에서 출발하기</a><a class="b r" href="#s6">6. 여섯 렌즈 성찰표 쓰러 가기 →</a></div>`;
   if(!(window.AG&&AG.games&&AG.games.lensQuiz))return noGames($('#gBox'));
   gameInst=AG.games.lensQuiz($('#gBox'),{banner:false,onFinish:r=>{postScore('lens',r.score,r.ms,`${r.correct!=null?r.correct:''}/${r.total||''} 정답`);}});
 }
