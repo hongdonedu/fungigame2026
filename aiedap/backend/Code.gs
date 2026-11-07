@@ -230,7 +230,7 @@ function ai_(b) {
   const parts = [{ text: TASKS[task] + (b.extra ? '\n\n[교사의 요청] ' + clip_(b.extra, 600) : '') + '\n\n--- 교사가 제공한 자료 ---\n' + (text || '(글 없음 · 첨부 파일 참고)') }];
   files.forEach(x => parts.push({ inline_data: { mime_type: x.mime, data: x.data } }));
   const payload = JSON.stringify({
-    system_instruction: { parts: [{ text: SYS }] },
+    system_instruction: { parts: [{ text: SYS + '\n[여섯 렌즈 = 모듈 1에서 배운 성찰 관점] ' + LENS + '\n[여섯 설계 요소 = 3차시 Re-design에서 바꾸는 것] 학습 목표 · 학습 활동 · 기술의 역할 · 학생의 사고 · 교사의 지원 · 학습의 증거 (렌즈와 혼동하지 말 것)' }] },
     contents: [{ role: 'user', parts: parts }],
     generationConfig: { temperature: 0.4, maxOutputTokens: 4096 }
   });
