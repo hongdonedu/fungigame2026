@@ -219,6 +219,7 @@ function joinModal(after){
     if(!n){toast('이름을 적어 주세요');$('#jName').focus();return;}
     store.me={g:String(g),n:n};save();closeModal();drawMe();toast(g+'모둠 '+n+' 선생님, 반가워요!');
     if(ONLINE) apiPost({action:'join',module:MID,group:g,name:n,device:store.dev}).catch(()=>{});
+    try{chatLoad();}catch(e){}
     if(typeof after==='function') after(); else render();
   };
   $('#jGo',el).onclick=go;
@@ -252,8 +253,44 @@ function buildSide(){
   const deck=`<a href="${M.deck.pptx}" download><span class="ic">📥</span><span>강의 자료 PPT 받기<small>${esc(M.deck.t)}</small></span></a>`+
    `<a href="${M.deck.gs}" target="_blank" rel="noopener"><span class="ic">🖥️</span><span>강의 자료 보기 ↗<small>Google 슬라이드</small></span></a>`;
   $('#links').innerHTML=deck+window.LINKS.filter(t=>t[0]!=='PADLET').map(t=>`<a href="${t[0]}" target="_blank" rel="noopener"><span class="ic">${t[1]}</span><span>${esc(t[2])} ↗<small>${esc(t[3])}</small></span></a>`).join('')+
-   `<a href="${M.other.href}" class="swap"><span class="ic">➡️</span><span>${esc(M.other.n)}<small>${esc(M.other.d)}</small></span></a>`;
+   `<a href="${M.other.href}" class="swap"><span class="ic">➡️</span><span>${esc(M.other.n)}<small>${esc(M.other.d)}</small></span></a>`+
+   `<a href="javascript:void 0" class="adm" onclick="adminReset()"><span class="ic">🧹</span><span>강사용 · ${esc(M.name)} 기록 비우기<small>테스트 기록 정리 (관리자 암호)</small></span></a>`;
 }
+/* ───────── 강사용: 이 모듈 기록 한꺼번에 비우기 ───────── */
+window.adminReset=function(){
+  $('.side').classList.remove('open');
+  const el=modal(`<div class="rst"><div class="rsic">🧹</div><h2>${esc(M.name)} 기록 비우기 <small>강사용</small></h2>
+   <p>${esc(M.name)}에서 쌓인 기록만 지워요. 지운 줄은 응답 시트 ‘지운 기록’ 탭에 보관돼요.</p>
+   <div class="rsopt rschk">
+    <label><input type="checkbox" checked disabled><span><b>보드 · 활동지 · 게임 점수 · 등록 명단 · 하트·댓글</b><small>${esc(M.name)} 전체 (꼭 지워져요)</small></span></label>
+    <label><input type="checkbox" id="rsChat" checked><span><b>모둠 채팅</b><small>${esc(M.name)} 모둠 채팅방 대화</small></span></label>
+    <label><input type="checkbox" id="rsLinks"><span><b>추가 정보 게시판 글</b><small>📌 강사 공지(고정 글)는 남겨요 · 두 모듈 공통</small></span></label>
+    <label><input type="checkbox" id="rsLocal" checked><span><b>이 기기에 적은 내 활동지 · PDF 기억</b><small>지금 쓰는 이 브라우저만</small></span></label>
+   </div>
+   <input id="rsPin" type="password" inputmode="numeric" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="12" placeholder="관리자 암호" aria-label="관리자 암호">
+   <div class="btns" style="justify-content:center"><button class="b r" id="rsGo">비우기</button><button class="b w" id="rsNo">취소</button></div></div>`,'narrow');
+  const pin=$('#rsPin',el), go=$('#rsGo',el);
+  if(window.CSS&&CSS.supports&&CSS.supports('-webkit-text-security','disc')){pin.type='text';pin.classList.add('mask');}
+  setTimeout(()=>pin.focus(),60);
+  $('#rsNo',el).onclick=closeModal;
+  pin.addEventListener('keydown',e=>{if(e.key==='Enter')go.click();});
+  go.onclick=async()=>{
+    const p=pin.value.trim(); if(!p){toast('관리자 암호를 넣어 주세요');pin.focus();return;}
+    if(!go.dataset.sure){go.dataset.sure='1';go.textContent='한 번 더 누르면 지워요';return;}
+    go.disabled=true;go.textContent='지우는 중…';
+    const fail=msg=>{toast(msg);go.disabled=false;delete go.dataset.sure;go.textContent='비우기';pin.select();};
+    const local=$('#rsLocal',el).checked;
+    if(ONLINE){
+      let j;
+      try{j=await apiPost({action:'reset',module:MID,activity:'*',scope:'module',pin:p,device:store.dev,chat:$('#rsChat',el).checked,links:$('#rsLinks',el).checked});}catch(e){fail('연결이 잠깐 끊겼어요. 다시 눌러 주세요');return;}
+      if(!j||!j.ok){fail((j&&j.error)||'비우지 못했어요');return;}
+      toast(`🧹 ${M.name} 기록을 비웠어요: 글 ${j.removed}개 · 등록 ${j.members||0}명 · 점수 ${j.scores||0}개`);
+    }else toast('🧹 이 기기의 기록을 비웠어요 (체험 모드)');
+    store.sent={};store.local=store.local.filter(r=>r.m!==MID);
+    if(local){Object.keys(store.v).forEach(k=>{if(M.sheets.indexOf(k.split('.')[0])>=0)delete store.v[k];});M.sheets.forEach(id=>{delete store.t[id];});delete store.lastPdf;delete store.rx;}
+    CHAT.rows=[];store.chatSeen={};save();closeModal();render(true);chatDraw(true);chatBadge();
+  };
+};
 function markNav(r){
   $$('.nav a,.ext a').forEach(a=>a.classList.toggle('on',a.dataset.r===r));
   $('.side').classList.remove('open');
@@ -1233,7 +1270,72 @@ function render(keepScroll){
 window.render=render;
 window.addEventListener('hashchange',()=>render());
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#lb').classList.remove('on');closeModal();}});
-buildSide(); drawMe(); render(); ping(); startLinksPoll();
+/* ───────── 우리 모둠 채팅 (카톡처럼) ───────── */
+const CHAT={rows:[],open:false,key:'',t:null,busy:false};
+const chatSig=r=>r?r.t+'|'+r.d+'|'+r.s:'';
+function chatMount(){
+  if($('#chatFab'))return;
+  const f=document.createElement('button');f.id='chatFab';f.type='button';f.innerHTML='<span class="ci">💬</span><span class="ct">우리 모둠 채팅</span><i class="cbadge" hidden></i>';
+  f.onclick=()=>chatToggle();document.body.appendChild(f);
+  const b=document.createElement('div');b.id='chatBox';b.hidden=true;
+  b.innerHTML=`<div class="chd"><b id="chTitle">💬 우리 모둠 채팅</b><small id="chSub"></small><button type="button" class="chx" aria-label="닫기">✕</button></div><div class="cbody" id="chBody"></div><form class="cin" id="chForm"><textarea id="chText" rows="1" maxlength="300" placeholder="메시지 입력 (Enter 보내기)"></textarea><button class="b sm">보내기</button></form>`;
+  document.body.appendChild(b);
+  $('.chx',b).onclick=()=>chatToggle(false);
+  const ta=$('#chText',b);
+  const fit=()=>{ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,96)+'px';};
+  ta.addEventListener('input',fit);
+  ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&e.keyCode!==229){e.preventDefault();chatSend().then(fit);}});
+  $('#chForm',b).addEventListener('submit',e=>{e.preventDefault();chatSend().then(fit);});
+  chatLoop();
+}
+function chatKey(){const m=me();return m?MID+'|'+m.g:'';}
+function chatToggle(on){
+  const m=me();
+  if(on!==false&&!m){joinModal(()=>chatToggle(true));return;}
+  CHAT.open=on==null?!CHAT.open:on;
+  $('#chatBox').hidden=!CHAT.open;$('#chatFab').classList.toggle('on',CHAT.open);
+  if(CHAT.open){$('#chTitle').textContent=`💬 ${m.g}모둠 채팅`;$('#chSub').textContent=M.name+' · '+m.n;chatDraw(true);chatLoad();setTimeout(()=>$('#chText').focus(),50);}
+  chatLoop();
+}
+function chatDraw(scroll){
+  const body=$('#chBody');if(!body)return;
+  const me6=mineD();const near=body.scrollHeight-body.scrollTop-body.clientHeight<80;
+  body.innerHTML=CHAT.rows.length?CHAT.rows.map((r,i)=>{const mine=r.d===me6,prev=CHAT.rows[i-1],same=prev&&prev.d===r.d&&prev.t===r.t;
+    return `<div class="cm ${mine?'my':''} ${same?'same':''}">${!mine&&!same?`<div class="cn">${esc(r.n)}</div>`:''}<div class="cl"><div class="cbub">${esc(r.s)}</div><small>${esc(r.t)}</small></div></div>`;}).join(''):
+    `<div class="cempty">아직 대화가 없어요.<br>우리 모둠에게 첫 인사를 남겨 보세요 👋</div>`;
+  if(scroll||near)body.scrollTop=body.scrollHeight;
+}
+function chatBadge(){
+  const b=$('#chatFab .cbadge');if(!b)return;
+  const sig=(store.chatSeen||{})[CHAT.key]||'';let n=CHAT.rows.length;
+  if(sig){const i=CHAT.rows.map(chatSig).lastIndexOf(sig);if(i>=0)n=CHAT.rows.length-1-i;}
+  n=CHAT.rows.slice(CHAT.rows.length-n).filter(r=>r.d!==mineD()).length;
+  b.hidden=CHAT.open||!n;b.textContent=n>99?'99+':n;
+}
+async function chatLoad(){
+  const m=me();if(!m||!ONLINE||CHAT.busy)return;
+  const k=chatKey();if(CHAT.key!==k){CHAT.key=k;CHAT.rows=[];if(CHAT.open){$('#chTitle').textContent=`💬 ${m.g}모둠 채팅`;$('#chSub').textContent=M.name+' · '+m.n;chatDraw(true);}}
+  CHAT.busy=true;
+  try{const j=await apiGet({action:'chat',module:MID,group:m.g});if(j.ok){const ch=JSON.stringify(j.rows)!==JSON.stringify(CHAT.rows);CHAT.rows=j.rows||[];if(ch&&CHAT.open)chatDraw(false);}}catch(e){}
+  CHAT.busy=false;
+  if(CHAT.open)chatSeenNow();
+  chatBadge();
+}
+function chatSeenNow(){
+  if(!CHAT.rows.length)return;store.chatSeen=store.chatSeen||{};
+  const sig=chatSig(CHAT.rows[CHAT.rows.length-1]);if(store.chatSeen[CHAT.key]!==sig){store.chatSeen[CHAT.key]=sig;save();}
+}
+function chatLoop(){clearTimeout(CHAT.t);if(!ONLINE)return;CHAT.t=setTimeout(async()=>{if(me()&&(!document.hidden||CHAT.open))await chatLoad();chatLoop();},CHAT.open?3500:15000+Math.round(Math.random()*4000));}
+async function chatSend(){
+  const m=me();if(!m){joinModal();return;}
+  const ta=$('#chText'),t=ta.value.trim();if(!t)return;
+  if(!ONLINE){toast('체험 모드에서는 채팅을 쓸 수 없어요');return;}
+  ta.value='';CHAT.rows.push({t:stamp(),n:m.n,d:mineD(),s:t});chatDraw(true);
+  try{const j=await apiPost({action:'chat',module:MID,group:m.g,name:m.n,device:store.dev,text:t});if(!j.ok)throw new Error(j.error||'');CHAT.rows=j.rows||CHAT.rows;chatDraw(true);}
+  catch(e){toast(e.message||'보내지 못했어요. 다시 보내 주세요');CHAT.rows=CHAT.rows.filter(r=>!(r.d===mineD()&&r.s===t&&r.t===stamp()));ta.value=t;chatDraw(true);}
+  chatSeenNow();chatBadge();
+}
+buildSide(); drawMe(); render(); ping(); startLinksPoll(); chatMount(); if(me()&&ONLINE)chatLoad();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){loadLinks();if($('.wall,[data-live]'))refreshAll();}});
 if(!me()&&!store.skipJoin) setTimeout(()=>{if(!me()&&!$('#modal'))joinModal();},700);
 })();

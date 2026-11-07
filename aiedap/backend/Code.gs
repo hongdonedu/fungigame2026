@@ -24,7 +24,8 @@ const TABS = {
   scores:    { name: '게임 점수',      head: ['시각', '게임', '모둠', '이름', '기기ID', '점수', '시간(ms)', '세부'] },
   links:     { name: '추가 정보',      head: ['시각', 'ID', '제목', '주소', '설명', '이름', '모둠', '기기ID', '고정', '삭제'] },
   trash:     { name: '지운 기록',      head: ['지운 시각', '원래 탭', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] },
-  reacts:    { name: '하트·댓글',      head: ['시각', '모듈', '활동', '대상', '종류', '모둠', '이름', '기기ID', '내용'] }
+  reacts:    { name: '하트·댓글',      head: ['시각', '모듈', '활동', '대상', '종류', '모둠', '이름', '기기ID', '내용'] },
+  chat:      { name: '모둠 채팅',      head: ['시각', '모듈', '모둠', '이름', '기기ID', '내용'] }
 };
 function adminPin_() { return String(PROPS.getProperty('ADMIN_PIN') || ''); }
 function resetPin_() { return String(PROPS.getProperty('RESET_PIN') || ''); }
@@ -83,6 +84,7 @@ function doGet(e) {
     if (p.action === 'stats') return out_({ ok: true, stats: stats_(p) });
     if (p.action === 'links') return out_({ ok: true, rows: links_() });
     if (p.action === 'room') return out_({ ok: true, room: roomGet_(roomKey_(p)) });
+    if (p.action === 'chat') return out_({ ok: true, rows: chat_(String(p.module || ''), String(p.group || '')) });
     return out_({ ok: true, service: 'aiedap-m45', ai: !!PROPS.getProperty('GEMINI_API_KEY'), time: now_() });
   } catch (err) { return out_({ ok: false, error: String(err) }); }
 }
@@ -108,6 +110,31 @@ function reacts_(mod, act) {
     Object.keys(m).forEach(t => { m[t].c = m[t].c.slice(-30); });
     return m;
   });
+}
+/* 모둠 채팅: 모듈·모둠별 최근 80개 */
+function chat_(mod, g) {
+  if (!g) return [];
+  return cached_('CH|' + mod + '|' + g, 8, () => {
+    const vals = tail_(sheet_('chat'), 6);
+    const rows = [];
+    for (let i = vals.length - 1; i >= 0 && rows.length < 80; i--) {
+      const r = vals[i];
+      if (String(r[1]) !== mod || String(r[2]) !== g) continue;
+      rows.push({ t: hhmm_(r[0]), n: String(r[3]), d: String(r[4]).slice(-6), s: String(r[5]) });
+    }
+    return rows.reverse();
+  });
+}
+function chatPost_(b) {
+  const mod = String(b.module || ''), g = String(b.group || ''), dev = clip_(b.device, 40), text = clip_(b.text, 300).trim();
+  if (!mod || !g || !dev) return { ok: false, error: '모둠 등록이 필요해요.' };
+  if (!text) return { ok: false, error: '내용을 적어 주세요.' };
+  const ck = 'chat_' + dev, cnt = Number(CACHE.get(ck) || 0);
+  if (cnt >= 40) return { ok: false, error: '조금 쉬었다가 보내 주세요.' };
+  CACHE.put(ck, String(cnt + 1), 600);
+  append_('chat', [now_(), mod, g, clip_(b.name, 30), dev, text]);
+  CACHE.remove('CH|' + mod + '|' + g);
+  return { ok: true, rows: chat_(mod, g) };
 }
 /* 모둠 함께 하는 게임 방: 캐시에 상태만 두고, 각 기기는 같은 이벤트 순서를 받아 같은 화면을 그린다 */
 function roomKey_(b) { return 'GR|' + String(b.module || '') + '|' + String(b.group || '') + '|' + String(b.game || 'life'); }
@@ -312,6 +339,8 @@ function reset_(b) {
     if (all) {
       mem = moveRows_('members', r => String(r[1]) === mod);
       sc = moveRows_('scores', r => games.indexOf(String(r[1])) >= 0);
+      if (b.chat !== false) moveRows_('chat', r => String(r[1]) === mod);
+      if (b.links === true) moveRows_('links', r => String(r[8]) !== 'Y');
     }
     SpreadsheetApp.flush();
   } finally { lock.releaseLock(); }
@@ -324,6 +353,7 @@ function reset_(b) {
   if (act && acts.indexOf(act) < 0) acts.push(act);
   acts.forEach(a => gs.forEach(g => [0, 1].forEach(f => keys.push(['L', mod, a, g, f].join('|'), ['L', '', a, g, f].join('|')))));
   acts.forEach(a => keys.push('R|' + mod + '|' + a));
+  if (all) { gs.forEach(g => keys.push('CH|' + mod + '|' + g, 'GR|' + mod + '|' + g + '|life')); keys.push('K'); }
   for (let i = 0; i < keys.length; i += 400) CACHE.removeAll(keys.slice(i, i + 400));
   CACHE.remove(tk);
   return { ok: true, removed: res.n, members: mem.n, scores: sc.n };
@@ -341,6 +371,7 @@ function doPost(e) {
     }
     if (b.action === 'react') return out_(react_(b));
     if (b.action === 'room') return out_(room_(b));
+    if (b.action === 'chat') return out_(chatPost_(b));
     if (b.action === 'submit') {
       if (!b.activity) return out_({ ok: false, error: 'activity 없음' });
       append_('responses', [now_(), b.module || '', b.activity, String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40),
