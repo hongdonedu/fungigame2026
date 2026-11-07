@@ -336,13 +336,15 @@ function sheetHTML(id){
     body=`<div class="sentence">${s.parts[0]} `+s.keys.map((k,i)=>`<input data-k="${id}.${k}" value="${esc(v(id+'.'+k))}" placeholder="${['예) 결과물 완성에 집중','예) 수정 이유를 설명','예) 선택·수정 기록'][i]}"> ${s.parts[i+1]}`).join(' ')+`</div>`;
   }
   const sent=store.sent[id];
-  const fb=FILLABLE[id]?`<div class="fillbar"><button type="button" class="b y sm" onclick="pdfFill('${id}')">📄 내 설계안 PDF 올려 초안 채우기</button><span>AIEDAP 지도안 PDF를 올리면 리디가 ${esc(FILLABLE[id].label)}을(를) 빈 칸에 먼저 적어 줘요. 바로 적으셔도 돼요.</span><input type="file" accept="application/pdf,.pdf" id="pf-${id}" hidden></div><div class="fillst" id="fs-${id}"></div>`:'';
+  const fb=FILLABLE[id]?`<div class="fillbar"><button type="button" class="b y sm" onclick="pdfFill('${id}')">📄 ${esc(FILLABLE[id].btn||'내 설계안 PDF 올려 초안 채우기')}</button><span>${esc(FILLABLE[id].msg||`AIEDAP 지도안 PDF를 올리면 리디가 ${FILLABLE[id].label}을(를) 빈 칸에 먼저 적어 줘요. 바로 적으셔도 돼요.`)}</span><input type="file" accept="application/pdf,.pdf" id="pf-${id}" hidden></div><div class="fillst" id="fs-${id}"></div>`:'';
   return `<div class="card ws" data-sheet="${id}"><div class="top"><b class="wid">${id}</b><h4>${esc(s.t)}</h4><span class="sv" id="sv-${id}">${store.t[id]?'저장됨 '+store.t[id]:'적으면 자동 저장'}</span></div>${fb}${body}
   <div class="acts"><button class="b r sm" onclick="sendSheet('${id}')">📤 보드에 올리기${sent?` <small>(${sent} 올림 · 다시 올리면 바뀜)</small>`:''}</button><button class="b w sm" onclick="peer('${id}',this)">👀 우리 모둠 ${id} 보기</button><button class="b w sm" onclick="copySheet('${id}')">📋 복사</button></div>
   <div class="peer" id="peer-${id}"></div></div>`;
 }
-/* ───────── 설계안 PDF로 활동지 초안 채우기 (W1 · W2) ───────── */
-const FILLABLE={W1:{task:'fill_w1',label:'평가하고 싶은 학습과 그 증거'},W2:{task:'fill_w2',label:'성취기준과 핵심 학습 과정'}};
+/* ───────── 설계안 PDF로 활동지 초안 채우기 (W1 · W2 · W3) ───────── */
+const FILLABLE={W1:{task:'fill_w1',label:'평가하고 싶은 학습과 그 증거'},W2:{task:'fill_w2',label:'성취기준과 핵심 학습 과정'},
+  W3:{task:'fill_w3',label:'렌즈별 장면',btn:'실천한 수업 자료 PDF 올려 초안 채우기',msg:'지도안이나 실천 기록·성찰 PDF를 올리면 리디가 렌즈마다 장면을 빈 칸에 먼저 적어 줘요. 근거가 없는 칸은 질문으로 남겨요.',read:'수업 자료',ctx:['W1','W2']}};
+function fillKeys(id){const s=W[id]||{};return s.type==='lens'?L.flatMap(l=>[l.id+'_g',l.id+'_r']):(s.rows||[]).map(r=>r[0]);}
 const PDFJS_V='3.11.174';
 let STD=null;const UNDO={},SUGG={};
 function loadScript(src){return new Promise((res,rej)=>{const x=document.createElement('script');x.src=src;x.onload=res;x.onerror=rej;document.head.appendChild(x);});}
@@ -387,12 +389,13 @@ async function runFill(id,file){
     const map=await stdMap();
     const codes=[...new Set((txt.match(/\d[가-힣]{1,3}\d{2}-\d{2}/g)||[]).filter(c=>map[c]))];
     const m=me()||{};
-    const body={action:'ai',task:FILLABLE[id].task,module:MID,group:m.g||'',name:m.n||'',device:store.dev,text:txt.slice(0,45000),std:codes.map(c=>`[${c}] ${map[c]}`).join('\n')};
+    const ctx=(FILLABLE[id].ctx||[]).filter(x=>W[x]&&filled(x)).map(x=>sheetText(x)).join('\n');
+    const body={action:'ai',task:FILLABLE[id].task,module:MID,group:m.g||'',name:m.n||'',device:store.dev,text:(ctx?'[이 교사가 W1·W2에 적은 내용]\n'+ctx+'\n\n[올린 PDF]\n':'')+txt.slice(0,45000),std:codes.map(c=>`[${c}] ${map[c]}`).join('\n')};
     if(txt.replace(/\s/g,'').length<150){
       if(file.size>9e6){say('이 PDF는 글자를 읽을 수 없어요(그림으로 된 PDF). 지도안 내용을 복사해 칸에 직접 붙여 주세요.','err');return;}
-      body.text='';body.images=[{mime:'application/pdf',data:await readAsB64(file)}];
+      body.text=ctx?'[이 교사가 W1·W2에 적은 내용]\n'+ctx:'';body.images=[{mime:'application/pdf',data:await readAsB64(file)}];
     }
-    say(`🤖 리디가 ${pages?pages+'쪽짜리 ':''}설계안을 읽고 ${esc(FILLABLE[id].label)} 초안을 쓰고 있어요… <small>(보통 20~40초)</small>`,'busy');
+    say(`🤖 리디가 ${pages?pages+'쪽짜리 ':''}${FILLABLE[id].read||'설계안'}을 읽고 ${esc(FILLABLE[id].label)} 초안을 쓰고 있어요… <small>(보통 20~40초)</small>`,'busy');
     let j;
     if(!ONLINE){say('체험 모드에서는 PDF 분석을 쓸 수 없어요. 연수 당일 주소에서 해 주세요.','err');return;}
     for(let k=0;k<2;k++){
@@ -416,8 +419,8 @@ function setField(k,val){
   if(el){el.value=val;el.classList.add('aifill');}
 }
 function applyFill(id,o,force){
-  const rows=(W[id]&&W[id].rows)||[];const prev={};let n=0,kept=0;
-  rows.forEach(r=>{const k=id+'.'+r[0];const val=String(o[r[0]]==null?'':o[r[0]]).trim();if(!val)return;
+  const prev={};let n=0,kept=0;
+  fillKeys(id).forEach(f=>{const k=id+'.'+f;const val=String(o[f]==null?'':o[f]).trim();if(!val)return;
     if(v(k).trim()&&!force){kept++;return;}
     prev[k]=v(k);setField(k,val);n++;});
   UNDO[id]=prev;SUGG[id]=o;
