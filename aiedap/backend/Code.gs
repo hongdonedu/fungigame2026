@@ -6,8 +6,8 @@
  *   GEMINI_API_KEY  (필수) Google AI Studio 키 — 코드에 직접 쓰지 마세요
  *   MODEL           (선택) 먼저 써 볼 모델 이름. 비우면 아래 MODELS 순서대로
  *   SHEET_ID        (자동) 처음 실행 때 응답 스프레드시트를 만들어 저장
- *   ADMIN_PIN       (선택) '추가 정보'에 강사 공지로 고정할 때 쓰는 숫자. 비우면 1108
- *   RESET_PIN       (선택) 보드 비우기(관리자 리셋) 암호. 비우면 3090
+ *   ADMIN_PIN       (필수) '추가 정보'에 강사 공지로 고정할 때 쓰는 숫자 — 코드에 쓰지 말고 속성에만
+ *   RESET_PIN       (필수) 보드 비우기(관리자 리셋) 암호 — 코드에 쓰지 말고 속성에만 (저장소가 공개라서)
  * ▣ 배포: 배포 › 새 배포 › 유형 '웹 앱' › 실행 사용자 '나' › 액세스 '모든 사용자'
  * ▣ 시트에서 줄을 지우면 그 응답은 보드에서 사라집니다(부적절한 글 정리용).
  * ▣ 보드의 🧹 버튼(관리자 암호)으로 비우면, 지운 줄은 '지운 기록' 탭으로 옮겨 보관합니다.
@@ -25,8 +25,8 @@ const TABS = {
   links:     { name: '추가 정보',      head: ['시각', 'ID', '제목', '주소', '설명', '이름', '모둠', '기기ID', '고정', '삭제'] },
   trash:     { name: '지운 기록',      head: ['지운 시각', '원래 탭', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] }
 };
-function adminPin_() { return String(PROPS.getProperty('ADMIN_PIN') || '1108'); }
-function resetPin_() { return String(PROPS.getProperty('RESET_PIN') || '3090'); }
+function adminPin_() { return String(PROPS.getProperty('ADMIN_PIN') || ''); }
+function resetPin_() { return String(PROPS.getProperty('RESET_PIN') || ''); }
 const GAMES = { m4: ['lens', 'memory'], m5: ['life'] };
 
 /* ───────── 스프레드시트 ───────── */
@@ -219,6 +219,7 @@ function reset_(b) {
   const tk = 'rst_' + dev;
   const tries = Number(CACHE.get(tk) || 0);
   if (tries >= 6) return { ok: false, error: '잠시 뒤에 다시 해 주세요 (암호를 여러 번 틀렸어요).' };
+  if (!resetPin_()) return { ok: false, error: '관리자 암호가 아직 설정되지 않았어요 (스크립트 속성 RESET_PIN).' };
   if (String(b.pin || '') !== resetPin_()) { CACHE.put(tk, String(tries + 1), 600); return { ok: false, error: '관리자 암호가 맞지 않아요.' }; }
   const mod = String(b.module || ''), act = String(b.activity || ''), all = b.scope === 'module';
   if (!mod || (!all && !act)) return { ok: false, error: '비울 보드를 알 수 없어요.' };
@@ -295,7 +296,7 @@ function doPost(e) {
         for (let i = ids.length - 1; i >= 0; i--) {
           if (String(ids[i][0]) !== String(b.id)) continue;
           const dev = String(s.getRange(i + 2, 8).getValue());
-          if (dev !== String(b.device) && String(b.pin || '') !== adminPin_()) return out_({ ok: false, error: '내가 올린 글만 지울 수 있어요.' });
+          if (dev !== String(b.device) && (!adminPin_() || String(b.pin || '') !== adminPin_())) return out_({ ok: false, error: '내가 올린 글만 지울 수 있어요.' });
           s.getRange(i + 2, 10).setValue('Y');
           SpreadsheetApp.flush();
           CACHE.remove('K');
