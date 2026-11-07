@@ -527,7 +527,7 @@ function mountLife(box){
   destroyGame();
   if(!(window.AG&&AG.games&&AG.games.lifeGame))return noGames(box);
   box.innerHTML='';
-  gameInst=AG.games.lifeGame(box,{players:lifePlayers(),banner:false,onFinish:r=>{
+  gameInst=AG.games.lifeGame(box,{players:lifePlayers(),banner:false,autoStart:false,onFinish:r=>{
     const ps=(r&&r.players)||[];
     const mine=ps.find(p=>me()&&p.name===me().n)||ps[0];
     if(!mine)return;
