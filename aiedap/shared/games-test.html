@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>체험 게임 테스트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="games.css">
+<style>
+:root{--bg:#f5f7fc;--paper:#fff;--ink:#1a2240;--sub:#5a6482;--line:#e2e7f2;--blue:#2a5bd7;--blueS:#e9f0ff;--gold:#ffbf2e;
+--l1:#3b6fe0;--l2:#f08a24;--l3:#8a5cf6;--l4:#1f9d6b;--l5:#e5484d;--l6:#d99a00;color-scheme:light}
+:root[data-theme="dark"]{--bg:#0e1430;--paper:#161e40;--ink:#eef1fb;--sub:#aab3d3;--line:#2a3463;--blueS:#1d2a5a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans KR',system-ui,sans-serif}
+main{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+h1{font-family:'Jua',sans-serif;font-weight:400;font-size:26px;margin:0 0 12px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+nav button{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:12px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer}
+nav button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+#log{margin-top:18px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:12px;white-space:pre-wrap;max-height:220px;overflow:auto}
+</style>
+</head>
+<body>
+<main>
+  <h1>🎮 AG.games 테스트</h1>
+  <nav>
+    <button type="button" data-g="roulette">🎱 마블 룰렛</button>
+    <button type="button" data-g="rouletteSetup">⚙️ 룰렛(설정부터)</button>
+    <button type="button" data-g="lensQuiz">🔍 렌즈 맞히기</button>
+    <button type="button" data-g="lifeGame">🎲 인생게임</button>
+    <button type="button" data-g="lifeSetup">⚙️ 인생게임(설정부터)</button>
+    <button type="button" id="dark">🌙 다크</button>
+  </nav>
+  <section id="host"></section>
+  <pre id="log">결과가 여기에 찍힙니다.</pre>
+</main>
+<script src="games.js"></script>
+<script>
+window.__log = [];
+const q = new URLSearchParams(location.search);
+function log(k, v) {
+  window.__log.push({ k, v, t: Date.now() });
+  document.getElementById('log').textContent = window.__log.map(x => `${x.k}: ${JSON.stringify(x.v).slice(0, 400)}`).join('\n');
+}
+const N = +(q.get('n') || 8);
+const names = Array.from({ length: N }, (_, i) => `${i + 1}모둠`);
+const mount = {
+  roulette: h => AG.games.roulette(h, { names, title: '발표 모둠 뽑기', mode: q.get('mode') || 'first', onPick: n => log('pick', n) }),
+  rouletteSetup: h => AG.games.roulette(h, { names, title: '발표 모둠 뽑기', autoStart: false, banner: true, onPick: n => log('pick', n) }),
+  lensQuiz: h => AG.games.lensQuiz(h, { banner: true, onFinish: r => log('quiz', r) }),
+  lifeGame: h => AG.games.lifeGame(h, { players: ['김선생', '이선생', '박선생'], onFinish: r => log('life', r) }),
+  lifeSetup: h => AG.games.lifeGame(h, { autoStart: false, banner: true, onFinish: r => log('life', r) }),
+};
+let cur = null;
+function show(g) {
+  if (!mount[g]) g = 'roulette';
+  try { cur && cur.destroy(); } catch (e) { console.error(e); }
+  const h = document.getElementById('host'); h.innerHTML = '';
+  cur = mount[g](h);
+  document.querySelectorAll('nav [data-g]').forEach(b => b.classList.toggle('on', b.dataset.g === g));
+  history.replaceState(null, '', location.pathname + location.search + '#' + g);
+}
+document.querySelectorAll('nav [data-g]').forEach(b => b.addEventListener('click', () => show(b.dataset.g)));
+document.getElementById('dark').addEventListener('click', () => { const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; });
+show((location.hash || '#roulette').slice(1));
+</script>
+</body>
+</html>
