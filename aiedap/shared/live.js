@@ -136,16 +136,27 @@ function localList(q){
     if(q.group&&String(r.g)!==String(q.group))continue; out.push(r);}
   return out;
 }
+const SENDING={};
 async function submit(a,summary,data,choice){
   const m=me(); if(!m){joinModal(()=>submit(a,summary,data,choice));return false;}
+  if(SENDING[a]){toast('올리는 중이에요… 잠시만요');return false;}
+  SENDING[a]=1; document.body.classList.add('sending');
+  try{return await submit2(a,summary,data,choice,m);}finally{delete SENDING[a];if(!Object.keys(SENDING).length)document.body.classList.remove('sending');}
+}
+async function submit2(a,summary,data,choice,m){
+  if(ONLINE) toast('📤 올리는 중…');
   const row={t:stamp(),a:a,g:String(m.g),n:m.n,d:mineD(),s:summary,c:choice||'',data:data||{},m:MID};
-  store.sent[a]=stamp(); save();
-  if(!ONLINE){store.local.push(row);save();toast('이 기기에 올렸어요 (체험 모드)');refreshAll();return true;}
-  try{
-    const j=await apiPost({action:'submit',module:MID,activity:a,group:m.g,name:m.n,device:store.dev,summary:summary,choice:choice||'',data:data||{}});
-    if(!j.ok) throw new Error(j.error||'실패');
-    toast('보드에 올렸어요 🎉'); refreshAll(); return true;
-  }catch(e){toast('올리지 못했어요. 잠시 뒤 다시 눌러 주세요');return false;}
+  if(!ONLINE){store.sent[a]=stamp();store.local.push(row);save();toast('이 기기에 올렸어요 (체험 모드)');refreshAll();return true;}
+  const body={action:'submit',module:MID,activity:a,group:m.g,name:m.n,device:store.dev,summary:summary,choice:choice||'',data:data||{}};
+  for(let k=0;k<2;k++){
+    try{
+      const j=await apiPost(body);
+      if(!j.ok) throw new Error(j.error||'실패');
+      store.sent[a]=stamp(); save();
+      toast('보드에 올렸어요 🎉'); refreshAll(); return true;
+    }catch(e){ if(k===0){await new Promise(r=>setTimeout(r,1500));continue;} }
+  }
+  toast('올리지 못했어요. 잠시 뒤 다시 눌러 주세요 (적은 내용은 이 기기에 그대로 있어요)');return false;
 }
 async function postScore(game,score,ms,detail){
   const m=me()||{g:'',n:'익명'};
@@ -915,7 +926,7 @@ function linksPage(){
     </div>
    </div>`;
   const f=$('#xlForm');
-  $('#xlUrl').addEventListener('blur',()=>{const u=$('#xlUrl').value.trim();if(u&&!$('#xlTitle').value.trim())$('#xlTitle').value=u.replace(/^https?:\/\//,'').replace(/\/$/,'').slice(0,60);});
+  $('#xlUrl').addEventListener('input',()=>{const u=$('#xlUrl').value.trim();$('#xlTitle').placeholder=u?('비워 두면 → '+u.replace(/^https?:\/\//,'').replace(/\/$/,'').slice(0,50)):'예) 3차시 참고 사례집, 오늘의 퀴즈 링크';});
   f.onsubmit=async e=>{
     e.preventDefault();
     const url=$('#xlUrl').value.trim(), title=$('#xlTitle').value.trim(), desc=$('#xlDesc').value.trim(), pin=($('#xlPin').value||'').trim();

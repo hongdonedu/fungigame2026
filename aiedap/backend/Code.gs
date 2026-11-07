@@ -182,9 +182,10 @@ function doPost(e) {
   let b = {};
   try { b = JSON.parse((e && e.postData && e.postData.contents) || '{}'); } catch (err) { return out_({ ok: false, error: 'bad json' }); }
   if (b.action === 'ai') { try { return out_(ai_(b)); } catch (err) { return out_({ ok: false, error: String(err) }); } }
+  // appendRow는 그 자체로 한 줄씩 안전하게 붙으므로 잠금 없이 병렬로 처리(40명 동시 제출 대비). 줄을 고치는 unpost만 잠금.
   const lock = LockService.getScriptLock();
   try {
-    lock.waitLock(25000);
+    if (b.action === 'unpost') lock.waitLock(20000);
     if (b.action === 'join') {
       sheet_('members').appendRow([now_(), b.module || '', String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40)]);
       CACHE.removeAll(['M|', 'M|' + String(b.group || ''), 'T|', 'T|m4', 'T|m5']);

@@ -176,3 +176,6 @@ td.hm{background:color-mix(in srgb,var(--mint) calc(var(--h)*70%),var(--paper));
 .qrbox{text-align:center}.qrbox h2{margin:0 0 10px;font-size:22px}.qrbox img{width:min(420px,80vw);height:auto;margin:0 auto;border-radius:12px;background:#fff}.qrbox p{color:var(--sub);word-break:break-all;font-size:13px}
 @media (max-width:1180px){.xlgrid{grid-template-columns:1fr}.xlform{position:static}}
 @media (max-width:860px){.xl{grid-template-columns:40px 1fr}.xla{grid-column:1/-1;justify-content:flex-start}.xli{width:40px;height:40px}}
+body.sending .postbox .b.r,body.sending .ws .acts .b.r{opacity:.6;pointer-events:none;cursor:progress}
+body.sending .postbox .b.r::after,body.sending .ws .acts .b.r::after{content:'';width:14px;height:14px;border-radius:50%;border:2px solid #fff;border-top-color:transparent;display:inline-block;margin-left:8px;animation:spin .7s linear infinite;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
