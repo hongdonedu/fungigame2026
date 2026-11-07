@@ -11,13 +11,13 @@ const ONLINE=/^(https:\/\/|http:\/\/(localhost|127\.0\.0\.1)[:/])/.test(API);
 const ART='../art/';
 const art=n=>ART+n+'.webp';
 const P=window.PARTS, L=window.LENS, W=window.SHEETS;
-const GC=['#3b6fe0','#f08a24','#8a5cf6','#1f9d6b','#e5484d','#c98a00','#0e9fb5','#db2777','#5f9a12','#6d4fd8','#52607a'];
+const GC=['#3b6fe0','#f08a24','#8a5cf6','#1f9d6b','#e5484d','#c98a00','#0e9fb5','#db2777','#5f9a12','#6d4fd8','#52607a','#0b7a75','#c2410c','#a21caf','#0369a1','#7c4a1e','#475569'];
 const gcol=g=>GC[(Number(g)-1)%GC.length]||'#64748b';
-const GROUPS=11;
+const GROUPS=17;
 
 /* ───────── 모듈 설정 ───────── */
 const MODS={
- m4:{parts:[1,2,3,4], name:'모듈 4', title:'다시 짓는 내 수업', sub:'모듈 4 · 나의 AI 융합수업 Re-design 하기',
+ m4:{parts:[1,2,3,4], name:'모듈 4', title:'다시 짓는 내 수업', sub:'모듈 4 · 나의 AI 융합수업 Re-design 하기', bsub:'AI 융합수업 Re-design',
   when:'11월 8일(일) 11:00 – 16:00 · 점심 13:00 – 14:00', img:'cover', brand:'redi_wave',
   h1:'여섯 렌즈로 보고,<br><em>다시 짓는 내 수업</em>',
   lines:['평가 → 성찰 → 재설계 → 환류','내 수업을 한 바퀴 돌려 AIEDAP Re-design 지도안까지'],
@@ -27,7 +27,7 @@ const MODS={
   ai:['evidence','lens','problem','bpr','feedback','sentence','free'],
   timer:['share7','share3','one','t2','t5','t10','t25'],
   sheets:['W1','W2','W3','W4','W5','W6','W7']},
- m5:{parts:[5], name:'모듈 5', title:'계속 자라는 마스터교원', sub:'모듈 5 · 마스터교원 역량 개발을 위한 지속적 전문성 개발',
+ m5:{parts:[5], name:'모듈 5', title:'계속 자라는 마스터교원', sub:'모듈 5 · 마스터교원 역량 개발을 위한 지속적 전문성 개발', bsub:'지속적 전문성 개발',
   when:'11월 8일(일) 16:00 – 18:00 · 정시 종료', img:'part5', brand:'redi_heart',
   h1:'오늘이 끝이 아니라,<br><em>계속 자라는 출발점</em>',
   lines:['G역량 · AIEDAP 역량 진단 · 나의 성장 계획','AX 시대의 교사 전문성은 ___ 이다'],
@@ -72,7 +72,7 @@ const byId=id=>S.find(s=>s.id===id);
 (function tune(){
   if(W.W1) W.W1.rows=W.W1.rows.map(r=>r[0]==='more'?['more','더 확인하고 싶은 증거 한 가지','1차시 정리 — 아래 보드에 올릴 한 줄']:r);
   const o={
-   s1:{how:['AIEDAP에 로그인해 내 지도안과 성찰 보고서를 열어 둡니다','오른쪽 위 ‘🪑 모둠·이름’을 눌러 원탁 번호(1~11)와 이름을 적어요','활동지는 이 기기에 자동 저장되고, ‘📤 보드에 올리기’를 누르면 모둠과 나눠요','막히면 ‘🤖 리디에게 묻기’ — 내 지도안을 붙여 넣거나 캡처해서 물어봐요']},
+   s1:{how:['AIEDAP에 로그인해 내 지도안과 성찰 보고서를 열어 둡니다','오른쪽 위 ‘🪑 모둠·이름’을 눌러 원탁 번호(1~17)와 이름을 적어요','활동지는 이 기기에 자동 저장되고, ‘📤 보드에 올리기’를 누르면 모둠과 나눠요','막히면 ‘🤖 리디에게 묻기’ — 내 지도안을 붙여 넣거나 캡처해서 물어봐요']},
    s2:{lead:'같은 과제, 다른 과정. 두 학생 중 누구에게 더 높은 점수를 주시겠어요? 아래 보드에서 투표하고 이유를 한 줄 남겨 주세요.',share:null},
    s4:{how:['AIEDAP에 올린 내 지도안을 옆에 띄워요','평가하고 싶은 학습을 2~3개만 고릅니다','각 학습의 증거를 짝지어 적어요','‘더 확인하고 싶은 증거 한 가지’를 아래 보드에 올려요'],share:null},
    s7:{share:null},
@@ -205,7 +205,7 @@ function drawMe(){
 function joinModal(after){
   const m=me()||{};
   const grid=Array.from({length:GROUPS},(_,i)=>i+1).map(g=>`<button class="gpick ${String(m.g)===String(g)?'on':''}" data-g="${g}" style="--g:${gcol(g)}">${g}<small>모둠</small></button>`).join('');
-  const el=modal(`<div class="join"><img src="${art('redi_wave')}" alt=""><h2>몇 번 원탁에 앉으셨나요?</h2><p>원탁 번호(1~11)와 이름을 적으면 활동지와 한 줄 생각을 모둠·반 전체와 나눌 수 있어요. 이름은 보드에만 보이고, 언제든 바꿀 수 있어요.</p>
+  const el=modal(`<div class="join"><img src="${art('redi_wave')}" alt=""><h2>몇 번 원탁에 앉으셨나요?</h2><p>원탁 번호(1~17)와 이름을 적으면 활동지와 한 줄 생각을 모둠·반 전체와 나눌 수 있어요. 이름은 보드에만 보이고, 언제든 바꿀 수 있어요.</p>
    <div class="ggrid">${grid}</div>
    <label class="nm">이름 <input id="jName" maxlength="20" placeholder="예) 김리디" value="${esc(m.n||'')}"></label>
    <div class="btns" style="justify-content:center"><button class="b r" id="jGo">이렇게 참여할게요</button><button class="b w" id="jLater">나중에</button></div>
@@ -230,7 +230,7 @@ window.joinModal=joinModal;
 function buildSide(){
   $('#brandImg').src=art(M.brand);
   $('#brandT').textContent=M.title;
-  $('#brandS').textContent=M.sub;
+  $('#brandS').textContent=M.bsub||M.sub;
   let h=`<a href="#home" data-r="home">🏠 처음 화면 · 오늘의 흐름</a>`;
   M.parts.forEach(k=>{
     const p=P[k];
@@ -273,7 +273,7 @@ function home(){
    <div class="tx"><span class="pill">2026 AIEDAP 마스터교원 신규연수 · 경남 초등 1회차 · AI 기반 창작</span>
    <h1>${M.h1}</h1>
    <p>${esc(M.sub)}</p>${M.lines.map(x=>`<p>${esc(x)}</p>`).join('')}
-   <p style="color:#b9c6f2;font-size:14px;margin-top:10px">${esc(M.when)} · 해운대 센트럴 호텔 3층 대연회장 · 원탁 11모둠 · 강사 최일훈</p>
+   <p class="when">${esc(M.when)} · 강사: 명진초 최일훈</p>
    <div class="btns"><button class="b y" onclick="joinModal()">${m?`🪑 ${esc(m.g)}모둠 · ${esc(m.n)} (바꾸기)`:'🪑 모둠·이름 등록하기'}</button><a class="b g" href="#${S[0].id}">${MID==='m4'?'1차시부터 시작 →':'모듈 5 시작 →'}</a><a class="b g" href="#ai">🤖 리디에게 묻기</a></div></div></section>
 
   ${MID==='m4'?`<div class="notice"><b>📌 수료 제출 · 꼭 확인</b>다시 설계한 지도안을 <b>두 곳 모두</b> 올려야 수료로 인정돼요. ① AIEDAP 공유마당에 공유 ② 나의 역량 분석 대시보드 › 수료 제출물 제출 › 「AI융합수업설계지도안 제출」 <a href="#s14">4차시에서 함께 해요 →</a></div>`:
@@ -284,7 +284,7 @@ function home(){
 
   <h2 class="sec">이 아카이브로 이렇게 함께해요</h2>
   <div class="grid g4 how4">
-   <button class="card pad hcard" onclick="joinModal()"><span>🪑</span><b>① 모둠·이름 등록</b><p>원탁 번호 1~11과 이름. 보드에서 우리 모둠끼리 모여 보여요.</p></button>
+   <button class="card pad hcard" onclick="joinModal()"><span>🪑</span><b>① 모둠·이름 등록</b><p>원탁 번호 1~17과 이름. 보드에서 우리 모둠끼리 모여 보여요.</p></button>
    <a class="card pad hcard" href="#sheets"><span>📝</span><b>② 활동지에 적기</b><p>적는 즉시 이 기기에 저장. ‘📤 보드에 올리기’로 모둠과 나눠요.</p></a>
    <a class="card pad hcard" href="#board"><span>📌</span><b>③ 보드에서 나누기</b><p>모둠별 생각이 실시간으로 모이고, 🎡 룰렛으로 발표자를 뽑아요.</p></a>
    <a class="card pad hcard" href="#ai"><span>🤖</span><b>④ 리디에게 묻기</b><p>${MID==='m4'?'내 지도안을 붙여 넣거나 캡처하면 렌즈로 함께 봐 줘요.':'내 역량과 목표를 적으면 성장 계획을 함께 짜 줘요.'}</p></a>
@@ -498,7 +498,7 @@ function roulettePage(){
   const m=me();
   $('#main').innerHTML=`${head('구슬 룰렛','함께 나누기','구슬을 굴려 순서와 발표자를 정해요','이름을 넣고 구슬을 떨어뜨리면 핀에 부딪히며 굴러가요. 처음 도착한 구슬(또는 마지막 구슬)이 뽑혀요. 원탁 한 화면에 띄워 함께 보면 더 재밌어요.','game_roulette')}
    <div class="card pad spinsrc"><b>누구를 넣을까요?</b>
-    <div class="btns"><button class="b y sm" data-src="group">🪑 우리 모둠 등록자</button><button class="b w sm" data-src="all">🏫 반 전체 등록자</button><button class="b w sm" data-src="groups">1~11 모둠 번호</button><button class="b w sm" data-src="lens">여섯 렌즈</button><button class="b w sm" data-src="clear">직접 입력</button></div>
+    <div class="btns"><button class="b y sm" data-src="group">🪑 우리 모둠 등록자</button><button class="b w sm" data-src="all">🏫 반 전체 등록자</button><button class="b w sm" data-src="groups">1~17 모둠 번호</button><button class="b w sm" data-src="lens">여섯 렌즈</button><button class="b w sm" data-src="clear">직접 입력</button></div>
     <textarea id="rNames" rows="4" placeholder="한 줄에 하나씩 · 쉼표로 나눠도 돼요"></textarea>
     <div class="btns"><label class="mini">제목 <input id="rTitle" value="${m?esc(m.g)+'모둠 발표 순서':'발표자 뽑기'}" style="width:220px"></label><label class="mini"><input type="radio" name="rMode" value="first" checked> 1등 도착이 당첨</label><label class="mini"><input type="radio" name="rMode" value="last"> 꼴찌가 당첨</label><button class="b r" id="rGo">구슬 굴리기 🎡</button></div></div>
    <div class="card spinpage"><div id="rBox" class="gamebox"></div></div>`;
@@ -828,7 +828,7 @@ function caseP(){
   <div class="navbtm"><a class="b w" href="#home">← 처음 화면</a><a class="b r" href="#s1">1차시로 →</a></div>`;
 }
 function helper(){
-  $('#main').innerHTML=`<div class="card pad"><div class="badge"><b>보조강사 선생님께</b><span>모듈 4 · 1~4차시</span></div><h1 style="font-size:28px;margin:12px 0 6px">함께 돌아 주실 곳</h1><p style="color:var(--sub);margin:0">원탁 11모둠(7~8명씩)을 보조강사 다섯 분이 2~3모둠씩 맡아 주세요. 오전(1·2차시) 안영우·조항신·감다영·이정원·최혜림 선생님, 오후(3·4차시) 이동익·조항신·감다영·최혜림·조준혁 선생님. 모듈 5는 보조 배정이 없습니다.</p></div>
+  $('#main').innerHTML=`<div class="card pad"><div class="badge"><b>보조강사 선생님께</b><span>모듈 4 · 1~4차시</span></div><h1 style="font-size:28px;margin:12px 0 6px">함께 돌아 주실 곳</h1><p style="color:var(--sub);margin:0">원탁 모둠(1~17)을 보조강사 다섯 분이 3~4모둠씩 나눠 맡아 주세요. 오전(1·2차시) 안영우·조항신·감다영·이정원·최혜림 선생님, 오후(3·4차시) 이동익·조항신·감다영·최혜림·조준혁 선생님. 모듈 5는 보조 배정이 없습니다.</p></div>
   <div class="scroll" style="margin-top:16px"><table class="t"><tr><th>시간</th><th>활동</th><th>도와주실 일</th></tr>
    <tr><td class="k">11:00</td><td>1차시 · 준비, 학생 A/B</td><td>AIEDAP 로그인과 내 지도안·성찰 보고서 열기, 이 아카이브에서 🪑 모둠·이름 등록 확인</td></tr>
    <tr><td class="k">11:30</td><td>1차시 · W1 작성</td><td>“평가하고 싶은 학습이 학습목표와 바로 이어지나요?” 질문하며 순회 · 📤 보드에 올리기 안내</td></tr>

@@ -179,3 +179,10 @@ td.hm{background:color-mix(in srgb,var(--mint) calc(var(--h)*70%),var(--paper));
 body.sending .postbox .b.r,body.sending .ws .acts .b.r{opacity:.6;pointer-events:none;cursor:progress}
 body.sending .postbox .b.r::after,body.sending .ws .acts .b.r::after{content:'';width:14px;height:14px;border-radius:50%;border:2px solid #fff;border-top-color:transparent;display:inline-block;margin-left:8px;animation:spin .7s linear infinite;vertical-align:-2px}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* 11/7 밤: 왼쪽 위 한 줄 · 첫 화면 한 줄 · 남길 것 한 줄 */
+.brand>div{min-width:0}.brand small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hero p.when{color:#b9c6f2;font-size:14px;margin-top:10px;white-space:nowrap}
+@media (max-width:860px){.hero p.when{white-space:normal}}
+.keep1 .card{word-break:keep-all;font-size:15.5px}
+@media (max-width:1400px){.keep1{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.keep1{grid-template-columns:1fr}}

@@ -289,7 +289,7 @@
           <div class="ag-lab">참가자 <b class="ag-cnt">0</b>명 <span>줄바꿈·쉼표로 구분 · <code>이름*2</code>는 구슬 2개 · 최대 40개</span></div>
           <textarea class="ag-names" rows="6" placeholder="예)&#10;1모둠&#10;2모둠&#10;3모둠">${esc(namesText)}</textarea>
           <div class="ag-quick">
-            <button type="button" data-q="g11">1~11모둠</button><button type="button" data-q="n4">1~4번</button><button type="button" data-q="n6">1~6번</button><button type="button" data-q="n8">1~8번</button><button type="button" data-q="mix">🔀 섞기</button><button type="button" data-q="clr">지우기</button>
+            <button type="button" data-q="g17">1~17모둠</button><button type="button" data-q="n4">1~4번</button><button type="button" data-q="n6">1~6번</button><button type="button" data-q="n8">1~8번</button><button type="button" data-q="mix">🔀 섞기</button><button type="button" data-q="clr">지우기</button>
           </div>
           <div class="ag-row">
             <div class="ag-seg" role="group" aria-label="당첨 방식"><button type="button" data-m="first">🥇 1등 당첨</button><button type="button" data-m="last">🐢 꼴등 당첨</button></div>
@@ -305,7 +305,7 @@
       const seq = (n, suf) => Array.from({ length: n }, (_, i) => `${i + 1}${suf}`).join('\n');
       $$(root, '[data-q]').forEach((b) => b.addEventListener('click', () => {
         const q = b.dataset.q;
-        if (q === 'g11') ta.value = seq(11, '모둠');
+        if (q === 'g17') ta.value = seq(17, '모둠');
         else if (q === 'clr') ta.value = '';
         else if (q === 'mix') ta.value = shuffle(ta.value.split(/[\n,]+/).map((x) => x.trim()).filter(Boolean)).join('\n');
         else ta.value = seq(+q.slice(1), '번');

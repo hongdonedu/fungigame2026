@@ -82,11 +82,11 @@ window.STEPS = [
  how:["AIEDAP에 로그인해 내 지도안과 성찰 보고서를 열어 둡니다","오늘의 패들렛을 열어 둡니다 (운영진 안내)","이 아카이브의 ‘내 활동지’에 적으면 이 기기에 자동 저장돼요","모둠은 원탁 7~8명, 4차시 공유는 두 팀(4명 + 3~4명)으로 해요"],
  blocks:[
   {k:"cmp", t:"어제 모듈 1과 무엇이 다를까요?", a:["어제 · 모듈 1","우수 사례를","렌즈 <b>하나</b>로 분석","의사결정 지점에서 ‘나라면?’ 기록"], b:["오늘 · 모듈 4","<b>내 수업</b>을","렌즈 <b>여섯 개 모두</b>로 성찰","성찰을 다시 쓰는 게 아니라 <b>재설계</b>까지"]},
-  {k:"html", h:`<h2 class="sec">오늘 남길 것</h2><div class="grid g4">
-   <div class="card pad"><span class="dot" style="--c:var(--l1)"></span><b>1차시</b><br>더 확인하고 싶은 학습의 증거 한 가지</div>
-   <div class="card pad"><span class="dot" style="--c:var(--l2)"></span><b>2차시</b><br>여섯 렌즈 성찰표와 핵심 문제 한 가지</div>
-   <div class="card pad"><span class="dot" style="--c:var(--l3)"></span><b>3차시</b><br>AIEDAP Re-design 지도안 초안</div>
-   <div class="card pad"><span class="dot" style="--c:var(--l4)"></span><b>4차시</b><br>받은 피드백과 나의 Re-design 한 문장</div></div>`}
+  {k:"html", h:`<h2 class="sec">오늘 남길 것</h2><div class="grid g4 keep1">
+   <div class="card pad"><span class="dot" style="--c:var(--l1)"></span><b>1차시</b><br>더 확인할 학습의 증거</div>
+   <div class="card pad"><span class="dot" style="--c:var(--l2)"></span><b>2차시</b><br>여섯 렌즈 성찰 · 핵심 문제</div>
+   <div class="card pad"><span class="dot" style="--c:var(--l3)"></span><b>3차시</b><br>Re-design 지도안 초안</div>
+   <div class="card pad"><span class="dot" style="--c:var(--l4)"></span><b>4차시</b><br>피드백 · Re-design 한 문장</div></div>`}
  ],
  tips:["렌즈 여섯 개는 어제 모듈 1에서 써 보셨으니 다시 설명하지 않고 바로 씁니다. 헷갈리면 왼쪽 ‘여섯 렌즈 한눈에’를 열어 보세요."]},
 
