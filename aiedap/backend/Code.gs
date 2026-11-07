@@ -178,22 +178,28 @@ function cleanUrl_(u) {
 }
 
 /* ───────── 쓰기 (POST, text/plain JSON) ───────── */
+/* 여러 명이 동시에 appendRow 하면 줄이 서로 덮일 수 있어(실측: 40명 중 34줄 유실) 반드시 잠근다.
+   스프레드시트 열기·줄 만들기는 잠금 밖에서, 잠금 안에서는 붙이고 flush만 해서 대기 시간을 줄인다. */
+function append_(key, row) {
+  const sh = sheet_(key);
+  const lock = LockService.getScriptLock();
+  lock.waitLock(28000);
+  try { sh.appendRow(row); SpreadsheetApp.flush(); }
+  finally { lock.releaseLock(); }
+}
 function doPost(e) {
   let b = {};
   try { b = JSON.parse((e && e.postData && e.postData.contents) || '{}'); } catch (err) { return out_({ ok: false, error: 'bad json' }); }
   if (b.action === 'ai') { try { return out_(ai_(b)); } catch (err) { return out_({ ok: false, error: String(err) }); } }
-  // appendRow는 그 자체로 한 줄씩 안전하게 붙으므로 잠금 없이 병렬로 처리(40명 동시 제출 대비). 줄을 고치는 unpost만 잠금.
-  const lock = LockService.getScriptLock();
   try {
-    if (b.action === 'unpost') lock.waitLock(20000);
     if (b.action === 'join') {
-      sheet_('members').appendRow([now_(), b.module || '', String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40)]);
+      append_('members', [now_(), b.module || '', String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40)]);
       CACHE.removeAll(['M|', 'M|' + String(b.group || ''), 'T|', 'T|m4', 'T|m5']);
       return out_({ ok: true });
     }
     if (b.action === 'submit') {
       if (!b.activity) return out_({ ok: false, error: 'activity 없음' });
-      sheet_('responses').appendRow([now_(), b.module || '', b.activity, String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40),
+      append_('responses', [now_(), b.module || '', b.activity, String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40),
         clip_(b.summary, 1500), clip_(b.choice, 60), clip_(JSON.stringify(b.data || {}), 40000)]);
       const keys = [];
       ['', String(b.group || '')].forEach(g => [0, 1].forEach(f => keys.push(['L', b.module || '', b.activity, g, f].join('|'))));
@@ -213,37 +219,40 @@ function doPost(e) {
       const pinned = b.pin && String(b.pin) === adminPin_();
       if (b.pin && !pinned) return out_({ ok: false, error: '강사 PIN이 맞지 않아요.' });
       const id = Utilities.getUuid().slice(0, 8);
-      sheet_('links').appendRow([now_(), id, title, url, clip_(b.desc, 500), clip_(b.name || '익명', 30), String(b.group || ''), dev, pinned ? 'Y' : '', '']);
+      append_('links', [now_(), id, title, url, clip_(b.desc, 500), clip_(b.name || '익명', 30), String(b.group || ''), dev, pinned ? 'Y' : '', '']);
       CACHE.put(ck, String(cnt + 1), 600);
       CACHE.remove('K');
       return out_({ ok: true, id: id, pinned: !!pinned });
     }
     if (b.action === 'unpost') {
       const s = sheet_('links');
-      const n = s.getLastRow();
-      if (n < 2) return out_({ ok: false, error: '없음' });
-      const ids = s.getRange(2, 2, n - 1, 1).getValues();
-      for (let i = ids.length - 1; i >= 0; i--) {
-        if (String(ids[i][0]) !== String(b.id)) continue;
-        const dev = String(s.getRange(i + 2, 8).getValue());
-        if (dev !== String(b.device) && String(b.pin || '') !== adminPin_()) return out_({ ok: false, error: '내가 올린 글만 지울 수 있어요.' });
-        s.getRange(i + 2, 10).setValue('Y');
-        CACHE.remove('K');
-        return out_({ ok: true });
-      }
-      return out_({ ok: false, error: '글을 찾지 못했어요.' });
+      const lock = LockService.getScriptLock();
+      lock.waitLock(20000);
+      try {
+        const n = s.getLastRow();
+        if (n < 2) return out_({ ok: false, error: '없음' });
+        const ids = s.getRange(2, 2, n - 1, 1).getValues();
+        for (let i = ids.length - 1; i >= 0; i--) {
+          if (String(ids[i][0]) !== String(b.id)) continue;
+          const dev = String(s.getRange(i + 2, 8).getValue());
+          if (dev !== String(b.device) && String(b.pin || '') !== adminPin_()) return out_({ ok: false, error: '내가 올린 글만 지울 수 있어요.' });
+          s.getRange(i + 2, 10).setValue('Y');
+          SpreadsheetApp.flush();
+          CACHE.remove('K');
+          return out_({ ok: true });
+        }
+        return out_({ ok: false, error: '글을 찾지 못했어요.' });
+      } finally { lock.releaseLock(); }
     }
     if (b.action === 'score') {
-      sheet_('scores').appendRow([now_(), b.game || '', String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40),
+      append_('scores', [now_(), b.game || '', String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40),
         Number(b.score) || 0, Number(b.ms) || 0, clip_(b.detail, 500)]);
       CACHE.removeAll(['S|' + (b.game || ''), 'S|']);
       return out_({ ok: true });
     }
     return out_({ ok: false, error: 'unknown action' });
   } catch (err) {
-    return out_({ ok: false, error: String(err) });
-  } finally {
-    try { lock.releaseLock(); } catch (e) {}
+    return out_({ ok: false, error: /lock|잠금|timed out|시간/i.test(String(err)) ? '지금 제출이 몰려 있어요. 다시 눌러 주세요.' : String(err) });
   }
 }
 
