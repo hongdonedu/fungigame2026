@@ -371,7 +371,8 @@ function parseLoose(t){
   const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<a)return null;
   try{return JSON.parse(t.slice(a,b+1));}catch(e){return null;}
 }
-window.pdfFill=function(id){const inp=$('#pf-'+id);if(!inp)return;inp.value='';inp.onchange=()=>{const f=inp.files&&inp.files[0];if(f)runFill(id,f);};inp.click();};
+window.pdfFill=function(id){const inp=$('#pf-'+id);if(!inp)return;inp.value='';inp.click();};
+document.addEventListener('change',e=>{const t=e.target;if(!t||!/^pf-W\d$/.test(t.id||''))return;const f=t.files&&t.files[0];if(f)runFill(t.id.slice(3),f);});
 async function runFill(id,file){
   const st=$('#fs-'+id);
   const say=(h,cls)=>{if(st){st.className='fillst on '+(cls||'');st.innerHTML=h;}};
