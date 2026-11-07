@@ -336,14 +336,14 @@ function sheetHTML(id){
     body=`<div class="sentence">${s.parts[0]} `+s.keys.map((k,i)=>`<input data-k="${id}.${k}" value="${esc(v(id+'.'+k))}" placeholder="${['예) 결과물 완성에 집중','예) 수정 이유를 설명','예) 선택·수정 기록'][i]}"> ${s.parts[i+1]}`).join(' ')+`</div>`;
   }
   const sent=store.sent[id];
-  const fb=FILLABLE[id]?`<div class="fillbar"><button type="button" class="b y sm" onclick="pdfFill('${id}')">📄 ${esc(FILLABLE[id].btn||'내 설계안 PDF 올려 초안 채우기')}</button><span>${esc(FILLABLE[id].msg||`AIEDAP 지도안 PDF를 올리면 리디가 ${FILLABLE[id].label}을(를) 빈 칸에 먼저 적어 줘요. 바로 적으셔도 돼요.`)}</span><input type="file" accept="application/pdf,.pdf" id="pf-${id}" hidden></div><div class="fillst" id="fs-${id}"></div>`:'';
+  const fb=FILLABLE[id]?`<div class="fillbar"><button type="button" class="b y sm" onclick="pdfFill('${id}')">📄 ${esc(FILLABLE[id].btn||'내 설계안 PDF 올려 리디 의견 받기')}</button><span>${esc(FILLABLE[id].msg||`AIEDAP 지도안 PDF를 올리면 리디가 ${FILLABLE[id].label}에 대한 의견을 드려요. 함께 고민한 뒤 선생님 생각으로 다듬어 주세요. 바로 적으셔도 돼요.`)}</span><input type="file" accept="application/pdf,.pdf" id="pf-${id}" hidden></div><div class="fillst" id="fs-${id}"></div>`:'';
   return `<div class="card ws" data-sheet="${id}"><div class="top"><b class="wid">${id}</b><h4>${esc(s.t)}</h4><span class="sv" id="sv-${id}">${store.t[id]?'저장됨 '+store.t[id]:'적으면 자동 저장'}</span></div>${fb}${body}
   <div class="acts"><button class="b r sm" onclick="sendSheet('${id}')">📤 보드에 올리기${sent?` <small>(${sent} 올림 · 다시 올리면 바뀜)</small>`:''}</button><button class="b w sm" onclick="peer('${id}',this)">👀 우리 모둠 ${id} 보기</button><button class="b w sm" onclick="copySheet('${id}')">📋 복사</button></div>
   <div class="peer" id="peer-${id}"></div></div>`;
 }
-/* ───────── 설계안 PDF로 활동지 초안 채우기 (W1 · W2 · W3) ───────── */
+/* ───────── 설계안 PDF로 리디 의견 받기 (W1 · W2 · W3) ───────── */
 const FILLABLE={W1:{task:'fill_w1',label:'평가하고 싶은 학습과 그 증거'},W2:{task:'fill_w2',label:'성취기준과 핵심 학습 과정'},
-  W3:{task:'fill_w3',label:'렌즈별 장면',btn:'실천한 수업 자료 PDF 올려 초안 채우기',msg:'지도안이나 실천 기록·성찰 PDF를 올리면 리디가 렌즈마다 장면을 빈 칸에 먼저 적어 줘요. 근거가 없는 칸은 질문으로 남겨요.',read:'수업 자료',ctx:['W1','W2']}};
+  W3:{task:'fill_w3',label:'렌즈별 장면',btn:'실천한 수업 자료 PDF 올려 리디 의견 받기',msg:'지도안이나 실천 기록·성찰 PDF를 올리면 리디가 렌즈마다 눈에 띄는 장면을 의견으로 드려요. 근거가 없는 칸은 함께 생각해 볼 질문으로 남겨요.',read:'수업 자료',ctx:['W1','W2']}};
 function fillKeys(id){const s=W[id]||{};return s.type==='lens'?L.flatMap(l=>[l.id+'_g',l.id+'_r']):(s.rows||[]).map(r=>r[0]);}
 const PDFJS_V='3.11.174';
 let STD=null;const UNDO={},SUGG={};
@@ -395,7 +395,7 @@ async function runFill(id,file){
       if(file.size>9e6){say('이 PDF는 글자를 읽을 수 없어요(그림으로 된 PDF). 지도안 내용을 복사해 칸에 직접 붙여 주세요.','err');return;}
       body.text=ctx?'[이 교사가 W1·W2에 적은 내용]\n'+ctx:'';body.images=[{mime:'application/pdf',data:await readAsB64(file)}];
     }
-    say(`🤖 리디가 ${pages?pages+'쪽짜리 ':''}${FILLABLE[id].read||'설계안'}을 읽고 ${esc(FILLABLE[id].label)} 초안을 쓰고 있어요… <small>(보통 20~40초)</small>`,'busy');
+    say(`🤖 리디가 ${pages?pages+'쪽짜리 ':''}${FILLABLE[id].read||'설계안'}을 읽으며 ${esc(FILLABLE[id].label)}을(를) 함께 고민하고 있어요… <small>(보통 20~40초)</small>`,'busy');
     let j;
     if(!ONLINE){say('체험 모드에서는 PDF 분석을 쓸 수 없어요. 연수 당일 주소에서 해 주세요.','err');return;}
     for(let k=0;k<2;k++){
@@ -426,9 +426,9 @@ function applyFill(id,o,force){
   UNDO[id]=prev;SUGG[id]=o;
   store.t[id]=stamp();save();const sv=$('#sv-'+id);if(sv)sv.textContent='저장됨 '+store.t[id];
   const st=$('#fs-'+id);
-  if(st){st.className='fillst on ok';st.innerHTML=`✨ ${n?`${n}칸에 리디의 초안을 넣었어요. 노란 칸은 꼭 내 수업에 맞게 고쳐 주세요.`:'이미 모든 칸을 적으셨네요.'}
-    ${n?`<button type="button" class="b w sm" onclick="undoFill('${id}')">↩ 되돌리기</button>`:''}${kept?`<button type="button" class="b w sm" onclick="forceFill('${id}')">이미 적은 ${kept}칸도 리디 초안으로 바꾸기</button>`:''}`;}
-  toast(n?`📄 ${id} 초안 ${n}칸을 채웠어요`:'바꿀 빈 칸이 없어요');
+  if(st){st.className='fillst on ok';st.innerHTML=`✨ ${n?`${n}칸에 리디의 의견을 담았어요. 노란 칸은 선생님 생각으로 다듬어 주세요. 판단은 선생님 몫이에요.`:'이미 모든 칸을 적으셨네요.'}
+    ${n?`<button type="button" class="b w sm" onclick="undoFill('${id}')">↩ 되돌리기</button>`:''}${kept?`<button type="button" class="b w sm" onclick="forceFill('${id}')">이미 적은 ${kept}칸에도 리디 의견 넣어 보기</button>`:''}`;}
+  toast(n?`📄 ${id}에 리디 의견 ${n}칸을 담았어요`:'의견을 넣을 빈 칸이 없어요');
 }
 window.undoFill=function(id){const p=UNDO[id]||{};Object.keys(p).forEach(k=>{store.v[k]=p[k];const el=document.querySelector(`[data-k="${k}"]`);if(el){el.value=p[k];el.classList.remove('aifill');}});save();const st=$('#fs-'+id);if(st){st.className='fillst on';st.innerHTML='↩ 되돌렸어요.';}};
 window.forceFill=function(id){if(SUGG[id])applyFill(id,SUGG[id],true);};
@@ -443,9 +443,8 @@ function sentenceOf(id){const s=W[id];return s.parts[0]+' '+s.keys.map((k,i)=>(v
 function filled(id){const s=W[id];return Object.keys(store.v).some(k=>k.indexOf(id+'.')===0&&String(store.v[k]).trim());}
 window.copySheet=id=>copy(sheetText(id),id+' 활동지를 복사했어요');
 window.sendSheet=async function(id){
-  if(!filled(id)){toast('먼저 활동지를 적어 주세요');return;}
-  const data={};Object.keys(store.v).forEach(k=>{if(k.indexOf(id+'.')===0)data[k.slice(id.length+1)]=store.v[k];});
-  const ok=await submit(id,sheetText(id,true).trim(),data,'');
+  const data={};Object.keys(store.v).forEach(k=>{if(k.indexOf(id+'.')===0&&String(store.v[k]).trim())data[k.slice(id.length+1)]=store.v[k];});
+  const ok=await submit(id,sheetText(id,true).trim()||'(아직 적는 중)',data,'');
   if(ok){const p=$('#peer-'+id);if(p&&!p.innerHTML)peer(id);render(true);}
 };
 window.peer=function(id,btn){
@@ -569,10 +568,30 @@ async function loadWall(w){
   }
   if(kind==='word'){
     h+=`<div class="words">${sorted.map((r,i)=>`<div class="word ${r.d===mineD()?'mine':''}" style="--g:${gcol(r.g)};--r:${(i%5-2)*1.2}deg"><small>AX 시대의 교사 전문성은</small><b>${esc(r.s)}</b><small>이다 — ${esc(r.g)}모둠 ${esc(r.n)}</small></div>`).join('')}</div>`;
+  }else if(kind==='sheet'&&W[a]){
+    h+=`<div class="wcards ${W[a].type==='lens'?'one':'wide'}">${sorted.map(r=>sheetCard(a,r)).join('')}</div>`;
   }else{
     h+=`<div class="wcards ${kind==='sheet'||w.dataset.big?'wide':''}">${sorted.map(r=>`<div class="wc ${r.d===mineD()?'mine':''}" style="--g:${gcol(r.g)}"><div class="wh"><span class="gb" style="--g:${gcol(r.g)}">${esc(r.g)}</span><b>${esc(r.n)}</b>${r.c&&kind==='vote'?`<em>${esc(r.c)}</em>`:''}<small>${esc(r.t)}</small></div><div class="wt">${esc(kind==='vote'?String(r.s).replace(/^\[[^\]]*\]\s*/,''):r.s)}</div></div>`).join('')}</div>`;
   }
   body.innerHTML=h;
+}
+/* 보드에 올린 활동지를 칸별로 보기 좋게 */
+function sheetCard(id,r){
+  const s=W[id],d=r.data&&typeof r.data==='object'?r.data:null;
+  const val=k=>String((d&&d[k])||'').trim();
+  let body='',total=0,blank=0;
+  if(d&&s.type==='rows'){
+    body=s.rows.map(x=>{total++;const t=val(x[0]);if(!t){blank++;return '';}
+      return `<div class="sf ${/^→/.test(x[1])?'ev':''}"><span class="sl">${esc(x[1].replace(/^→\s*/,'↳ '))}</span><span class="sv">${esc(t)}</span></div>`;}).join('');
+  }else if(d&&s.type==='lens'){
+    body=`<div class="slh"><span></span><span>효과적이었던 점</span><span>다시 생각해볼 점</span></div>`+L.map(l=>{total+=2;const g=val(l.id+'_g'),q=val(l.id+'_r');if(!g)blank++;if(!q)blank++;if(!g&&!q)return '';
+      return `<div class="sln" style="--c:${l.c}"><b>${esc(l.n)}</b><span>${g?esc(g):'<i>—</i>'}</span><span>${q?esc(q):'<i>—</i>'}</span></div>`;}).join('');
+  }else if(d&&s.type==='sentence'){
+    total=s.keys.length;body=`<div class="ssn">${esc(s.parts[0])} `+s.keys.map((k,i)=>{const t=val(k);if(!t)blank++;return `<mark>${t?esc(t):'____'}</mark> ${esc(s.parts[i+1])}`;}).join(' ')+`</div>`;
+  }
+  if(!body.replace(/<div class="slh">.*?<\/div>/,'').trim())body=`<div class="wt">${esc(d?'(아직 적는 중)':r.s)}</div>`;
+  const tag=d&&blank?`<em class="wip">빈 칸 ${blank}</em>`:'';
+  return `<div class="wc sc ${r.d===mineD()?'mine':''}" style="--g:${gcol(r.g)}"><div class="wh"><span class="gb" style="--g:${gcol(r.g)}">${esc(r.g)}</span><b>${esc(r.n)}</b>${tag}<small>${esc(r.t)}</small></div>${body}</div>`;
 }
 let poll=null;
 function refreshAll(){
@@ -929,11 +948,12 @@ function sheets(){
 function board(sel){
   const acts=Object.keys(POSTS).filter(k=>S.some(s=>s.id===k)).map(k=>({sid:k,a:POSTS[k].a}));
   if(MID==='m5')acts.splice(acts.length-1,0,{sid:'s16g',a:'p_life'});
-  const cur=acts.find(x=>x.a===sel)||acts[0];
-  const p=POSTS[cur.sid];
+  const shs=(M.sheets||[]).filter(id=>W[id]);const isSh=shs.indexOf(sel)>=0;
+  const cur=isSh?{sid:(S.find(x=>x.sheet===sel)||{id:'sheets'}).id,a:sel}:(acts.find(x=>x.a===sel)||acts[0]);
+  const p=isSh?null:POSTS[cur.sid];
   $('#main').innerHTML=`${head('우리 반 보드','함께 나누기','모둠별 생각을 한눈에','차시마다 올린 한 줄과 활동지가 여기에 모여요. 우리 모둠만 보거나 반 전체를 볼 수 있고, 🎡 를 누르면 올린 사람 중에서 발표자를 뽑아요.','redi_thumbs')}
-   <div class="lacts">${acts.map(x=>`<a class="b ${x===cur?'r':'w'} sm" href="#board/${x.a}">${esc(ACT_NAME[x.a])}</a>`).join('')}<a class="b w sm" href="#sheets">📝 활동지(W) 보드는 각 활동지 아래 👀</a></div>
-   ${p?postBox(cur.sid):wallBox(cur.a,'group',{title:ACT_NAME[cur.a]})}
+   <div class="lacts">${acts.map(x=>`<a class="b ${x===cur?'r':'w'} sm" href="#board/${x.a}">${esc(ACT_NAME[x.a])}</a>`).join('')}${shs.map(id=>`<a class="b ${id===sel?'r':'w'} sm" href="#board/${id}" title="${esc(W[id].t)}">📝 ${id}</a>`).join('')}</div>
+   ${isSh?wallBox(sel,'all',{title:sel+' · '+W[sel].t,kind:'sheet',full:1}):p?postBox(cur.sid):wallBox(cur.a,'group',{title:ACT_NAME[cur.a]})}
    <div class="btns"><a class="b w" href="#${cur.sid}">이 활동 화면으로 →</a><button class="b y" onclick="spinGroup()">🎡 우리 모둠 룰렛</button></div>`;
 }
 

@@ -223,3 +223,21 @@ details.fold>.scroll{padding:0 12px 12px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ws textarea.aifill{background:#3a3218;border-color:#a8862a}}
 :root[data-theme="dark"] .ws textarea.aifill{background:#3a3218;border-color:#a8862a}
 
+/* 보드에 올린 활동지: 칸별 보기 */
+.wcards.one{columns:1}
+.wc.sc{padding:12px 16px 10px}
+.sc .sf{display:grid;grid-template-columns:minmax(120px,30%) 1fr;gap:2px 14px;padding:7px 0;border-top:1px dashed var(--line)}
+.sc .wh+.sf{border-top:0}
+.sc .sl{color:var(--sub);font-size:12.5px;font-weight:700;line-height:1.5;word-break:keep-all}
+.sc .sf.ev .sl{padding-left:10px;color:var(--g)}
+.sc .sv{white-space:pre-wrap;font-size:14.5px;line-height:1.55;word-break:keep-all;overflow-wrap:anywhere}
+.sc .slh,.sc .sln{display:grid;grid-template-columns:64px 1fr 1fr;gap:12px;padding:7px 0}
+.sc .slh{font-size:12px;color:var(--sub);font-weight:700;padding-top:2px}
+.sc .sln{border-top:1px dashed var(--line);font-size:14.5px;line-height:1.55;word-break:keep-all;overflow-wrap:anywhere}
+.sc .sln b{color:var(--c);font-size:14px}
+.sc .sln i{color:var(--line);font-style:normal}
+.sc .ssn{font-size:16.5px;line-height:1.9;word-break:keep-all}
+.sc .ssn mark{background:#fff1bf;color:inherit;border-radius:6px;padding:1px 6px;font-weight:700}
+.wh em.wip{font-style:normal;font-size:11.5px;font-weight:700;border-radius:20px;padding:1px 8px;background:#fff1bf;color:#8a6200}
+.wall[data-big] .sc .sv,.wall[data-big] .sc .sln{font-size:16.5px}
+@media (max-width:640px){.sc .sf{grid-template-columns:1fr}.sc .slh{display:none}.sc .sln{grid-template-columns:1fr;gap:3px}.sc .sln span::before{display:block;font-size:11.5px;color:var(--sub);font-weight:700}.sc .sln span:nth-of-type(1)::before{content:'효과적이었던 점'}.sc .sln span:nth-of-type(2)::before{content:'다시 생각해볼 점'}}
