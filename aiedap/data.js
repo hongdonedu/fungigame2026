@@ -227,9 +227,9 @@ window.STEPS = [
 
 {id:"s10", part:3, num:10, short:"AIEDAP에서 지도안 고치기 (실습)", time:"14:25 · 25분", title:"AIEDAP 사이트에서 Re-design 지도안 작성하기", img:"redi_laptop",
  lead:"오늘 가장 긴 실습이에요. 내 지도안을 열어 바꿀 요소를 고치고, 검증 절차로 점검한 뒤 저장합니다. 강사와 보조강사 선생님들이 모둠을 돌며 도와드려요.",
- how:["AIEDAP › AI 융합수업 설계에서 내 지도안 열기","핵심 문제 한 줄을 지도안 맨 위에 적기","바꿀 요소 표시 → 맞물린 요소도 함께 고치기","검증 절차로 점검하고 ‘피드백 받을 수 있는 초안’으로 저장"],
+ how:["AIEDAP › 마이페이지 › 나의 수업 보관함에서 내 수업 선택 → 편집하기","핵심 문제 한 줄을 지도안 맨 위에 적기","바꿀 요소 표시 → 맞물린 요소도 함께 고치기","검증 절차로 점검하고 ‘피드백 받을 수 있는 초안’으로 저장"],
  blocks:[
-  {k:"html", h:`<div class="btns" style="margin-top:0"><a class="b r" href="https://www.aiedap.or.kr/ai-class/generator" target="_blank">AIEDAP AI 융합수업 설계 열기 ↗</a><a class="b w" href="https://www.aiedap.or.kr" target="_blank">AIEDAP 홈 ↗</a></div>`},
+  {k:"html", h:`<div class="btns" style="margin-top:0"><a class="b r" href="https://www.aiedap.or.kr/mypage?tab=storage" target="_blank">AIEDAP 나의 수업 보관함 열기 ↗</a><a class="b w" href="https://www.aiedap.or.kr/ai-class/generator" target="_blank">새 지도안 설계 ↗</a></div><p style="margin:8px 2px 0;color:var(--sub);font-size:14px">보관함에서 내 수업을 누르고 아래쪽 <b>편집하기</b>를 눌러 고쳐요. (‘설계해보기’로 들어가면 빈 새 지도안이 열려요)</p><div style="display:none"></div>`},
   {k:"html", h:`<h2 class="sec">막힐 때 · 우수 사례에 이렇게 물어봐요<small>선택 활동</small></h2>
   <p style="color:var(--sub)">권역별 우수 사례집을 Gemini 노트북에 넣고 질문해 보세요. 답을 받으면 인용 표시를 눌러 원문과 대조합니다. 최종 설계 판단은 선생님이 해요.</p>
   <div class="grid g3"><div class="card pad">“학생이 AI 결과를 검토하거나 수정하는 활동을 찾아 표로 정리해 줘.”</div><div class="card pad">“내 수업과 비슷한 사례를 골라 AI의 역할과 활용 시점을 비교해 줘.”</div><div class="card pad">“각 사례의 평가 계획에서 ‘학습의 증거’로 볼 수 있는 것을 뽑아 줘.”</div></div>
@@ -343,7 +343,7 @@ window.TOOLS = [
 ];
 
 window.LINKS = [
-  ["https://www.aiedap.or.kr/ai-class/generator","🧭","AI 융합수업 설계","AIEDAP · 3차시 지도안"],
+  ["https://www.aiedap.or.kr/mypage?tab=storage","🧭","나의 수업 보관함","AIEDAP · 내 지도안 편집하기"],
   ["https://www.aiedap.or.kr/ai-class/reflection","🪞","AI 융합수업 성찰","AIEDAP · 내 성찰 보고서"],
   ["https://www.aiedap.or.kr/training/cpd","🌱","지속적 전문성 개발","AIEDAP · 모듈 5"],
   ["https://www.aiedap.or.kr","🏠","AIEDAP 홈","로그인 · 역량분석 대시보드"],

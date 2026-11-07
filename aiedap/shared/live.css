@@ -241,3 +241,20 @@ details.fold>.scroll{padding:0 12px 12px}
 .wh em.wip{font-style:normal;font-size:11.5px;font-weight:700;border-radius:20px;padding:1px 8px;background:#fff1bf;color:#8a6200}
 .wall[data-big] .sc .sv,.wall[data-big] .sc .sln{font-size:16.5px}
 @media (max-width:640px){.sc .sf{grid-template-columns:1fr}.sc .slh{display:none}.sc .sln{grid-template-columns:1fr;gap:3px}.sc .sln span::before{display:block;font-size:11.5px;color:var(--sub);font-weight:700}.sc .sln span:nth-of-type(1)::before{content:'효과적이었던 점'}.sc .sln span:nth-of-type(2)::before{content:'다시 생각해볼 점'}}
+/* 하트·댓글 */
+.rx{display:flex;gap:6px;align-items:center;margin-top:8px;padding-top:7px;border-top:1px dashed var(--line)}
+.rx button{border:1px solid var(--line);background:var(--paper);border-radius:20px;padding:3px 10px;font-size:13px;cursor:pointer;display:inline-flex;gap:4px;align-items:center;color:var(--ink,#1d2433);font-family:inherit}
+.rx button b{font-size:12.5px;min-width:0}
+.rx button span{font-size:12px;color:var(--sub);font-weight:600}
+.rx button:hover:not([disabled]){border-color:var(--g,#e44)}
+.rx .rxh.on{background:#ffe9ee;border-color:#ffb3c4}
+.rx .rxc.on{background:var(--blueS,#eef3ff);border-color:var(--blue,#3d6cf0)}
+.rx button[disabled]{opacity:.55;cursor:default}
+.rxl{display:none;margin-top:6px}.rxl.on{display:block}
+.rxi{display:flex;gap:6px;align-items:baseline;padding:5px 0;font-size:13.5px;line-height:1.5;word-break:keep-all;overflow-wrap:anywhere}
+.rxi .gb{transform:scale(.85);flex:0 0 auto}.rxi b{font-size:13px;flex:0 0 auto}.rxi span{flex:1}.rxi small{color:var(--sub);font-size:11.5px;flex:0 0 auto}
+.rxe{font-size:12.5px;color:var(--sub);padding:4px 0}
+.rxf{display:flex;gap:6px;margin-top:6px}
+.rxf input{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-size:13.5px;font-family:inherit;background:var(--bg,#f6f8fc);color:inherit}
+.rxf input:focus{outline:2px solid var(--blue,#3d6cf0);outline-offset:0;background:var(--paper)}
+.wall[data-big] .rx button{font-size:15px}.wall[data-big] .rxi{font-size:15.5px}

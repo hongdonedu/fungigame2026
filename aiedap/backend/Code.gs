@@ -23,7 +23,8 @@ const TABS = {
   ai:        { name: 'AI 도우미 기록', head: ['시각', '모듈', '작업', '모둠', '이름', '기기ID', '입력 요약', '첨부 수', '모델', 'AI 응답'] },
   scores:    { name: '게임 점수',      head: ['시각', '게임', '모둠', '이름', '기기ID', '점수', '시간(ms)', '세부'] },
   links:     { name: '추가 정보',      head: ['시각', 'ID', '제목', '주소', '설명', '이름', '모둠', '기기ID', '고정', '삭제'] },
-  trash:     { name: '지운 기록',      head: ['지운 시각', '원래 탭', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] }
+  trash:     { name: '지운 기록',      head: ['지운 시각', '원래 탭', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] },
+  reacts:    { name: '하트·댓글',      head: ['시각', '모듈', '활동', '대상', '종류', '모둠', '이름', '기기ID', '내용'] }
 };
 function adminPin_() { return String(PROPS.getProperty('ADMIN_PIN') || ''); }
 function resetPin_() { return String(PROPS.getProperty('RESET_PIN') || ''); }
@@ -87,6 +88,42 @@ function doGet(e) {
 
 /* 활동별 응답: 같은 기기·같은 활동은 마지막 제출 1건만 */
 function list_(p) {
+  const rows = listRows_(p);
+  const R = reacts_(p.module || '', p.activity || '');
+  return rows.map(r => { const x = R[r.d]; return x ? Object.assign({}, r, { h: x.h, cm: x.c }) : r; });
+}
+/* 하트·댓글: 대상(글쓴이 기기 끝 6자리)별로 모음. 하트는 같은 기기가 다시 누르면 취소 */
+function reacts_(mod, act) {
+  return cached_('R|' + mod + '|' + act, 6, () => {
+    const vals = tail_(sheet_('reacts'), 9);
+    const m = {};
+    vals.forEach(r => {
+      if (String(r[1]) !== mod || String(r[2]) !== act) return;
+      const t = String(r[3]); const o = m[t] || (m[t] = { h: [], c: [] });
+      const dev = String(r[7]).slice(-6);
+      if (r[4] === 'heart') { const i = o.h.indexOf(dev); if (i >= 0) o.h.splice(i, 1); else o.h.push(dev); }
+      else if (r[4] === 'comment') o.c.push({ t: hhmm_(r[0]), g: String(r[5]), n: String(r[6]), s: String(r[8]), d: dev });
+    });
+    Object.keys(m).forEach(t => { m[t].c = m[t].c.slice(-30); });
+    return m;
+  });
+}
+function react_(b) {
+  const mod = String(b.module || ''), act = String(b.activity || ''), tgt = String(b.target || '').slice(-6);
+  const kind = b.kind === 'comment' ? 'comment' : 'heart';
+  const dev = clip_(b.device, 40);
+  if (!mod || !act || !tgt || !dev) return { ok: false, error: '대상을 알 수 없어요.' };
+  if (dev.slice(-6) === tgt) return { ok: false, error: '내 글에는 남길 수 없어요.' };
+  const text = kind === 'comment' ? clip_(b.text, 200).trim() : '';
+  if (kind === 'comment' && !text) return { ok: false, error: '댓글을 적어 주세요.' };
+  const ck = 'rx_' + dev, cnt = Number(CACHE.get(ck) || 0);
+  if (cnt >= 60) return { ok: false, error: '조금 쉬었다가 다시 해 주세요.' };
+  CACHE.put(ck, String(cnt + 1), 600);
+  append_('reacts', [now_(), mod, act, tgt, kind, String(b.group || ''), clip_(b.name, 30), dev, text]);
+  CACHE.remove('R|' + mod + '|' + act);
+  return { ok: true, r: reacts_(mod, act)[tgt] || { h: [], c: [] } };
+}
+function listRows_(p) {
   const full = p.full === '1';
   const key = ['L', p.module || '', p.activity || '', p.group || '', full ? 1 : 0].join('|');
   return cached_(key, 6, () => {
@@ -229,6 +266,7 @@ function reset_(b) {
   lock.waitLock(28000);
   try {
     res = moveRows_('responses', r => String(r[1]) === mod && (all || String(r[2]) === act));
+    moveRows_('reacts', r => String(r[1]) === mod && (all || String(r[2]) === act));
     if (all) {
       mem = moveRows_('members', r => String(r[1]) === mod);
       sc = moveRows_('scores', r => games.indexOf(String(r[1])) >= 0);
@@ -243,6 +281,7 @@ function reset_(b) {
   const acts = res.acts.slice();
   if (act && acts.indexOf(act) < 0) acts.push(act);
   acts.forEach(a => gs.forEach(g => [0, 1].forEach(f => keys.push(['L', mod, a, g, f].join('|'), ['L', '', a, g, f].join('|')))));
+  acts.forEach(a => keys.push('R|' + mod + '|' + a));
   for (let i = 0; i < keys.length; i += 400) CACHE.removeAll(keys.slice(i, i + 400));
   CACHE.remove(tk);
   return { ok: true, removed: res.n, members: mem.n, scores: sc.n };
@@ -258,6 +297,7 @@ function doPost(e) {
       CACHE.removeAll(['M|', 'M|' + String(b.group || ''), 'T|', 'T|m4', 'T|m5']);
       return out_({ ok: true });
     }
+    if (b.action === 'react') return out_(react_(b));
     if (b.action === 'submit') {
       if (!b.activity) return out_({ ok: false, error: 'activity 없음' });
       append_('responses', [now_(), b.module || '', b.activity, String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40),
@@ -352,8 +392,16 @@ const TASKS = {
   fill_w3: '[모듈4 2차시 · W3 여섯 렌즈 성찰표 초안] 교사가 올린 자료(실천한 AI 융합수업의 지도안·수업 기록·성찰 메모·학생 산출물 등)와 [이 교사가 W1·W2에 적은 내용]을 여섯 렌즈로 읽고, 렌즈마다 "효과적이었던 점"과 "다시 생각해볼 점"을 한두 문장으로 쓰세요. ' +
     '좋았다·아쉬웠다 같은 판단어가 아니라 자료에 나온 구체적 장면으로 쓰세요(좋은 예: "AI가 만든 그림을 비교한 뒤 자기 스케치와 가장 가까운 것을 고르고 이유를 설명함" / "5모둠 중 3모둠이 AI 문구를 고치지 않고 그대로 씀"). ' +
     '렌즈 기준: 교육적=AI 활동이 성취기준·학습목표와 이어졌나, 학생이 교과의 핵심 학습 과정을 직접 했나 / 학습자=AI 전에 자기 생각이 있었나, 비교·선택·수정의 주체가 학생이었나 / 기술적=그 도구가 목표와 학생 수준에 맞았나, 더 단순한 방법은 없었나 / 평가=결과물뿐 아니라 사고·선택·수정의 증거가 남았나 / 윤리적=AI 결과를 그대로 믿지 않게 했나, 출처 표시·개인정보·편향 / 실행=시간·기기·로그인·학생 수준 차이, 다른 교실에서도 가능한가. ' +
-    '자료에 그 렌즈의 근거가 없으면 지어내지 말고 "확인 필요: ~ 장면이 있었나요?"처럼 교사에게 묻는 문장으로 쓰세요. 실천 기록 없이 지도안만 있으면 그 칸 끝에 "(계획 기준)"을 붙이세요. 학생 실명은 쓰지 마세요. ' +
-    '반드시 JSON 객체 하나만 출력: {"edu_g":"","edu_r":"","lrn_g":"","lrn_r":"","tec_g":"","tec_r":"","evl_g":"","evl_r":"","eth_g":"","eth_r":"","exe_g":"","exe_r":""}. _g는 효과적이었던 점, _r은 다시 생각해볼 점. 값마다 120자 이내.'
+    '자료에 그 렌즈의 근거가 없으면 지어내지 말고 "확인 필요: ~ 장면이 있었나요?"처럼 교사에게 묻는 문장으로 쓰세요. 학생 실명은 쓰지 마세요. ' +
+    '반드시 JSON 객체 하나만 출력: {"edu_g":"","edu_r":"","lrn_g":"","lrn_r":"","tec_g":"","tec_r":"","evl_g":"","evl_r":"","eth_g":"","eth_r":"","exe_g":"","exe_r":""}. _g는 효과적이었던 점, _r은 다시 생각해볼 점. 값마다 120자 이내.',
+  fill_w4: '[모듈4 2차시 · W4 Re-design의 출발점] 교사가 올린 자료(실천한 AI 융합수업의 지도안·수업 기록·성찰 메모 등)와 [이 교사가 W1~W3에 적은 내용]을 읽고 Re-design의 출발점에 대한 의견을 쓰세요. ' +
+    'keep: 유지하고 싶은 부분(효과가 확인된 구체적 장면). re: 다시 설계하고 싶은 부분. prob: 가장 먼저 해결할 문제 한 가지와 그 이유(성찰표·자료의 장면을 근거로, "~ 장면에서 ~했기 때문"). dir: 개선 방향(AI 도구를 바꾸거나 더하는 것이 아니라 학습 목표·학습 활동·기술의 역할·학생의 사고·교사의 지원·학습의 증거 사이의 무엇의 연결을 바꿀지). ' +
+    '판단어가 아니라 장면으로 쓰고, 자료에 근거가 없으면 지어내지 말고 "확인 필요: ~?"처럼 교사에게 묻는 문장으로 쓰세요. 학생 실명은 쓰지 마세요. ' +
+    '반드시 JSON 객체 하나만 출력: {"keep":"","re":"","prob":"","dir":""}. 값마다 150자 이내.',
+  fill_w5: '[모듈4 3차시 · W5 Before–Problem–Re-design] 교사가 올린 자료(지도안·수업 기록·성찰 메모 등)와 [이 교사가 W1~W4에 적은 내용]을 읽고 B–P–R 세 줄에 대한 의견을 쓰세요. ' +
+    'before: 기존 수업에서 실제로 있었던 상황. problem: 성찰로 발견한 핵심 문제 하나. redesign: 그 문제를 풀기 위해 무엇을 어떻게 바꿀지(도구 교체가 아니라 활동·증거·AI의 역할 등 연결의 변화). el: 함께 바뀌는 설계 요소와 어떻게 바뀌는지(예: 학습 목표(설계 → 설계하고 고친 이유 설명), 학습의 증거(…)). big: 가장 크게 바뀐 지점 한 줄. ask: 동료에게 피드백 받고 싶은 질문 하나. ' +
+    '자료에 근거가 없으면 지어내지 말고 "확인 필요: ~?"처럼 교사에게 묻는 문장으로 쓰세요. 학생 실명은 쓰지 마세요. ' +
+    '반드시 JSON 객체 하나만 출력: {"before":"","problem":"","redesign":"","el":"","big":"","ask":""}. 값마다 150자 이내.'
 };
 const CURRIC = [
   '[2022 개정 교육과정 총론 핵심 — 별책2 초등학교 교육과정 Ⅰ·Ⅱ장]',
