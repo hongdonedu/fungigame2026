@@ -15,7 +15,7 @@
 
 const PROPS = PropertiesService.getScriptProperties();
 const CACHE = CacheService.getScriptCache();
-const MODELS = ['gemini-flash-latest', 'gemini-2.5-flash', 'gemini-flash-lite-latest', 'gemini-2.5-flash-lite'];
+const MODELS = ['gemini-flash-latest', 'gemini-3.5-flash', 'gemini-flash-lite-latest', 'gemini-3.5-flash-lite', 'gemini-2.5-flash'];
 const SCAN = 5000; // 최근 몇 줄까지 읽을지
 const TABS = {
   members:   { name: '참여자',         head: ['시각', '모듈', '모둠', '이름', '기기ID'] },
@@ -401,7 +401,8 @@ function ai_(b) {
         if (finish === 'MAX_TOKENS' && (fill || answer.length < 200)) { lastErr = '답이 길이 제한에 걸림'; answer = ''; continue; }
         if (!answer) lastErr = '빈 응답 (' + ((c && c.finishReason) || '이유 없음') + ')';
       } else {
-        lastErr = models[i] + ' ' + code + ' ' + clip_((j.error && j.error.message) || res.getContentText(), 160);
+        const e2 = models[i] + ' ' + code + ' ' + clip_((j.error && j.error.message) || res.getContentText(), 160);
+        if (!lastErr || code !== 404) lastErr = e2;
         if (code === 400 && /API key/i.test(lastErr)) break;
       }
     } catch (err) { lastErr = String(err); }
