@@ -246,7 +246,7 @@ function buildSide(){
    ['#board','📌','우리 반 보드','모둠별 생각 모아 보기'],
    ['#timer','⏱️','공유 타이머',MID==='m4'?'7분 × 4명 · 큰 화면':'2분씩 · 큰 화면']
   ];
-  if(MID==='m4'){tools.push(['#lens','🌈','여섯 렌즈 한눈에','모듈 1 상기용'],['#case','🌿','강사 사례','우리 동네 생물 탐정']);}
+  if(MID==='m4'){tools.push(['#lens','🌈','여섯 렌즈 한눈에','모듈 1 상기용'],['#case','🌿','강사 사례','AI 네이처 멘토']);}
   tools.push(['#live','📺','큰 화면 (강사용)','실시간 제출 현황']);
   $('#tools').innerHTML=tools.map(t=>`<a href="${t[0]}" data-r="${t[0].slice(1)}"><span class="ic">${t[1]}</span><span>${esc(t[2])}<small>${esc(t[3])}</small></span></a>`).join('');
   const deck=`<a href="${M.deck.pptx}" download><span class="ic">📥</span><span>강의 자료 PPT 받기<small>${esc(M.deck.t)}</small></span></a>`+
@@ -727,7 +727,7 @@ function aiPage(task){
    <div class="grid aigrid">
     <div class="card pad">
      <b>① 내 수업 자료</b> <small class="mini">${MID==='m4'?'지도안·성찰 보고서를 복사해 붙여 넣기':'대시보드에서 본 내 수준·강점·보완 역량·목표'}</small>
-     <textarea id="aiText" rows="9" placeholder="${MID==='m4'?'예) 5학년 실과 · [6실05-05] · 우리 동네 생물을 소개하는 챗봇 만들기\n학습목표: …\n활동 흐름: 1) … 2) …\n평가: …\n성찰: …':'예) 현재 Lv.3 실천가 · 강점: D 설계 · 보완: F 평가 실행\n목표: 1년 안에 Lv.4 · 학교에서 AI 융합수업 공유 모임 만들기'}">${esc(store.aiText&&store.aiText[MID]||'')}</textarea>
+     <textarea id="aiText" rows="9" placeholder="${MID==='m4'?'예) 3학년 과학 · [4과02-03] · 생물의 특징을 흉내 낸 생활용품 설계 (AI 네이처 멘토)\n학습목표: …\n활동 흐름: 1) … 2) …\n평가: …\n성찰: …':'예) 현재 Lv.3 실천가 · 강점: D 설계 · 보완: F 평가 실행\n목표: 1년 안에 Lv.4 · 학교에서 AI 융합수업 공유 모임 만들기'}">${esc(store.aiText&&store.aiText[MID]||'')}</textarea>
      <div class="drop" id="aiDrop" tabindex="0"><b>② 캡처·사진·PDF 넣기</b><span>여기로 끌어다 놓거나, 누르거나, <kbd>Ctrl</kbd>+<kbd>V</kbd>로 붙여 넣기 · 최대 4개</span><input type="file" id="aiFile" accept="image/*,application/pdf" multiple hidden></div>
      <div class="thumbs" id="aiThumbs"></div>
      <label class="mini chk"><input type="checkbox" id="aiSheets" ${store.aiSheets===false?'':'checked'}> 내 활동지(${M.sheets.join('·')})에 적은 내용도 함께 보내기</label>
@@ -951,24 +951,19 @@ function lens(){
 }
 function caseP(){
   const c=window.CASE;
-  $('#main').innerHTML=`<section class="hero" style="min-height:440px"><img class="bg" src="${art('case')}" alt="" onerror="this.style.display='none'"><div class="shade"></div>
-   <div class="tx"><span class="pill">강사의 AI 기반 창작수업 사례</span><h1 style="font-size:50px">우리 동네<br><em>생물 탐정</em></h1><p>AI에게 우리 동네 생물을 가르치고, 우리가 만든 챗봇으로 보전을 알리다</p><p style="color:#b9c6f2;font-size:14px">1~4차시의 ‘강사 사례’ 상자는 모두 이 수업을 예로 들었어요.</p></div></section>
+  $('#main').innerHTML=`<section class="hero" style="min-height:420px"><img class="bg" src="${art('case')}" alt="" onerror="this.style.display='none'"><div class="shade"></div>
+   <div class="tx"><span class="pill">강사의 AI 기반 창작수업 사례 · 초3 생체모방 발명교실</span><h1 style="font-size:50px">${c.title}</h1><p>${esc(c.sub)}</p><p style="color:#b9c6f2;font-size:14px">1~4차시의 ‘강사 사례’ 상자는 모두 이 수업을 예로 들었어요.</p></div></section>
   <h2 class="sec">수업 한눈에</h2>
   <div class="scroll"><table class="t">${c.meta.map(m=>`<tr><td class="k">${esc(m[0])}</td><td>${esc(m[1])}</td></tr>`).join('')}</table></div>
-  <h2 class="sec">7차시 흐름</h2>
-  <div class="grid g3">${c.flow.map((f,i)=>`<div class="card pad" style="border-top:5px solid ${['var(--l1)','var(--l2)','var(--l4)','var(--l3)','var(--l5)','var(--l6)'][i%6]}">${esc(f)}</div>`).join('')}</div>
+  <h2 class="sec">${c.flow.length}차시 흐름</h2>
+  <div class="grid g4">${c.flow.map((f,i)=>`<div class="card pad" style="border-top:5px solid ${['var(--l1)','var(--l2)','var(--l4)','var(--l3)','var(--l5)','var(--l6)'][i%6]}">${esc(f)}</div>`).join('')}</div>
   <h2 class="sec">세 번의 의사결정 지점<small>나라면 어떻게 했을까요? 생각한 뒤 열어 보세요</small></h2>
   ${c.dps.map((d,i)=>`<div class="dp"><div class="q"><span>의사결정 ${i+1}</span> · ${esc(d.q)} <small style="color:var(--sub);font-weight:400">(${esc(d.when)})</small></div><details><summary>강사는 이렇게 했어요</summary><p style="margin:8px 0 0">${esc(d.a)}</p></details></div>`).join('')}
-  <h2 class="sec">학생에게 남은 변화<small>사전 → 사후 (5점)</small></h2>
-  <div class="stat">${c.stats.map(s=>`<div><b>${s[0]}</b><small>${esc(s[1])}</small></div>`).join('')}</div>
-  <p style="font-size:13px;color:var(--sub)">${esc(c.note)}</p>
   <h2 class="sec">학생의 목소리</h2>
   <div class="voice">${c.voices.map(x=>`<div>${esc(x)}</div>`).join('')}</div>
   <h2 class="sec">그리고 오늘 강사가 다시 짓는 것</h2>
   <div class="case"><div class="h"><img src="${art('redi_idea')}" alt="">Before – Problem – Re-design</div>
-   <p><b>Before</b> · 7차시에 ‘나의 실천 한 가지’를 다짐으로 기록하고 마침</p>
-   <p><b>Problem</b> · 다짐은 뚜렷이 늘었지만(3.88 → 4.34) 실제 실천은 상승 경향에 그침(3.81 → 4.07, p = .053)</p>
-   <p><b>Re-design</b> · 다짐 → 실천 기록 → 챗봇 소스 추가 → 달라진 답 확인. 실천 기록이 다시 AI의 자료가 되는 흐름</p></div>
+   <p><b>Before</b> · ${esc(c.bpr[0])}</p><p><b>Problem</b> · ${esc(c.bpr[1])}</p><p><b>Re-design</b> · ${esc(c.bpr[2])}</p></div>
   <div class="navbtm"><a class="b w" href="#home">← 처음 화면</a><a class="b r" href="#s1">1차시로 →</a></div>`;
 }
 function helper(){
