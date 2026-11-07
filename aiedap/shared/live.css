@@ -258,3 +258,10 @@ details.fold>.scroll{padding:0 12px 12px}
 .rxf input{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-size:13.5px;font-family:inherit;background:var(--bg,#f6f8fc);color:inherit}
 .rxf input:focus{outline:2px solid var(--blue,#3d6cf0);outline-offset:0;background:var(--paper)}
 .wall[data-big] .rx button{font-size:15px}.wall[data-big] .rxi{font-size:15.5px}
+/* 노트북LM 따라 하기 */
+.nlmdl .btns{margin:10px 0 6px}
+.nlmsteps{display:grid;gap:16px;margin-top:14px}
+.nlms{padding:0;overflow:hidden}
+.nlms img{display:block;width:100%;height:auto;border-bottom:1px solid var(--line);background:#fff}
+.nlms .pad{padding:14px 18px}.nlms .pad b{font-size:18px}.nlms .pad p{margin:6px 0 0;color:var(--sub);line-height:1.7;word-break:keep-all}
+.nb{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;color:#fff;font-size:12.5px;font-weight:800;margin:0 2px 0 6px;vertical-align:1px}.nb.r{background:#e53935}.nb.g{background:#16a06b}

@@ -233,7 +233,17 @@ window.STEPS = [
   {k:"html", h:`<h2 class="sec">막힐 때 · 우수 사례에 이렇게 물어봐요<small>선택 활동</small></h2>
   <p style="color:var(--sub)">권역별 우수 사례집을 Gemini 노트북에 넣고 질문해 보세요. 답을 받으면 인용 표시를 눌러 원문과 대조합니다. 최종 설계 판단은 선생님이 해요.</p>
   <div class="grid g3"><div class="card pad">“학생이 AI 결과를 검토하거나 수정하는 활동을 찾아 표로 정리해 줘.”</div><div class="card pad">“내 수업과 비슷한 사례를 골라 AI의 역할과 활용 시점을 비교해 줘.”</div><div class="card pad">“각 사례의 평가 계획에서 ‘학습의 증거’로 볼 수 있는 것을 뽑아 줘.”</div></div>
-  <div class="btns"><a class="b w sm" href="https://notebooklm.google.com" target="_blank">Gemini 노트북(NotebookLM) ↗</a><a class="b w sm" href="https://gemini.google.com" target="_blank">제미나이 ↗</a></div>`}
+  <div class="btns"><a class="b w sm" href="https://notebooklm.google.com" target="_blank">Gemini 노트북(NotebookLM) ↗</a><a class="b w sm" href="https://gemini.google.com" target="_blank">제미나이 ↗</a></div>`},
+  {k:"html", h:`<h2 class="sec">Gemini 노트북으로 우수 사례에 물어보기<small>화면 따라 하기</small></h2>
+  <div class="card pad nlmdl"><b>📥 실습 자료 · AIEDAP 우수 사례 실천집 2권</b>
+   <div class="btns"><a class="b r sm" href="../files/cases/aiedap_cases_2023.pdf" download="2023_AIEDAP_융합교육_우수_사례_실천집.pdf">2023 융합교육 우수 사례 실천집 (PDF · 34MB)</a><a class="b r sm" href="../files/cases/aiedap_cases_2024.pdf" download="2024_AIEDAP_수도권역_AI_융합교육_우수_사례_실천집.pdf">2024 수도권역 우수 사례 실천집 (PDF · 32MB)</a></div>
+   <p class="mini">내려받지 않아도 돼요. 노트북의 <b>‘웹사이트’</b>에 두 주소를 붙여 넣으면 바로 들어가요. <button class="b w sm" onclick="navigator.clipboard&&navigator.clipboard.writeText('https://hongdonedu.github.io/fungigame2026/aiedap/files/cases/aiedap_cases_2023.pdf https://hongdonedu.github.io/fungigame2026/aiedap/files/cases/aiedap_cases_2024.pdf');this.textContent='복사했어요 ✓'">🔗 두 주소 복사</button></p></div>
+  <div class="nlmsteps">
+   <div class="card nlms"><img src="../art/nlm1_add.webp" alt="소스 추가 창" loading="lazy"><div class="pad"><b>① 새 노트북 → ‘+ 소스 추가’</b><p><span class="nb r">1</span> 내려받은 PDF는 ‘파일 업로드’ <span class="nb r">2</span> 주소는 ‘웹사이트’에 붙여 넣기 <span class="nb g">3</span> 파일을 이 칸으로 끌어다 놓아도 돼요</p></div></div>
+   <div class="card nlms"><img src="../art/nlm2_ask.webp" alt="질문과 표로 받은 답" loading="lazy"><div class="pad"><b>② 위 질문 카드를 그대로 물어보기</b><p><span class="nb r">1</span> 실천집 2권이 출처에 들어가 체크되어 있는지 확인 <span class="nb r">2</span> 질문 붙여 넣기 (열 이름까지 정해 주면 표로 와요) <span class="nb g">3</span> 사례 · 학년 · 학생이 한 일 · 남은 학습의 증거</p></div></div>
+   <div class="card nlms"><img src="../art/nlm3_cite.webp" alt="인용 번호에 마우스를 올린 모습" loading="lazy"><div class="pad"><b>③ 숫자에 마우스 → 실천집 원문과 대조</b><p><span class="nb r">1</span> 답 속 작은 숫자에 마우스를 올리면 <span class="nb g">2</span> 실천집 원문이 바로 보여요. 원문과 맞는 것만 골라 <b>내 지도안에 맞게 고쳐</b> 씁니다.</p></div></div>
+  </div>
+  <p class="mini" style="margin-top:8px">화면은 강사가 실천집 2권으로 직접 해 본 모습이에요. 답은 참고 자료이고, 최종 판단은 선생님이 해요.</p>`}
  ],
  tips:["사이트 입력 자체가 목적이 되지 않게, 고칠 때마다 ‘이게 내 핵심 문제를 푸는가?’를 물어요.","생성형 AI는 아이디어를 넓히는 데만 보조로 쓰고, 고르고 판단하는 일은 내가 합니다."]},
 
