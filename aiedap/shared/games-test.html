@@ -63,6 +63,7 @@ function show(g) {
 }
 document.querySelectorAll('nav [data-g]').forEach(b => b.addEventListener('click', () => show(b.dataset.g)));
 document.getElementById('dark').addEventListener('click', () => { const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; });
+window.addEventListener('hashchange', () => show(location.hash.slice(1)));
 show((location.hash || '#roulette').slice(1));
 </script>
 </body>

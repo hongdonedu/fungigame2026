@@ -517,7 +517,8 @@
       if (now - r.hudAt < 200) return;
       r.hudAt = now;
       const rank = $(root, '.ag-rl-rank'); if (!rank) return;
-      const order = r.finished.concat(act.slice().sort((a, b) => b.y - a.y)), n = order.length, max = V.cw < 640 ? 5 : 12;
+      const order = r.finished.concat(act.slice().sort((a, b) => b.y - a.y)), n = order.length, max = V.cw < 640 ? 3 : 12;
+      rank.hidden = r.phase === 'count';
       let a = 0, b = Math.min(n, max), html = '';
       if (mode === 'last' && n > max) { a = n - max; b = n; html += `<li class="ag-more">🏁 ${a}명 먼저 통과</li>`; }
       for (let i = a; i < b; i++) {
@@ -803,8 +804,7 @@
       root.innerHTML = `
         ${heroHTML({ cls: 'ag-hero-lg', banner: opts.banner ? 'game_life.webp' : '', mascot: 'redi_idea.webp', kicker: '🎲 GROWTH BOARD GAME', title: '마스터교원 인생게임', text: '주사위를 굴려 <b>입문가</b>에서 <b>개척자</b>까지! 칸마다 G1·G2·G3 성장 카드를 모으며 나의 전문성 성장 경로를 그려 봐요.' })}
         <div class="ag-panel ag-lg-setup">
-          <div class="ag-lab">플레이어 <b class="ag-pn"></b>명 <span>1~8명 · 한 화면에서 돌아가며</span><span class="ag-sp"></span>
-            <button type="button" class="ag-ic" data-a="minus" aria-label="플레이어 빼기">－</button><button type="button" class="ag-ic" data-a="plus" aria-label="플레이어 더하기">＋</button></div>
+          <div class="ag-lab">플레이어 <b class="ag-pn"></b>명 <span>1~8명 · 한 화면에서 돌아가며</span><span class="ag-btns"><button type="button" class="ag-ic" data-a="minus" aria-label="플레이어 빼기">－</button><button type="button" class="ag-ic" data-a="plus" aria-label="플레이어 더하기">＋</button></span></div>
           <div class="ag-lg-pin"></div>
           <div class="ag-lg-legend">${legendHTML()}</div>
           <ul class="ag-lg-rules">
@@ -1078,7 +1078,7 @@
         <div class="ag-lg-rank">${ranked.map((p, i) => {
           const c = gCount(p);
           return `<div class="ag-panel ag-lg-pr" style="--c:${p.col}">
-            <div class="ag-lg-prh"><span class="ag-medal">${medal[i] || `${i + 1}위`}</span><i class="ag-dot"></i><b class="ag-lg-pname">${esc(p.name)}</b><span class="ag-pill">Lv.${p.lv} ${LV[p.lv - 1]}</span><span class="ag-sp"></span><span class="ag-gc g1">G1 ${c.G1}</span><span class="ag-gc g2">G2 ${c.G2}</span><span class="ag-gc g3">G3 ${c.G3}</span></div>
+            <div class="ag-lg-prh"><span class="ag-medal">${medal[i] || `${i + 1}위`}</span><i class="ag-dot"></i><b class="ag-lg-pname">${esc(p.name)}</b><span class="ag-pill">Lv.${p.lv} ${LV[p.lv - 1]}</span><span class="ag-gcs"><span class="ag-gc g1">G1 ${c.G1}장</span><span class="ag-gc g2">G2 ${c.G2}장</span><span class="ag-gc g3">G3 ${c.G3}장</span></span></div>
             <div class="ag-lg-cards">${p.cards.length ? p.cards.map((cd) => `<span class="ag-chip ${cd.g.toLowerCase()}" title="${esc(cd.desc)}">${esc(cd.title)}</span>`).join('') : '<span class="ag-hint">아직 모은 카드가 없어요</span>'}</div>
             <div class="ag-next">👣 <b>나의 다음 한 걸음</b> · ${suggest(p)}</div>
           </div>`;

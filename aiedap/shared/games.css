@@ -41,6 +41,8 @@ position:relative;container-type:inline-size;font-family:'Noto Sans KR',system-u
 .ag-confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:40}
 .ag-lab{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700;font-size:14.5px}
 .ag-lab>span{font-weight:400;color:var(--ag-sub);font-size:12.5px}
+.ag-btns{display:inline-flex;gap:6px;margin-left:auto}
+.ag-gcs{display:inline-flex;gap:4px;margin-left:auto;flex-wrap:nowrap}
 .ag-lab code{background:var(--ag-soft);padding:0 5px;border-radius:5px;font-size:12px}
 
 /* ───────── 1. 마블 룰렛 ───────── */
