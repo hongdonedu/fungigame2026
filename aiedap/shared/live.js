@@ -782,7 +782,7 @@ function step(s){
   const mas=/^redi_/.test(s.img);
   const im=mas?`<div class="im" style="background:radial-gradient(circle at 50% 60%,#ffffff,var(--blueS) 70%)"><img src="${art(s.img)}" alt="" style="object-fit:contain;padding:18px"></div>`
               :`<div class="im"><img src="${art(/^game_/.test(s.img)?s.img:s.img+'_s')}" alt="" onclick="zoom('${art(s.img)}')" style="cursor:zoom-in" onerror="this.style.display='none'"></div>`;
-  let h=`<div class="card shead"><div class="tx"><div class="badge"><b>STEP ${s.num}</b><span>${esc(p.k)} · ${esc(p.t)}</span><i>${esc(s.time)}</i></div><h1>${esc(s.title)}</h1><p>${esc(s.lead)}</p></div>${im}</div>`;
+  let h=`<div class="card shead"><div class="tx"><div class="badge"><b>STEP ${s.num}</b><span>${esc(p.k)} · ${esc(p.t)}</span></div><h1>${esc(s.title)}</h1><p>${esc(s.lead)}</p></div>${im}</div>`;
   if(s.how) h+=`<h2 class="sec">이렇게 해요</h2><div class="how">${s.how.map((x,j)=>`<div><b>${j+1}</b><span>${esc(x)}</span></div>`).join('')}</div>`;
   const last=s.id==='s19';
   if(last&&POSTS[s.id]) h+=`<h2 class="sec">📌 마지막 한 문장</h2>`+postBox(s.id);
