@@ -27,7 +27,7 @@ const TABS = {
 };
 function adminPin_() { return String(PROPS.getProperty('ADMIN_PIN') || '1108'); }
 function resetPin_() { return String(PROPS.getProperty('RESET_PIN') || '3090'); }
-const GAMES = { m4: ['lens'], m5: ['life'] };
+const GAMES = { m4: ['lens', 'memory'], m5: ['life'] };
 
 /* ───────── 스프레드시트 ───────── */
 function ss_() {

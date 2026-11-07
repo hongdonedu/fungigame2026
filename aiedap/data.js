@@ -105,15 +105,16 @@ window.STEPS = [
  tips:["결과물의 좋고 나쁨보다 ‘학생의 학습을 확인하는 데 무엇이 더 필요한가’에 초점을 맞춥니다."]},
 
 {id:"s3", part:1, num:3, short:"창작 과정의 학습의 증거", time:"11:15 · 15분", title:"창작 과정마다 남는 학습의 증거", img:"redi_magnifier",
- lead:"AI 기반 창작에서는 결과물보다 과정에 학습이 남아요. 창작 과정을 여섯 단계로 나누어 무엇을 증거로 볼지 살펴봅니다.",
+ lead:"결과물은 AI가 대신 만들어 줄 수 있어요. 그럼 학생의 학습은 어디에 남을까요? 카드를 뒤집어 창작 과정과 학습의 증거를 짝지어 보세요. 1단계는 어느 수업에나, 2단계는 강사 수업 ‘우리 동네 생물 탐정’ 편이에요.",
  blocks:[
-  {k:"html", h:`<div class="scroll"><table class="t"><tr><th>창작 과정</th><th>학습의 증거</th></tr>
+  {k:"memory"},
+  {k:"html", h:`<details class="fold"><summary>📋 정리표로 한눈에 보기</summary><div class="scroll"><table class="t"><tr><th>창작 과정</th><th>학습의 증거</th></tr>
   <tr><td class="k">의도 · 발상</td><td>아이디어 메모, 초기 스케치, 스토리보드</td></tr>
   <tr><td class="k">AI와 상호작용</td><td>프롬프트, 질문 및 응답 기록</td></tr>
   <tr><td class="k">선택 및 판단</td><td>생성 결과 비교, 선택 및 미선택의 이유</td></tr>
   <tr><td class="k">수정 및 재구성</td><td>수정 전과 후 비교, 수정 이유</td></tr>
   <tr><td class="k">완성</td><td>최종 창작물</td></tr>
-  <tr><td class="k">성찰</td><td>창작 과정 설명, 자기 평가, 동료 피드백</td></tr></table></div>`},
+  <tr><td class="k">성찰</td><td>창작 과정 설명, 자기 평가, 동료 피드백</td></tr></table></div></details>`},
   {k:"html", h:`<h2 class="sec">사례로 점검하기<small>우리 지역을 소개하는 AI 그림책 만들기</small></h2>
   <p style="color:var(--sub)">지역의 특징을 조사해 이야기를 구성하고, 생성형 AI로 그림책의 이미지와 일부 표현을 만드는 수업이에요. Q1. 확인하고 싶은 학습 목표는? Q2. 그것을 확인하려면 어떤 증거가 필요할까요?</p>
   <div class="scroll"><table class="t"><tr><th>평가하고 싶은 학습</th><th>학습의 증거</th></tr>

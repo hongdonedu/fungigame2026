@@ -356,3 +356,72 @@ position:relative;container-type:inline-size;font-family:'Noto Sans KR',system-u
  .ag-road{stroke-width:20}.ag-road-in{stroke-width:14}
  .ag-lg-board{gap:7px;padding:16px 10px 10px}
 }
+
+/* ───────── 증거 짝 맞추기 (메모리 카드) ───────── */
+.ag-em-lv{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.ag .ag-em-lvb{text-align:left;border:2px solid var(--ag-line);background:var(--ag-card);border-radius:16px;padding:12px 14px;color:var(--ag-text);transition:border-color .15s,background .15s}
+.ag-em-lvb b{display:block;font-family:'Jua','Noto Sans KR',sans-serif;font-weight:400;font-size:18px}.ag-em-lvb small{color:var(--ag-sub);font-size:13px}
+.ag .ag-em-lvb.on{border-color:var(--ag-blue);background:var(--ag-soft)}
+.ag-em-legend{display:flex;flex-wrap:wrap;gap:6px}
+.ag-em-legend span{font-size:13px;font-weight:800;border-radius:999px;padding:4px 10px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
+.ag-em-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.ag-em-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;perspective:1400px;transition:opacity .3s,filter .3s}
+.ag-em-grid.dim{opacity:.32;pointer-events:none;filter:saturate(.5)}
+.ag .ag-em-card{position:relative;aspect-ratio:16/10.5;border:0;padding:0;background:none;border-radius:18px;min-height:112px}
+.ag-em-in{position:absolute;inset:0;display:block;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.ag-em-card.up .ag-em-in,.ag-em-card.ok .ag-em-in{transform:rotateY(180deg)}
+.ag-em-back,.ag-em-front{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:10px 12px;text-align:center;overflow:hidden}
+.ag-em-back{background:radial-gradient(circle at 28% 18%,#4b6cf0 0,#22337f 55%,#162059 100%);color:#fff;box-shadow:0 6px 0 rgba(10,20,70,.35),0 12px 22px rgba(20,35,90,.18);transition:transform .15s}
+.is-ev .ag-em-back{background:radial-gradient(circle at 28% 18%,#ffd27a 0,#f39a2e 55%,#d9700c 100%);box-shadow:0 6px 0 rgba(120,60,0,.35),0 12px 22px rgba(120,60,0,.16)}
+.ag-em-back::before{content:'';position:absolute;inset:8px;border:2px dashed rgba(255,255,255,.22);border-radius:12px}
+.ag-em-back i{font-style:normal;font-family:'Jua','Noto Sans KR',sans-serif;font-size:46px;line-height:1;color:#ffd36b;text-shadow:0 3px 0 rgba(0,0,0,.18)}
+.is-ev .ag-em-back i{color:#fff}
+.ag-em-back small{font-size:12px;font-weight:800;letter-spacing:.04em;opacity:.85}
+.ag .ag-em-card:hover:not(.up):not(.ok) .ag-em-back{transform:translateY(-4px)}
+.ag-em-front{transform:rotateY(180deg)}
+.ag-em-front em{font-style:normal;line-height:1}
+.ag-em-front small{font-size:11px;font-weight:800;letter-spacing:.04em;opacity:.7}
+.is-st .ag-em-front{background:linear-gradient(150deg,var(--c),color-mix(in srgb,var(--c) 68%,#000));color:#fff}
+.is-st .ag-em-front em{font-size:38px}
+.is-st .ag-em-front b{font-family:'Jua','Noto Sans KR',sans-serif;font-weight:400;font-size:21px;line-height:1.2}
+.is-ev .ag-em-front{background:#fffdf5;border:2px solid #f1e3bf;color:#1a2240}
+.is-ev .ag-em-front em{font-size:30px}
+.is-ev .ag-em-front b{font-size:14.5px;line-height:1.35;word-break:keep-all;font-weight:800}
+.ag-em-card.ok .ag-em-front{box-shadow:0 0 0 4px var(--c),0 10px 20px rgba(20,35,90,.16)}
+.ag-em-card.ok{animation:agEmPop .45s ease}
+.ag-em-card.no .ag-em-front{box-shadow:0 0 0 4px #e5484d}
+.ag-em-card.no{animation:agEmShake .42s}
+@keyframes agEmPop{45%{transform:scale(1.07)}}
+@keyframes agEmShake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+@keyframes agEmIn{from{opacity:0;transform:translateY(-6px)}}
+.ag-em-note{margin-top:14px;background:var(--ag-card);border:1.5px dashed var(--ag-line);border-radius:16px;padding:12px 14px}
+.ag-em-log{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.ag-em-log li{display:grid;grid-template-columns:150px 1fr;gap:1px 12px;align-items:center;border-left:5px solid var(--c);background:color-mix(in srgb,var(--c) 8%,var(--ag-card));border-radius:10px;padding:8px 12px}
+.ag-em-log li span{font-weight:800;color:var(--c);grid-row:span 2}
+.ag-em-log li b{font-size:14.5px}
+.ag-em-log li small{color:var(--ag-sub);font-size:13px;word-break:keep-all}
+.ag-em-log li.new{animation:agEmIn .35s ease}
+.ag-em-log li.ag-em-empty{display:block;border:0;background:none;color:var(--ag-sub);font-size:13.5px;padding:2px 0}
+.ag-em-bonus{margin-bottom:14px;border:2px solid var(--ag-gold);animation:agEmIn .35s ease}
+.ag-em-bonus h4{margin:4px 0 12px;font-size:22px;line-height:1.35;word-break:keep-all}
+.ag-em-bopts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ag .ag-em-bopts button{border:1.5px solid var(--ag-line);background:var(--ag-card);color:var(--ag-text);border-radius:12px;padding:11px 12px;font-weight:700;text-align:left;word-break:keep-all;line-height:1.35}
+.ag .ag-em-bopts button:hover:not(:disabled){border-color:var(--ag-blue);background:var(--ag-soft)}
+.ag .ag-em-bopts .right{background:#e7f7ee;border-color:#1f9d6b;color:#11603f}
+.ag .ag-em-bopts .wrong{background:#fdecec;border-color:#e5484d;color:#a61e22}
+.ag-em-res{text-align:center}
+.ag-em-score{margin:4px 0 2px}.ag-em-score b{font-family:'Jua','Noto Sans KR',sans-serif;font-weight:400;font-size:68px;color:var(--ag-blue);line-height:1}.ag-em-score span{font-size:20px;margin-left:4px;font-weight:800}
+.ag-em-stats{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0 14px}
+.ag-em-stats span{font-size:13px;font-weight:700;border-radius:999px;padding:4px 11px;background:var(--ag-soft);color:var(--ag-blue)}
+.ag-em-moral{background:linear-gradient(135deg,#fff6dc,#ffece0);border-radius:14px;padding:13px 16px;margin:0 0 12px;color:#1a2240;word-break:keep-all;text-align:left;line-height:1.6}
+.ag-em-res .ag-em-log{text-align:left}
+@container (max-width:620px){
+ .ag-em-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+ .ag .ag-em-card{min-height:104px;aspect-ratio:3/3.4}
+ .is-st .ag-em-front b{font-size:16px}.is-st .ag-em-front em{font-size:28px}
+ .is-ev .ag-em-front b{font-size:12.5px}.is-ev .ag-em-front em{font-size:22px}
+ .ag-em-back i{font-size:34px}
+ .ag-em-log li{grid-template-columns:1fr}.ag-em-log li span{grid-row:auto}
+ .ag-em-bopts{grid-template-columns:1fr}
+ .ag-em-lv{grid-template-columns:1fr}
+}

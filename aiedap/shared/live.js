@@ -317,6 +317,8 @@ function block(b){
   if(b.k==='xo') return `<h2 class="sec">${esc(b.t)}</h2><div class="xo"><div class="x"><b>✕ 이렇게 쓰기보다</b>${b.x.map(esc).join('<br>')}</div><div class="o"><b>○ 이렇게 장면으로</b>${b.o.map(esc).join('<br><br>')}</div></div>`;
   if(b.k==='gamecall') return `<a class="warm" href="#game"><img src="${art('game_lens')}" alt="" onerror="this.src='${art('redi_magnifier')}'"><div><b>🔍 3분 몸풀기 · 렌즈 탐정 게임</b><p>어제 배운 여섯 렌즈, 아직 손에 붙어 있나요? 수업 장면 카드를 보고 어느 렌즈인지 빠르게 맞혀 보세요. 모둠 점수는 큰 화면에 모여요.</p><span class="b y sm">게임 시작 →</span></div></a>`;
   if(b.k==='spincall') return `<div class="warm"><img src="${art('game_roulette')}" alt="" onerror="this.src='${art('redi_thumbs')}'"><div><b>🎡 ${esc(b.t)}</b><p>우리 모둠 이름으로 구슬을 굴려 두 팀(4명 + 3~4명)을 나누거나 발표 순서를 정해요.</p><button class="b y sm" onclick="spinGroup()">우리 모둠 룰렛 돌리기</button> <a class="b w sm" href="#roulette">룰렛 화면 크게 →</a></div></div>`;
+  if(b.k==='memory') return `<div class="card emcard"><div id="emBox" class="gamebox"></div></div><div class="btns"><a class="b w sm" href="#memory">게임만 크게 보기 →</a></div>
+   <h2 class="sec">증거 짝 맞추기 · 명예의 전당<small>한 사람의 최고 점수 · 모둠 평균</small></h2><div data-live="scores" data-game="memory"></div>`;
   if(b.k==='life') return `<div class="card lifebox"><div id="lifeBox" class="gamebox"></div></div><div class="btns"><a class="b w sm" href="#life">게임만 크게 보기 →</a></div>${wallBox('p_life','group',{title:'우리 모둠이 모은 성장 카드',kind:'cards'})}`;
   if(b.k==='finale') return finale();
   return '';
@@ -571,6 +573,20 @@ function lensGamePage(){
   if(!(window.AG&&AG.games&&AG.games.lensQuiz))return noGames($('#gBox'));
   gameInst=AG.games.lensQuiz($('#gBox'),{banner:false,onFinish:r=>{postScore('lens',r.score,r.ms,`${r.correct!=null?r.correct:''}/${r.total||''} 정답`);}});
 }
+function mountMemory(box){
+  destroyGame();
+  if(!(window.AG&&AG.games&&AG.games.evidenceMemory))return noGames(box);
+  box.innerHTML='';
+  gameInst=AG.games.evidenceMemory(box,{onFinish:r=>{postScore('memory',r.score,r.ms,`${r.level}단계 · ${r.flips}번 뒤집기${r.bonus?' · 보너스':''}`);}});
+}
+function memoryPage(){
+  $('#main').innerHTML=`${head('증거 짝 맞추기','체험 게임 · 1차시','결과물 말고, 학습은 어디에 남을까?','창작 과정 카드와 학습의 증거 카드를 짝지어 뒤집어요. 적게 뒤집고 빨리 끝낼수록 점수가 올라가고, 점수는 모둠 대항으로 모여요.','redi_magnifier')}
+   ${me()?'':'<div class="notice"><b>🪑 점수를 모둠에 보태려면</b><button class="b y sm" onclick="joinModal()">모둠·이름 등록</button></div>'}
+   <div class="card emcard"><div id="emBox" class="gamebox"></div></div>
+   <h2 class="sec">명예의 전당<small>한 사람의 최고 점수 · 모둠 평균</small></h2><div data-live="scores" data-game="memory"></div>
+   <div class="navbtm"><a class="b w" href="#s3">← 3. 창작 과정의 학습의 증거</a><a class="b r" href="#s4">4. 내 수업의 목표와 증거 →</a></div>`;
+  mountMemory($('#emBox'));
+}
 function lifePlayers(){return me()?[me().n]:['나'];}
 function mountLife(box){
   destroyGame();
@@ -751,7 +767,7 @@ function livePage(sel){
    <div id="liveBoard" data-live="stats"><div class="wempty">불러오는 중…</div></div>
    <div class="lacts">${acts.map(a=>`<a class="b ${a===sel?'r':'w'} sm" href="#live/${a}">${esc(ACT_NAME[a]||a)}</a>`).join('')}</div>
    ${wallBox(sel,'all',{kind:kind(sel),big:1,full:/^W/.test(sel)?1:0,title:ACT_NAME[sel]})}
-   ${MID==='m4'?'<h2 class="sec">렌즈 탐정 게임 · 명예의 전당</h2><div data-live="scores" data-game="lens"></div>':'<h2 class="sec">성장 인생게임 · 가장 높이 오른 선생님</h2><div data-live="scores" data-game="life"></div>'}`;
+   ${MID==='m4'?'<h2 class="sec">증거 짝 맞추기 · 명예의 전당</h2><div data-live="scores" data-game="memory"></div><h2 class="sec">렌즈 탐정 게임 · 명예의 전당</h2><div data-live="scores" data-game="lens"></div>':'<h2 class="sec">성장 인생게임 · 가장 높이 오른 선생님</h2><div data-live="scores" data-game="life"></div>'}`;
 }
 window.spinGroups=()=>spinModal(Array.from({length:GROUPS},(_,i)=>(i+1)+'모둠'),'발표 모둠 뽑기');
 async function loadStats(el){
@@ -798,6 +814,7 @@ function step(s){
    ${next?`<a class="b w" href="#${next.id}">${next.num}. ${esc(next.short)} →</a>`:(MID==='m4'?`<a class="b y" href="../m5/">모듈 5로 →</a>`:'<a class="b w" href="#sheets">내 활동지 모아 보기 →</a>')}</div>`;
   $('#main').innerHTML=h;
   if($('#lifeBox'))mountLife($('#lifeBox'));
+  if($('#emBox'))mountMemory($('#emBox'));
 }
 window.toggleDone=function(id){store.done[id]=!store.done[id];save();buildSide();render(true);};
 function finale(){
@@ -1028,6 +1045,7 @@ function render(keepScroll){
   else if(r==='ai') aiPage(arg);
   else if(r==='roulette') roulettePage();
   else if(r==='game'&&MID==='m4') lensGamePage();
+  else if(r==='memory'&&MID==='m4') memoryPage();
   else if(r==='life'&&MID==='m5') lifePage();
   else if(r==='live') livePage(arg);
   else if(r==='links') linksPage();

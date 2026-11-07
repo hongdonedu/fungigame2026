@@ -1111,4 +1111,167 @@
     if (auto) start(); else setup();
     return { destroy() { cleanup(); L.kill(); root.remove(); } };
   };
+
+  /* ───────────────────────── 증거 짝 맞추기 (메모리 카드) ───────────────────────── */
+  const EM_STAGES = [
+    { k: 'int', n: '의도 · 발상', ico: '🎯', c: '#3b6fe0' },
+    { k: 'ai', n: 'AI와 상호작용', ico: '💬', c: '#8a5cf6' },
+    { k: 'sel', n: '선택 · 판단', ico: '⚖️', c: '#f08a24' },
+    { k: 'rev', n: '수정 · 재구성', ico: '🔧', c: '#1f9d6b' },
+    { k: 'fin', n: '완성', ico: '🏁', c: '#64748b' },
+    { k: 'ref', n: '성찰', ico: '🪞', c: '#db2777' },
+  ];
+  const EM_LEVELS = {
+    1: { t: '기본 판', sub: 'AI 기반 창작 수업 어디서나', ev: {
+      int: { ico: '📝', e: '아이디어 메모 · 초기 스케치', why: 'AI를 켜기 전, 학생 머릿속에 무엇이 있었는지 보여 줘요.' },
+      ai: { ico: '🗨️', e: '프롬프트 · 질문과 응답 기록', why: '무엇을 어떻게 물었는지에 학생의 생각이 드러나요.' },
+      sel: { ico: '🗂️', e: '생성 결과 비교 + 고르지 않은 이유', why: '고른 것보다 ‘버린 이유’가 더 강한 증거예요.' },
+      rev: { ico: '🔁', e: '수정 전 · 후 비교 + 수정 이유', why: 'AI 결과를 자기 의도에 맞게 바꾼 흔적이에요.' },
+      fin: { ico: '🖼️', e: '최종 창작물', why: '꼭 필요하지만, 이것만으로는 누가 생각했는지 알 수 없어요.' },
+      ref: { ico: '🗣️', e: '과정 설명 · 자기 평가 · 동료 피드백', why: '자기 과정을 말로 설명할 수 있으면 배운 거예요.' },
+    } },
+    2: { t: '강사 수업 판', sub: '5학년 ‘우리 동네 생물 탐정’', ev: {
+      int: { ico: '📸', e: '패들렛 관찰 기록 (사진 · 장소 · 특징)', why: '공원에서 직접 본 것이 챗봇의 재료가 되었어요.' },
+      ai: { ico: '🤖', e: '모둠 질문 목록 · 챗봇 답과 인용 번호', why: '챗봇에게 무엇을 물었고 어디서 답이 나왔는지 남았어요.' },
+      sel: { ico: '✅', e: '활동지 검증표 (○ · △ · ×)', why: '챗봇의 답을 내 자료와 비교해 판단한 흔적이에요.' },
+      rev: { ico: '🃏', e: '보완 전 · 후의 생물 정보 카드', why: '틀린 답을 찾고 자료를 고쳐 다시 학습시킨 증거예요.' },
+      fin: { ico: '📣', e: '모둠 챗봇 · 소개 카드 · 홍보 포스터', why: '여섯 모둠 모두 ‘완성’했지만, 차이는 다른 카드에 있어요.' },
+      ref: { ico: '💌', e: '동료 평가 · 자기 평가 · 실천 다짐', why: '배운 것을 내 말과 다짐으로 남겼어요.' },
+    } },
+  };
+  GAMES.EVIDENCE = { stages: EM_STAGES, levels: EM_LEVELS };
+
+  GAMES.evidenceMemory = function (container, opts = {}) {
+    const L = life();
+    const root = document.createElement('div'); root.className = 'ag ag-em'; container.appendChild(root);
+    let S = null, tick = 0;
+    const lvOf = (n) => EM_LEVELS[n] || EM_LEVELS[1];
+
+    function intro(level) {
+      L.clear(tick); S = null;
+      level = level || opts.level || 1;
+      const LV = lvOf(level);
+      root.innerHTML = `
+        ${heroHTML({ cls: 'ag-hero-em', mascot: 'redi_magnifier.webp', kicker: '🃏 EVIDENCE MEMORY', title: '증거 짝 맞추기', text: `카드 12장이 엎어져 있어요. <b>파란 카드(창작 과정)</b> 한 장과 <b>주황 카드(학습의 증거)</b> 한 장을 뒤집어 짝을 찾으세요. 적게 틀리고 빨리 끝낼수록 점수가 올라가요.` })}
+        <div class="ag-em-lv">${[1, 2].map((n) => `<button type="button" class="ag-em-lvb ${n === level ? 'on' : ''}" data-lv="${n}"><b>${n}단계 · ${lvOf(n).t}</b><small>${lvOf(n).sub}</small></button>`).join('')}</div>
+        <div class="ag-em-legend">${EM_STAGES.map((st) => `<span style="--c:${st.c}">${st.ico} ${st.n}</span>`).join('')}</div>
+        <div class="ag-row"><span class="ag-hint">💡 끝나면 보너스 문제가 하나 있어요</span><span class="ag-sp"></span><button type="button" class="ag-btn ag-big" data-a="go">카드 섞고 시작 ▶</button></div>`;
+      optImgs(root);
+      $$(root, '.ag-em-lvb').forEach((b) => b.addEventListener('click', () => intro(+b.dataset.lv)));
+      $(root, '[data-a="go"]').addEventListener('click', () => { Snd.unlock(); Snd.play('go'); begin(level); });
+    }
+
+    function begin(level) {
+      const LV = lvOf(level);
+      const cards = [];
+      EM_STAGES.forEach((st) => {
+        cards.push({ id: st.k, type: 'st', st });
+        cards.push({ id: st.k, type: 'ev', st, ev: LV.ev[st.k] });
+      });
+      S = { level, LV, cards: shuffle(cards), open: [], done: {}, flips: 0, miss: 0, t0: performance.now(), lock: false, log: [] };
+      root.innerHTML = `
+        <div class="ag-em-top">
+          <span class="ag-pill">🃏 ${level}단계 · ${LV.t}</span>
+          <span class="ag-pill ag-em-pairs">🔗 0 / 6</span>
+          <span class="ag-pill ag-em-flips">🔄 0번</span>
+          <span class="ag-sp"></span><span class="ag-pill ag-em-sec">⏱ 0초</span>
+        </div>
+        <div class="ag-em-grid">${S.cards.map((c, i) => `
+          <button type="button" class="ag-em-card ${c.type === 'st' ? 'is-st' : 'is-ev'}" data-i="${i}" style="--c:${c.st.c}" aria-label="엎어진 카드 ${i + 1}">
+            <span class="ag-em-in">
+              <span class="ag-em-back"><i>?</i><small>${c.type === 'st' ? '창작 과정' : '학습의 증거'}</small></span>
+              <span class="ag-em-front">${c.type === 'st'
+                ? `<em>${c.st.ico}</em><b>${c.st.n}</b><small>창작 과정</small>`
+                : `<em>${c.ev.ico}</em><b>${esc(c.ev.e)}</b><small>학습의 증거</small>`}</span>
+            </span></button>`).join('')}</div>
+        <div class="ag-em-note"><div class="ag-kicker">🔎 증거 수첩</div><ol class="ag-em-log"><li class="ag-em-empty">짝을 맞추면 여기에 하나씩 쌓여요</li></ol></div>`;
+      $$(root, '.ag-em-card').forEach((b) => b.addEventListener('click', () => flip(+b.dataset.i)));
+      const sec = $(root, '.ag-em-sec');
+      tick = L.every(() => { sec.textContent = `⏱ ${Math.floor((performance.now() - S.t0) / 1000)}초`; }, 250);
+    }
+
+    function flip(i) {
+      if (!S || S.lock) return;
+      const c = S.cards[i], el = $(root, `.ag-em-card[data-i="${i}"]`);
+      if (S.done[c.id] || S.open.indexOf(i) >= 0) return;
+      if (S.open.length === 1 && S.cards[S.open[0]].type === c.type) {
+        /* 같은 색 카드끼리는 짝이 될 수 없으니, 앞 카드를 덮고 새 카드로 바꿔 준다(벌점 없음) */
+        $(root, `.ag-em-card[data-i="${S.open[0]}"]`).classList.remove('up');
+        S.open = [];
+      }
+      el.classList.add('up'); Snd.play('hop');
+      S.open.push(i);
+      if (S.open.length < 2) return;
+      S.flips++; $(root, '.ag-em-flips').textContent = `🔄 ${S.flips}번`;
+      const [a, b] = S.open.map((k) => S.cards[k]);
+      const els = S.open.map((k) => $(root, `.ag-em-card[data-i="${k}"]`));
+      if (a.id === b.id) {
+        S.done[a.id] = 1; S.open = [];
+        els.forEach((e) => { e.classList.add('ok'); e.setAttribute('aria-label', '맞춘 카드'); });
+        Snd.play('ok');
+        const ev = S.LV.ev[a.id];
+        S.log.push(a.id);
+        const log = $(root, '.ag-em-log'); const em = $(log, '.ag-em-empty'); if (em) em.remove();
+        log.insertAdjacentHTML('beforeend', `<li style="--c:${a.st.c}" class="new"><span>${a.st.ico} ${a.st.n}</span><b>${ev.ico} ${esc(ev.e)}</b><small>${esc(ev.why)}</small></li>`);
+        const n = Object.keys(S.done).length;
+        $(root, '.ag-em-pairs').textContent = `🔗 ${n} / 6`;
+        if (n === 6) L.after(finish, 700);
+      } else {
+        S.miss++; S.lock = true;
+        els.forEach((e) => e.classList.add('no'));
+        Snd.play('no');
+        L.after(() => { els.forEach((e) => e.classList.remove('up', 'no')); S.open = []; S.lock = false; }, 900);
+      }
+    }
+
+    function finish() {
+      L.clear(tick);
+      const ms = Math.round(performance.now() - S.t0), sec = ms / 1000;
+      S.base = Math.max(100, Math.round(1000 - S.miss * 35 - Math.max(0, sec - 25) * 4));
+      Snd.play('win'); confetti(root);
+      bonus(ms);
+    }
+
+    function bonus(ms) {
+      const opts6 = shuffle(EM_STAGES.map((st) => ({ k: st.k, ev: S.LV.ev[st.k] })));
+      const q = $(root, '.ag-em-grid');
+      q.insertAdjacentHTML('beforebegin', `<div class="ag-panel ag-em-bonus">
+        <div class="ag-kicker">⭐ 보너스 +300</div>
+        <h4>이 중에서 <u>AI 혼자서도</u> 그럴듯하게 만들어 낼 수 있는 증거는?</h4>
+        <div class="ag-em-bopts">${opts6.map((o) => `<button type="button" data-k="${o.k}">${o.ev.ico} ${esc(o.ev.e)}</button>`).join('')}</div></div>`);
+      q.classList.add('dim');
+      const box = $(root, '.ag-em-bonus');
+      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      $$(box, 'button').forEach((b) => b.addEventListener('click', () => {
+        const ok = b.dataset.k === 'fin';
+        $$(box, 'button').forEach((x) => { x.disabled = true; if (x.dataset.k === 'fin') x.classList.add('right'); });
+        if (!ok) b.classList.add('wrong');
+        Snd.play(ok ? 'lvup' : 'no');
+        L.after(() => result(ms, ok), 1100);
+      }));
+    }
+
+    function result(ms, ok) {
+      const score = S.base + (ok ? 300 : 0);
+      const LV = S.LV;
+      root.innerHTML = `
+        <div class="ag-panel ag-em-res">
+          <div class="ag-kicker">🏆 ${S.level}단계 완료</div>
+          <div class="ag-em-score"><b>${score}</b><span>점</span></div>
+          <div class="ag-em-stats"><span>🔄 ${S.flips}번 뒤집기</span><span>❌ 빗나감 ${S.miss}번</span><span>⏱ ${(ms / 1000).toFixed(1)}초</span><span>${ok ? '⭐ 보너스 +300' : '보너스 ✕'}</span></div>
+          <div class="ag-em-moral"><b>🖼️ 최종 창작물</b>은 AI가 대신 만들어 줄 수 있어요. 그래서 결과물만 보면 학생 A와 B를 구별하기 어렵죠.<br>나머지 다섯 장, <b>학생의 생각이 지나간 자리</b>가 진짜 학습의 증거예요.</div>
+          <ol class="ag-em-log full">${EM_STAGES.map((st) => `<li style="--c:${st.c}"><span>${st.ico} ${st.n}</span><b>${LV.ev[st.k].ico} ${esc(LV.ev[st.k].e)}</b><small>${esc(LV.ev[st.k].why)}</small></li>`).join('')}</ol>
+          <div class="ag-row"><button type="button" class="ag-btn ag-ghost" data-a="again">↻ 다시 하기</button><span class="ag-sp"></span>${S.level === 1 ? '<button type="button" class="ag-btn" data-a="lv2">2단계 · 강사 수업 판 도전 ▶</button>' : '<button type="button" class="ag-btn" data-a="lv1">1단계로 ▶</button>'}</div>
+        </div>`;
+      confetti(root, 1800);
+      const lv = S.level;
+      $(root, '[data-a="again"]').addEventListener('click', () => begin(lv));
+      const nx = $(root, '[data-a="lv2"],[data-a="lv1"]');
+      nx.addEventListener('click', () => begin(lv === 1 ? 2 : 1));
+      if (typeof opts.onFinish === 'function') { try { opts.onFinish({ score, ms, flips: S.flips, miss: S.miss, bonus: ok, level: lv }); } catch (e) { /* */ } }
+    }
+
+    intro(opts.level || 1);
+    return { destroy() { L.kill(); root.remove(); } };
+  };
 })();

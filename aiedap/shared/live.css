@@ -199,3 +199,12 @@ body.sending .postbox .b.r::after,body.sending .ws .acts .b.r::after{content:'';
 #rsPin.mask{-webkit-text-security:disc}
 
 .toast,#toast{z-index:200}
+/* 증거 짝 맞추기 · 접는 정리표 */
+.emcard{padding:16px}
+details.fold{margin:16px 0 4px;border:1px solid var(--line);border-radius:16px;background:var(--paper);overflow:hidden}
+details.fold>summary{cursor:pointer;list-style:none;padding:13px 16px;font-weight:800;color:var(--blue)}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::after{content:'펼치기 ▾';float:right;font-size:13px;color:var(--sub);font-weight:600}
+details.fold[open]>summary::after{content:'접기 ▴'}
+details.fold>.scroll{padding:0 12px 12px}
+
