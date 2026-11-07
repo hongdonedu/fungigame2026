@@ -82,6 +82,7 @@ function doGet(e) {
     if (p.action === 'scores') return out_({ ok: true, rows: scores_(p) });
     if (p.action === 'stats') return out_({ ok: true, stats: stats_(p) });
     if (p.action === 'links') return out_({ ok: true, rows: links_() });
+    if (p.action === 'room') return out_({ ok: true, room: roomGet_(roomKey_(p)) });
     return out_({ ok: true, service: 'aiedap-m45', ai: !!PROPS.getProperty('GEMINI_API_KEY'), time: now_() });
   } catch (err) { return out_({ ok: false, error: String(err) }); }
 }
@@ -107,6 +108,47 @@ function reacts_(mod, act) {
     Object.keys(m).forEach(t => { m[t].c = m[t].c.slice(-30); });
     return m;
   });
+}
+/* 모둠 함께 하는 게임 방: 캐시에 상태만 두고, 각 기기는 같은 이벤트 순서를 받아 같은 화면을 그린다 */
+function roomKey_(b) { return 'GR|' + String(b.module || '') + '|' + String(b.group || '') + '|' + String(b.game || 'life'); }
+function roomGet_(k) {
+  try { const c = CACHE.get(k); if (c) return JSON.parse(c); } catch (e) {}
+  return { gen: 1, players: [], started: false, seed: 0, ev: [] };
+}
+function room_(b) {
+  const k = roomKey_(b), d6 = clip_(b.device, 40).slice(-6), op = String(b.op || '');
+  if (!b.group || !d6) return { ok: false, error: '모둠 등록이 필요해요.' };
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const r = roomGet_(k);
+    const me = r.players.find(x => x.d === d6);
+    if (op === 'join') {
+      if (me) me.n = clip_(b.name, 16) || me.n;
+      else if (!r.started && r.players.length < 8) r.players.push({ d: d6, n: clip_(b.name, 16) || '선생님', ready: false });
+    } else if (op === 'ready') {
+      if (me && !r.started) {
+        me.ready = !!b.ready;
+        if (r.players.length && r.players.every(x => x.ready)) { r.started = true; r.seed = 1 + Math.floor(Math.random() * 2147483000); r.ev = []; }
+      }
+    } else if (op === 'go') {
+      if (me && !r.started) {
+        me.ready = true;
+        r.players = r.players.filter(x => x.ready);
+        r.started = true; r.seed = 1 + Math.floor(Math.random() * 2147483000); r.ev = [];
+      }
+    } else if (op === 'leave') {
+      if (!r.started) r.players = r.players.filter(x => x.d !== d6);
+    } else if (op === 'ev') {
+      if (!r.started || !me) return { ok: false, error: '게임에 참여한 기기가 아니에요.', room: r };
+      if (Number(b.seq) !== r.ev.length) return { ok: true, stale: true, room: r };
+      r.ev.push({ k: String(b.k || '').slice(0, 8), v: b.v == null ? null : String(b.v).slice(0, 8), d: d6 });
+    } else if (op === 'reset') {
+      if (me) { r.gen = (r.gen || 1) + 1; r.started = false; r.seed = 0; r.ev = []; r.players.forEach(x => { x.ready = false; }); }
+    }
+    CACHE.put(k, JSON.stringify(r), 21600);
+    return { ok: true, room: r };
+  } finally { lock.releaseLock(); }
 }
 function react_(b) {
   const mod = String(b.module || ''), act = String(b.activity || ''), tgt = String(b.target || '').slice(-6);
@@ -298,6 +340,7 @@ function doPost(e) {
       return out_({ ok: true });
     }
     if (b.action === 'react') return out_(react_(b));
+    if (b.action === 'room') return out_(room_(b));
     if (b.action === 'submit') {
       if (!b.activity) return out_({ ok: false, error: 'activity 없음' });
       append_('responses', [now_(), b.module || '', b.activity, String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40),

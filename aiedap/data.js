@@ -320,7 +320,7 @@ window.STEPS = [
    <div class="card pad"><b style="color:var(--blue)">1단계 · 자기 진단</b><p style="margin:6px 0 0;color:var(--sub)">나의 역량 수준은 Lv. 몇인가요? 강점 역량과 보완이 필요한 역량은?</p></div>
    <div class="card pad"><b style="color:var(--blue)">2단계 · 맞춤형 경로</b><p style="margin:6px 0 0;color:var(--sub)">추천 연수·활동 가운데 보완 역량을 채울 것을 골라요</p></div>
    <div class="card pad"><b style="color:var(--blue)">3단계 · AI 학습 자원</b><p style="margin:6px 0 0;color:var(--sub)">우수 AI 융합 수업 사례 콘텐츠로 자원 네트워크 만들기</p></div></div>
-   <div class="btns"><a class="b r" href="https://www.aiedap.or.kr/training/cpd" target="_blank">AIEDAP 지속적 전문성 개발 ↗</a><a class="b w" href="https://www.aiedap.or.kr" target="_blank">AIEDAP 홈 ↗</a></div>`}
+   <div class="btns"><a class="b r" href="https://www.aiedap.or.kr/mypage?tab=dashboard" target="_blank">나의 역량분석 대시보드 ↗</a><a class="b w" href="https://www.aiedap.or.kr/training/cpd" target="_blank">AIEDAP 지속적 전문성 개발 ↗</a></div>`}
  ]},
 
 {id:"s18", part:5, num:18, short:"나의 성장 계획 (실습·공유)", time:"16:55", title:"나의 지속적 전문성 개발 계획 세우기", img:"part5",
@@ -346,7 +346,7 @@ window.LINKS = [
   ["https://www.aiedap.or.kr/mypage?tab=storage","🧭","나의 수업 보관함","AIEDAP · 내 지도안 편집하기"],
   ["https://www.aiedap.or.kr/ai-class/reflection","🪞","AI 융합수업 성찰","AIEDAP · 내 성찰 보고서"],
   ["https://www.aiedap.or.kr/training/cpd","🌱","지속적 전문성 개발","AIEDAP · 모듈 5"],
-  ["https://www.aiedap.or.kr","🏠","AIEDAP 홈","로그인 · 역량분석 대시보드"],
+  ["https://www.aiedap.or.kr/mypage?tab=dashboard","🏠","나의 역량분석 대시보드","AIEDAP · 내 역량 수준 확인"],
   ["PADLET","📌","오늘의 패들렛","운영진 안내 회차 패들렛"],
   ["https://ncic.re.kr","📚","2022 개정 교육과정","국가교육과정정보센터"],
   ["https://notebooklm.google.com","📒","Gemini 노트북","우수 사례에 질문하기"],

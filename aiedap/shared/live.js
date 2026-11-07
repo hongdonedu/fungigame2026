@@ -767,7 +767,11 @@ function mountLife(box){
   destroyGame();
   if(!(window.AG&&AG.games&&AG.games.lifeGame))return noGames(box);
   box.innerHTML='';
-  gameInst=AG.games.lifeGame(box,{players:lifePlayers(),banner:false,autoStart:false,onFinish:r=>{
+  const mm=me();
+  const net=(ONLINE&&mm)?{group:String(mm.g),me:{d:String(store.dev).slice(0,40).slice(-6),n:mm.n},
+    get:async()=>{const j=await apiGet({action:'room',module:MID,group:mm.g,game:'life'});if(!j.ok)throw new Error(j.error);return j.room;},
+    post:o=>apiPost(Object.assign({action:'room',module:MID,group:mm.g,game:'life',device:store.dev,name:mm.n},o))}:null;
+  gameInst=AG.games.lifeGame(box,{players:lifePlayers(),banner:false,autoStart:false,net:net,onFinish:r=>{
     const ps=(r&&r.players)||[];
     const mine=ps.find(p=>me()&&p.name===me().n)||ps[0];
     if(!mine)return;
@@ -994,9 +998,9 @@ function step(s){
 window.toggleDone=function(id){store.done[id]=!store.done[id];save();buildSide();render(true);};
 function finale(){
   const code=M.code||'';
-  return `<div class="grid g2 fin"><div class="card pad"><b style="font-size:19px">① 사후 역량 진단</b><p style="color:var(--sub);margin:6px 0 10px">운영진 안내에 따라 사후 역량 진단을 할 때 아래 코드를 입력해요.</p>
+  return `<div class="grid g2 fin"><div class="card pad"><b style="font-size:19px">① 사후 역량 진단</b><p style="color:var(--sub);margin:6px 0 10px">운영진 안내에 따라 AIEDAP에 로그인한 뒤, 역량 진단 화면의 ‘연수 코드로 측정’ 칸에 아래 코드를 넣고 ‘코드로 시작’을 눌러요.</p>
     <div class="code" id="codeBox"><button class="b y" onclick="this.parentNode.classList.add('on');">🔑 코드 보기</button><b>${esc(code)}</b><button class="b w sm" onclick="event.stopPropagation();navigator.clipboard&&navigator.clipboard.writeText('${esc(code)}');toast('코드를 복사했어요')">복사</button></div>
-    <div class="btns"><a class="b w sm" href="https://www.aiedap.or.kr" target="_blank" rel="noopener">AIEDAP 바로 가기 ↗</a></div></div>
+    <div class="btns"><a class="b w sm" href="https://www.aiedap.or.kr/diagnosis?tab=assessment" target="_blank" rel="noopener">AIEDAP 역량 진단 바로 가기 ↗</a></div></div>
    <div class="card pad"><b style="font-size:19px">② 만족도 조사</b><p style="color:var(--sub);margin:6px 0 10px">오늘 연수에 대한 의견을 남겨 주세요. 2~3분이면 충분해요.</p>
     <div class="btns"><a class="b r" href="${M.survey}" target="_blank" rel="noopener">📝 만족도 조사 열기 ↗</a></div></div></div>
    <div class="quote" style="text-align:center;font-size:17px">평가 → 성찰 → 재설계 → 환류, 그리고 계속 자라기.<br>끝까지 함께해 주셔서 고맙습니다. 18:00에 마칩니다.</div>`;

@@ -23,8 +23,11 @@
   const $$ = (r, s) => Array.from(r.querySelectorAll(s));
   const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
   const rand = (a, b) => a + Math.random() * (b - a);
-  const pick = (a) => a[Math.floor(Math.random() * a.length)];
-  const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; };
+  /* 게임 결과에 쓰는 난수: 모둠 함께 하기에서는 같은 씨앗으로 모든 기기가 같은 결과를 낸다 */
+  let RND = Math.random;
+  const seeded = (seed) => { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
+  const pick = (a) => a[Math.floor(RND() * a.length)];
+  const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(RND() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; };
   const optImgs = (root) => $$(root, 'img[data-opt]').forEach((im) => {
     const kill = () => im.remove();
     im.addEventListener('error', kill, { once: true });
@@ -725,6 +728,16 @@
   /* ═════════════════════════ 3. 마스터교원 인생게임 ═════════════════════════ */
   const LV = ['입문가', '탐색가', '실천가', '전문가', '선도자', '개척자'];
   const ZONES = [0, 5, 10, 16, 22, 27];
+  /* AIEDAP 마스터교원 레벨 인증 체계 (aiedap.or.kr › 연수/활동 안내 › 레벨 인증 체계) — 각 레벨의 ‘인증 · 자격 획득’ 조건 */
+  const LVREQ = {
+    1: { n: '1개 필수', items: ['일반교원 연수 이수증 제출'] },
+    2: { n: '3개 중 1개', items: ['중앙교육연수원 AI융합수업 기초 원격연수 이수증', 'AIEDAP 관리자 연수 이수증', 'AIEDAP 협력교 연계 연수 이수증'] },
+    3: { n: '1개 필수', items: ['마스터교원 신규연수 위촉장 — 사전 측정 → 원격연수 → 수업설계 → 수업실천 → 집합연수 → 사후 측정'], tip: '바로 오늘 이 연수가 그 과정이에요!' },
+    4: { n: '8개 중 2개 (기초 연수 이수는 필수)', items: ['전문성 강화 기초 연수 이수 [필수]', '현직교원 연수 프로그램 개발', 'AI융합 우수 수업사례 선정·개발', '마스터교원 신규연수 보조강사', '전문성 강화연수 보조강사', '일반교원 연수 강사', '협력교 연수 강사', '시도교육청 연수 강사'] },
+    5: { n: '6개 중 2개', items: ['AI융합 수업 콘텐츠 개발', '연수 프로그램 개발·고도화', '전문성 강화 심화 연수 이수', '마스터교원 신규연수 주강사', '전문성 강화연수 주강사', '관리자 연수 주강사'] },
+    6: { n: '6개 중 4개', items: ['전문성 강화연수 강사', '연구모임 멘토링', 'AI융합수업 콘텐츠 개발', 'AI융합교육 논문 게재', 'AI융합교육 저서 출판', 'AI융합교육 연구 참여'] },
+  };
+  const nextGoal = (lv) => (lv >= 6 ? '최고 단계 · 갱신은 5개 중 2개' : `Lv.${lv + 1} ${LV[lv]} · ${LVREQ[lv + 1].n}`);
   const lvOf = (pos) => { let l = 1; ZONES.forEach((z, i) => { if (pos >= z) l = i + 1; }); return l; };
   const TILES = ['start', 'G1', 'chance', 'G2', 'G1', 'G3', 'trial', 'G2', 'fork', 'G1', 'G3', 'chance', 'G2', 'trial', 'G3', 'G1', 'G2', 'fork', 'G3', 'trial', 'chance', 'G1', 'G3', 'G2', 'trial', 'G3', 'chance', 'G1', 'trial', 'G2', 'G3', 'goal'];
   const GOAL = TILES.length - 1;
@@ -799,14 +812,20 @@
     const given = (Array.isArray(opts.players) ? opts.players : []).map((x) => String(typeof x === 'string' ? x : (x && x.name) || '').trim()).filter(Boolean).slice(0, 8);
     let names = given.length ? given.slice() : ['1번 선생님', '2번 선생님', '3번 선생님', '4번 선생님'];
     let st = null, GL = null, ro = null;
+    const NET = opts.net || null;
+    let mode = NET ? 'net' : 'local', net = null, pumping = false, LB = null;
 
-    function cleanup() { if (GL) GL.kill(); GL = null; if (ro) { ro.disconnect(); ro = null; } st = null; }
+    function cleanup() { if (GL) GL.kill(); GL = null; if (LB) { LB.kill(); LB = null; } if (ro) { ro.disconnect(); ro = null; } st = null; RND = Math.random; }
+    window.__lgdbg = () => ({ busy: st && st.busy, done: net && net.done, len: net && net.ev.length, sending: net && net.sending, pick: !!(st && st.netPick), over: st && st.over, turn: st && st.turn, pumping, ev: net && net.ev.map((e) => e.k + (e.v != null ? ':' + e.v : '')).join(',') });
+    const isMine = () => !!(st && st.net && net && st.players[st.turn] && net.players[st.turn] && net.players[st.turn].d === NET.me.d);
 
     function setup() {
       cleanup();
       root.innerHTML = `
         ${heroHTML({ cls: 'ag-hero-lg', banner: opts.banner ? 'game_life.webp' : '', mascot: 'emb_life.webp', kicker: '🎲 GROWTH BOARD GAME', title: '마스터교원 인생게임', text: '주사위를 굴려 <b>입문가</b>에서 <b>개척자</b>까지! 칸마다 G1·G2·G3 성장 카드를 모으며 나의 전문성 성장 경로를 그려 봐요.' })}
-        <div class="ag-panel ag-lg-setup">
+        ${NET ? `<div class="ag-lg-mode" role="tablist"><button type="button" data-m="net" class="${mode === 'net' ? 'on' : ''}">👥 모둠이 함께 <small>각자 기기에서 같은 판</small></button><button type="button" data-m="local" class="${mode === 'local' ? 'on' : ''}">🖥️ 한 화면에서 <small>돌아가며 하기</small></button></div>` : ''}
+        <div class="ag-panel ag-lg-lobby" ${mode === 'net' ? '' : 'hidden'}></div>
+        <div class="ag-panel ag-lg-setup" ${mode === 'net' ? 'hidden' : ''}>
           <div class="ag-lab">플레이어 <b class="ag-pn"></b>명 <span>1~8명 · 한 화면에서 돌아가며</span><span class="ag-btns"><button type="button" class="ag-ic" data-a="minus" aria-label="플레이어 빼기">－</button><button type="button" class="ag-ic" data-a="plus" aria-label="플레이어 더하기">＋</button></span></div>
           <div class="ag-lg-pin"></div>
           <div class="ag-lg-legend">${legendHTML()}</div>
@@ -829,18 +848,107 @@
       $(root, '[data-a="minus"]').addEventListener('click', () => { if (names.length > 1) { names.pop(); draw(); } });
       $(root, '[data-a="plus"]').addEventListener('click', () => { if (names.length < 8) { names.push(`${names.length + 1}번 선생님`); draw(); } });
       $(root, '[data-a="start"]').addEventListener('click', () => { Snd.unlock(); start(); });
+      $$(root, '.ag-lg-mode button').forEach((b) => b.addEventListener('click', () => {
+        if (mode === b.dataset.m) return;
+        if (mode === 'net' && NET) NET.post({ op: 'leave' }).catch(() => {});
+        mode = b.dataset.m; setup();
+      }));
+      if (mode === 'net' && NET) lobby();
     }
 
-    function start() {
+    /* ───── 모둠이 함께: 대기실 ───── */
+    function lobby() {
+      const box = $(root, '.ag-lg-lobby'); if (!box) return;
+      if (LB) LB.kill(); LB = life();
+      box.innerHTML = '<div class="ag-hint">우리 모둠 방에 들어가는 중…</div>';
+      let busy = false, last = null;
+      const draw = (r) => {
+        last = r; if (!box.isConnected) return;
+        const ps = r.players || [], me = ps.find((x) => x.d === NET.me.d), rd = ps.filter((x) => x.ready).length;
+        box.innerHTML = `
+          <div class="ag-lab">우리 모둠 방 <span>${esc(NET.group)}모둠 · ${ps.length}명 · 준비 ${rd}명</span></div>
+          <ul class="ag-lobby-ps">${ps.map((x, i) => `<li style="--c:${TOK[i % TOK.length]}" class="${x.ready ? 'ok' : ''}"><i class="ag-dot"></i><b>${esc(x.n)}</b>${x.d === NET.me.d ? '<em>나</em>' : ''}<span>${x.ready ? '✅ 준비' : '⏳ 기다리는 중'}</span></li>`).join('') || '<li><span>아직 아무도 없어요</span></li>'}</ul>
+          <p class="ag-lobby-msg">${r.started ? '게임이 이미 시작됐어요. 끝나면 ‘다시’로 함께 시작할 수 있어요.' : '모둠원이 각자 기기로 이 화면에 들어와 <b>준비 완료</b>를 누르면 <b>동시에</b> 시작해요. 모두 같은 판을 보고, 내 차례에만 주사위를 굴려요.'}</p>
+          <div class="ag-row">${me ? `<button type="button" class="ag-btn ag-big" data-a="ready">${me.ready ? '↩ 준비 취소' : '✅ 준비 완료'}</button>` : '<button type="button" class="ag-btn ag-big" data-a="join">🚪 방에 들어가기</button>'}<span class="ag-sp"></span>${me && rd >= 1 && rd < ps.length ? '<button type="button" class="ag-btn ag-ghost" data-a="go">▶ 준비한 사람끼리 바로 시작</button>' : ''}</div>`;
+        const act = async (o) => { if (busy) return; busy = true; try { const j = await NET.post(o); if (j && j.room) apply(j.room); } catch (e) { /* 다음 확인 때 다시 */ } busy = false; };
+        const b1 = $(box, '[data-a="ready"]'); if (b1) b1.addEventListener('click', () => { Snd.unlock(); act({ op: 'ready', ready: !me.ready }); });
+        const b2 = $(box, '[data-a="go"]'); if (b2) b2.addEventListener('click', () => { Snd.unlock(); act({ op: 'go' }); });
+        const b3 = $(box, '[data-a="join"]'); if (b3) b3.addEventListener('click', () => act({ op: 'join' }));
+      };
+      const apply = (r) => {
+        if (!r) return;
+        const meIn = (r.players || []).some((x) => x.d === NET.me.d);
+        if (r.started && meIn) { startNet(r); return; }
+        if (!last || JSON.stringify(last) !== JSON.stringify(r)) draw(r);
+      };
+      const poll = async () => { if (busy) return; try { apply(await NET.get()); } catch (e) { /* */ } };
+      NET.post({ op: 'join' }).then((j) => apply(j && j.room)).catch(() => poll());
+      LB.every(poll, 2000);
+    }
+
+    function startNet(r) {
+      if (LB) { LB.kill(); LB = null; }
+      net = { gen: r.gen, seed: r.seed, players: r.players.slice(), ev: (r.ev || []).slice(), done: 0, sending: false };
+      names = net.players.map((x) => x.n);
+      RND = seeded(net.seed);
+      start(true);
+    }
+
+    async function netSend(k, v) {
+      if (!net || net.sending) return false;
+      net.sending = true; syncUI();
+      let ok = false;
+      for (let tries = 0; tries < 2 && !ok; tries++) {
+        try {
+          const j = await NET.post({ op: 'ev', k, v, seq: net.ev.length });
+          if (j && j.room) { if (j.room.gen !== net.gen) { net.sending = false; backToLobby(); return false; } net.ev = j.room.ev || net.ev; }
+          ok = !!(j && j.ok && !j.stale);
+        } catch (e) { await new Promise((res) => setTimeout(res, 800)); }
+      }
+      net.sending = false; pump(); syncUI();
+      return ok;
+    }
+
+    async function netPoll() {
+      if (!st || !st.net || !net) return;
+      try {
+        const r = await NET.get(); if (!r || !st || !net) return;
+        if (r.gen !== net.gen || !r.started) { backToLobby(); return; }
+        if ((r.ev || []).length > net.ev.length) { net.ev = r.ev; pump(); }
+      } catch (e) { /* 다음에 다시 */ }
+    }
+
+    function backToLobby() { cleanup(); net = null; mode = 'net'; setup(); }
+
+    async function pump() {
+      if (!st || !st.net || !net || pumping) return;
+      pumping = true;
+      try {
+        while (st && !st.over && net.done < net.ev.length) {
+          st.fast = net.ev.length - net.done > 2;
+          const e = net.ev[net.done];
+          if (e.k === 'roll') { if (st.busy) break; net.done++; turn(); await GL.wait(0); continue; }
+          if (e.k === 'pick') { if (!st.netPick) break; net.done++; const f = st.netPick; st.netPick = null; f(+e.v || 0); await GL.wait(0); continue; }
+          net.done++;
+        }
+        if (st && net && net.done >= net.ev.length) st.fast = false;
+      } finally { pumping = false; }
+      if (st) syncUI();
+    }
+
+    function start(isNet) {
+      if (!isNet) net = null;
+      const keepRnd = RND;
       cleanup();
+      if (isNet) RND = keepRnd;
       GL = life();
       const ps = names.map((n, i) => ({ id: i, name: String(n).trim() || `${i + 1}번`, col: TOK[i % TOK.length], pos: 0, cards: [], skip: false, lv: 1 }));
-      st = { players: ps, turn: 0, round: 1, busy: false, auto: false, over: false, cols: 0, pending: null, t0: Date.now(), decks: { G1: shuffle(CARDS.G1), G2: shuffle(CARDS.G2), G3: shuffle(CARDS.G3) } };
+      st = { players: ps, turn: 0, round: 1, busy: false, auto: false, over: false, cols: 0, pending: null, net: !!isNet, fast: false, netPick: null, t0: Date.now(), decks: { G1: shuffle(CARDS.G1), G2: shuffle(CARDS.G2), G3: shuffle(CARDS.G3) } };
       root.innerHTML = `
         <div class="ag-lg-top">
           <div class="ag-disp ag-lg-title">${IM('emb_life.webp', '🎲', 'ag-tti')}<span>마스터교원 인생게임</span></div>
           <span class="ag-pill ag-lg-round"></span><span class="ag-sp"></span>
-          <button type="button" class="ag-ic ag-wide" data-a="auto" title="자동으로 끝까지 진행">⏩ 자동</button>
+          ${isNet ? `<span class="ag-pill ag-lg-netpill">👥 ${esc(NET.group)}모둠 함께</span>` : '<button type="button" class="ag-ic ag-wide" data-a="auto" title="자동으로 끝까지 진행">⏩ 자동</button>'}
           <button type="button" class="ag-ic" data-a="snd" title="소리 켜기/끄기">${Snd.label()}</button>
           <button type="button" class="ag-ic" data-a="quit" title="처음 화면으로">✕</button>
         </div>
@@ -854,12 +962,12 @@
           <div class="ag-panel ag-lg-side"><ul class="ag-lg-ps"></ul><div class="ag-lg-legend">${legendHTML()}</div></div>
         </div>
         <div class="ag-modal" hidden></div>`;
-      $(root, '[data-a="roll"]').addEventListener('click', () => { Snd.unlock(); turn(); });
-      $(root, '[data-a="auto"]').addEventListener('click', toggleAuto);
+      $(root, '[data-a="roll"]').addEventListener('click', () => { Snd.unlock(); if (st && st.net) { if (isMine() && !st.busy && net.done >= net.ev.length) netSend('roll', null); } else turn(); });
+      const autoB = $(root, '[data-a="auto"]'); if (autoB) autoB.addEventListener('click', toggleAuto);
       $(root, '[data-a="snd"]').addEventListener('click', (e) => { Snd.toggle(); e.currentTarget.textContent = Snd.label(); });
       $(root, '[data-a="quit"]').addEventListener('click', (e) => {
         const b = e.currentTarget;
-        if (b.dataset.arm) { setup(); return; }
+        if (b.dataset.arm) { if (st && st.net) { cleanup(); net = null; mode = 'net'; } setup(); return; }
         b.dataset.arm = '1'; b.textContent = '나갈까요?'; b.classList.add('ag-wide', 'ag-warnbtn');
         GL.after(() => { if (b.isConnected) { delete b.dataset.arm; b.textContent = '✕'; b.classList.remove('ag-wide', 'ag-warnbtn'); } }, 2400);
       });
@@ -867,6 +975,7 @@
       if (window.ResizeObserver) { ro = new ResizeObserver(() => { if (!st) return; const c = colsFor(); if (c !== st.cols) renderBoard(); else placeTokens(); }); ro.observe(wrap); }
       renderBoard(); syncUI();
       say(`🚩 ${esc(ps[0].name)} 님부터 시작! 주사위를 굴려 주세요.`);
+      if (isNet) { GL.every(netPoll, 1800); pump(); }
     }
 
     const colsFor = () => { const w = ($(root, '.ag-lg-boardwrap') || {}).clientWidth || 0; return w >= 700 ? 8 : w >= 500 ? 6 : 5; };
@@ -912,6 +1021,21 @@
       });
     }
 
+    /* 레벨업: 다음 레벨이 되려면 무엇이 필요한지 (실제 인증 조건) */
+    function lvPop(p, lv) {
+      const wrap = $(root, '.ag-lg-boardwrap'); if (!wrap) return;
+      $$(wrap, '.ag-lvup').forEach((x) => x.remove());
+      const nx = LVREQ[lv + 1];
+      const el = document.createElement('div'); el.className = 'ag-lvup';
+      el.innerHTML = `<div class="ag-lvup-in" style="--c:${p.col}"><div class="ag-lvup-k">🎉 Lv.${lv} ${LV[lv - 1]} 달성!</div><b class="ag-lvup-n">${esc(p.name)} 님</b>
+        ${nx ? `<div class="ag-lvup-q">다음 목표 <b>Lv.${lv + 1} ${LV[lv]}</b>가 되려면<br>${/^1개 필수/.test(nx.n) ? '아래 <em>1개</em>가 꼭 필요해요' : `아래 <em>${esc(nx.n.replace(/\s*\(.*\)$/, ''))}</em> 이상이 필요해요${/\(/.test(nx.n) ? `<br><small style="display:inline;color:#64748b">${esc(nx.n.match(/\((.*)\)/)[1])}</small>` : ''}`}</div><ul>${nx.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>${nx.tip ? `<div class="ag-lvup-tip">${esc(nx.tip)}</div>` : ''}`
+          : '<div class="ag-lvup-q">최고 단계 <b>개척자</b>! 자격 유지는 <em>5개 중 2개</em><br>(연구 참여 · 논문 · 저서 · 우수 사례 발표 · 모형 개발)</div>'}
+        <small>AIEDAP 마스터교원 레벨 인증 체계 · 눌러서 닫기</small></div>`;
+      el.addEventListener('click', () => el.remove());
+      wrap.appendChild(el);
+      GL.after(() => el.remove(), st && st.auto ? 2500 : 6500);
+    }
+
     function hop(p) {
       const el = $(root, `.ag-tok[data-p="${p.id}"]`); if (!el) return;
       el.classList.remove('hop'); void el.offsetWidth; el.classList.add('hop');
@@ -937,9 +1061,12 @@
       if (!st) return;
       const p = st.players[st.turn];
       const who = $(root, '.ag-lg-who');
-      if (who) who.innerHTML = `<i class="ag-dot" style="--c:${p.col}"></i><span>${esc(p.name)} 님 차례</span><small>Lv.${p.lv} ${LV[p.lv - 1]}</small>`;
+      if (who) who.innerHTML = `<i class="ag-dot" style="--c:${p.col}"></i><span>${esc(p.name)} 님 차례</span><small>Lv.${p.lv} ${LV[p.lv - 1]}</small><div class="ag-lg-goal">🎯 다음 목표 · ${esc(nextGoal(p.lv))}</div>`;
       const rb = $(root, '[data-a="roll"]');
-      if (rb) { rb.disabled = st.busy || st.over || st.auto; rb.textContent = st.auto ? '⏩ 자동 진행 중…' : '🎲 주사위 굴리기'; }
+      if (rb) {
+        if (st.net) { const mine = isMine(); rb.disabled = !mine || st.busy || st.over || net.sending || net.done < net.ev.length; rb.textContent = net.sending ? '📡 보내는 중…' : mine ? '🎲 내 차례! 굴리기' : `⏳ ${p.name} 님 차례`; }
+        else { rb.disabled = st.busy || st.over || st.auto; rb.textContent = st.auto ? '⏩ 자동 진행 중…' : '🎲 주사위 굴리기'; }
+      }
       const ab = $(root, '[data-a="auto"]'); if (ab) { ab.classList.toggle('on', st.auto); ab.textContent = st.auto ? '⏸ 멈춤' : '⏩ 자동'; }
       const rd = $(root, '.ag-lg-round'); if (rd) rd.textContent = `라운드 ${Math.min(st.round, maxRound)} / ${maxRound}`;
       renderPlayers(); placeTokens();
@@ -969,6 +1096,14 @@
           m.hidden = true; m.innerHTML = '';
           res(buttons[clamp(i, 0, buttons.length - 1)].v);
         };
+        if (st.net) {
+          const mine = isMine();
+          $$(m, 'button[data-v]').forEach((b) => { b.disabled = !mine; b.addEventListener('click', () => { if (!isMine() || net.sending) return; $$(m, 'button[data-v]').forEach((x) => { x.disabled = true; }); netSend('pick', +b.dataset.v); }); });
+          if (!mine) { const n = document.createElement('div'); n.className = 'ag-hint ag-netwait'; n.textContent = `${st.players[st.turn].name} 님이 누르면 다 함께 넘어가요`; $(m, '.ag-macts').after(n); }
+          st.netPick = (i) => finish(i);
+          GL.after(pump, 0);
+          return;
+        }
         $$(m, 'button[data-v]').forEach((b) => b.addEventListener('click', () => finish(+b.dataset.v)));
         st.pending = (i) => finish(buttons.length > 1 ? Math.floor(Math.random() * buttons.length) : i);
         if (st.auto) autoId = GL.after(() => st.pending && st.pending(0), 650);
@@ -997,15 +1132,15 @@
       while (steps-- > 0) {
         const np = clamp(p.pos + dir, 0, GOAL); if (np === p.pos) break;
         p.pos = np; placeTokens(); hop(p); Snd.play('hop');
-        await GL.wait(st.auto ? 110 : 230);
+        await GL.wait(st.fast ? 0 : st.auto ? 110 : 230);
       }
       const tile = $(root, `.ag-tile[data-i="${p.pos}"]`);
       if (tile) { tile.classList.remove('land'); void tile.offsetWidth; tile.classList.add('land'); }
       const lv = lvOf(p.pos);
       if (lv > p.lv) {
-        p.lv = lv; Snd.play('lvup'); toast(`🎉 ${p.name} · Lv.${lv} ${LV[lv - 1]}!`);
-        confetti($(root, '.ag-lg-boardwrap'), 1600);
-        await GL.wait(st.auto ? 350 : 800);
+        p.lv = lv; Snd.play('lvup');
+        if (st.fast) toast(`🎉 ${p.name} · Lv.${lv} ${LV[lv - 1]}!`); else { lvPop(p, lv); confetti($(root, '.ag-lg-boardwrap'), 1600); }
+        await GL.wait(st.fast ? 0 : st.auto ? 350 : 800);
       }
       renderPlayers();
     }
@@ -1013,9 +1148,9 @@
     async function rollDice() {
       const dice = $(root, '.ag-dice'); if (!dice) return 1;
       dice.classList.add('rolling');
-      const t0 = performance.now(), dur = st.auto ? 300 : 750;
+      const t0 = performance.now(), dur = st.fast ? 0 : st.auto ? 300 : 750;
       while (performance.now() - t0 < dur) { dice.innerHTML = diceHTML(1 + Math.floor(Math.random() * 6)); Snd.play('dice'); await GL.wait(70); }
-      const v = 1 + Math.floor(Math.random() * 6);
+      const v = 1 + Math.floor(RND() * 6);
       dice.innerHTML = diceHTML(v); dice.classList.remove('rolling');
       return v;
     }
@@ -1059,7 +1194,7 @@
       let again = false;
       if (p.skip) {
         p.skip = false; say(`😴 ${esc(p.name)} 님은 이번 차례를 쉬어요.`); renderPlayers();
-        await GL.wait(st.auto ? 500 : 1100);
+        await GL.wait(st.fast ? 0 : st.auto ? 500 : 1100);
       } else {
         const d = await rollDice();
         say(`🎲 ${esc(p.name)} 님 <b>${d}</b>!`);
@@ -1073,6 +1208,7 @@
       if (st.round > maxRound) return finish('round', null);
       st.busy = false; syncUI();
       if (st.auto) GL.after(turn, 380);
+      if (st.net) GL.after(pump, 0);
     }
 
     function finish(reason, winner) {
@@ -1097,12 +1233,19 @@
             <div class="ag-lg-prh"><span class="ag-medal">${medal[i] || `${i + 1}위`}</span><i class="ag-dot"></i><b class="ag-lg-pname">${esc(p.name)}</b><span class="ag-pill">Lv.${p.lv} ${LV[p.lv - 1]}</span><span class="ag-gcs"><span class="ag-gc g1">G1 ${c.G1}장</span><span class="ag-gc g2">G2 ${c.G2}장</span><span class="ag-gc g3">G3 ${c.G3}장</span></span></div>
             <div class="ag-lg-cards">${p.cards.length ? p.cards.map((cd) => `<span class="ag-chip ${cd.g.toLowerCase()}" title="${esc(cd.desc)}">${esc(cd.title)}</span>`).join('') : '<span class="ag-hint">아직 모은 카드가 없어요</span>'}</div>
             <div class="ag-next">👣 <b>나의 다음 한 걸음</b> · ${suggest(p)}</div>
+            <div class="ag-next ag-next-lv">🎯 <b>실제 다음 레벨</b> · ${p.lv >= 6 ? '개척자 자격 유지: 5개 중 2개' : `Lv.${p.lv + 1} ${LV[p.lv]}가 되려면 ${esc(LVREQ[p.lv + 1].n)} — ${esc(LVREQ[p.lv + 1].items.slice(0, 3).join(' · '))}${LVREQ[p.lv + 1].items.length > 3 ? ' 등' : ''}`}</div>
           </div>`;
         }).join('')}</div>
         <div class="ag-row"><span class="ag-sp"></span><button type="button" class="ag-btn ag-ghost" data-a="new">👥 새로 시작</button><button type="button" class="ag-btn" data-a="again">🔁 같은 멤버로 다시</button></div>`;
       optImgs(root);
-      $(root, '[data-a="again"]').addEventListener('click', start);
-      $(root, '[data-a="new"]').addEventListener('click', setup);
+      if (S.net && NET) {
+        const ag = $(root, '[data-a="again"]'); ag.textContent = '🔁 우리 모둠 다시 하기';
+        ag.addEventListener('click', async () => { ag.disabled = true; try { await NET.post({ op: 'reset' }); } catch (e) { /* */ } net = null; mode = 'net'; setup(); });
+        $(root, '[data-a="new"]').addEventListener('click', () => { net = null; mode = 'net'; setup(); });
+      } else {
+        $(root, '[data-a="again"]').addEventListener('click', () => start());
+        $(root, '[data-a="new"]').addEventListener('click', setup);
+      }
       confetti(root, 3000); Snd.play('win');
       try { if (typeof opts.onFinish === 'function') opts.onFinish({ players: out, winner: winner ? winner.name : null, reason, rounds: Math.min(S.round, maxRound), ms: Date.now() - S.t0 }); } catch (e) { console.warn('[AG.lifeGame] onFinish', e); }
     }
