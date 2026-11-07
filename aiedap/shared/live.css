@@ -186,3 +186,16 @@ body.sending .postbox .b.r::after,body.sending .ws .acts .b.r::after{content:'';
 .keep1 .card{word-break:keep-all;font-size:15.5px}
 @media (max-width:1400px){.keep1{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:640px){.keep1{grid-template-columns:1fr}}
+/* 관리자 보드 비우기 */
+.whead .wrs{opacity:.5}.whead .wrs:hover,.whead .wrs:focus-visible{opacity:1}
+.rst{text-align:center}.rst .rsic{font-size:42px;line-height:1}.rst h2{margin:6px 0 4px;font-family:'Jua',sans-serif;font-weight:400;font-size:26px}
+.rst h2 small{font-family:inherit;font-size:12px;font-weight:700;color:var(--sub);background:var(--blueS);border-radius:20px;padding:2px 9px;vertical-align:middle;margin-left:4px}
+.rst p{color:var(--sub);font-size:14px;margin:0 0 14px}
+.rsopt{display:grid;gap:8px;text-align:left;margin:0 0 14px}
+.rsopt label{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:14px;padding:11px 13px;cursor:pointer;background:var(--paper)}
+.rsopt label:has(input:checked){border-color:var(--blue);background:var(--blueS)}
+.rsopt input{margin-top:4px;accent-color:var(--blue)}.rsopt span{display:flex;flex-direction:column;gap:2px}.rsopt small{color:var(--sub);font-size:12.5px}
+#rsPin{display:block;width:220px;max-width:100%;margin:0 auto 14px;text-align:center;font-size:20px;letter-spacing:.35em;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);color:var(--ink);font-family:inherit}
+#rsPin.mask{-webkit-text-security:disc}
+
+.toast,#toast{z-index:200}

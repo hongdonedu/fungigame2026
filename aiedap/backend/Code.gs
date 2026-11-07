@@ -7,8 +7,10 @@
  *   MODEL           (선택) 먼저 써 볼 모델 이름. 비우면 아래 MODELS 순서대로
  *   SHEET_ID        (자동) 처음 실행 때 응답 스프레드시트를 만들어 저장
  *   ADMIN_PIN       (선택) '추가 정보'에 강사 공지로 고정할 때 쓰는 숫자. 비우면 1108
+ *   RESET_PIN       (선택) 보드 비우기(관리자 리셋) 암호. 비우면 3090
  * ▣ 배포: 배포 › 새 배포 › 유형 '웹 앱' › 실행 사용자 '나' › 액세스 '모든 사용자'
  * ▣ 시트에서 줄을 지우면 그 응답은 보드에서 사라집니다(부적절한 글 정리용).
+ * ▣ 보드의 🧹 버튼(관리자 암호)으로 비우면, 지운 줄은 '지운 기록' 탭으로 옮겨 보관합니다.
  */
 
 const PROPS = PropertiesService.getScriptProperties();
@@ -20,9 +22,12 @@ const TABS = {
   responses: { name: '활동 응답',      head: ['시각', '모듈', '활동', '모둠', '이름', '기기ID', '요약', '선택', '내용(JSON)'] },
   ai:        { name: 'AI 도우미 기록', head: ['시각', '모듈', '작업', '모둠', '이름', '기기ID', '입력 요약', '첨부 수', '모델', 'AI 응답'] },
   scores:    { name: '게임 점수',      head: ['시각', '게임', '모둠', '이름', '기기ID', '점수', '시간(ms)', '세부'] },
-  links:     { name: '추가 정보',      head: ['시각', 'ID', '제목', '주소', '설명', '이름', '모둠', '기기ID', '고정', '삭제'] }
+  links:     { name: '추가 정보',      head: ['시각', 'ID', '제목', '주소', '설명', '이름', '모둠', '기기ID', '고정', '삭제'] },
+  trash:     { name: '지운 기록',      head: ['지운 시각', '원래 탭', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] }
 };
 function adminPin_() { return String(PROPS.getProperty('ADMIN_PIN') || '1108'); }
+function resetPin_() { return String(PROPS.getProperty('RESET_PIN') || '3090'); }
+const GAMES = { m4: ['lens'], m5: ['life'] };
 
 /* ───────── 스프레드시트 ───────── */
 function ss_() {
@@ -187,6 +192,61 @@ function append_(key, row) {
   try { sh.appendRow(row); SpreadsheetApp.flush(); }
   finally { lock.releaseLock(); }
 }
+/* 조건에 맞는 줄을 '지운 기록' 탭으로 옮기고 원래 탭에서 빼기. 잠금 안에서만 부른다. */
+function moveRows_(key, pred) {
+  const sh = sheet_(key);
+  const n = sh.getLastRow();
+  if (n < 2) return { n: 0, acts: [] };
+  const cols = TABS[key].head.length;
+  const rng = sh.getRange(2, 1, n - 1, cols);
+  const vals = rng.getValues();
+  const keep = [], gone = [];
+  vals.forEach(r => (pred(r) ? gone : keep).push(r));
+  if (!gone.length) return { n: 0, acts: [] };
+  const tr = sheet_('trash');
+  const stamp = now_(), tab = TABS[key].name;
+  const pad = r => { const a = [stamp, tab].concat(r.slice(0, 10)); while (a.length < 12) a.push(''); return a; };
+  tr.getRange(tr.getLastRow() + 1, 1, gone.length, 12).setValues(gone.map(pad));
+  SpreadsheetApp.flush();
+  rng.clearContent();
+  if (keep.length) sh.getRange(2, 1, keep.length, cols).setValues(keep);
+  const acts = {};
+  if (key === 'responses') gone.forEach(r => { acts[String(r[2])] = 1; });
+  return { n: gone.length, acts: Object.keys(acts) };
+}
+function reset_(b) {
+  const dev = clip_(b.device, 40);
+  const tk = 'rst_' + dev;
+  const tries = Number(CACHE.get(tk) || 0);
+  if (tries >= 6) return { ok: false, error: '잠시 뒤에 다시 해 주세요 (암호를 여러 번 틀렸어요).' };
+  if (String(b.pin || '') !== resetPin_()) { CACHE.put(tk, String(tries + 1), 600); return { ok: false, error: '관리자 암호가 맞지 않아요.' }; }
+  const mod = String(b.module || ''), act = String(b.activity || ''), all = b.scope === 'module';
+  if (!mod || (!all && !act)) return { ok: false, error: '비울 보드를 알 수 없어요.' };
+  const games = GAMES[mod] || [];
+  let res, mem = { n: 0 }, sc = { n: 0 };
+  const lock = LockService.getScriptLock();
+  lock.waitLock(28000);
+  try {
+    res = moveRows_('responses', r => String(r[1]) === mod && (all || String(r[2]) === act));
+    if (all) {
+      mem = moveRows_('members', r => String(r[1]) === mod);
+      sc = moveRows_('scores', r => games.indexOf(String(r[1])) >= 0);
+    }
+    SpreadsheetApp.flush();
+  } finally { lock.releaseLock(); }
+  const gs = [''];
+  for (let g = 1; g <= 30; g++) gs.push(String(g));
+  const keys = ['T|', 'T|' + mod, 'S|'];
+  games.forEach(g => keys.push('S|' + g));
+  gs.forEach(g => keys.push('M|' + g));
+  const acts = res.acts.slice();
+  if (act && acts.indexOf(act) < 0) acts.push(act);
+  acts.forEach(a => gs.forEach(g => [0, 1].forEach(f => keys.push(['L', mod, a, g, f].join('|'), ['L', '', a, g, f].join('|')))));
+  for (let i = 0; i < keys.length; i += 400) CACHE.removeAll(keys.slice(i, i + 400));
+  CACHE.remove(tk);
+  return { ok: true, removed: res.n, members: mem.n, scores: sc.n };
+}
+
 function doPost(e) {
   let b = {};
   try { b = JSON.parse((e && e.postData && e.postData.contents) || '{}'); } catch (err) { return out_({ ok: false, error: 'bad json' }); }
@@ -244,6 +304,7 @@ function doPost(e) {
         return out_({ ok: false, error: '글을 찾지 못했어요.' });
       } finally { lock.releaseLock(); }
     }
+    if (b.action === 'reset') return out_(reset_(b));
     if (b.action === 'score') {
       append_('scores', [now_(), b.game || '', String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40),
         Number(b.score) || 0, Number(b.ms) || 0, clip_(b.detail, 500)]);

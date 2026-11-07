@@ -404,15 +404,53 @@ function wallBox(a,scope,o){
   o=o||{};
   return `<div class="wall" data-a="${a}" data-scope="${scope||'group'}" data-kind="${o.kind||'cards'}" ${o.full?'data-full="1"':''} ${o.big?'data-big="1"':''}>
    <div class="whead"><b>${esc(o.title||ACT_NAME[a]||a)}</b><span class="wtabs"><button data-s="group" class="${scope!=='all'?'on':''}">우리 모둠</button><button data-s="all" class="${scope==='all'?'on':''}">반 전체</button></span>
-   <span class="wcount"></span><button class="b w sm" data-act="spin">🎡 ${esc(o.spin||'룰렛')}</button><button class="b w sm" data-act="re" title="새로 고침">↻</button></div>
+   <span class="wcount"></span><button class="b w sm" data-act="spin">🎡 ${esc(o.spin||'룰렛')}</button><button class="b w sm" data-act="re" title="새로 고침">↻</button><button class="b w sm wrs" data-act="reset" title="관리자: 보드 비우기" aria-label="관리자: 보드 비우기">🧹</button></div>
    <div class="wbody"><div class="wempty">불러오는 중…</div></div></div>`;
 }
 document.addEventListener('click',e=>{
   const t=e.target.closest('.wall .wtabs button');
   if(t){const w=t.closest('.wall');w.dataset.scope=t.dataset.s;$$('.wtabs button',w).forEach(x=>x.classList.toggle('on',x===t));loadWall(w);return;}
   const a=e.target.closest('.wall [data-act]');
-  if(a){const w=a.closest('.wall');if(a.dataset.act==='re')loadWall(w);else spinFromWall(w);}
+  if(a){const w=a.closest('.wall');const k=a.dataset.act;if(k==='re')loadWall(w);else if(k==='reset')resetModal(w);else spinFromWall(w);}
 });
+
+/* 관리자: 보드 비우기 (암호는 서버에서만 확인, 입력칸은 별표로) */
+function resetModal(w){
+  const a=w.dataset.a, nm=ACT_NAME[a]||a;
+  const el=modal(`<div class="rst"><div class="rsic">🧹</div><h2>보드 비우기 <small>관리자</small></h2>
+   <p>지운 글은 응답 시트의 ‘지운 기록’ 탭에 보관돼요.</p>
+   <div class="rsopt">
+    <label><input type="radio" name="rsScope" value="board" checked><span><b>이 보드만</b><small>‘${esc(nm)}’ 보드의 글을 모두 지워요</small></span></label>
+    <label><input type="radio" name="rsScope" value="module"><span><b>${esc(M.name)} 전체 초기화</b><small>모든 보드·활동지·게임 점수·등록 명단까지 지워요 (수업 전 정리용)</small></span></label>
+   </div>
+   <input id="rsPin" type="password" inputmode="numeric" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="12" placeholder="관리자 암호" aria-label="관리자 암호">
+   <div class="btns" style="justify-content:center"><button class="b r" id="rsGo">비우기</button><button class="b w" id="rsNo">취소</button></div></div>`,'narrow');
+  const pin=$('#rsPin',el), go=$('#rsGo',el);
+  if(window.CSS&&CSS.supports&&CSS.supports('-webkit-text-security','disc')){pin.type='text';pin.classList.add('mask');}
+  setTimeout(()=>pin.focus(),60);
+  $('#rsNo',el).onclick=closeModal;
+  $$('input[name=rsScope]',el).forEach(r=>r.onchange=()=>{delete go.dataset.sure;go.textContent='비우기';});
+  pin.addEventListener('keydown',e=>{if(e.key==='Enter')go.click();});
+  go.onclick=async()=>{
+    const p=pin.value.trim(); if(!p){toast('관리자 암호를 넣어 주세요');pin.focus();return;}
+    const scope=$('input[name=rsScope]:checked',el).value;
+    if(scope==='module'&&!go.dataset.sure){go.dataset.sure='1';go.textContent='한 번 더 누르면 모두 지워요';return;}
+    go.disabled=true;go.textContent='지우는 중…';
+    const fail=msg=>{toast(msg);go.disabled=false;delete go.dataset.sure;go.textContent='비우기';pin.select();};
+    if(!ONLINE){
+      store.local=store.local.filter(r=>r.m!==MID||(scope==='board'&&r.a!==a));
+      if(scope==='module')store.sent={};else delete store.sent[a];
+      save();closeModal();toast('🧹 이 기기의 글을 비웠어요 (체험 모드)');render(true);return;
+    }
+    let j;
+    try{j=await apiPost({action:'reset',module:MID,activity:a,scope:scope,pin:p,device:store.dev});}catch(e){fail('연결이 잠깐 끊겼어요. 다시 눌러 주세요');return;}
+    if(!j||!j.ok){fail((j&&j.error)||'비우지 못했어요');return;}
+    if(scope==='module')store.sent={};else delete store.sent[a];
+    save();closeModal();
+    toast(scope==='module'?`🧹 ${M.name} 초기화: 글 ${j.removed}개 · 등록 ${j.members||0}명 · 점수 ${j.scores||0}개`:`🧹 ‘${nm}’ 보드를 비웠어요 (${j.removed}개)`);
+    render(true);
+  };
+}
 async function fetchRows(a,scope,full){
   const m=me();
   const q={action:'list',module:MID,activity:a};
