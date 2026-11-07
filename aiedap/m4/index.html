@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Jua&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/base.css?v=1">
-<link rel="stylesheet" href="../shared/games.css?v=2">
-<link rel="stylesheet" href="../shared/live.css?v=2">
+<link rel="stylesheet" href="../shared/games.css?v=3">
+<link rel="stylesheet" href="../shared/live.css?v=3">
 </head><body>
 <button class="menuBtn" onclick="document.querySelector('.side').classList.toggle('open')">☰ 차례</button>
 <button class="me" id="meBtn" onclick="joinModal()">🪑 모둠·이름 등록</button>
@@ -25,6 +25,9 @@
  <hr>
  <div class="lbl">강의 자료 · 바로 가는 사이트</div>
  <div class="ext" id="links"></div>
+ <hr>
+ <div class="lbl xlbl"><span>📎 추가 정보</span><a href="#links">＋ 올리기</a></div>
+ <div class="ext xinfo" id="extra"></div>
 </aside>
 <main class="main" id="main"></main>
 <div class="lb" id="lb" onclick="this.classList.remove('on')"><img id="lbi" alt=""></div>
@@ -32,6 +35,6 @@
 <script>window.MODID='m4';</script>
 <script src="../data.js?v=1"></script>
 <script src="../shared/config.js?v=2"></script>
-<script src="../shared/games.js?v=2"></script>
-<script src="../shared/live.js?v=2"></script>
+<script src="../shared/games.js?v=3"></script>
+<script src="../shared/live.js?v=3"></script>
 </body></html>

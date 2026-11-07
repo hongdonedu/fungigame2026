@@ -14,6 +14,8 @@
   const GAMES = (AG.games = AG.games || {});
   GAMES.version = '1.0';
   const art = (f) => (AG.artBase || '../art/') + f;
+  /* 그림 아이콘: 그림이 없으면 이모지로 돌아간다 */
+  const IM = (f, fb, cls) => `<img class="ag-img ${cls || ''}" src="${art(f)}" alt="" draggable="false" data-fb="${fb || ''}" onerror="this.outerHTML=this.dataset.fb||''">`;
 
   /* ───────────────────────── 공통 도우미 ───────────────────────── */
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -31,7 +33,7 @@
   const heroHTML = (o) => `
     <div class="ag-hero ${o.cls || ''}">
       ${o.banner ? `<img class="ag-banner" data-opt src="${art(o.banner)}" alt="">` : ''}
-      <div class="ag-hero-in"><img class="ag-mascot" data-opt src="${art(o.mascot)}" alt="">
+      <div class="ag-hero-in"><img class="ag-mascot ${/^emb_/.test(o.mascot) ? 'ag-emb' : ''}" data-opt src="${art(o.mascot)}" alt="">
         <div><div class="ag-kicker">${o.kicker}</div><h3 class="ag-disp">${o.title}</h3><p>${o.text}</p></div></div>
     </div>`;
 
@@ -282,7 +284,7 @@
     function setup() {
       stopRace();
       root.innerHTML = `
-        ${heroHTML({ cls: 'ag-hero-rl', banner: opts.banner ? 'game_roulette.webp' : '', mascot: 'redi_wave.webp', kicker: '🎱 MARBLE ROULETTE', title: esc(opts.title || '마블 룰렛'), text: '이름을 넣고 START! 구슬들이 핀 숲·회전 날개·범퍼를 지나 결승선까지 달려요.' })}
+        ${heroHTML({ cls: 'ag-hero-rl', banner: opts.banner ? 'game_roulette.webp' : '', mascot: 'emb_roulette.webp', kicker: '🎱 MARBLE ROULETTE', title: esc(opts.title || '마블 룰렛'), text: '이름을 넣고 START! 구슬들이 핀 숲·회전 날개·범퍼를 지나 결승선까지 달려요.' })}
         <div class="ag-panel ag-rl-setup">
           <div class="ag-lab">참가자 <b class="ag-cnt">0</b>명 <span>줄바꿈·쉼표로 구분 · <code>이름*2</code>는 구슬 2개 · 최대 40개</span></div>
           <textarea class="ag-names" rows="6" placeholder="예)&#10;1모둠&#10;2모둠&#10;3모둠">${esc(namesText)}</textarea>
@@ -372,7 +374,7 @@
       cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr);
       const s = Math.min((cw - 12) / RW, ch / 540);
       Object.assign(V, { cw, ch, dpr, s, ox: (cw - RW * s) / 2, viewH: ch / s });
-      bg = ctx.createLinearGradient(0, 0, 0, ch); bg.addColorStop(0, '#111c4e'); bg.addColorStop(1, '#1f1347');
+      bg = ctx.createLinearGradient(0, 0, 0, ch); bg.addColorStop(0, 'rgba(12,20,60,0.58)'); bg.addColorStop(1, 'rgba(26,14,62,0.62)');
       if (R) draw(R);
     }
 
@@ -453,7 +455,7 @@
       if (!ctx || !V.cw) return;
       const c = ctx, { s, ox, dpr, cw, ch } = V, map = r.map, y0 = r.camY - 40, y1 = r.camY + V.viewH + 40;
       c.setTransform(dpr, 0, 0, dpr, 0, 0);
-      c.fillStyle = bg; c.fillRect(0, 0, cw, ch);
+      c.clearRect(0, 0, cw, ch); c.fillStyle = bg; c.fillRect(0, 0, cw, ch);
       c.setTransform(dpr * s, 0, 0, dpr * s, dpr * ox, -dpr * s * r.camY);
       c.fillStyle = 'rgba(130,160,255,0.075)'; c.fillRect(0, y0, RW, y1 - y0);
       c.textAlign = 'center'; c.textBaseline = 'middle';
@@ -571,12 +573,12 @@
 
   /* ═════════════════════════ 2. 렌즈 맞히기 ═════════════════════════ */
   const LENS = [
-    { k: '교육적', q: '학습목표와 관련있는가?', ico: '🎯' },
-    { k: '학습자', q: '학생이 스스로 생각하고 선택하였는가?', ico: '🙋' },
-    { k: '기술적', q: '해당 생성형 AI의 활용이 적절하였는가?', ico: '🛠️' },
-    { k: '평가', q: '학습의 증거를 충분히 확인하였는가?', ico: '📊' },
-    { k: '윤리적', q: '책임 있는 창작이 이루어졌는가?', ico: '🛡️' },
-    { k: '실행', q: '실제 교실에서 실행 가능한가?', ico: '🏫' },
+    { k: '교육적', img: 'lens_edu.webp', q: '학습목표와 관련있는가?', ico: '🎯' },
+    { k: '학습자', img: 'lens_lrn.webp', q: '학생이 스스로 생각하고 선택하였는가?', ico: '🙋' },
+    { k: '기술적', img: 'lens_tec.webp', q: '해당 생성형 AI의 활용이 적절하였는가?', ico: '🛠️' },
+    { k: '평가', img: 'lens_evl.webp', q: '학습의 증거를 충분히 확인하였는가?', ico: '📊' },
+    { k: '윤리적', img: 'lens_eth.webp', q: '책임 있는 창작이 이루어졌는가?', ico: '🛡️' },
+    { k: '실행', img: 'lens_exe.webp', q: '실제 교실에서 실행 가능한가?', ico: '🏫' },
   ];
   GAMES.LENSES = LENS;
   const LQ = [
@@ -603,8 +605,8 @@
     function intro() {
       L.clear(tick); S = null;
       root.innerHTML = `
-        ${heroHTML({ cls: 'ag-hero-lq', banner: opts.banner ? 'game_lens.webp' : '', mascot: 'redi_magnifier.webp', kicker: '🔍 LENS DETECTIVE', title: '렌즈 맞히기', text: `교실 장면 ${LQ.length}개를 읽고 <b>가장 먼저 꺼내야 할 렌즈</b>를 ${LIM}초 안에 골라요. 빠를수록, 연속으로 맞힐수록 보너스!` })}
-        <div class="ag-lq-lenses">${LENS.map((l, i) => `<div class="ag-lq-lens" style="--c:var(--ag-l${i + 1})"><b>${l.ico} ${l.k}</b><span>${l.q}</span></div>`).join('')}</div>
+        ${heroHTML({ cls: 'ag-hero-lq', banner: opts.banner ? 'game_lens.webp' : '', mascot: 'emb_lens.webp', kicker: '🔍 LENS DETECTIVE', title: '렌즈 맞히기', text: `교실 장면 ${LQ.length}개를 읽고 <b>가장 먼저 꺼내야 할 렌즈</b>를 ${LIM}초 안에 골라요. 빠를수록, 연속으로 맞힐수록 보너스!` })}
+        <div class="ag-lq-lenses">${LENS.map((l, i) => `<div class="ag-lq-lens" style="--c:var(--ag-l${i + 1})"><b>${IM(l.img, l.ico, 'ag-li ag-li-l')} ${l.k}</b><span>${l.q}</span></div>`).join('')}</div>
         <div class="ag-row"><span class="ag-hint">⌨️ 키보드 1~6으로도 고를 수 있어요</span><span class="ag-sp"></span><button type="button" class="ag-btn ag-big" data-a="go">도전 시작 ▶</button></div>`;
       optImgs(root);
       $(root, '[data-a="go"]').addEventListener('click', () => { Snd.unlock(); begin(); });
@@ -630,7 +632,7 @@
           <div class="ag-lq-ico">${q.ico}</div>
           <div><div class="ag-kicker">교실 장면</div><p>${esc(q.s)}</p><div class="ag-lq-ask">이 장면에서 <b>가장 먼저</b> 꺼내야 할 렌즈는?</div></div>
         </div>
-        <div class="ag-lq-opts">${LENS.map((l, i) => `<button type="button" class="ag-lq-opt" data-i="${i}" style="--c:var(--ag-l${i + 1})"><span class="ag-lq-k"><em>${i + 1}</em>${l.ico} ${l.k}</span><small>${l.q}</small></button>`).join('')}</div>
+        <div class="ag-lq-opts">${LENS.map((l, i) => `<button type="button" class="ag-lq-opt" data-i="${i}" style="--c:var(--ag-l${i + 1})"><span class="ag-lq-k"><em>${i + 1}</em>${IM(l.img, l.ico, 'ag-li')} ${l.k}</span><small>${l.q}</small></button>`).join('')}</div>
         <div class="ag-lq-fb" hidden></div>`;
       $$(root, '.ag-lq-opt').forEach((b) => b.addEventListener('click', () => answer(+b.dataset.i)));
       const bar = $(root, '.ag-lq-timer i'), sec = $(root, '.ag-lq-sec');
@@ -663,10 +665,10 @@
       fb.hidden = false; fb.className = 'ag-lq-fb ' + (ok ? 'ok' : 'bad');
       fb.innerHTML = `
         <div class="ag-lq-fbh">${ok ? `🎉 정답! <b>+${gain}</b>` : i < 0 ? '⏰ 시간 초과!' : '🤔 아쉬워요!'}
-          <span>정답 · <b style="color:var(--ag-l${q.a + 1})">${A.ico} ${A.k} 렌즈</b></span></div>
+          <span>정답 · <b style="color:var(--ag-l${q.a + 1})">${IM(A.img, A.ico, 'ag-li')} ${A.k} 렌즈</b></span></div>
         <div class="ag-lq-std">“${A.q}”</div>
         <p>${esc(q.why)}</p>
-        ${q.also != null ? `<div class="ag-lq-also">함께 보면 좋은 렌즈 · <b style="color:var(--ag-l${q.also + 1})">${LENS[q.also].ico} ${LENS[q.also].k}</b> — ${LENS[q.also].q}</div>` : ''}
+        ${q.also != null ? `<div class="ag-lq-also">함께 보면 좋은 렌즈 · <b style="color:var(--ag-l${q.also + 1})">${IM(LENS[q.also].img, LENS[q.also].ico, 'ag-li ag-li-s')} ${LENS[q.also].k}</b> — ${LENS[q.also].q}</div>` : ''}
         <div class="ag-row"><span class="ag-sp"></span><button type="button" class="ag-btn" data-a="next">${last ? '결과 보기 🏆' : '다음 장면 ▶'}</button></div>`;
       const nb = $(fb, '[data-a="next"]');
       nb.addEventListener('click', next);
@@ -698,7 +700,7 @@
             <div><b>${Math.round(ms / 1000)}</b><span>걸린 시간(초)</span></div>
           </div>
         </div>
-        <div class="ag-lq-bars">${per.map((p) => `<div class="ag-lq-bar" style="--c:var(--ag-l${p.i + 1})"><b>${p.l.ico} ${p.l.k}</b><span>${Array.from({ length: p.n }, (_, k) => `<i class="${k < p.ok ? 'on' : ''}"></i>`).join('')}</span><em>${p.ok}/${p.n}</em></div>`).join('')}</div>
+        <div class="ag-lq-bars">${per.map((p) => `<div class="ag-lq-bar" style="--c:var(--ag-l${p.i + 1})"><b>${IM(p.l.img, p.l.ico, 'ag-li ag-li-s')} ${p.l.k}</b><span>${Array.from({ length: p.n }, (_, k) => `<i class="${k < p.ok ? 'on' : ''}"></i>`).join('')}</span><em>${p.ok}/${p.n}</em></div>`).join('')}</div>
         ${wrong.length ? `<details class="ag-panel ag-lq-review"><summary>🔁 다시 볼 장면 ${wrong.length}개</summary>${wrong.map((x) => `<div class="ag-lq-rv"><p>${x.q.ico} ${esc(x.q.s)}</p><div>내 답 <b>${esc(x.a.pick)}</b> → 정답 <b style="color:var(--ag-l${x.q.a + 1})">${LENS[x.q.a].k}</b> · ${esc(x.q.why)}</div></div>`).join('')}</details>` : ''}
         <div class="ag-row"><span class="ag-sp"></span><button type="button" class="ag-btn ag-ghost" data-a="home">처음으로</button><button type="button" class="ag-btn" data-a="again">🔁 다시 도전</button></div>`;
       optImgs(root);
@@ -727,9 +729,9 @@
   const TILES = ['start', 'G1', 'chance', 'G2', 'G1', 'G3', 'trial', 'G2', 'fork', 'G1', 'G3', 'chance', 'G2', 'trial', 'G3', 'G1', 'G2', 'fork', 'G3', 'trial', 'chance', 'G1', 'G3', 'G2', 'trial', 'G3', 'chance', 'G1', 'trial', 'G2', 'G3', 'goal'];
   const GOAL = TILES.length - 1;
   const TT = {
-    start: { ico: '🚩', lab: '출발', cls: 'st' }, goal: { ico: '🏆', lab: '개척자', cls: 'goal' },
-    G1: { ico: '📘', lab: 'G1', cls: 'g1' }, G2: { ico: '🧭', lab: 'G2', cls: 'g2' }, G3: { ico: '🤝', lab: 'G3', cls: 'g3' },
-    chance: { ico: '⭐', lab: '찬스', cls: 'ch' }, trial: { ico: '⚡', lab: '시련', cls: 'tr' }, fork: { ico: '🔀', lab: '갈림길', cls: 'fk' },
+    start: { ico: '🚩', img: 'tile_start.webp', lab: '출발', cls: 'st' }, goal: { ico: '🏆', img: 'tile_goal.webp', lab: '개척자', cls: 'goal' },
+    G1: { ico: '📘', img: 'tile_g1.webp', lab: 'G1', cls: 'g1' }, G2: { ico: '🧭', img: 'tile_g2.webp', lab: 'G2', cls: 'g2' }, G3: { ico: '🤝', img: 'tile_g3.webp', lab: 'G3', cls: 'g3' },
+    chance: { ico: '⭐', img: 'tile_chance.webp', lab: '찬스', cls: 'ch' }, trial: { ico: '⚡', img: 'tile_trial.webp', lab: '시련', cls: 'tr' }, fork: { ico: '🔀', img: 'tile_fork.webp', lab: '갈림길', cls: 'fk' },
   };
   const GI = {
     G1: { name: '전문성 영역 이해', short: '영역 이해', c: '#3b6fe0' },
@@ -783,9 +785,10 @@
     G3: '학습공동체에서 수업 하나를 함께 실천하고 공유마당에 올리기',
   };
   const TOK = ['#2a5bd7', '#e5484d', '#1f9d6b', '#f08a24', '#8a5cf6', '#d99a00', '#0ea5b7', '#db2777'];
+  const PAWN = [1, 5, 4, 2, 3, 6, 7, 8]; // TOK 색 순서 → pawn_N 그림 (파랑·빨강·초록·주황·보라·노랑·청록·분홍)
   const PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
   const diceHTML = (n) => Array.from({ length: 9 }, (_, i) => `<span class="${PIPS[n].includes(i) ? 'on' : ''}"></span>`).join('');
-  const legendHTML = () => ['G1', 'G2', 'G3', 'chance', 'trial', 'fork'].map((k) => `<span class="ag-leg ag-t-${TT[k].cls}">${TT[k].ico} ${GI[k] ? `${k} ${GI[k].short}` : TT[k].lab}</span>`).join('');
+  const legendHTML = () => ['G1', 'G2', 'G3', 'chance', 'trial', 'fork'].map((k) => `<span class="ag-leg ag-t-${TT[k].cls}">${IM(TT[k].img, TT[k].ico, 'ag-legi')} ${GI[k] ? `${k} ${GI[k].short}` : TT[k].lab}</span>`).join('');
   const gCount = (p) => { const c = { G1: 0, G2: 0, G3: 0 }; p.cards.forEach((x) => { c[x.g] = (c[x.g] || 0) + 1; }); return c; };
   const initialOf = (s) => { const t = String(s).trim(); const m = t.match(/^\d+/); return m ? m[0].slice(0, 2) : t.slice(0, 1); };
 
@@ -802,7 +805,7 @@
     function setup() {
       cleanup();
       root.innerHTML = `
-        ${heroHTML({ cls: 'ag-hero-lg', banner: opts.banner ? 'game_life.webp' : '', mascot: 'redi_idea.webp', kicker: '🎲 GROWTH BOARD GAME', title: '마스터교원 인생게임', text: '주사위를 굴려 <b>입문가</b>에서 <b>개척자</b>까지! 칸마다 G1·G2·G3 성장 카드를 모으며 나의 전문성 성장 경로를 그려 봐요.' })}
+        ${heroHTML({ cls: 'ag-hero-lg', banner: opts.banner ? 'game_life.webp' : '', mascot: 'emb_life.webp', kicker: '🎲 GROWTH BOARD GAME', title: '마스터교원 인생게임', text: '주사위를 굴려 <b>입문가</b>에서 <b>개척자</b>까지! 칸마다 G1·G2·G3 성장 카드를 모으며 나의 전문성 성장 경로를 그려 봐요.' })}
         <div class="ag-panel ag-lg-setup">
           <div class="ag-lab">플레이어 <b class="ag-pn"></b>명 <span>1~8명 · 한 화면에서 돌아가며</span><span class="ag-btns"><button type="button" class="ag-ic" data-a="minus" aria-label="플레이어 빼기">－</button><button type="button" class="ag-ic" data-a="plus" aria-label="플레이어 더하기">＋</button></span></div>
           <div class="ag-lg-pin"></div>
@@ -835,7 +838,7 @@
       st = { players: ps, turn: 0, round: 1, busy: false, auto: false, over: false, cols: 0, pending: null, t0: Date.now(), decks: { G1: shuffle(CARDS.G1), G2: shuffle(CARDS.G2), G3: shuffle(CARDS.G3) } };
       root.innerHTML = `
         <div class="ag-lg-top">
-          <div class="ag-disp ag-lg-title">🎲 마스터교원 인생게임</div>
+          <div class="ag-disp ag-lg-title">${IM('emb_life.webp', '🎲', 'ag-tti')}<span>마스터교원 인생게임</span></div>
           <span class="ag-pill ag-lg-round"></span><span class="ag-sp"></span>
           <button type="button" class="ag-ic ag-wide" data-a="auto" title="자동으로 끝까지 진행">⏩ 자동</button>
           <button type="button" class="ag-ic" data-a="snd" title="소리 켜기/끄기">${Snd.label()}</button>
@@ -874,13 +877,26 @@
       board.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
       board.innerHTML = TILES.map((t, i) => {
         const row = Math.floor(i / cols), c = i % cols, col = row % 2 ? cols - 1 - c : c, zi = ZONES.indexOf(i), m = TT[t];
-        return `<div class="ag-tile ag-t-${m.cls}" data-i="${i}" style="grid-row:${row + 1};grid-column:${col + 1}"><span class="ag-tno">${i}</span>${zi >= 0 ? `<span class="ag-zone">Lv.${zi + 1} ${LV[zi]}</span>` : ''}<span class="ag-tico">${m.ico}</span><span class="ag-tlab">${m.lab}</span></div>`;
-      }).join('') + st.players.map((p) => `<div class="ag-tok" data-p="${p.id}" style="--c:${p.col}" title="${esc(p.name)}"><i>${esc(initialOf(p.name))}</i></div>`).join('');
+        return `<div class="ag-tile ag-t-${m.cls}" data-i="${i}" style="grid-row:${row + 1};grid-column:${col + 1}"><span class="ag-tno">${i}</span>${zi >= 0 ? `<span class="ag-zone">Lv.${zi + 1} ${LV[zi]}</span>` : ''}<span class="ag-tico">${IM(m.img, m.ico, 'ag-ti')}</span><span class="ag-tlab">${m.lab}</span></div>`;
+      }).join('') + st.players.map((p) => `<div class="ag-tok" data-p="${p.id}" style="--c:${p.col}" title="${esc(p.name)}">${IM(`pawn_${PAWN[p.id % 8]}.webp`, '', 'ag-pawn')}<i>${esc(initialOf(p.name))}</i></div>`).join('');
       placeTokens();
+    }
+
+    function drawPath(board) {
+      let svg = $(board, 'svg.ag-path');
+      if (!svg) { svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('class', 'ag-path'); svg.setAttribute('aria-hidden', 'true'); board.prepend(svg); }
+      const W = board.clientWidth, H = board.clientHeight;
+      const pts = TILES.map((_, i) => { const t = $(board, `.ag-tile[data-i="${i}"]`); return t ? [t.offsetLeft + t.offsetWidth / 2, t.offsetTop + t.offsetHeight / 2] : null; }).filter(Boolean);
+      const key = W + 'x' + H + ':' + (pts[1] || []).join(',');
+      if (svg.dataset.k === key) return; svg.dataset.k = key;
+      svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      const d = pts.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1)).join(' ');
+      svg.innerHTML = `<path d="${d}" class="ag-road"/><path d="${d}" class="ag-road-in"/><path d="${d}" class="ag-road-dash"/>`;
     }
 
     function placeTokens() {
       const board = $(root, '.ag-lg-board'); if (!board || !st) return;
+      drawPath(board);
       const groups = {};
       st.players.forEach((p) => { (groups[p.pos] = groups[p.pos] || []).push(p); });
       Object.keys(groups).forEach((pos) => {
@@ -962,7 +978,7 @@
 
     const cardHTML = (c, p) => `
       <div class="ag-mhead"><span>${c.g}</span>${GI[c.g].name}</div>
-      <div class="ag-mico">${TT[c.g].ico}</div>
+      <div class="ag-mico">${IM(TT[c.g].img, TT[c.g].ico, 'ag-mi')}</div>
       <div class="ag-msub">${esc(c.sub)}</div>
       <h4>${esc(c.title)}</h4><p>${esc(c.desc)}</p>
       <div class="ag-think">💭 <b>생각해 보기</b> · ${esc(c.q)}</div>
@@ -1013,13 +1029,13 @@
         say(`🃏 ${esc(p.name)} 님 <b>${t}</b> 카드 「${esc(c.title)}」 획득!`);
       } else if (t === 'chance') {
         const c = pick(CHANCE);
-        await modal(eventHTML('⭐ 찬스 카드', '⭐', c, p), [{ t: '좋아요!', v: 1 }], '#d99a00');
+        await modal(eventHTML('⭐ 찬스 카드', IM('tile_chance.webp', '⭐', 'ag-mi'), c, p), [{ t: '좋아요!', v: 1 }], '#d99a00');
         if (c.eff === 'fwd') { say(`⭐ ${esc(c.t)} → ${c.n}칸 도약!`); await moveBy(p, c.n); }
         else if (c.eff === 'again') { say(`⭐ ${esc(p.name)} 님 한 번 더!`); return { again: true }; }
         else if (c.eff === 'card') { const cd = drawCard(c.g); p.cards.push(cd); Snd.play('card'); renderPlayers(p.id); say(`⭐ ${c.g} 카드 「${esc(cd.title)}」 획득!`); }
       } else if (t === 'trial') {
         const c = pick(TRIAL);
-        await modal(eventHTML('⚡ 시련 카드', '⚡', c, p), [{ t: '받아들이기', v: 1 }], '#e5484d');
+        await modal(eventHTML('⚡ 시련 카드', IM('tile_trial.webp', '⚡', 'ag-mi'), c, p), [{ t: '받아들이기', v: 1 }], '#e5484d');
         if (c.eff === 'back') { say(`⚡ ${esc(c.t)} → ${c.n}칸 뒤로…`); await moveBy(p, -c.n); }
         else if (c.eff === 'skip') { p.skip = true; say(`⚡ ${esc(c.t)} → 다음 차례 한 번 쉬기`); }
         else if (c.eff === 'reflect') { p.cards.push(Object.assign({ g: 'G3' }, REFLECT)); Snd.play('card'); renderPlayers(p.id); say('⚡→🌱 시련을 기록했더니 G3 성장 카드가 되었어요!'); }

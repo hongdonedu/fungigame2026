@@ -869,6 +869,100 @@ function timer(){
   tDraw();
 }
 
+/* ───────── 추가 정보 게시판 (누구나 사이트·정보 올리기) ───────── */
+let XL=[]; let xlLoaded=false; let xlPoll=null;
+const seenX=new Set(store.seenX||[]);
+const host=u=>{try{return new URL(u).hostname.replace(/^www\./,'');}catch(e){return '';}};
+const fav=u=>{const h=host(u);return h?`https://www.google.com/s2/favicons?domain=${encodeURIComponent(h)}&sz=64`:'';};
+function safeHref(u){return /^https?:\/\//i.test(u||'')?u:'';}
+async function loadLinks(){
+  let rows=[];
+  try{
+    if(ONLINE){const j=await apiGet({action:'links'});if(!j.ok)throw 0;rows=j.rows||[];}
+    else rows=(store.localX||[]).filter(r=>!r.del).slice().reverse().sort((a,b)=>(b.pin?1:0)-(a.pin?1:0));
+  }catch(e){return;}
+  const fresh=xlLoaded?rows.filter(r=>!seenX.has(r.id)&&r.d!==mineD()):[];
+  XL=rows; xlLoaded=true;
+  rows.forEach(r=>seenX.add(r.id)); store.seenX=Array.from(seenX).slice(-400); save();
+  drawExtra(fresh.map(r=>r.id));
+  if($('#xlList')) drawLinkList();
+  if(fresh.length){const f=fresh[0];toast(`📎 새 정보 · ${f.pin?'📌 ':''}${f.title}`);const lb=$('.xlbl');if(lb){lb.classList.remove('ping');void lb.offsetWidth;lb.classList.add('ping');}}
+}
+function drawExtra(newIds){
+  const box=$('#extra'); if(!box)return;
+  newIds=newIds||[];
+  if(!XL.length){box.innerHTML=`<a href="#links" class="xempty"><span class="ic">＋</span><span>사이트·정보 올리기<small>강사·선생님 누구나 올리면 모두에게 보여요</small></span></a>`;return;}
+  box.innerHTML=XL.slice(0,7).map(r=>{const href=safeHref(r.url);const ic=href?`<img src="${fav(href)}" alt="" loading="lazy" onerror="this.replaceWith(document.createTextNode('🔗'))">`:'📝';
+    return `<a ${href?`href="${esc(href)}" target="_blank" rel="noopener"`:'href="#links"'} class="${r.pin?'pin':''} ${newIds.indexOf(r.id)>=0?'new':''}" title="${esc(r.desc||r.title)}"><span class="ic">${ic}</span><span>${r.pin?'📌 ':''}${esc(r.title)}${href?' ↗':''}<small>${esc(host(href)||(r.desc||'').slice(0,30))} · ${esc(r.n)}${r.g?' ('+esc(r.g)+'모둠)':''}</small></span></a>`;}).join('')+
+   `<a href="#links" class="xmore"><span class="ic">📎</span><span>${XL.length>7?`모두 보기 (${XL.length})`:'모두 보기 · 올리기'}</span></a>`;
+}
+function linksPage(){
+  const m=me();
+  $('#main').innerHTML=`${head('추가 정보','누구나 올리는 게시판','필요한 사이트와 정보를 한곳에','강의 중에 쓰는 임시 사이트, 참고 자료, 좋은 도구… 누구나 올리면 모든 선생님의 왼쪽 아래 ‘📎 추가 정보’에 바로 나타나요. 올린 사람은 자기 글을 지울 수 있어요.','redi_laptop')}
+   <div class="grid xlgrid">
+    <form class="card pad xlform" id="xlForm" autocomplete="off">
+     <b class="xlh">＋ 새로 올리기</b>
+     <label>주소 <small>(선택)</small><input id="xlUrl" class="inp" inputmode="url" placeholder="https://… 또는 padlet.com/…" maxlength="800"></label>
+     <label>제목<input id="xlTitle" class="inp" placeholder="예) 3차시 참고 사례집, 오늘의 퀴즈 링크" maxlength="80"></label>
+     <label>설명 <small>(선택)</small><textarea id="xlDesc" class="inp" rows="3" maxlength="500" placeholder="무엇인지, 언제 쓰는지 한 줄"></textarea></label>
+     <details class="xlpin"><summary>📌 강사 공지로 맨 위에 고정</summary><input id="xlPin" class="inp" inputmode="numeric" placeholder="강사 PIN" maxlength="12"></details>
+     <div class="btns"><button class="b r big" type="submit" id="xlGo">📎 올리기</button><span class="mini">${m?`${esc(m.g)}모둠 ${esc(m.n)} 이름으로 올라가요`:'이름 없이 올리면 ‘익명’으로 보여요'}</span></div>
+     <p class="mini">🔒 학생 개인정보나 비공개 문서 주소는 올리지 않아요.</p>
+    </form>
+    <div>
+     <div class="xltools"><input id="xlQ" class="inp" placeholder="🔍 제목·설명·주소로 찾기"><span class="wcount" id="xlCount"></span><button class="b w sm" id="xlRe" type="button">↻</button></div>
+     <div id="xlList" class="xllist"><div class="wempty">불러오는 중…</div></div>
+    </div>
+   </div>`;
+  const f=$('#xlForm');
+  $('#xlUrl').addEventListener('blur',()=>{const u=$('#xlUrl').value.trim();if(u&&!$('#xlTitle').value.trim())$('#xlTitle').value=u.replace(/^https?:\/\//,'').replace(/\/$/,'').slice(0,60);});
+  f.onsubmit=async e=>{
+    e.preventDefault();
+    const url=$('#xlUrl').value.trim(), title=$('#xlTitle').value.trim(), desc=$('#xlDesc').value.trim(), pin=($('#xlPin').value||'').trim();
+    if(!url&&!title){toast('주소나 제목을 적어 주세요');$('#xlUrl').focus();return;}
+    if(url&&/\s/.test(url)){toast('주소에 띄어쓰기가 있어요');return;}
+    const btn=$('#xlGo');btn.disabled=true;btn.textContent='올리는 중…';
+    const mm=me()||{};
+    try{
+      if(ONLINE){const j=await apiPost({action:'post',url:url,title:title,desc:desc,pin:pin,name:mm.n||'익명',group:mm.g||'',device:store.dev});if(!j.ok)throw new Error(j.error||'실패');}
+      else{store.localX=store.localX||[];store.localX.push({id:'l'+Date.now(),t:stamp(),title:title||url,url:url&&!/^https?:\/\//i.test(url)?'https://'+url:url,desc:desc,n:mm.n||'익명',g:mm.g||'',d:mineD(),pin:!!pin});save();}
+      f.reset();toast('📎 올렸어요! 모든 선생님 화면에 나타나요');await loadLinks();
+    }catch(err){toast(err.message||'올리지 못했어요');}
+    finally{btn.disabled=false;btn.textContent='📎 올리기';}
+  };
+  $('#xlQ').addEventListener('input',drawLinkList);
+  $('#xlRe').onclick=loadLinks;
+  drawLinkList(); loadLinks();
+}
+function drawLinkList(){
+  const box=$('#xlList'); if(!box)return;
+  if(!xlLoaded){return;}
+  const q=($('#xlQ')&&$('#xlQ').value||'').trim().toLowerCase();
+  const rows=XL.filter(r=>!q||(r.title+' '+r.desc+' '+r.url+' '+r.n).toLowerCase().indexOf(q)>=0);
+  $('#xlCount').textContent=XL.length?`${rows.length}개`:'';
+  if(!rows.length){box.innerHTML=`<div class="wempty">${XL.length?'찾는 글이 없어요.':'아직 올라온 정보가 없어요. 첫 번째로 올려 주세요!'}</div>`;return;}
+  box.innerHTML=rows.map(r=>{const href=safeHref(r.url);
+    return `<div class="xl ${r.pin?'pin':''}" data-id="${esc(r.id)}"><div class="xli">${href?`<img src="${fav(href)}" alt="" loading="lazy" onerror="this.replaceWith(document.createTextNode('🔗'))">`:'📝'}</div>
+     <div class="xlb">${r.pin?'<span class="pinb">📌 강사 공지</span>':''}<b>${href?`<a href="${esc(href)}" target="_blank" rel="noopener">${esc(r.title)} ↗</a>`:esc(r.title)}</b>
+      ${href?`<small class="dom">${esc(host(href))}</small>`:''}${r.desc?`<p>${esc(r.desc)}</p>`:''}
+      <small class="meta">${r.g?`<span class="gb" style="--g:${gcol(r.g)}">${esc(r.g)}</span>`:''}${esc(r.n)} · ${esc(r.t)}</small></div>
+     <div class="xla">${href?`<button class="b w sm" data-x="qr" title="QR 크게">📱 QR</button><button class="b w sm" data-x="cp" title="주소 복사">📋</button>`:''}${r.d===mineD()?`<button class="b w sm" data-x="rm" title="지우기">🗑</button>`:''}</div></div>`;}).join('');
+  $$('[data-x]',box).forEach(b=>b.onclick=async()=>{
+    const id=b.closest('.xl').dataset.id; const r=XL.find(x=>x.id===id); if(!r)return;
+    if(b.dataset.x==='cp') copy(r.url,'주소를 복사했어요');
+    if(b.dataset.x==='qr') modal(`<div class="qrbox"><h2>${esc(r.title)}</h2><img src="https://api.qrserver.com/v1/create-qr-code/?size=520x520&margin=12&data=${encodeURIComponent(r.url)}" alt="QR"><p>${esc(r.url)}</p></div>`,'narrow');
+    if(b.dataset.x==='rm'){
+      if(!confirm('이 글을 지울까요?'))return;
+      try{
+        if(ONLINE){const j=await apiPost({action:'unpost',id:id,device:store.dev});if(!j.ok)throw new Error(j.error);}
+        else{const x=(store.localX||[]).find(z=>z.id===id);if(x)x.del=1;save();}
+        toast('지웠어요');loadLinks();
+      }catch(err){toast(err.message||'지우지 못했어요');}
+    }
+  });
+}
+function startLinksPoll(){clearInterval(xlPoll);loadLinks();xlPoll=setInterval(()=>{if(!document.hidden)loadLinks();},25000+Math.round(Math.random()*5000));}
+
 /* ───────── 라우터 ───────── */
 function render(keepScroll){
   destroyGame(); destroySpin();
@@ -887,6 +981,7 @@ function render(keepScroll){
   else if(r==='game'&&MID==='m4') lensGamePage();
   else if(r==='life'&&MID==='m5') lifePage();
   else if(r==='live') livePage(arg);
+  else if(r==='links') linksPage();
   else home();
   markNav(r);
   if(!keepScroll&&window._lastR!==raw){window.scrollTo(0,0);}
@@ -897,6 +992,7 @@ function render(keepScroll){
 window.render=render;
 window.addEventListener('hashchange',()=>render());
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#lb').classList.remove('on');closeModal();}});
-buildSide(); drawMe(); render(); ping();
+buildSide(); drawMe(); render(); ping(); startLinksPoll();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){loadLinks();if($('.wall,[data-live]'))refreshAll();}});
 if(!me()&&!store.skipJoin) setTimeout(()=>{if(!me()&&!$('#modal'))joinModal();},700);
 })();

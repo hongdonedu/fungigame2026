@@ -6,6 +6,7 @@
  *   GEMINI_API_KEY  (필수) Google AI Studio 키 — 코드에 직접 쓰지 마세요
  *   MODEL           (선택) 먼저 써 볼 모델 이름. 비우면 아래 MODELS 순서대로
  *   SHEET_ID        (자동) 처음 실행 때 응답 스프레드시트를 만들어 저장
+ *   ADMIN_PIN       (선택) '추가 정보'에 강사 공지로 고정할 때 쓰는 숫자. 비우면 1108
  * ▣ 배포: 배포 › 새 배포 › 유형 '웹 앱' › 실행 사용자 '나' › 액세스 '모든 사용자'
  * ▣ 시트에서 줄을 지우면 그 응답은 보드에서 사라집니다(부적절한 글 정리용).
  */
@@ -18,8 +19,10 @@ const TABS = {
   members:   { name: '참여자',         head: ['시각', '모듈', '모둠', '이름', '기기ID'] },
   responses: { name: '활동 응답',      head: ['시각', '모듈', '활동', '모둠', '이름', '기기ID', '요약', '선택', '내용(JSON)'] },
   ai:        { name: 'AI 도우미 기록', head: ['시각', '모듈', '작업', '모둠', '이름', '기기ID', '입력 요약', '첨부 수', '모델', 'AI 응답'] },
-  scores:    { name: '게임 점수',      head: ['시각', '게임', '모둠', '이름', '기기ID', '점수', '시간(ms)', '세부'] }
+  scores:    { name: '게임 점수',      head: ['시각', '게임', '모둠', '이름', '기기ID', '점수', '시간(ms)', '세부'] },
+  links:     { name: '추가 정보',      head: ['시각', 'ID', '제목', '주소', '설명', '이름', '모둠', '기기ID', '고정', '삭제'] }
 };
+function adminPin_() { return String(PROPS.getProperty('ADMIN_PIN') || '1108'); }
 
 /* ───────── 스프레드시트 ───────── */
 function ss_() {
@@ -72,6 +75,7 @@ function doGet(e) {
     if (p.action === 'members') return out_({ ok: true, members: members_(p) });
     if (p.action === 'scores') return out_({ ok: true, rows: scores_(p) });
     if (p.action === 'stats') return out_({ ok: true, stats: stats_(p) });
+    if (p.action === 'links') return out_({ ok: true, rows: links_() });
     return out_({ ok: true, service: 'aiedap-m45', ai: !!PROPS.getProperty('GEMINI_API_KEY'), time: now_() });
   } catch (err) { return out_({ ok: false, error: String(err) }); }
 }
@@ -152,6 +156,27 @@ function stats_(p) {
   });
 }
 
+/* 추가 정보 게시판: 고정 글 먼저, 그다음 최신 순 */
+function links_() {
+  return cached_('K', 5, () => {
+    const vals = tail_(sheet_('links'), 10);
+    const rows = [];
+    for (let i = vals.length - 1; i >= 0 && rows.length < 300; i--) {
+      const r = vals[i];
+      if (String(r[9]) === 'Y' || !r[1]) continue;
+      rows.push({ id: String(r[1]), t: hhmm_(r[0]), title: String(r[2]), url: String(r[3]), desc: String(r[4]), n: String(r[5]), g: String(r[6]), d: String(r[7]).slice(-6), pin: String(r[8]) === 'Y' });
+    }
+    return rows.filter(x => x.pin).concat(rows.filter(x => !x.pin));
+  });
+}
+function cleanUrl_(u) {
+  u = String(u || '').trim();
+  if (!u) return '';
+  if (/\s/.test(u) || /^(javascript|data|vbscript|file):/i.test(u) || /^(?!https?:)[a-z][a-z0-9+.-]*:\/\//i.test(u)) return '';
+  if (!/^https?:\/\//i.test(u)) u = 'https://' + u.replace(/^\/+/, '');
+  return /^https?:\/\/[^\s/$.?#].[^\s]*$/i.test(u) ? clip_(u, 800) : '';
+}
+
 /* ───────── 쓰기 (POST, text/plain JSON) ───────── */
 function doPost(e) {
   let b = {};
@@ -174,6 +199,38 @@ function doPost(e) {
       keys.push('T|' + (b.module || ''), 'T|');
       CACHE.removeAll(keys);
       return out_({ ok: true });
+    }
+    if (b.action === 'post') {
+      const dev = clip_(b.device, 40);
+      const ck = 'post_' + dev;
+      const cnt = Number(CACHE.get(ck) || 0);
+      if (cnt >= 12) return out_({ ok: false, error: '조금 쉬었다가 올려 주세요 (10분에 12개까지).' });
+      const url = cleanUrl_(b.url);
+      const title = clip_(String(b.title || '').trim(), 80) || (url ? url.replace(/^https?:\/\//, '').slice(0, 60) : '');
+      if (!title && !url) return out_({ ok: false, error: '제목이나 주소를 적어 주세요.' });
+      if (b.url && !url) return out_({ ok: false, error: '주소 형식을 확인해 주세요 (https://…).' });
+      const pinned = b.pin && String(b.pin) === adminPin_();
+      if (b.pin && !pinned) return out_({ ok: false, error: '강사 PIN이 맞지 않아요.' });
+      const id = Utilities.getUuid().slice(0, 8);
+      sheet_('links').appendRow([now_(), id, title, url, clip_(b.desc, 500), clip_(b.name || '익명', 30), String(b.group || ''), dev, pinned ? 'Y' : '', '']);
+      CACHE.put(ck, String(cnt + 1), 600);
+      CACHE.remove('K');
+      return out_({ ok: true, id: id, pinned: !!pinned });
+    }
+    if (b.action === 'unpost') {
+      const s = sheet_('links');
+      const n = s.getLastRow();
+      if (n < 2) return out_({ ok: false, error: '없음' });
+      const ids = s.getRange(2, 2, n - 1, 1).getValues();
+      for (let i = ids.length - 1; i >= 0; i--) {
+        if (String(ids[i][0]) !== String(b.id)) continue;
+        const dev = String(s.getRange(i + 2, 8).getValue());
+        if (dev !== String(b.device) && String(b.pin || '') !== adminPin_()) return out_({ ok: false, error: '내가 올린 글만 지울 수 있어요.' });
+        s.getRange(i + 2, 10).setValue('Y');
+        CACHE.remove('K');
+        return out_({ ok: true });
+      }
+      return out_({ ok: false, error: '글을 찾지 못했어요.' });
     }
     if (b.action === 'score') {
       sheet_('scores').appendRow([now_(), b.game || '', String(b.group || ''), clip_(b.name, 30), clip_(b.device, 40),
